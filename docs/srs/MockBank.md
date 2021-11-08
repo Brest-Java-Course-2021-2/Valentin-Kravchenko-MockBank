@@ -59,7 +59,7 @@ The application allows users to:
   * The user clicks the **Remove** in the line of the selected bank account
   * The system checks the removed account for linked credit cards 
   * In the case, the removed account is linked to credit cards, the system generates an error message 
-  "Account {account number is presented here} cannot be deleted" and displays a list of linked credit cards with one
+    "Account {account number is presented here} cannot be deleted" and displays a list of linked credit cards with one
   * In the case, the removed account isn't linked with credit cards:
     * The system redirect the user to the page to confirm account deletion   
       <img alt="Slide 4" height="60%" src="https://user-images.githubusercontent.com/75541561/140600581-419e6f4c-dd3b-42b4-87b4-5f758163f433.PNG" width="60%"/>

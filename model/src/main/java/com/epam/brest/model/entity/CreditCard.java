@@ -1,4 +1,4 @@
-package model;
+package com.epam.brest.model.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
