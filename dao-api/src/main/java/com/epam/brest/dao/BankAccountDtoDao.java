@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BankAccountDtoDao {
     /**
-     * Get all the bank accounts containing the total number of credit cards
+     * Retrieves all the bank accounts containing the total number of credit cards
      *
      * @return bank accounts list
      */

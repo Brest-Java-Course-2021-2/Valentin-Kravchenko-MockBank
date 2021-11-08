@@ -40,7 +40,7 @@ public interface GenericDao<T> {
     Integer delete(Integer id);
 
     /**
-     * Determines the number of entities available
+     * Return the number of entities available
      * @return the number of entities
      */
     Integer count();
