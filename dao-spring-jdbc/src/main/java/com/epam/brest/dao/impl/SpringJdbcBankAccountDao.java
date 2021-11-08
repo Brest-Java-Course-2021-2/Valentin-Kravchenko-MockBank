@@ -69,7 +69,7 @@ public class SpringJdbcBankAccountDao implements BankAccountDao {
                     WHERE BA.ACCOUNT_NUMBER = :ACCOUNT_NUMBER
             """;
     public static final String ACCOUNT_CANNOT_BE_DELETED = "Account cannot be deleted because the following credit cards [%s] are linked with it!";
-    public static final String DELIMITER = " ,";
+    public static final String DELIMITER = ", ";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final RowMapper<BankAccount> rowMapper;
@@ -87,8 +87,7 @@ public class SpringJdbcBankAccountDao implements BankAccountDao {
     @Override
     public Optional<BankAccount> getOneById(Integer accountId) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ACCOUNT_ID.name(), accountId);
-        List<BankAccount> bankAccounts = namedParameterJdbcTemplate.query(SQL_GET_ONE, sqlParameterSource,
-                rowMapper);
+        List<BankAccount> bankAccounts = namedParameterJdbcTemplate.query(SQL_GET_ONE, sqlParameterSource, rowMapper);
         return Optional.ofNullable(DataAccessUtils.uniqueResult(bankAccounts));
     }
 
@@ -128,8 +127,7 @@ public class SpringJdbcBankAccountDao implements BankAccountDao {
     @Override
     public boolean isAccountNumberExists(String accountNumber) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ACCOUNT_NUMBER.name(), accountNumber);
-        Integer total = namedParameterJdbcTemplate.queryForObject(SQL_COUNT_ACCOUNT_NUMBER, sqlParameterSource,
-                Integer.class);
+        Integer total = namedParameterJdbcTemplate.queryForObject(SQL_COUNT_ACCOUNT_NUMBER, sqlParameterSource, Integer.class);
         return Objects.requireNonNull(total) == 1;
     }
 
