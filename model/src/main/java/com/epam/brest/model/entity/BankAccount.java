@@ -1,21 +1,19 @@
 package com.epam.brest.model.entity;
 
+import com.epam.brest.model.BaseEntity;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  *  Bank account model
  */
-public class BankAccount {
-     /**
-      *  Bank account ID
-      */
-     private Integer accountId;
+public class BankAccount extends BaseEntity {
 
      /**
       *  International bank account number
       */
-     private String accountNumber;
+     private String number;
 
      /**
       *  Full name of the bank customer holding the bank account
@@ -27,20 +25,12 @@ public class BankAccount {
       */
      private LocalDate registrationDate;
 
-     public Integer getAccountId() {
-          return accountId;
+     public String getNumber() {
+          return number;
      }
 
-     public void setAccountId(Integer accountId) {
-          this.accountId = accountId;
-     }
-
-     public String getAccountNumber() {
-          return accountNumber;
-     }
-
-     public void setAccountNumber(String accountNumber) {
-          this.accountNumber = accountNumber;
+     public void setNumber(String number) {
+          this.number = number;
      }
 
      public String getCustomer() {
@@ -62,17 +52,15 @@ public class BankAccount {
      @Override
      public boolean equals(Object o) {
           if (this == o) return true;
-          if (o == null || getClass() != o.getClass()) return false;
-          BankAccount that = (BankAccount) o;
-          return Objects.equals(accountId, that.accountId) &&
-                 Objects.equals(accountNumber, that.accountNumber) &&
+          if (!(o instanceof BankAccount that)) return false;
+          if (!super.equals(o)) return false;
+          return Objects.equals(number, that.number) &&
                  Objects.equals(customer, that.customer) &&
                  Objects.equals(registrationDate, that.registrationDate);
      }
 
      @Override
      public int hashCode() {
-          return Objects.hash(accountId, accountNumber, customer, registrationDate);
+          return Objects.hash(super.hashCode(), number, customer, registrationDate);
      }
-
 }

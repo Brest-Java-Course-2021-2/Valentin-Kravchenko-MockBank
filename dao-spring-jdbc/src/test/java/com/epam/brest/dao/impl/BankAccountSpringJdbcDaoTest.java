@@ -2,8 +2,6 @@ package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.BankAccountDao;
 import com.epam.brest.model.entity.BankAccount;
-import org.iban4j.CountryCode;
-import org.iban4j.Iban;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"classpath*:test-db.xml", "classpath*:spring-jdbc-dao.xml"})
-class SpringJdbcBankAccountDaoTest {
+class BankAccountSpringJdbcDaoTest {
 
     @Autowired
     private BankAccountDao bankAccountDao;
@@ -37,35 +35,35 @@ class SpringJdbcBankAccountDaoTest {
 
     @Test
     void getAll() {
-        Integer numberOfAccounts = bankAccountDao.count();
         assertNotNull(accounts);
+        Integer numberOfAccounts = bankAccountDao.count();
         assertEquals(numberOfAccounts, accounts.size());
         assertTrue(lastBankAccount.getRegistrationDate().isAfter(firstBankAccount.getRegistrationDate()));
     }
 
     @Test
     void getOneById() {
-        Optional<BankAccount> firstBankAccountFromDb = bankAccountDao.getOneById(firstBankAccount.getAccountId());
-        assertEquals(firstBankAccount.getAccountId(), firstBankAccountFromDb.get().getAccountId());
-        Optional<BankAccount> lastBankAccountFromDb = bankAccountDao.getOneById(lastBankAccount.getAccountId());
-        assertEquals(lastBankAccount.getAccountId(), lastBankAccountFromDb.get().getAccountId());
+        Optional<BankAccount> firstBankAccountFromDb = bankAccountDao.getOneById(firstBankAccount.getId());
+        assertEquals(firstBankAccount, firstBankAccountFromDb.get());
+        Optional<BankAccount> lastBankAccountFromDb = bankAccountDao.getOneById(lastBankAccount.getId());
+        assertEquals(lastBankAccount, lastBankAccountFromDb.get());
     }
 
     @Test
     public void getOneByNonExistingId() {
-        Optional<BankAccount> bankAccount = bankAccountDao.getOneById(Integer.MAX_VALUE);
+        Optional<BankAccount> bankAccount = bankAccountDao.getOneById(1000);
         assertTrue(bankAccount.isEmpty());
     }
 
     @Test
     void create() {
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setAccountNumber(Iban.random(CountryCode.BY).toString());
-        bankAccount.setCustomer("Andrey Andreev");
+        bankAccount.setNumber("New number");
+        bankAccount.setCustomer("New customer");
         bankAccount.setRegistrationDate(LocalDate.now());
         BankAccount newBankAccount = bankAccountDao.create(bankAccount);
-        assertNotNull(newBankAccount.getAccountId());
-        Optional<BankAccount> bankAccountFromDb = bankAccountDao.getOneById(newBankAccount.getAccountId());
+        assertNotNull(newBankAccount.getId());
+        Optional<BankAccount> bankAccountFromDb = bankAccountDao.getOneById(newBankAccount.getId());
         assertEquals(newBankAccount, bankAccountFromDb.get());
     }
 
@@ -74,34 +72,34 @@ class SpringJdbcBankAccountDaoTest {
         firstBankAccount.setCustomer("New customer");
         Integer result = bankAccountDao.update(firstBankAccount);
         assertEquals(result, 1);
-        Optional<BankAccount> firstBankAccountFromDb = bankAccountDao.getOneById(firstBankAccount.getAccountId());
+        Optional<BankAccount> firstBankAccountFromDb = bankAccountDao.getOneById(firstBankAccount.getId());
         assertEquals(firstBankAccount.getCustomer(), firstBankAccountFromDb.get().getCustomer());
     }
 
     @Test
     void deleteSucceeded() {
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setAccountNumber(Iban.random(CountryCode.BY).toString());
-        bankAccount.setCustomer("Andrey Andreev");
+        bankAccount.setNumber("One more new number");
+        bankAccount.setCustomer("One more new customer");
         bankAccount.setRegistrationDate(LocalDate.now());
         BankAccount newBankAccount = bankAccountDao.create(bankAccount);
-        Integer result = bankAccountDao.delete(newBankAccount.getAccountId());
+        Integer result = bankAccountDao.delete(newBankAccount.getId());
         assertEquals(result, 1);
-        Optional<BankAccount> newBankAccountFromDb = bankAccountDao.getOneById(newBankAccount.getAccountId());
+        Optional<BankAccount> newBankAccountFromDb = bankAccountDao.getOneById(newBankAccount.getId());
         assertTrue(newBankAccountFromDb.isEmpty());
     }
 
     @Test
     void deleteFailed() {
-        assertThrows(IllegalArgumentException.class, () -> bankAccountDao.delete(firstBankAccount.getAccountId()));
-        Optional<BankAccount> newBankAccountFromDb = bankAccountDao.getOneById(firstBankAccount.getAccountId());
+        assertThrows(IllegalArgumentException.class, () -> bankAccountDao.delete(firstBankAccount.getId()));
+        Optional<BankAccount> newBankAccountFromDb = bankAccountDao.getOneById(firstBankAccount.getId());
         assertFalse(newBankAccountFromDb.isEmpty());
     }
 
     @Test
     void isAccountNumberExists() {
-        assertTrue(bankAccountDao.isAccountNumberExists(firstBankAccount.getAccountNumber()));
-        assertFalse(bankAccountDao.isAccountNumberExists(Iban.random().toString()));
+        assertTrue(bankAccountDao.isAccountNumberExists(firstBankAccount.getNumber()));
+        assertFalse(bankAccountDao.isAccountNumberExists("Some number"));
     }
     
 }

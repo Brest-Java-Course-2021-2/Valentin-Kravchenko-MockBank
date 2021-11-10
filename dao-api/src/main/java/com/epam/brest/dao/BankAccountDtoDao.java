@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface BankAccountDtoDao {
     /**
-     * Retrieves all the bank accounts containing the total number of credit cards
+     * Retrieves all bank accounts, each with the number of credit cards linked with it
      *
-     * @return bank accounts list
+     * @return list of bank accounts
      */
-    List<BankAccountDto> getAllContainingTotalCards();
+    List<BankAccountDto> getAllWithTotalCards();
 
 }

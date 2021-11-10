@@ -1,17 +1,15 @@
 package com.epam.brest.model.dto;
 
+import com.epam.brest.model.BaseEntity;
+
 import java.time.LocalDate;
 
-public class BankAccountDto {
-    /**
-     *  Bank account ID
-     */
-    private Integer accountId;
+public class BankAccountDto extends BaseEntity {
 
     /**
      *  International bank account number
      */
-    private String accountNumber;
+    private String number;
 
     /**
      *  Full name of the bank customer holding the bank account
@@ -28,20 +26,12 @@ public class BankAccountDto {
      */
     private Integer totalCards;
 
-    public Integer getAccountId() {
-        return accountId;
+    public String getNumber() {
+        return number;
     }
 
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getCustomer() {

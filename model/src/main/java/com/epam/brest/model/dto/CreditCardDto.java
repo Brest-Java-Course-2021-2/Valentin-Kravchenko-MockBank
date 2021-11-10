@@ -1,15 +1,11 @@
-package com.epam.brest.model.entity;
+package com.epam.brest.model.dto;
 
 import com.epam.brest.model.BaseEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Objects;
 
-/**
- *  Credit card model
- */
-public class CreditCard extends BaseEntity {
+public class CreditCardDto extends BaseEntity {
 
     /**
      *  Credit card number
@@ -27,9 +23,14 @@ public class CreditCard extends BaseEntity {
     private BigDecimal balance;
 
     /**
-     *  ID of the bank account linked with the credit card
+     *  ID of the Bank account linked with the credit card
      */
     private Integer accountId;
+
+    /**
+     *   Number of the bank account linked with the credit card
+     */
+    private String accountNumber;
 
     public String getNumber() {
         return number;
@@ -63,18 +64,11 @@ public class CreditCard extends BaseEntity {
         this.accountId = accountId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CreditCard that)) return false;
-        if (!super.equals(o)) return false;
-        return Objects.equals(number, that.number) &&
-               Objects.equals(expirationDate, that.expirationDate) &&
-               Objects.equals(accountId, that.accountId);
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), number, expirationDate, accountId);
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }

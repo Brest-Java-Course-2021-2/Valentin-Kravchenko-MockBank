@@ -1,0 +1,57 @@
+package com.epam.brest.dao;
+
+import com.epam.brest.dao.util.SqlUtils;
+import com.epam.brest.model.BaseEntity;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static com.epam.brest.dao.constant.ColumnName.ID;
+import static com.epam.brest.dao.constant.ColumnName.NUMBER;
+
+public abstract class AbstractSpringJdbcDao<T extends BaseEntity> {
+
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    public AbstractSpringJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
+    public Optional<T> getOneById(String sql, Integer id, RowMapper<T> rowMapper) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
+        List<T> entities = namedParameterJdbcTemplate.query(sql, sqlParameterSource, rowMapper);
+        return Optional.ofNullable(DataAccessUtils.uniqueResult(entities));
+    }
+
+    public T create(String sql, T entity) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        BeanPropertySqlParameterSource beanPropertySqlParameterSource = new BeanPropertySqlParameterSource(entity);
+        SqlParameterSource sqlParameterSource = SqlUtils.extractSqlParameterSource(beanPropertySqlParameterSource);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
+        Integer id = Objects.requireNonNull(keyHolder.getKey()).intValue();
+        entity.setId(id);
+        return entity;
+    }
+
+    public Integer update(String sql, T entity) {
+        BeanPropertySqlParameterSource beanPropertySqlParameterSource = new BeanPropertySqlParameterSource(entity);
+        SqlParameterSource sqlParameterSource = SqlUtils.extractSqlParameterSource(beanPropertySqlParameterSource);
+        return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+    }
+
+    public boolean isNumberExists(String sql, String number) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(NUMBER.name(), number);
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, Integer.class);
+        return Objects.requireNonNull(total) == 1;
+    }
+
+}
