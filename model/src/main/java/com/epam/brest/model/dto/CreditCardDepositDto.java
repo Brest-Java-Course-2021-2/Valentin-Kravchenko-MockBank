@@ -17,4 +17,20 @@ public class CreditCardDepositDto {
      */
     private BigDecimal sumOfMoney;
 
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public BigDecimal getSumOfMoney() {
+        return sumOfMoney;
+    }
+
+    public void setSumOfMoney(BigDecimal sumOfMoney) {
+        this.sumOfMoney = sumOfMoney;
+    }
+
 }

@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CreditCardServiceImplTest extends BasicServiseTest {
+class CreditCardServiceImplIT extends BasicServiseTest {
 
     private final CreditCardService creditCardService;
 
-    public CreditCardServiceImplTest(@Autowired CreditCardService creditCardService) {
+    public CreditCardServiceImplIT(@Autowired CreditCardService creditCardService) {
         this.creditCardService = creditCardService;
     }
 

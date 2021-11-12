@@ -10,9 +10,19 @@
         <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator"/>
     </bean>
 
+    <bean id="bankAccountDtoServiceImpl" class="com.epam.brest.impl.BankAccountDtoServiceImpl">
+
+        <constructor-arg name="bankAccountDtoDao" ref="bankAccountDtoSpringJdbcDao"/>
+    </bean>
+
     <bean id="creditCardServiceImpl" class="com.epam.brest.impl.CreditCardServiceImpl">
         <constructor-arg name="creditCardDao" ref="creditCardSpringJdbcDao"/>
         <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator"/>
+    </bean>
+
+    <bean id="creditCardDtoServiceImpl" class="com.epam.brest.impl.CreditCardDtoServiceImpl">
+        <constructor-arg name="creditCardDtoDao" ref="creditCardDtoSpringJdbcDao"/>
+        <constructor-arg name="creditCardDao" ref="creditCardSpringJdbcDao"/>
     </bean>
 
     <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />

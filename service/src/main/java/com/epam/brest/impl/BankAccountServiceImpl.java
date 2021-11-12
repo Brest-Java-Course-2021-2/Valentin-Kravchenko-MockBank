@@ -7,6 +7,7 @@ import com.epam.brest.service.BankAccountService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Transactional
 public class BankAccountServiceImpl implements BankAccountService {
@@ -24,7 +25,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setNumber(getIban());
         bankAccount.setCustomer(customer);
-        bankAccount.setRegistrationDate(LocalDate.now());
+        bankAccount.setRegistrationDate(LocalDate.now(ZoneId.systemDefault()));
         return bankAccountDao.create(bankAccount);
     }
 

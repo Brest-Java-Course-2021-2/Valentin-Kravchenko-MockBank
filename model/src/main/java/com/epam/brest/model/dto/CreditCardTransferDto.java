@@ -22,4 +22,28 @@ public class CreditCardTransferDto {
      */
     private BigDecimal sumOfMoney;
 
+    public String getSourceCardNumber() {
+        return sourceCardNumber;
+    }
+
+    public void setSourceCardNumber(String sourceCardNumber) {
+        this.sourceCardNumber = sourceCardNumber;
+    }
+
+    public String getTargetCardNumber() {
+        return targetCardNumber;
+    }
+
+    public void setTargetCardNumber(String targetCardNumber) {
+        this.targetCardNumber = targetCardNumber;
+    }
+
+    public BigDecimal getSumOfMoney() {
+        return sumOfMoney;
+    }
+
+    public void setSumOfMoney(BigDecimal sumOfMoney) {
+        this.sumOfMoney = sumOfMoney;
+    }
+
 }
