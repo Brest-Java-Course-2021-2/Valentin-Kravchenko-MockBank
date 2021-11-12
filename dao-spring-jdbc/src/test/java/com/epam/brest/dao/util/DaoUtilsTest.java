@@ -10,20 +10,20 @@ import static com.epam.brest.dao.constant.ColumnName.NUMBER;
 import static com.epam.brest.dao.constant.ColumnName.ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class SqlUtilsTest {
+class DaoUtilsTest {
 
     @Test
     void convertToSqlParameterSource() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setId(1);
         bankAccount.setNumber("1");
-        SqlParameterSource sqlParameterSource = SqlUtils.extractSqlParameterSource(new BeanPropertySqlParameterSource(bankAccount));
+        SqlParameterSource sqlParameterSource = DaoUtils.extractSqlParameterSource(new BeanPropertySqlParameterSource(bankAccount));
         assertEquals(sqlParameterSource.getValue(ID.name()), 1);
         assertEquals(sqlParameterSource.getValue(NUMBER.name()), "1");
         CreditCard creditCard = new CreditCard();
         creditCard.setId(1);
         creditCard.setNumber("1");
-        sqlParameterSource = SqlUtils.extractSqlParameterSource(new BeanPropertySqlParameterSource(creditCard));
+        sqlParameterSource = DaoUtils.extractSqlParameterSource(new BeanPropertySqlParameterSource(creditCard));
         assertEquals(sqlParameterSource.getValue(ID.name()), 1);
         assertEquals(sqlParameterSource.getValue(NUMBER.name()), "1");
     }

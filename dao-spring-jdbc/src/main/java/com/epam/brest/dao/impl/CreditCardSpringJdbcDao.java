@@ -27,6 +27,9 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
     @Value("${card.get.by.id}")
     private String getByIdSql;
 
+    @Value("${card.get.by.number}")
+    private String getByNumberSql;
+
     @Value("${card.insert}")
     private String insertSql;
 
@@ -57,8 +60,13 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
     }
 
     @Override
-    public Optional<CreditCard> getOneById(Integer id) {
+    public Optional<CreditCard> getById(Integer id) {
         return getOneById(getByIdSql, id, rowMapper);
+    }
+
+    @Override
+    public Optional<CreditCard> getByNumber(String number) {
+        return getByNumber(getByNumberSql, number, rowMapper);
     }
 
     @Override
@@ -72,12 +80,12 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
     }
 
     @Override
-    public Integer delete(Integer id) {
-        CreditCard creditCard = getOneById(id).orElseThrow();
+    public Integer delete(CreditCard creditCard) {
         if (creditCard.getBalance().signum() == 1) {
-            throw new IllegalArgumentException(deleteErrorMessage.formatted(creditCard.getBalance().toString()));
+            throw new IllegalArgumentException(deleteErrorMessage.formatted(creditCard.getNumber(),
+                                                                            creditCard.getBalance().toString()));
         }
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), creditCard.getId());
         return namedParameterJdbcTemplate.update(deleteSql, sqlParameterSource);
     }
 

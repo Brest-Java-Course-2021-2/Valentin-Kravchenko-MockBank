@@ -6,22 +6,22 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- *  Bank account model
+ *  Bank account model.
  */
 public class BankAccount extends BaseEntity {
 
      /**
-      *  International bank account number
+      *  International bank account number.
       */
      private String number;
 
      /**
-      *  Full name of the bank customer holding the bank account
+      *  Full name of the bank customer holding the bank account.
       */
      private String customer;
 
      /**
-      *  Date of the customer registration in the bank system
+      *  Date of the customer registration in the bank system.
       */
      private LocalDate registrationDate;
 

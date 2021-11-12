@@ -28,6 +28,9 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
     @Value("${account.get.by.id}")
     private String getByIdSql;
 
+    @Value("${account.get.by.number}")
+    private String getByNumberSql;
+
     @Value("${account.insert}")
     private String insertSql;
 
@@ -61,8 +64,13 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
     }
 
     @Override
-    public Optional<BankAccount> getOneById(Integer id) {
+    public Optional<BankAccount> getById(Integer id) {
         return getOneById(getByIdSql, id, rowMapper);
+    }
+
+    @Override
+    public Optional<BankAccount> getByNumber(String number) {
+        return getByNumber(getByNumberSql, number, rowMapper);
     }
 
     @Override
@@ -76,11 +84,12 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
     }
 
     @Override
-    public Integer delete(Integer id) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
+    public Integer delete(BankAccount bankAccount) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), bankAccount.getId());
         List<String> linkedCards = getLinkedCards(sqlParameterSource);
         if (!linkedCards.isEmpty()) {
-            throw new IllegalArgumentException(deleteErrorMessage.formatted(String.join(DELIMITER, linkedCards)));
+            throw new IllegalArgumentException(deleteErrorMessage.formatted(bankAccount.getNumber(),
+                                                                            String.join(DELIMITER, linkedCards)));
         }
         return namedParameterJdbcTemplate.update(deleteSql, sqlParameterSource);
     }

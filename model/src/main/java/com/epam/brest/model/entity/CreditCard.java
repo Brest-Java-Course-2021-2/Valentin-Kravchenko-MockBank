@@ -7,27 +7,27 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- *  Credit card model
+ *  Credit card model.
  */
 public class CreditCard extends BaseEntity {
 
     /**
-     *  Credit card number
+     *  Credit card number.
      */
     private String number;
 
     /**
-     *  Credit card expiration date
+     *  Credit card expiration date.
      */
     private LocalDate expirationDate;
 
     /**
-     *  Credit card balance
+     *  Credit card balance.
      */
     private BigDecimal balance;
 
     /**
-     *  ID of the bank account linked with the credit card
+     *  ID of the bank account linked with the credit card.
      */
     private Integer accountId;
 

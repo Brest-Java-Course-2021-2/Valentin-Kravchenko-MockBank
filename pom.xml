@@ -10,20 +10,33 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
+        <module>test-db</module>
         <module>model</module>
         <module>dao-api</module>
         <module>dao-spring-jdbc</module>
-        <module>test-db</module>
+        <module>service-api</module>
+        <module>service</module>
+        <module>bank-data-generator-api</module>
+        <module>bank-data-generator</module>
     </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <junit.version>5.4.0</junit.version>
         <spring.version>5.3.12</spring.version>
         <h2.version>1.4.200</h2.version>
-        <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
         <iban4j.version>3.2.3-RELEASE</iban4j.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
+        <jetty-maven-plugin.version>10.0.1</jetty-maven-plugin.version>
+
+        <project.testresult.directory>${project.build.directory}/testResults</project.testresult.directory>
+        <junit.utReportFolder>${project.testresult.directory}/unitTests</junit.utReportFolder>
+        <junit.itReportFolder>${project.testresult.directory}/integrationTests</junit.itReportFolder>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -45,7 +58,27 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
+                <artifactId>service-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
                 <artifactId>test-db</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>bank-data-generator-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>bank-data-generator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -101,11 +134,69 @@
     </dependencyManagement>
 
     <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                                        <configuration>
+                        <runOrder>alphabetical</runOrder>
+                        <reportsDirectory>${junit.utReportFolder}</reportsDirectory>
+                        <excludes>
+                            <exclude>**/*IT*</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+                        <runOrder>alphabetical</runOrder>
+                        <reportsDirectory>${junit.itReportFolder}</reportsDirectory>
+                        <argLine>
+                            --illegal-access=permit
+                        </argLine>
+                        <includes>
+                            <include>**/*IT*</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${jetty-maven-plugin.version}</version>
+                    <configuration>
+                        <webApp>
+                            <contextPath>/</contextPath>
+                        </webApp>
+                        <httpConnector>
+                            <port>8080</port>
+                        </httpConnector>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

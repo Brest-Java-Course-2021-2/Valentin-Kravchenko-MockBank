@@ -146,10 +146,10 @@ The application allows users to:
   * The user clicks the **Deposit** in the line of the selected bank account
   * The system redirects the user to the page containing a money deposit form
     <img alt="Slide 7" height="60%" src="https://user-images.githubusercontent.com/75541561/140600584-e0507df6-49c2-46c9-aa77-2bfb575ce189.PNG" width="60%"/>
-  * The user enters the amount of money what will be deposited to the card balance
+  * The user enters sum of money what will be deposited to the card balance
   * The user clicks the **ACCEPT**
-  * The system validates the given amount of money
-  * In the case, the given amount of money is correct:
+  * The system validates the given sum of money
+  * In the case, the given sum of money is correct:
     * The system increases the credit card balance by the given amount of money
     * The system updates this balance in the database
     * In the case, an error occurred while updating data, the system generates an error message "Failed to deposit money"
@@ -165,14 +165,14 @@ The application allows users to:
   * The system redirects the user to the page containing a money transfer form
     <img alt="Slide 8" height="60%" src="https://user-images.githubusercontent.com/75541561/140600585-c58a614c-8933-44eb-8e91-c22a8f977b14.PNG" width="60%"/>
   * The user enters credit card number to transfer money 
-  * The user enters amount of money what will be transferred to the specified credit card
+  * The user enters sum of money what will be transferred to the specified credit card
   * The user clicks the **ACCEPT**
-  * The system validates the credit card number and the given amount of money
+  * The system validates the credit card number and the given sum of money
   * In the case, the given data is correct:
-    * The system checks the source credit card balance for the amount of money debited 
+    * The system checks the source credit card balance for the possibility of debiting money 
     * In the case, the check was successful:
-      * The system decreases the source credit card balance by the given amount of money
-      * The system increases the target credit card balance by the given amount of money
+      * The system decreases the source credit card balance by the given sum of money
+      * The system increases the target credit card balance by the given sum of money
       * The system updates these balances in the database
       * In the case, an error occurred while updating data:  
         * The system generates an error message "Failed to transfer money"

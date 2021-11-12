@@ -1,6 +1,6 @@
 package com.epam.brest.dao;
 
-import com.epam.brest.dao.util.SqlUtils;
+import com.epam.brest.dao.util.DaoUtils;
 import com.epam.brest.model.BaseEntity;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,14 +28,18 @@ public abstract class AbstractSpringJdbcDao<T extends BaseEntity> {
 
     public Optional<T> getOneById(String sql, Integer id, RowMapper<T> rowMapper) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
-        List<T> entities = namedParameterJdbcTemplate.query(sql, sqlParameterSource, rowMapper);
-        return Optional.ofNullable(DataAccessUtils.uniqueResult(entities));
+        return getOne(sql, rowMapper, sqlParameterSource);
+    }
+
+    public Optional<T> getByNumber(String sql, String number, RowMapper<T> rowMapper) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(NUMBER.name(), number);
+        return getOne(sql, rowMapper, sqlParameterSource);
     }
 
     public T create(String sql, T entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         BeanPropertySqlParameterSource beanPropertySqlParameterSource = new BeanPropertySqlParameterSource(entity);
-        SqlParameterSource sqlParameterSource = SqlUtils.extractSqlParameterSource(beanPropertySqlParameterSource);
+        SqlParameterSource sqlParameterSource = DaoUtils.extractSqlParameterSource(beanPropertySqlParameterSource);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
         Integer id = Objects.requireNonNull(keyHolder.getKey()).intValue();
         entity.setId(id);
@@ -44,7 +48,7 @@ public abstract class AbstractSpringJdbcDao<T extends BaseEntity> {
 
     public Integer update(String sql, T entity) {
         BeanPropertySqlParameterSource beanPropertySqlParameterSource = new BeanPropertySqlParameterSource(entity);
-        SqlParameterSource sqlParameterSource = SqlUtils.extractSqlParameterSource(beanPropertySqlParameterSource);
+        SqlParameterSource sqlParameterSource = DaoUtils.extractSqlParameterSource(beanPropertySqlParameterSource);
         return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 
@@ -52,6 +56,11 @@ public abstract class AbstractSpringJdbcDao<T extends BaseEntity> {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(NUMBER.name(), number);
         Integer total = namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, Integer.class);
         return Objects.requireNonNull(total) == 1;
+    }
+
+    private Optional<T> getOne(String sql, RowMapper<T> rowMapper, SqlParameterSource sqlParameterSource) {
+        List<T> entities = namedParameterJdbcTemplate.query(sql, sqlParameterSource, rowMapper);
+        return Optional.ofNullable(DataAccessUtils.uniqueResult(entities));
     }
 
 }

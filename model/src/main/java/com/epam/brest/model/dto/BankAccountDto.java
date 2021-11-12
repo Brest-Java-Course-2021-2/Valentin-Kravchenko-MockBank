@@ -4,25 +4,28 @@ import com.epam.brest.model.BaseEntity;
 
 import java.time.LocalDate;
 
+/**
+ *  Bank account data transfer object.
+ */
 public class BankAccountDto extends BaseEntity {
 
     /**
-     *  International bank account number
+     *  International bank account number.
      */
     private String number;
 
     /**
-     *  Full name of the bank customer holding the bank account
+     *  Full name of the bank customer holding the bank account.
      */
     private String customer;
 
     /**
-     *  Date of the customer registration in the bank system
+     *  Date of the customer registration in the bank system.
      */
     private LocalDate registrationDate;
 
     /**
-     *  Total cards linked to the bank account
+     *  Total cards linked to the bank account.
      */
     private Integer totalCards;
 

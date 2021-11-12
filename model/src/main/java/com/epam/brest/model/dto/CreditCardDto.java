@@ -5,30 +5,33 @@ import com.epam.brest.model.BaseEntity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ *  Credit card data transfer object.
+ */
 public class CreditCardDto extends BaseEntity {
 
     /**
-     *  Credit card number
+     *  Credit card number.
      */
     private String number;
 
     /**
-     *  Credit card expiration date
+     *  Credit card expiration date.
      */
     private LocalDate expirationDate;
 
     /**
-     *  Credit card balance
+     *  Credit card balance.
      */
     private BigDecimal balance;
 
     /**
-     *  ID of the Bank account linked with the credit card
+     *  ID of the Bank account linked with the credit card.
      */
     private Integer accountId;
 
     /**
-     *   Number of the bank account linked with the credit card
+     *   Number of the bank account linked with the credit card.
      */
     private String accountNumber;
 
