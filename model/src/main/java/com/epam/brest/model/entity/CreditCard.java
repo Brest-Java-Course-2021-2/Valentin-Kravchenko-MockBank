@@ -66,8 +66,9 @@ public class CreditCard extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CreditCard that)) return false;
+        if (!(o instanceof CreditCard)) return false;
         if (!super.equals(o)) return false;
+        CreditCard that = (CreditCard) o;
         return Objects.equals(number, that.number) &&
                Objects.equals(expirationDate, that.expirationDate) &&
                Objects.equals(accountId, that.accountId);

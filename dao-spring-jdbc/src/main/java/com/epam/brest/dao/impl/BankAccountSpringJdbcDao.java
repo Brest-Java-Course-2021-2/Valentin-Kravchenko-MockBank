@@ -88,8 +88,8 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), bankAccount.getId());
         List<String> linkedCards = getLinkedCards(sqlParameterSource);
         if (!linkedCards.isEmpty()) {
-            throw new IllegalArgumentException(deleteErrorMessage.formatted(bankAccount.getNumber(),
-                                                                            String.join(DELIMITER, linkedCards)));
+            throw new IllegalArgumentException(String.format(deleteErrorMessage, bankAccount.getNumber(),
+                                                             String.join(DELIMITER, linkedCards)));
         }
         return namedParameterJdbcTemplate.update(deleteSql, sqlParameterSource);
     }

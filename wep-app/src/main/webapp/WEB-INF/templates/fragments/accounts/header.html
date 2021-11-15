@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<div class="card mb-2" th:fragment="header">
+    <div class="card-body text-primary fs-4">
+        <div class="row">
+            <div class="col-lg-10 col-md-9">
+                List of Bank Accounts
+            </div>
+            <div class="col-lg-2 col-md-3 text-center d-flex">
+                <a href="../../account.html"
+                   class="btn btn-primary text-white w-100"
+                   th:href="@{/account}"
+                >
+                    New Account
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

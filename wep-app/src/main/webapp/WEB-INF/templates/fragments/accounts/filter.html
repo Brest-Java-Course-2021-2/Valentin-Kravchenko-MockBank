@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<div class="row mb-2 gy-2" th:fragment="filter">
+    <div class="col-lg-4 col-md-4">
+        <input type="text" class="form-control" placeholder="Account Number" />
+    </div>
+    <div class="col-lg-3 col-md-4">
+        <input type="text" class="form-control" placeholder="Customer" />
+    </div>
+    <div class="col-lg-3 col-md-1">
+    </div>
+    <div class="col-lg-2 col-md-3 text-center my-auto">
+        <div class="btn-group">
+            <a href="#" class="btn btn-info text-white" data-bs-toggle="button">
+                Apply
+            </a>
+            <a href="#" class="btn btn-warning text-white" data-bs-toggle="button">
+                Reset
+            </a>
+        </div>
+    </div>
+</div>
+</body>

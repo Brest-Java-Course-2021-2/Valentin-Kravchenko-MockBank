@@ -6,7 +6,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration({"classpath*:test-db.xml", "classpath*:dao-spring-jdbc.xml"})
+@ContextConfiguration({"classpath*:dao-spring-jdbc.xml", "classpath*:properties.xml"})
 @Transactional
 public class BasicDaoTest {
 }

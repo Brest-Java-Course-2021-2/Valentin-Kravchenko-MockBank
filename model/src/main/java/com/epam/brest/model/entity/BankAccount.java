@@ -52,8 +52,9 @@ public class BankAccount extends BaseEntity {
      @Override
      public boolean equals(Object o) {
           if (this == o) return true;
-          if (!(o instanceof BankAccount that)) return false;
+          if (!(o instanceof BankAccount)) return false;
           if (!super.equals(o)) return false;
+          BankAccount that = (BankAccount) o;
           return Objects.equals(number, that.number) &&
                  Objects.equals(customer, that.customer) &&
                  Objects.equals(registrationDate, that.registrationDate);

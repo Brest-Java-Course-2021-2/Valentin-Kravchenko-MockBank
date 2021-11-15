@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body>
+<div class="row" th:fragment="listitem(account)">
+    <div class="col-lg-4 col-md-4 text-center">
+        <span th:text="${account.number}">BY80F29S8416E1PXLF9VHCGM99T6</span>
+    </div>
+    <div class="col-lg-3 col-md-4 text-center">
+        <span th:text="${account.customer}">Ivan Ivanov</span>
+    </div>
+    <div class="col-lg-2 col-md-4 text-center" th:with="locale=#{date.pattern}">
+        <span th:text="${#temporals.format(account.registrationDate, locale)}">28/06/2020</span>
+    </div>
+    <div class="col-lg-1 text-center">
+        <span th:text="${account.totalCards}">2</span>
+    </div>
+    <div class="col-lg-2 text-center">
+        <div class="btn-group">
+            <button type="button"
+                    class="btn btn-secondary"
+            ><i class="bi bi-credit-card"></i></button>
+            <a href="../../account.html"
+               class="btn btn-secondary"
+               th:href="@{'/account/' + ${account.id}}"
+            ><i class="bi bi-pencil-square"></i></a>
+            <button type="button"
+                    class="btn btn-secondary"
+            ><i class="bi bi-trash"></i></button>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
