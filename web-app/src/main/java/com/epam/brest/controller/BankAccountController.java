@@ -17,25 +17,25 @@ public class BankAccountController {
     }
 
     @GetMapping()
-    public final String getAccount() {
+    public String getAccount() {
         return "account";
     }
 
-    @GetMapping( "{id}")
-    public final String getAccount(@PathVariable Integer id, Model model) {
+    @GetMapping("{id}")
+    public String getAccount(@PathVariable Integer id, Model model) {
         BankAccount account = bankAccountService.getById(id);
         model.addAttribute("account", account);
         return "account";
     }
 
     @PostMapping()
-    public final String postAccount(BankAccount bankAccount){
+    public String postAccount(BankAccount bankAccount){
         BankAccount account = bankAccountService.create(bankAccount);
         return "redirect:/accounts";
     }
 
-    @PostMapping( "{id}")
-    public final String postAccount(@PathVariable Integer id, BankAccount bankAccount){
+    @PostMapping("{id}")
+    public String postAccount(@PathVariable Integer id, BankAccount bankAccount){
         bankAccount.setId(id);
         bankAccountService.update(bankAccount);
         return "redirect:/accounts";
