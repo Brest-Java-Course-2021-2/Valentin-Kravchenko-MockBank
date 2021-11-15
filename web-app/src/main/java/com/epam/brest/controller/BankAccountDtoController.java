@@ -20,7 +20,7 @@ public class BankAccountDtoController {
     }
 
     @GetMapping()
-    public final String accounts(Model model) {
+    public String accounts(Model model) {
         List<BankAccountDto> accountDtos = bankAccountDtoService.getAllWithTotalCards();
         model.addAttribute("accountDtos", accountDtos);
         return "accounts";

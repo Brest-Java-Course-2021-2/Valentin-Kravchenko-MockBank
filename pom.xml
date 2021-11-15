@@ -18,7 +18,7 @@
         <module>service</module>
         <module>bank-data-generator-api</module>
         <module>bank-data-generator</module>
-        <module>wep-app</module>
+        <module>web-app</module>
     </modules>
 
     <properties>
