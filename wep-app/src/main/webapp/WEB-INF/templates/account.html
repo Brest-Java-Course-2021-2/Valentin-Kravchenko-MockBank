@@ -1,0 +1,78 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}"
+      lang="en">>
+
+<th:block layout:fragment="content">
+    <form class="container"
+          th:object="${account}"
+          th:action="${account} == null ? @{/account} : @{'/account/'+ ${account.id}}" method="post">
+        <div class="card mb-2">
+            <div class="card-body text-primary fs-4">
+                <div class="row">
+                    <div class="col-lg-10 col-md-8 col-sm-8">
+                        <span th:text="${account} == null ? #{account.header.create} : #{account.header.edit}">Header</span>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-4 text-center">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    class="btn btn-success text-white"
+                                    th:text="${account} == null ? #{account.button.create} : #{account.button.edit}"
+                            >Action</button>
+                            <a href="accounts.html"
+                               class="btn btn-danger text-white"
+                               th:href="@{/accounts}"
+                            >Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-2">
+            <div class="card-body text-primary fs-5">
+                <div class="row">
+                    <div class="col-md-2 my-auto">
+                        Registration Date
+                    </div>
+                    <div class="my-auto"
+                         th:classappend="${account} == null ? 'col-md-10' : 'col-md-4'"
+                         th:with="locale=#{date.pattern}"
+                    >
+                        <input type="text"
+                               class="form-control"
+                               th:value="${account} == null ? ${#temporals.format(#temporals.createToday(), locale)}
+                                                            : ${#temporals.format(account.registrationDate, locale)}"
+                               disabled/>
+                    </div>
+                    <div class="col-md-2 my-auto" th:if="${account} != null"
+                    >Account Number</div>
+                    <div class="col-md-4 my-auto" th:if=" ${account} != null">
+                        <input type="text"
+                               class="form-control"
+                               th:value="${account.number}"
+                               disabled/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-2">
+            <div class="card-body text-primary fs-5">
+                <div class="row">
+                    <div class="col-md-2 my-auto">
+                        Customer
+                    </div>
+                    <div class="col-md-10 my-auto">
+                        <input name="customer"
+                               type="text"
+                               class="form-control"
+                               th:value="${account} != null ? ${account.customer}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</th:block>
+
+</body>
+</html>

@@ -20,11 +20,11 @@
         </dependency>
         <dependency>
             <groupId>com.epam.brest</groupId>
-            <artifactId>test-db</artifactId>
+            <artifactId>dao-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.epam.brest</groupId>
-            <artifactId>dao-api</artifactId>
+            <artifactId>test-db</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -36,11 +36,19 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
+            <artifactId>spring-jdbc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

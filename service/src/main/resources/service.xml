@@ -5,13 +5,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+    <import resource="classpath*:dao-spring-jdbc.xml"/>
+
+    <import resource="classpath*:bank-data-generator.xml"/>
+
     <bean id="bankAccountServiceImpl" class="com.epam.brest.impl.BankAccountServiceImpl">
         <constructor-arg name="bankAccountDao" ref="bankAccountSpringJdbcDao"/>
         <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator"/>
     </bean>
 
     <bean id="bankAccountDtoServiceImpl" class="com.epam.brest.impl.BankAccountDtoServiceImpl">
-
         <constructor-arg name="bankAccountDtoDao" ref="bankAccountDtoSpringJdbcDao"/>
     </bean>
 
@@ -22,9 +25,8 @@
 
     <bean id="creditCardDtoServiceImpl" class="com.epam.brest.impl.CreditCardDtoServiceImpl">
         <constructor-arg name="creditCardDtoDao" ref="creditCardDtoSpringJdbcDao"/>
-        <constructor-arg name="creditCardDao" ref="creditCardSpringJdbcDao"/>
     </bean>
 
-    <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />
+    <tx:annotation-driven proxy-target-class="true"/>
 
 </beans>

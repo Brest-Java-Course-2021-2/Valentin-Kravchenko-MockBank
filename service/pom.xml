@@ -23,15 +23,23 @@
         </dependency>
         <dependency>
             <groupId>com.epam.brest</groupId>
-            <artifactId>test-db</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.epam.brest</groupId>
             <artifactId>dao-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.epam.brest</groupId>
             <artifactId>dao-spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.brest</groupId>
+            <artifactId>bank-data-generator-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.brest</groupId>
+            <artifactId>bank-data-generator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.brest</groupId>
+            <artifactId>test-db</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -44,14 +52,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.epam.brest</groupId>
-            <artifactId>bank-data-generator-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.epam.brest</groupId>
-            <artifactId>bank-data-generator</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

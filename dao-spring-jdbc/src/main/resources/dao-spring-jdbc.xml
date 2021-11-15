@@ -4,6 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <import resource="classpath*:test-db.xml"/>
+
     <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
         <constructor-arg name="dataSource" ref="dataSource"/>
     </bean>
@@ -22,15 +24,6 @@
 
     <bean id="creditCardDtoSpringJdbcDao" class="com.epam.brest.dao.impl.CreditCardDtoSpringJdbcDao">
         <constructor-arg name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
-    </bean>
-
-    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:dao.properties</value>
-                <value>classpath:messages.properties</value>
-            </list>
-        </property>
     </bean>
 
 </beans>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container" th:fragment="header">
+    <div class="row">
+        <div class="col-lg-2 col-md-3">
+            <div class="appLogo text-center h-100 p-1 fs-3">
+                MockBank
+            </div>
+        </div>
+        <div class="col-lg-10 col-md-9">
+            <ul class="nav nav-pills fs-4">
+                <li class="nav-item">
+                    <a class="nav-link active" href="../accounts_temp.html" th:href="@{/accounts}">Accounts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../cards.html" th:href="@{/cards}">Cards</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

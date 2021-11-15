@@ -1,6 +1,6 @@
 package com.epam.brest.impl;
 
-import com.epam.brest.BasicServiseTest;
+import com.epam.brest.BasicServiceTest;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.BankAccountService;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class BankAccountServiceImplIT extends BasicServiseTest {
+class BankAccountServiceImplIT extends BasicServiceTest {
 
     private final BankAccountService bankAccountService;
 
@@ -21,12 +21,13 @@ class BankAccountServiceImplIT extends BasicServiseTest {
 
     @Test
     void create() {
-        String customer = "Customer";
-        BankAccount bankAccount = bankAccountService.create(customer);
-        assertNotNull(bankAccount.getId());
-        assertNotNull(bankAccount.getNumber());
-        assertEquals(customer, bankAccount.getCustomer());
-        assertEquals(LocalDate.now(), bankAccount.getRegistrationDate());
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setCustomer("Customer");
+        BankAccount createdBankAccount = bankAccountService.create(bankAccount);
+        assertNotNull(createdBankAccount.getId());
+        assertNotNull(createdBankAccount.getNumber());
+        assertEquals(bankAccount.getCustomer(), createdBankAccount.getCustomer());
+        assertEquals(LocalDate.now(), createdBankAccount.getRegistrationDate());
     }
 
     @Test
@@ -40,9 +41,10 @@ class BankAccountServiceImplIT extends BasicServiseTest {
 
     @Test
     void delete() {
-        String customer = "Customer";
-        BankAccount bankAccount = bankAccountService.create(customer);
-        Integer result = bankAccountService.delete(bankAccount);
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setCustomer("Customer");
+        BankAccount createdBankAccount = bankAccountService.create(bankAccount);
+        Integer result = bankAccountService.delete(createdBankAccount);
         assertEquals(result, 1);
     }
 

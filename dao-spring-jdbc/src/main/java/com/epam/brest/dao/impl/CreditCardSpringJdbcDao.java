@@ -82,8 +82,8 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
     @Override
     public Integer delete(CreditCard creditCard) {
         if (creditCard.getBalance().signum() == 1) {
-            throw new IllegalArgumentException(deleteErrorMessage.formatted(creditCard.getNumber(),
-                                                                            creditCard.getBalance().toString()));
+            throw new IllegalArgumentException(String.format(deleteErrorMessage, creditCard.getNumber(),
+                                               creditCard.getBalance().toString()));
         }
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), creditCard.getId());
         return namedParameterJdbcTemplate.update(deleteSql, sqlParameterSource);

@@ -8,10 +8,12 @@ import com.epam.brest.model.entity.BankAccount;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BankAccountDtoSpringJdbcBasicDaoIT extends BasicDaoTest {
 
@@ -26,10 +28,10 @@ class BankAccountDtoSpringJdbcBasicDaoIT extends BasicDaoTest {
 
     @Test
     void getAllWithTotalCards() {
-        List<BankAccountDto> accounts = bankAccountDtoDao.getAllWithTotalCards();
-        assertNotNull(accounts);
-        BankAccountDto firstBankAccountDto = accounts.get(0);
-        BankAccountDto lastBankAccountDto = accounts.get(accounts.size() - 1);
+        List<BankAccountDto> accountDtos = bankAccountDtoDao.getAllWithTotalCards();
+        assertNotNull(accountDtos);
+        BankAccountDto firstBankAccountDto = accountDtos.get(0);
+        BankAccountDto lastBankAccountDto = accountDtos.get(accountDtos.size() - 1);
         Optional<BankAccount> firstBankAccountFromDb = bankAccountDao.getById(firstBankAccountDto.getId());
         Optional<BankAccount> lastBankAccountFromDb = bankAccountDao.getById(lastBankAccountDto.getId());
         assertEquals(firstBankAccountDto.getId(), firstBankAccountFromDb.get().getId());
@@ -40,6 +42,22 @@ class BankAccountDtoSpringJdbcBasicDaoIT extends BasicDaoTest {
         assertEquals(lastBankAccountDto.getRegistrationDate(), lastBankAccountFromDb.get().getRegistrationDate());
         assertTrue(firstBankAccountDto.getTotalCards() > 0);
         assertTrue(lastBankAccountDto.getTotalCards() > 0);
+    }
+
+    @Test
+    void createNewAccountThenGetAllWithTotalCards() {
+        List<BankAccountDto> accountDtos = bankAccountDtoDao.getAllWithTotalCards();
+        assertNotNull(accountDtos);
+        int countBefore = accountDtos.size();
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setNumber("New number");
+        bankAccount.setCustomer("New customer");
+        bankAccount.setRegistrationDate(LocalDate.now());
+        bankAccountDao.create(bankAccount);
+        accountDtos = bankAccountDtoDao.getAllWithTotalCards();
+        assertNotNull(accountDtos);
+        int countAfter = accountDtos.size();
+        assertEquals(countBefore, countAfter - 1);
     }
 
 }

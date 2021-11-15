@@ -5,11 +5,19 @@ import com.epam.brest.model.entity.BankAccount;
 public interface BankAccountService {
 
     /**
+     * Retrieves a bank account by its id.
+     * @param id - bank account id
+     * @return the bank account with the given id
+     * @throws IllegalArgumentException if none found
+     */
+    BankAccount getById(Integer id);
+
+    /**
      * Creates new bank account.
-     * @param customer - full name of the bank customer holding the bank account
+     * @param bankAccount - new bank account
      * @return the created bank account
      */
-    BankAccount create(String customer);
+    BankAccount create(BankAccount bankAccount);
 
     /**
      * Updates a given bank account.

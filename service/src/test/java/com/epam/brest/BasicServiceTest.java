@@ -6,10 +6,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(locations = {"classpath*:test-db.xml",
-        "classpath*:dao-spring-jdbc.xml",
-        "classpath*:bank-data-generator.xml",
-        "classpath*:service.xml"})
+@ContextConfiguration(locations = {"classpath*:service.xml", "classpath*:properties.xml"})
 @Transactional
-public class BasicServiseTest {
+public class BasicServiceTest {
 }

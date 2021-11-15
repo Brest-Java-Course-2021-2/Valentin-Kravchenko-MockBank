@@ -4,6 +4,7 @@ import com.epam.brest.dao.BankAccountDao;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.BankAccountService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -15,16 +16,22 @@ public class BankAccountServiceImpl implements BankAccountService {
     private final BankAccountDao bankAccountDao;
     private final BankDataGenerator bankDataGenerator;
 
+    @Value("${account.error.find.by.id}")
+    private String findByIdErrorMessage;
+
     public BankAccountServiceImpl(BankAccountDao bankAccountDao, BankDataGenerator bankDataGenerator) {
         this.bankAccountDao = bankAccountDao;
         this.bankDataGenerator = bankDataGenerator;
     }
 
     @Override
-    public BankAccount create(String customer) {
-        BankAccount bankAccount = new BankAccount();
+    public BankAccount getById(Integer id) {
+        return bankAccountDao.getById(id).orElseThrow(() -> new IllegalArgumentException(String.format(findByIdErrorMessage, id)));
+    }
+
+    @Override
+    public BankAccount create(BankAccount bankAccount) {
         bankAccount.setNumber(getIban());
-        bankAccount.setCustomer(customer);
         bankAccount.setRegistrationDate(LocalDate.now(ZoneId.systemDefault()));
         return bankAccountDao.create(bankAccount);
     }
