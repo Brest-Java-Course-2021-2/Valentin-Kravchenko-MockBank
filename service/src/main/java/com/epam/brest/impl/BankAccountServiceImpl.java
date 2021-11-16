@@ -32,7 +32,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public BankAccount create(BankAccount bankAccount) {
         bankAccount.setNumber(getIban());
-        bankAccount.setRegistrationDate(LocalDate.now(ZoneId.systemDefault()));
+        bankAccount.setRegistrationDate(LocalDate.now());
         return bankAccountDao.create(bankAccount);
     }
 
