@@ -35,7 +35,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     public CreditCard create(Integer bankAccountId) {
         CreditCard creditCard = new CreditCard();
         creditCard.setNumber(getCardNumber());
-        creditCard.setExpirationDate(ServiceUtils.convertToExpirationDate(LocalDate.now(ZoneId.systemDefault())));
+        creditCard.setExpirationDate(ServiceUtils.convertToExpirationDate(LocalDate.now()));
         creditCard.setBalance(new BigDecimal(INIT_BALANCE));
         creditCard.setAccountId(bankAccountId);
         return creditCardDao.create(creditCard);

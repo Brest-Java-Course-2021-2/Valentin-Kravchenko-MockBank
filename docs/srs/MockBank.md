@@ -94,7 +94,7 @@ The application allows users to:
       * In the case, an error occurred while inserting data, the system generates an error message "Failed to create a new bank account"
       * In the case, the insertion was successful:
         * The system redirect the user to the accounts page
-        * The system generates an info message "New account created successfully"
+        * The system generates an info message "New bank account created successfully"
         * The system generates and displays an updated list of all bank accounts
     * In the case, the given data is invalid, the system generates an error message "The given data is incorrect" 
   * In the case, user clicks the **CANCEL**, the system doesn't create the account and redirects the user   
