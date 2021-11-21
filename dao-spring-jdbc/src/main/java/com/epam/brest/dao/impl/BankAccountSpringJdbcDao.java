@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.epam.brest.dao.constant.ColumnName.ID;
-import static com.epam.brest.dao.constant.DaoConstant.DELIMITER;
 
 public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount> implements BankAccountDao {
 
@@ -49,9 +48,6 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
     @Value("${account.get.cards.number}")
     private String getCardNumbersSql;
 
-    @Value("${account.error.delete}")
-    private String deleteErrorMessage;
-
     public BankAccountSpringJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(namedParameterJdbcTemplate);
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -65,7 +61,7 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
 
     @Override
     public Optional<BankAccount> getById(Integer id) {
-        return getOneById(getByIdSql, id, rowMapper);
+        return getById(getByIdSql, id, rowMapper);
     }
 
     @Override
@@ -85,13 +81,7 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
 
     @Override
     public Integer delete(BankAccount bankAccount) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), bankAccount.getId());
-        List<String> linkedCards = getLinkedCards(sqlParameterSource);
-        if (!linkedCards.isEmpty()) {
-            throw new IllegalArgumentException(String.format(deleteErrorMessage, bankAccount.getNumber(),
-                                                             String.join(DELIMITER, linkedCards)));
-        }
-        return namedParameterJdbcTemplate.update(deleteSql, sqlParameterSource);
+        return delete(deleteSql, bankAccount);
     }
 
     @Override
@@ -104,7 +94,9 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
         return isNumberExists(countNumberSql, number);
     }
 
-    private List<String> getLinkedCards(SqlParameterSource sqlParameterSource) {
+    @Override
+    public List<String> getLinkedCards(BankAccount bankAccount) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), bankAccount.getId());
         return namedParameterJdbcTemplate.queryForList(getCardNumbersSql, sqlParameterSource, String.class);
     }
 

@@ -2,7 +2,6 @@ package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.BankAccountDao;
 import com.epam.brest.dao.BankAccountDtoDao;
-import com.epam.brest.dao.BasicDaoTest;
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.model.entity.BankAccount;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class BankAccountDtoSpringJdbcBasicDaoIT extends BasicDaoTest {
+class BankAccountDtoSpringJdbcBasicDaoIT extends BasicDaoIT {
 
     private final BankAccountDtoDao bankAccountDtoDao;
     private final BankAccountDao bankAccountDao;

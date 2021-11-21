@@ -1,0 +1,92 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}"
+      lang="en">
+
+<!--/*@thymesVar id="card" type="com.epam.brest.model.dto.CreditCardTransferDto"*/-->
+<th:block layout:fragment="content">
+    <form class="container"
+          th:object="${card}"
+          th:action="@{${#httpServletRequest.servletPath}}"
+          method="post">
+        <div class="tab-content">
+            <div class="card mb-2">
+                <div class="card-body text-primary fs-4">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-9 col-sm-8">
+                            <span th:text="${card.targetCardNumber} ? #{card.header.deposit} : #{card.header.transfer}">
+                                Header
+                            </span>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 text-center">
+                            <div class="btn-group">
+                                <button type="submit"
+                                        class="btn btn-info text-white">
+                                    Accept
+                                </button>
+                                <a href="cards.html"
+                                   class="btn btn-danger text-white"
+                                   th:href="@{/cards}">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2"
+                 th:if="not ${card.targetCardNumber}">
+                <div class="card-body text-primary fs-5">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 my-auto">
+                            From Card Number
+                        </div>
+                        <div class="col-md-8 col-sm-6 my-auto">
+                            <input name="sourceCardNumber"
+                                   type="text"
+                                   class="form-control"
+                                   th:value="*{sourceCardNumber}"
+                                   readonly/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-body text-primary fs-5">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 my-auto">
+                            To Card Number
+                        </div>
+                        <div class="col-md-8 col-sm-6 my-auto">
+                            <input name="targetCardNumber"
+                                   type="text"
+                                   class="form-control"
+                                   th:value="*{targetCardNumber}"
+                                   th:readonly="*{targetCardNumber}"
+                                   th:required="not *{targetCardNumber}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body text-primary fs-5">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 my-auto">
+                            Amount
+                        </div>
+                        <div class="col-md-8 col-sm-6 my-auto">
+                            <input name="sumOfMoney"
+                                   type="text"
+                                   class="form-control"
+                                   th:field="*{sumOfMoney}"
+                                   required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</th:block>
+
+</html>

@@ -26,7 +26,7 @@ public abstract class AbstractSpringJdbcDao<T extends BaseEntity> {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public Optional<T> getOneById(String sql, Integer id, RowMapper<T> rowMapper) {
+    public Optional<T> getById(String sql, Integer id, RowMapper<T> rowMapper) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
         return getOne(sql, rowMapper, sqlParameterSource);
     }
@@ -49,6 +49,11 @@ public abstract class AbstractSpringJdbcDao<T extends BaseEntity> {
     public Integer update(String sql, T entity) {
         BeanPropertySqlParameterSource beanPropertySqlParameterSource = new BeanPropertySqlParameterSource(entity);
         SqlParameterSource sqlParameterSource = DaoUtils.extractSqlParameterSource(beanPropertySqlParameterSource);
+        return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+    }
+
+    public Integer delete(String sql, T entity) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), entity.getId());
         return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 

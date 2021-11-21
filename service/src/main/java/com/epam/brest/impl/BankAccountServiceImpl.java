@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.List;
+
+import static com.epam.brest.constant.ServiceConstant.DELIMITER;
 
 @Transactional
 public class BankAccountServiceImpl implements BankAccountService {
@@ -17,7 +19,10 @@ public class BankAccountServiceImpl implements BankAccountService {
     private final BankDataGenerator bankDataGenerator;
 
     @Value("${account.error.find.by.id}")
-    private String findByIdErrorMessage;
+    private String findByIdError;
+
+    @Value("${account.error.delete}")
+    private String deleteError;
 
     public BankAccountServiceImpl(BankAccountDao bankAccountDao, BankDataGenerator bankDataGenerator) {
         this.bankAccountDao = bankAccountDao;
@@ -26,7 +31,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BankAccount getById(Integer id) {
-        return bankAccountDao.getById(id).orElseThrow(() -> new IllegalArgumentException(String.format(findByIdErrorMessage, id)));
+        return bankAccountDao.getById(id).orElseThrow(() -> new IllegalArgumentException(String.format(findByIdError, id)));
     }
 
     @Override
@@ -43,6 +48,11 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public Integer delete(BankAccount bankAccount) {
+        List<String> linkedCards = bankAccountDao.getLinkedCards(bankAccount);
+        if (!linkedCards.isEmpty()) {
+            throw new IllegalArgumentException(String.format(deleteError, bankAccount.getNumber(),
+                                               String.join(DELIMITER, linkedCards)));
+        }
         return bankAccountDao.delete(bankAccount);
     }
 

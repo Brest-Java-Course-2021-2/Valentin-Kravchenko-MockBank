@@ -1,6 +1,5 @@
 package com.epam.brest.dao.impl;
 
-import com.epam.brest.dao.BasicDaoTest;
 import com.epam.brest.dao.CreditCardDao;
 import com.epam.brest.model.entity.CreditCard;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CreditCardSpringJdbcDaoIT extends BasicDaoTest {
+class CreditCardSpringJdbcDaoIT extends BasicDaoIT {
 
     private final CreditCardDao creditCardDao;
     private List<CreditCard> cards;
@@ -85,7 +84,7 @@ class CreditCardSpringJdbcDaoIT extends BasicDaoTest {
     }
 
     @Test
-    void deleteSucceeded() {
+    void delete() {
         CreditCard creditCard = new CreditCard();
         creditCard.setNumber("New number");
         creditCard.setExpirationDate(LocalDate.now());
@@ -97,13 +96,6 @@ class CreditCardSpringJdbcDaoIT extends BasicDaoTest {
         Optional<CreditCard> creditCardFromDb = creditCardDao.getById(newCreditCard.getId());
         assertTrue(creditCardFromDb.isEmpty());
 
-    }
-
-    @Test
-    void deleteFailed() {
-        assertThrows(IllegalArgumentException.class, () -> creditCardDao.delete(lastCreditCard));
-        Optional<CreditCard> newCreditCardFromDb = creditCardDao.getById(firstCreditCard.getId());
-        assertFalse(newCreditCardFromDb.isEmpty());
     }
 
     @Test

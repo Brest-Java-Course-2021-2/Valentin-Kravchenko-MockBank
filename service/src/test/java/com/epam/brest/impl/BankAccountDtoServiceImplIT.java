@@ -1,6 +1,5 @@
 package com.epam.brest.impl;
 
-import com.epam.brest.BasicServiceTest;
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.service.BankAccountDtoService;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class BankAccountDtoServiceImplIT extends BasicServiceTest {
+class BankAccountDtoServiceImplIT extends BasicServiceIT {
 
     private final BankAccountDtoService bankAccountDtoService;
 

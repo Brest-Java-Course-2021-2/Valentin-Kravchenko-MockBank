@@ -3,15 +3,15 @@
 <body>
 
 <div class="row mb-2 gy-2" th:fragment="filter">
-    <div class="col-lg-4 col-md-4">
-        <input type="text" class="form-control" placeholder="Account Number" />
+    <div class="col-lg-10 col-md-8 text-center my-auto">
+        <div class="input-group">
+            <span class="input-group-text">Expiry from</span>
+            <input type="date" class="form-control"/>
+            <span class="input-group-text">Expiry to</span>
+            <input type="date" class="form-control"/>
+        </div>
     </div>
-    <div class="col-lg-3 col-md-4">
-        <input type="text" class="form-control" placeholder="Customer" />
-    </div>
-    <div class="col-lg-3 col-md-1">
-    </div>
-    <div class="col-lg-2 col-md-3 text-center my-auto">
+    <div class="col-lg-2 col-md-4 text-center my-auto">
         <div class="btn-group">
             <a href="#" class="btn btn-info text-white" data-bs-toggle="button">
                 Apply
@@ -24,3 +24,4 @@
 </div>
 
 </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+
+<!--/*@thymesVar id="card" type="com.epam.brest.model.dto.CreditCardDto"*/-->
+<div class="btn-group" th:fragment="actions(card)">
+    <a href="../../transaction.html"
+       class="btn btn-secondary"
+       th:href="@{'/card/' + ${card.id} + '/deposit'}">
+        <i class="bi bi-arrow-up-right-square"></i>
+    </a>
+    <a href="../../transaction.html"
+       class="btn btn-secondary"
+       th:href="@{'/card/' + ${card.id} + '/transfer'}">
+        <i class="bi bi-arrow-down-left-square-fill"></i>
+    </a>
+    <a href="#"
+       class="btn btn-secondary"
+       data-bs-toggle="modal"
+       data-bs-target="#staticBackdrop"
+       th:attr="data-id=${card.id}, data-number=${card.number}, data-entity='card'">
+        <i class="bi bi-trash"></i>
+    </a>
+</div>
+
+</body>
+</html>

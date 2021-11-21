@@ -7,10 +7,10 @@
 <th:block layout:fragment="content">
     <div class="container">
         <div th:replace="fragments/accounts/header :: header"></div>
-        <div th:if="${error} != null">
+        <div th:if="${error}">
             <div th:replace="fragments/alert :: alert(isError=true, message=${error})"></div>
         </div>
-        <div th:if="${message} != null">
+        <div th:if="${message}">
             <div th:replace="fragments/alert :: alert(isError=false, message=${message})"></div>
         </div>
         <div class="card">
@@ -24,13 +24,20 @@
                             </li>
                             <li class="list-group-item" th:each="account : ${accountDtos}">
                                 <div th:replace="fragments/accounts/listitem :: listitem(account=${account})"></div>
-                                <div th:replace="fragments/accounts/modal :: modal(account=${account})"></div>
                             </li>
                         </ul>
                     </div>
                 </div>
+
             </div>
         </div>
+        <div th:replace="fragments/modal :: modal"></div>
+        <form id="createCardForm"
+              th:action="@{/card}"
+              method="post">
+              <input type="hidden" name="accountId" />
+              <input type="hidden" name="accountNumber" />
+        </form>
     </div>
 </th:block>
 

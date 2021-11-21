@@ -2,20 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
 
-<div class="btn-group" th:fragment="actions(account)">
-    <button type="button" class="btn btn-secondary">
+<!--/*@thymesVar id="account" type="com.epam.brest.model.dto.BankAccountDto"*/-->
+<div class="btn-group"
+     th:fragment="actions(account)">
+    <a href="#"
+       class="btn btn-secondary"
+       th:attr="onclick=|submitCreateCardForm('${account.id}', '${account.number}')|">
         <i class="bi bi-credit-card"></i>
-    </button>
-    <a href="../../account.html" class="btn btn-secondary" th:href="@{'/account/' + ${account.id}}">
+    </a>
+    <a href="../../account.html"
+       class="btn btn-secondary"
+       th:href="@{'/account/' + ${account.id}}">
         <i class="bi bi-pencil-square"></i>
     </a>
-    <button type="button"
-            class="btn btn-secondary"
-            data-bs-toggle="modal"
-            data-bs-target="#staticBackdrop"
-            th:attr="data-bs-target='#staticBackdrop'+ ${account.id}">
+    <a href="#"
+       class="btn btn-secondary"
+       data-bs-toggle="modal"
+       data-bs-target="#staticBackdrop"
+       th:attr="data-id=${account.id}, data-number=${account.number}, data-entity='account'">
         <i class="bi bi-trash"></i>
-    </button>
+    </a>
 </div>
 
 </body>

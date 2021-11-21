@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GenericDao<T extends BaseEntity> {
+
     /**
      * Retrieves all entities.
      * @return list of all entities
