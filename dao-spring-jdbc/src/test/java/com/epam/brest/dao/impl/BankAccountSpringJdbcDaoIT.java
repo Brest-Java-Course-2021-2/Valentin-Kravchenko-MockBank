@@ -1,7 +1,6 @@
 package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.BankAccountDao;
-import com.epam.brest.dao.BasicDaoTest;
 import com.epam.brest.model.entity.BankAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankAccountSpringJdbcDaoIT extends BasicDaoTest {
+class BankAccountSpringJdbcDaoIT extends BasicDaoIT {
 
     private final BankAccountDao bankAccountDao;
     private List<BankAccount> accounts;
@@ -56,7 +55,7 @@ class BankAccountSpringJdbcDaoIT extends BasicDaoTest {
     }
 
     @Test
-    public void getOneByNonExistingId() {
+    public void getByNonExistingId() {
         Optional<BankAccount> bankAccount = bankAccountDao.getById(1000);
         assertTrue(bankAccount.isEmpty());
     }
@@ -83,7 +82,7 @@ class BankAccountSpringJdbcDaoIT extends BasicDaoTest {
     }
 
     @Test
-    void deleteSucceeded() {
+    void delete() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setNumber("New number");
         bankAccount.setCustomer("New customer");
@@ -93,13 +92,6 @@ class BankAccountSpringJdbcDaoIT extends BasicDaoTest {
         assertEquals(result, 1);
         Optional<BankAccount> newBankAccountFromDb = bankAccountDao.getById(newBankAccount.getId());
         assertTrue(newBankAccountFromDb.isEmpty());
-    }
-
-    @Test
-    void deleteFailed() {
-        assertThrows(IllegalArgumentException.class, () -> bankAccountDao.delete(firstBankAccount));
-        Optional<BankAccount> newBankAccountFromDb = bankAccountDao.getById(firstBankAccount.getId());
-        assertFalse(newBankAccountFromDb.isEmpty());
     }
 
     @Test

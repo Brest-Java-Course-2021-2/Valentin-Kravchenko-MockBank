@@ -8,21 +8,21 @@ import java.math.BigDecimal;
 public class CreditCardDepositDto {
 
     /**
-     *  Credit card number for depositing money.
+     *  Number of the target credit card.
      */
-    private String cardNumber;
+    private String targetCardNumber;
 
     /**
      *  Deposit sum of money.
      */
     private BigDecimal sumOfMoney;
 
-    public String getCardNumber() {
-        return cardNumber;
+    public String getTargetCardNumber() {
+        return targetCardNumber;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setTargetCardNumber(String targetCardNumber) {
+        this.targetCardNumber = targetCardNumber;
     }
 
     public BigDecimal getSumOfMoney() {

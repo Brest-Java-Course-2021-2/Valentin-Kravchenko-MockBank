@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
 <body>
-<div class="row" th:fragment="listitem(account)">
+
+<!--/*@thymesVar id="account" type="com.epam.brest.model.dto.BankAccountDto"*/-->
+<div class="row"
+     th:fragment="listitem(account)"
+     th:object="${account}">
     <div class="col-lg-4 col-md-4 text-center">
-        <span th:text="${account.number}">BY80F29S8416E1PXLF9VHCGM99T6</span>
+        <span th:text="*{number}">BY80F29S8416E1PXLF9VHCGM99T6</span>
     </div>
     <div class="col-lg-3 col-md-4 text-center">
-        <span th:text="${account.customer}">Ivan Ivanov</span>
+        <span th:text="*{customer}">Ivan Ivanov</span>
     </div>
-    <div class="col-lg-2 col-md-4 text-center" th:with="locale=#{date.pattern}">
-        <span th:text="${#temporals.format(account.registrationDate, locale)}">28/06/2020</span>
+    <div class="col-lg-2 col-md-4 text-center">
+        <span th:text="*{{registrationDate}}">28.06.2020</span>
     </div>
     <div class="col-lg-1 text-center">
-        <span th:text="${account.totalCards}">2</span>
+        <span th:text="*{totalCards}">2</span>
     </div>
     <div class="col-lg-2 text-center">
         <div th:replace="fragments/accounts/actions :: actions(account=${account})"></div>
     </div>
 </div>
-</body>
 
+</body>
 </html>

@@ -1,6 +1,5 @@
 package com.epam.brest.impl;
 
-import com.epam.brest.BasicServiceTest;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.BankAccountService;
 import org.junit.jupiter.api.Test;
@@ -8,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-class BankAccountServiceImplIT extends BasicServiceTest {
+class BankAccountServiceImplIT extends BasicServiceIT {
 
     private final BankAccountService bankAccountService;
 
@@ -40,12 +38,21 @@ class BankAccountServiceImplIT extends BasicServiceTest {
     }
 
     @Test
-    void delete() {
+    void deleteSucceeded() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setCustomer("Customer");
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
         Integer result = bankAccountService.delete(createdBankAccount);
         assertEquals(result, 1);
+    }
+
+    @Test
+    void deleteFailed() {
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setId(1);
+        assertThrows(IllegalArgumentException.class, () -> bankAccountService.delete(bankAccount));
+        BankAccount newBankAccountFromDb = bankAccountService.getById(bankAccount.getId());
+        assertEquals(newBankAccountFromDb.getId(), 1);
     }
 
 }

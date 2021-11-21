@@ -6,15 +6,11 @@ import com.epam.brest.model.entity.CreditCard;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
-import static com.epam.brest.dao.constant.ColumnName.ID;
 
 public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> implements CreditCardDao {
 
@@ -45,9 +41,6 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
     @Value("${card.count.number}")
     private String countNumberSql;
 
-    @Value("${card.error.delete}")
-    private String deleteErrorMessage;
-
     public CreditCardSpringJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(namedParameterJdbcTemplate);
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -61,7 +54,7 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
 
     @Override
     public Optional<CreditCard> getById(Integer id) {
-        return getOneById(getByIdSql, id, rowMapper);
+        return getById(getByIdSql, id, rowMapper);
     }
 
     @Override
@@ -81,12 +74,7 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
 
     @Override
     public Integer delete(CreditCard creditCard) {
-        if (creditCard.getBalance().signum() == 1) {
-            throw new IllegalArgumentException(String.format(deleteErrorMessage, creditCard.getNumber(),
-                                               creditCard.getBalance().toString()));
-        }
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), creditCard.getId());
-        return namedParameterJdbcTemplate.update(deleteSql, sqlParameterSource);
+        return delete(deleteSql, creditCard);
     }
 
     @Override

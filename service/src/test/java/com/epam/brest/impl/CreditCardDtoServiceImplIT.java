@@ -1,6 +1,5 @@
 package com.epam.brest.impl;
 
-import com.epam.brest.BasicServiceTest;
 import com.epam.brest.model.dto.CreditCardDto;
 import com.epam.brest.service.CreditCardDtoService;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CreditCardDtoServiceImplIT extends BasicServiceTest {
+class CreditCardDtoServiceImplIT extends BasicServiceIT {
 
     private final CreditCardDtoService creditCardDtoService;
 

@@ -7,8 +7,6 @@
         <property name="locations">
             <list>
                 <value>classpath*:dao.properties</value>
-                <value>classpath*:dao.errors.properties</value>
-                <value>classpath*:service.errors.properties</value>
             </list>
         </property>
     </bean>

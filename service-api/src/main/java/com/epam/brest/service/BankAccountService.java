@@ -30,6 +30,7 @@ public interface BankAccountService {
      * Removes a given bank account.
      * @param bankAccount - bank account being deleted
      * @return the number of rows affected
+     * @throws IllegalArgumentException if bank account has linked credit card
      */
     Integer delete(BankAccount bankAccount);
 

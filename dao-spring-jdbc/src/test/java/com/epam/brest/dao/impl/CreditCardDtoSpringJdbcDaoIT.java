@@ -1,7 +1,6 @@
 package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.BankAccountDao;
-import com.epam.brest.dao.BasicDaoTest;
 import com.epam.brest.dao.CreditCardDao;
 import com.epam.brest.dao.CreditCardDtoDao;
 import com.epam.brest.model.dto.CreditCardDto;
@@ -16,7 +15,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class CreditCardDtoSpringJdbcDaoIT extends BasicDaoTest {
+class CreditCardDtoSpringJdbcDaoIT extends BasicDaoIT {
 
     private final CreditCardDtoDao creditCardDtoDao;
     private final CreditCardDao creditCardDao;

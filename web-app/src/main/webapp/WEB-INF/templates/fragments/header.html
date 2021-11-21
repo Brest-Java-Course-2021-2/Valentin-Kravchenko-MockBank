@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
+
 <div class="container" th:fragment="header">
     <div class="row">
         <div class="col-lg-2 col-md-3">
@@ -8,17 +9,29 @@
                 MockBank
             </div>
         </div>
-        <div class="col-lg-10 col-md-9">
+        <div class="col-lg-10 col-md-9"
+             th:with="path=${#httpServletRequest.servletPath}">
             <ul class="nav nav-pills fs-4">
                 <li class="nav-item">
-                    <a class="nav-link active" href="../accounts_temp.html" th:href="@{/accounts}">Accounts</a>
+                    <a class="nav-link"
+                       href="../accounts.html"
+                       th:classappend="${#strings.equals(path, '/accounts')} ? 'active'"
+                       th:href="@{/accounts}">
+                        Accounts
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../cards.html" th:href="@{/cards}">Cards</a>
+                    <a class="nav-link"
+                       href="../cards.html"
+                       th:classappend="${#strings.equals(path, '/cards')} ? 'active'"
+                       th:href="@{/cards}">
+                        Cards
+                    </a>
                 </li>
             </ul>
         </div>
     </div>
 </div>
+
 </body>
 </html>

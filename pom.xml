@@ -32,6 +32,8 @@
         <thymeleaf-layout-dialect.version>3.0.0</thymeleaf-layout-dialect.version>
         <thymeleaf-extras-java8time.version>3.0.4.RELEASE</thymeleaf-extras-java8time.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <validation-api.version>2.0.1.Final</validation-api.version>
+        <hibernate-validator.version>6.0.1.Final</hibernate-validator.version>
         <iban4j.version>3.2.3-RELEASE</iban4j.version>
         <log4j2.version>2.14.1</log4j2.version>
         <h2.version>1.4.200</h2.version>
@@ -146,6 +148,16 @@
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${javax.servlet-api.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${validation-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.iban4j</groupId>

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Optional;
 
 @Transactional
@@ -23,12 +22,27 @@ public class CreditCardServiceImpl implements CreditCardService {
     private final CreditCardDao creditCardDao;
     private final BankDataGenerator bankDataGenerator;
 
+    @Value("${card.error.find.by.id}")
+    private String findByIdError;
+
     @Value("${card.error.find.by.number}")
-    private String findByNumberErrorMessage;
+    private String findByNumberError;
+
+    @Value("${card.error.delete}")
+    private String deleteError;
+
+    @Value("${card.error.transfer}")
+    private String transferError;
 
     public CreditCardServiceImpl(CreditCardDao creditCardDao, BankDataGenerator bankDataGenerator) {
         this.creditCardDao = creditCardDao;
         this.bankDataGenerator = bankDataGenerator;
+    }
+
+    @Override
+    public CreditCard getById(Integer id) {
+        Optional<CreditCard> optionalCreditCard = creditCardDao.getById(id);
+        return optionalCreditCard.orElseThrow(() -> new IllegalArgumentException(String.format(findByIdError, id)));
     }
 
     @Override
@@ -43,12 +57,17 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     public Integer delete(CreditCard creditCard) {
-        return creditCardDao.delete(creditCard);
+        CreditCard creditCardFromDb = getById(creditCard.getId());
+        if (creditCardFromDb.getBalance().signum() == 1) {
+            throw new IllegalArgumentException(String.format(deleteError, creditCardFromDb.getNumber(),
+                                                             creditCardFromDb.getBalance().toString()));
+        }
+        return creditCardDao.delete(creditCardFromDb);
     }
 
     @Override
     public boolean deposit(CreditCardDepositDto creditCardDepositDto) {
-        CreditCard creditCard = getCreditCard(creditCardDepositDto.getCardNumber());
+        CreditCard creditCard = getCreditCard(creditCardDepositDto.getTargetCardNumber());
         BigDecimal newBalance = creditCard.getBalance().add(creditCardDepositDto.getSumOfMoney());
         creditCard.setBalance(newBalance);
         return creditCardDao.update(creditCard) == 1;
@@ -58,7 +77,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     public boolean transfer(CreditCardTransferDto creditCardTransferDto) {
         CreditCard sourceCreditCard = getCreditCard(creditCardTransferDto.getSourceCardNumber());
         if (sourceCreditCard.getBalance().compareTo(creditCardTransferDto.getSumOfMoney()) < 0) {
-            return false;
+            throw new IllegalArgumentException(String.format(transferError, creditCardTransferDto.getSourceCardNumber()));
         }
         CreditCard targetCreditCard = getCreditCard(creditCardTransferDto.getTargetCardNumber());
         BigDecimal newBalanceSourceCreditCard = sourceCreditCard.getBalance().subtract(creditCardTransferDto.getSumOfMoney());
@@ -70,7 +89,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     private CreditCard getCreditCard(String  cardNumber) {
         Optional<CreditCard> optionalCreditCard = creditCardDao.getByNumber(cardNumber);
-        return optionalCreditCard.orElseThrow(() -> new IllegalArgumentException(String.format(findByNumberErrorMessage, cardNumber)));
+        return optionalCreditCard.orElseThrow(() -> new IllegalArgumentException(String.format(findByNumberError, cardNumber)));
     }
 
     private String getCardNumber() {

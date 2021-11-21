@@ -5,25 +5,31 @@
       lang="en">
 
 <th:block layout:fragment="content">
+    <!--/*@thymesVar id="account" type="com.epam.brest.model.dto.BankAccountDto"*/-->
     <form class="container"
           th:object="${account}"
-          th:action="${account} == null ? @{/account} : @{'/account/'+ ${account.id}}" method="post">
+          th:action="@{${#httpServletRequest.servletPath}}"
+          method="post">
         <div class="card mb-2">
             <div class="card-body text-primary fs-4">
                 <div class="row">
                     <div class="col-lg-10 col-md-8 col-sm-8">
-                        <span th:text="${account} == null ? #{account.header.create} : #{account.header.edit}">Header</span>
+                        <span th:text="${account?.id} ? #{account.header.edit} : #{account.header.create}">
+                            Header
+                        </span>
                     </div>
                     <div class="col-lg-2 col-md-4 col-sm-4 text-center">
                         <div class="btn-group">
                             <button type="submit"
                                     class="btn btn-success text-white"
-                                    th:text="${account} == null ? #{account.button.create} : #{account.button.edit}"
-                            >Action</button>
+                                    th:text="${account?.id} ? #{account.button.edit} : #{account.button.create}">
+                                Action
+                            </button>
                             <a href="accounts.html"
                                class="btn btn-danger text-white"
-                               th:href="@{/accounts}"
-                            >Cancel</a>
+                               th:href="@{/accounts}">
+                                Cancel
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -36,22 +42,24 @@
                         Registration Date
                     </div>
                     <div class="my-auto"
-                         th:classappend="${account} == null ? 'col-md-10' : 'col-md-4'"
-                         th:with="locale=#{date.pattern}"
-                    >
-                        <input type="text"
+                         th:classappend="${account?.id} ? 'col-md-4' : 'col-md-10'">
+                        <input name="registrationDate"
+                               type="text"
                                class="form-control"
-                               th:value="${account} == null ? ${#temporals.format(#temporals.createToday(), locale)}
-                                                            : ${#temporals.format(account.registrationDate, locale)}"
-                               disabled/>
+                               th:with="format=#{date.format}"
+                               th:value="${account} ? ${{account.registrationDate}}
+                                                    : ${#temporals.format(#temporals.createToday(), format)}"
+                               readonly/>
                     </div>
-                    <div class="col-md-2 my-auto" th:if="${account} != null"
-                    >Account Number</div>
-                    <div class="col-md-4 my-auto" th:if=" ${account} != null">
-                        <input type="text"
+                    <div class="col-md-2 my-auto" th:if="${account?.id}">
+                        Account Number
+                    </div>
+                    <div class="col-md-4 my-auto" th:if="${account?.id}">
+                        <input name="number"
+                               type="text"
                                class="form-control"
-                               th:value="${account.number}"
-                               disabled/>
+                               th:value="*{number}"
+                               readonly/>
                     </div>
                 </div>
             </div>
@@ -62,11 +70,18 @@
                     <div class="col-md-2 my-auto">
                         Customer
                     </div>
-                    <div class="col-md-10 my-auto">
+                    <div class="col-md-10 my-auto position-relative">
                         <input name="customer"
                                type="text"
                                class="form-control"
-                               th:value="${account} != null ? ${account.customer}"/>
+                               th:value="${account} ? *{customer}"
+                               th:classappend="${account} and ${#fields.hasErrors('customer')} ? 'is-invalid'"
+                               required/>
+                        <div class="invalid-tooltip"
+                             th:if="${account} and ${#fields.hasErrors('customer')}"
+                             th:errors="*{customer}">
+                            Customer Error
+                        </div>
                     </div>
                 </div>
             </div>

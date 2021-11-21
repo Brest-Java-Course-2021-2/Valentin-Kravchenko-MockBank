@@ -50,7 +50,7 @@ The application allows users to:
       * In the case, an error occurred while updating data, the system generates an error message "There was error updating account"  
       * In the case, the update was successful:
         * The system redirect the user to the accounts page
-        * The system generates an info message "Account {account number is presented here} updated successfully"
+        * The system generates an info message "Bank account {account number is presented here} updated successfully"
         * The system generates and displays a list of all bank accounts with updated data
     * In the case, the given data is invalid, the system generates an error message "The given data is incorrect"
   * In the case, user clicks the **CANCEL**, the system doesn't update the selected bank account and 
@@ -68,7 +68,7 @@ The application allows users to:
       * In the case, an error occurred while deleting data, the system generates an error message "There was error removing account"
       * In the case, the deletion was successful:
         * The system generates and displays an updated list of all bank accounts
-        * The system generates an info message "Account {account number is presented here} removed successfully"
+        * The system generates an info message "Bank account {account number is presented here} removed successfully"
     * If user doesn't confirm the account deletion, the system doesn't remove the selected account
 ##### Action to Add a New Credit Card to the Bank Account:
   * The user clicks the **Add Card** in the line of the selected bank account
@@ -77,7 +77,8 @@ The application allows users to:
   * The system inserts this data in the database
   * In the case, an error occurred while inserting data, the system generates an error message "Failed to add a new credit card"
   * In the case, the insertion was successful:
-    * The system generates an info message "New credit card successfully added"
+    * The system generates an info message "New credit card {card number is presented here} successfully 
+    linked to bank account {account number is presented here}"
     * The system generates and displays a list of all bank accounts with an added credit card  
 #### 3.1.2 Create a New Bank Account
 * Basic Action:
@@ -139,7 +140,7 @@ The application allows users to:
           removing card"
         * In the case, the deletion was successful:
           * The system generates and displays an updated list of all credit cards
-          * The system generates an info message "Card {card number is presented here} removed successfully"
+          * The system generates an info message "Credit card {card number is presented here} removed successfully"
   * If user doesn't confirm the card deletion, the system doesn't remove the selected card and redirect the user 
     to the cards page 
 ##### Action to Deposit Money:
@@ -156,7 +157,7 @@ The application allows users to:
       * In the case, the update was successful:
         * The system redirect the user to the cards page
         * The system generates and displays a list of all credit cards with updated balance
-        * The system generates an info message "The transaction was successful"
+        * The system generates an info message "Deposit transaction with {card number is presented here} was successful"
     * In the case, the given amount of money is incorrect, the system generates an error message "The given amount of money is incorrect"
   * In the case, user clicks the **CANCEL**, the system doesn't deposit money to the selected credit card and
   redirects the user to the cards page

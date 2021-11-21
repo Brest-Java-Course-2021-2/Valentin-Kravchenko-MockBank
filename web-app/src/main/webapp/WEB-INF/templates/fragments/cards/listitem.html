@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+
+<!--/*@thymesVar id="card" type="com.epam.brest.model.dto.CreditCardDto"*/-->
+<div class="row"
+     th:fragment="listitem(card)"
+     th:object="${card}">
+    <div class="col-lg-3 col-md-4 text-center">
+        <span th:text="*{accountNumber}">BY80F29S8416E1PXLF9VHCGM99T6</span>
+    </div>
+    <div class="col-lg-3 col-md-4 text-center">
+        <span th:text="*{number}">4000003394112581</span>
+    </div>
+    <div class="col-lg-2 col-md-4 text-center">
+        <span th:text="*{{expirationDate}}"> 30.06.2023</span>
+    </div>
+    <div class="col-lg-2 text-center">
+        <span th:text="*{balance}">2000.00</span>
+    </div>
+    <div class="col-lg-2 text-center">
+        <div th:replace="fragments/cards/actions :: actions(card=${card})"></div>
+    </div>
+</div>
+
+</body>
+</html>

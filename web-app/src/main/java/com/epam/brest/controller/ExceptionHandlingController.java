@@ -10,7 +10,7 @@ public class ExceptionHandlingController {
     @ExceptionHandler({IllegalArgumentException.class})
     public String handleError(Exception ex, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("error", ex.getMessage());
-        return "redirect:/accounts";
+        return ex.getMessage().contains("account") ? "redirect:/accounts" : "redirect:/cards";
     }
     
 }
