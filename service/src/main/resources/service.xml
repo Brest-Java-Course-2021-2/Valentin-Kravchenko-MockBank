@@ -28,6 +28,10 @@
 
     <bean id="bankAccountValidator" class="com.epam.brest.validator.BankAccountValidator" />
 
+    <bean id="creditCardTransactionDtoValidator" class="com.epam.brest.validator.CreditCardTransactionDtoValidator">
+        <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator" />
+    </bean>
+
     <tx:annotation-driven proxy-target-class="true"/>
 
 </beans>

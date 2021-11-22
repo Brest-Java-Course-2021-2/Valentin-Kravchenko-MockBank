@@ -40,7 +40,7 @@ class SimpleBankDataGeneratorTest {
     }
 
     @Test
-    void isCardNumberValidWhenTrue() {
+    void cardNumberValidTest() {
         String validCardNumber1 = "4929554996657108";
         String validCardNumber2 = "4024007151271862";
         String validCardNumber3 = "5381714434672717";
@@ -50,7 +50,7 @@ class SimpleBankDataGeneratorTest {
     }
 
     @Test
-    void isCardNumberValidWhenFalse() {
+    void cardNumberInvalidTest() {
         String invalidCardNumber1 = "4929554996657100";
         String invalidCardNumber2 = "4024007151271860";
         String invalidCardNumber3 = "5381714434672710";

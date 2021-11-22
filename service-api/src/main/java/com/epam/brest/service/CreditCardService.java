@@ -1,7 +1,6 @@
 package com.epam.brest.service;
 
-import com.epam.brest.model.dto.CreditCardDepositDto;
-import com.epam.brest.model.dto.CreditCardTransferDto;
+import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
 
 public interface CreditCardService {
@@ -31,17 +30,17 @@ public interface CreditCardService {
 
     /**
      * Deposits money to the credit card.
-     * @param creditCardDepositDto - CreditCardDepositDto instance
+     * @param creditCardTransactionDto - CreditCardTransactionDto instance
      * @return true - if the transaction was successful, false - otherwise
      */
-    boolean deposit(CreditCardDepositDto creditCardDepositDto);
+    boolean deposit(CreditCardTransactionDto creditCardTransactionDto);
 
     /**
      * Transfers money between credit cards.
-     * @param creditCardTransferDto - CreditCardTransferDto instance
+     * @param creditCardTransactionDto - CreditCardTransactionDto instance
      * @return true - if the transaction was successful, false - otherwise
      * @throws IllegalArgumentException if source credit card doesn't contain enough money for the transfer
      */
-    boolean transfer(CreditCardTransferDto creditCardTransferDto);
+    boolean transfer(CreditCardTransactionDto creditCardTransactionDto);
 
 }

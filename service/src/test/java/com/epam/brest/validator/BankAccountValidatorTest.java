@@ -10,6 +10,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
+import static com.epam.brest.constant.ServiceConstant.CUSTOMER;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -23,18 +24,18 @@ class BankAccountValidatorTest {
     }
 
     @Test
-    void customerIsIncorrectTest() {
+    void bankAccountIsInvalid() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setCustomer("Sergey Sergeev1");
         DataBinder dataBinder = new DataBinder(bankAccount);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
-        assertEquals(dataBinder.getBindingResult().getFieldError().getField(), "customer");
+        assertEquals(dataBinder.getBindingResult().getFieldError().getField(), CUSTOMER);
     }
 
     @Test
-    void customerIsCorrectTest() {
+    void bankAccountIsValid() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setCustomer("Sergey Sergeev");
         DataBinder dataBinder = new DataBinder(bankAccount);
