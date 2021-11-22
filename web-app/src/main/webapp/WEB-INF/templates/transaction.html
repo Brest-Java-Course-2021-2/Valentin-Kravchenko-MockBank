@@ -4,7 +4,7 @@
       layout:decorate="~{layouts/layout}"
       lang="en">
 
-<!--/*@thymesVar id="card" type="com.epam.brest.model.dto.CreditCardTransferDto"*/-->
+<!--/*@thymesVar id="card" type="com.epam.brest.model.dto.CreditCardTransactionDto"*/-->
 <th:block layout:fragment="content">
     <form class="container"
           th:object="${card}"
@@ -15,7 +15,7 @@
                 <div class="card-body text-primary fs-4">
                     <div class="row">
                         <div class="col-lg-10 col-md-9 col-sm-8">
-                            <span th:text="${card.targetCardNumber} ? #{card.header.deposit} : #{card.header.transfer}">
+                            <span th:text="${card.sourceCardNumber} ? #{card.header.transfer} : #{card.header.deposit}">
                                 Header
                             </span>
                         </div>
@@ -36,13 +36,13 @@
                 </div>
             </div>
             <div class="card mb-2"
-                 th:if="not ${card.targetCardNumber}">
+                 th:if="${card.sourceCardNumber}">
                 <div class="card-body text-primary fs-5">
                     <div class="row">
                         <div class="col-md-4 col-sm-6 my-auto">
                             From Card Number
                         </div>
-                        <div class="col-md-8 col-sm-6 my-auto">
+                        <div class="col-md-8 col-sm-6 my-auto position-relative">
                             <input name="sourceCardNumber"
                                    type="text"
                                    class="form-control"
@@ -58,13 +58,20 @@
                         <div class="col-md-4 col-sm-6 my-auto">
                             To Card Number
                         </div>
-                        <div class="col-md-8 col-sm-6 my-auto">
+                        <div class="col-md-8 col-sm-6 my-auto position-relative">
                             <input name="targetCardNumber"
                                    type="text"
                                    class="form-control"
+                                   placeholder="Enter card number in the format {16 digits}"
                                    th:value="*{targetCardNumber}"
-                                   th:readonly="*{targetCardNumber}"
-                                   th:required="not *{targetCardNumber}"/>
+                                   th:classappend="${#fields.hasErrors('targetCardNumber')} ? 'is-invalid'"
+                                   th:readonly="not *{sourceCardNumber}"
+                                   th:required="*{sourceCardNumber}"/>
+                            <div class="invalid-tooltip"
+                                 th:if="${#fields.hasErrors('targetCardNumber')}"
+                                 th:errors="*{targetCardNumber}">
+                                Target card number Error
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,12 +82,19 @@
                         <div class="col-md-4 col-sm-6 my-auto">
                             Amount
                         </div>
-                        <div class="col-md-8 col-sm-6 my-auto">
+                        <div class="col-md-8 col-sm-6 my-auto position-relative">
                             <input name="sumOfMoney"
                                    type="text"
                                    class="form-control"
+                                   placeholder="Enter sum of money in the format {max 6 digits}.{max 2 digits}"
                                    th:field="*{sumOfMoney}"
+                                   th:classappend="${#fields.hasErrors('sumOfMoney')} ? 'is-invalid'"
                                    required/>
+                            <div class="invalid-tooltip"
+                                 th:if="${#fields.hasErrors('sumOfMoney')}"
+                                 th:errors="*{sumOfMoney}">
+                                Sum of Money Error
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,23 +1,26 @@
 package com.epam.brest.controller;
 
-import com.epam.brest.model.dto.CreditCardDepositDto;
-import com.epam.brest.model.dto.CreditCardTransferDto;
+import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.CreditCardService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/card")
 public class CreditCardController {
 
     private final CreditCardService creditCardService;
+    private final Validator validator;
 
     @Value("${card.message.create}")
     private String createMessage;
@@ -31,8 +34,15 @@ public class CreditCardController {
     @Value("${card.message.transfer}")
     private String transferMessage;
 
-    public CreditCardController(CreditCardService creditCardService) {
+    public CreditCardController(CreditCardService creditCardService,
+                                @Qualifier("creditCardTransactionDtoValidator") Validator validator) {
         this.creditCardService = creditCardService;
+        this.validator = validator;
+    }
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(validator);
     }
 
     @PostMapping()
@@ -46,37 +56,44 @@ public class CreditCardController {
     @GetMapping("{id}/deposit")
     public String deposit(@PathVariable Integer id, Model model){
         CreditCard card = creditCardService.getById(id);
-        CreditCardDepositDto creditCardDepositDto = new CreditCardDepositDto();
-        creditCardDepositDto.setTargetCardNumber(card.getNumber());
-        model.addAttribute("card", creditCardDepositDto);
+        CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
+        creditCardTransactionDto.setTargetCardNumber(card.getNumber());
+        model.addAttribute("card", creditCardTransactionDto);
         return "transaction";
     }
 
     @PostMapping("{id}/deposit")
-    public String deposit(CreditCardDepositDto creditCardDepositDto,
+    public String deposit(@Valid @ModelAttribute("card") CreditCardTransactionDto creditCardTransactionDto,
+                          BindingResult bindingResult,
                           RedirectAttributes redirectAttributes){
-        creditCardService.deposit(creditCardDepositDto);
-        redirectAttributes.addFlashAttribute("message", String.format(depositMessage,
-                                                                                  creditCardDepositDto.getTargetCardNumber()));
+        if (bindingResult.hasErrors()) {
+            return "transaction";
+        }
+        creditCardService.deposit(creditCardTransactionDto);
+        redirectAttributes.addFlashAttribute("message", String.format(depositMessage, creditCardTransactionDto.getTargetCardNumber()));
         return "redirect:/cards";
     }
 
     @GetMapping("{id}/transfer")
     public String transfer(@PathVariable Integer id, Model model){
         CreditCard card = creditCardService.getById(id);
-        CreditCardTransferDto creditCardTransferDto = new CreditCardTransferDto();
-        creditCardTransferDto.setSourceCardNumber(card.getNumber());
-        model.addAttribute("card", creditCardTransferDto);
+        CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
+        creditCardTransactionDto.setSourceCardNumber(card.getNumber());
+        model.addAttribute("card", creditCardTransactionDto);
         return "transaction";
     }
 
     @PostMapping("{id}/transfer")
-    public String transfer(CreditCardTransferDto creditCardTransferDto,
+    public String transfer(@Valid @ModelAttribute("card") CreditCardTransactionDto creditCardTransactionDto,
+                           BindingResult bindingResult,
                            RedirectAttributes redirectAttributes){
-        creditCardService.transfer(creditCardTransferDto);
-        redirectAttributes.addFlashAttribute("message", String.format(transferMessage,
-                                                                                  creditCardTransferDto.getSourceCardNumber(),
-                                                                                  creditCardTransferDto.getTargetCardNumber()));
+        if (bindingResult.hasErrors()) {
+            return "transaction";
+        }
+        creditCardService.transfer(creditCardTransactionDto);
+        redirectAttributes.addFlashAttribute("message",
+                                              String.format(transferMessage, creditCardTransactionDto.getSourceCardNumber(),
+                                                            creditCardTransactionDto.getTargetCardNumber()));
         return "redirect:/cards";
     }
 

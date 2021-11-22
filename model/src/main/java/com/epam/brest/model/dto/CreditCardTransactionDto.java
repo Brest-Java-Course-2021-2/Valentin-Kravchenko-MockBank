@@ -3,9 +3,9 @@ package com.epam.brest.model.dto;
 import java.math.BigDecimal;
 
 /**
- *  Credit card data transfer object for depositing money.
+ *  Credit card data transfer object for performing transaction.
  */
-public class CreditCardDepositDto {
+public class CreditCardTransactionDto {
 
     /**
      *  Number of the target credit card.
@@ -16,6 +16,11 @@ public class CreditCardDepositDto {
      *  Deposit sum of money.
      */
     private BigDecimal sumOfMoney;
+
+    /**
+     *  Number of the source credit card.
+     */
+    private String sourceCardNumber;
 
     public String getTargetCardNumber() {
         return targetCardNumber;
@@ -33,4 +38,11 @@ public class CreditCardDepositDto {
         this.sumOfMoney = sumOfMoney;
     }
 
+    public String getSourceCardNumber() {
+        return sourceCardNumber;
+    }
+
+    public void setSourceCardNumber(String sourceCardNumber) {
+        this.sourceCardNumber = sourceCardNumber;
+    }
 }
