@@ -12,7 +12,7 @@
 
     <context:component-scan base-package="com.epam.brest.*"/>
     <mvc:default-servlet-handler/>
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven conversion-service="conversionService"/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
@@ -28,7 +28,6 @@
         <property name="additionalDialects">
             <set>
                 <bean class="nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect"/>
-                <bean class="org.thymeleaf.extras.java8time.dialect.Java8TimeDialect"/>
             </set>
         </property>
     </bean>
@@ -57,14 +56,17 @@
         <property name="basename" value="templates"/>
     </bean>
 
-    <bean id="dateFormatter" class="com.epam.brest.formatter.DateFormatter" />
-
-    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-        <property name="formatters" ref="dateFormatter" />
-    </bean>
-
     <bean id="localValidatorFactoryBean" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
         <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+    
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="registerDefaultFormatters" value="false" />
+        <property name="formatters">
+            <set>
+                <bean class="com.epam.brest.formatter.LocalDateFormatter"/>
+            </set>
+        </property>
     </bean>
 
 </beans>

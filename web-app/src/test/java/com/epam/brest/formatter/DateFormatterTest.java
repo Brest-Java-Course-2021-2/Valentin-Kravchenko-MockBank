@@ -3,9 +3,11 @@ package com.epam.brest.formatter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.Formatter;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Locale;
 
@@ -15,23 +17,30 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(locations = {"classpath*:test-formatter.xml"})
 class DateFormatterTest {
 
-    private final DateFormatter dateFormatter;
+    private final Formatter<LocalDate> formatter;
 
-    public DateFormatterTest(@Autowired DateFormatter dateFormatter) {
-        this.dateFormatter = dateFormatter;
+    private static final String CUSTOM_DELIMITER = "/";
+
+    public DateFormatterTest(@Autowired Formatter<LocalDate> formatter) {
+        this.formatter = formatter;
     }
 
     @Test
-    void parse() {
-        LocalDate localDate = dateFormatter.parse("19.11.2021", null);
-        assertEquals(localDate, LocalDate.of(2021, 11, 19));
+    void parse() throws ParseException {
+        LocalDate now = LocalDate.now();
+        LocalDate parse = formatter.parse(getLocalDateValue(now), Locale.getDefault());
+        assertEquals(parse, now);
     }
 
     @Test
     void print() {
-        LocalDate now = LocalDate.of(2021, 11, 19);
-        String print = dateFormatter.print(now, null);
-        assertEquals(print, "19.11.2021");
+        LocalDate now = LocalDate.now();
+        String print = formatter.print(now, Locale.getDefault());
+        assertEquals(print, getLocalDateValue(now));
+    }
+
+    private String getLocalDateValue(LocalDate now) {
+        return now.getDayOfMonth() + CUSTOM_DELIMITER + now.getMonthValue() + CUSTOM_DELIMITER + now.getYear();
     }
 
 }
