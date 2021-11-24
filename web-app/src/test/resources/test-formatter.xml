@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="dateFormatter" class="com.epam.brest.formatter.DateFormatter" />
+    <bean id="formatter" class="com.epam.brest.formatter.LocalDateFormatter" />
 
     <bean id="propertySourcesPlaceholderConfigurer"
           class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">

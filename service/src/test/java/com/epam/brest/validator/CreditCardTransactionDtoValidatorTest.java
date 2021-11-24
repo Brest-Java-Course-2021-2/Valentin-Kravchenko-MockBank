@@ -60,12 +60,13 @@ class CreditCardTransactionDtoValidatorTest {
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setSourceCardNumber(validCardNumber);
         creditCardTransactionDto.setTargetCardNumber(validCardNumber);
-        creditCardTransactionDto.setSumOfMoney(new BigDecimal("5005"));
+        creditCardTransactionDto.setSumOfMoney(new BigDecimal("-1000"));
         DataBinder dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(TARGET_CARD_NUMBER));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(SUM_OF_MONEY));
     }
 
     @Test

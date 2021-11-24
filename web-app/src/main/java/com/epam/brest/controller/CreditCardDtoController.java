@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+import static com.epam.brest.constant.ControllerConstant.CARDS;
+
 @Controller
 @RequestMapping("/cards")
 public class CreditCardDtoController {
@@ -21,9 +23,9 @@ public class CreditCardDtoController {
 
     @GetMapping()
     public String cards(Model model) {
-        List<CreditCardDto> cardDtos = creditCardDtoService.getAllWithAccountNumber();
-        model.addAttribute("cardDtos", cardDtos);
-        return "cards";
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
+        model.addAttribute(CARDS, cards);
+        return CARDS;
     }
 
 }

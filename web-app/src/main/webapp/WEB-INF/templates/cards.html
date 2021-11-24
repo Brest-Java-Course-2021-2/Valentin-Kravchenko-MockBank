@@ -22,7 +22,7 @@
                             <li class="list-group-item active">
                                 <div th:replace="fragments/cards/listheader :: listheader"></div>
                             </li>
-                            <li class="list-group-item" th:each="card : ${cardDtos}">
+                            <li class="list-group-item" th:each="card : ${cards}">
                                 <div th:replace="fragments/cards/listitem :: listitem(card=${card})"></div>
                             </li>
                         </ul>

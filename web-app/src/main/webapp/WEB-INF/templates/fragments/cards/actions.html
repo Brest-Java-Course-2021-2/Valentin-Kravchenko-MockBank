@@ -6,12 +6,12 @@
 <div class="btn-group" th:fragment="actions(card)">
     <a href="../../transaction.html"
        class="btn btn-secondary"
-       th:href="@{'/card/' + ${card.id} + '/deposit'}">
+       th:href="@{'/transaction/' + ${card.id} + '/deposit'}">
         <i class="bi bi-arrow-up-right-square"></i>
     </a>
     <a href="../../transaction.html"
        class="btn btn-secondary"
-       th:href="@{'/card/' + ${card.id} + '/transfer'}">
+       th:href="@{'/transaction/' + ${card.id} + '/transfer'}">
         <i class="bi bi-arrow-down-left-square-fill"></i>
     </a>
     <a href="#"

@@ -12,6 +12,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
+import java.time.LocalDate;
+
+import static com.epam.brest.constant.ControllerConstant.*;
 
 @Controller
 @RequestMapping("/account")
@@ -41,32 +44,35 @@ public class BankAccountController {
     }
 
     @GetMapping()
-    public String get() {
-        return "account";
+    public String get(Model model) {
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setRegistrationDate(LocalDate.now());
+        model.addAttribute(ACCOUNT, bankAccount);
+        return ACCOUNT;
     }
 
     @GetMapping("{id}")
     public String get(@PathVariable Integer id, Model model) {
         BankAccount bankAccount = bankAccountService.getById(id);
-        model.addAttribute("account", bankAccount);
-        return "account";
+        model.addAttribute(ACCOUNT, bankAccount);
+        return ACCOUNT;
     }
 
     @PostMapping()
-    public String create(@Valid @ModelAttribute("account") BankAccount bankAccount,
+    public String create(@Valid @ModelAttribute(ACCOUNT) BankAccount bankAccount,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()) {
             return "account";
         }
         BankAccount newBankAccount = bankAccountService.create(bankAccount);
-        redirectAttributes.addFlashAttribute("message", String.format(createMessage, newBankAccount.getNumber()));
-        return "redirect:/accounts";
+        redirectAttributes.addFlashAttribute(MESSAGE, String.format(createMessage, newBankAccount.getNumber()));
+        return REDIRECT_ACCOUNTS;
     }
 
     @PostMapping("{id}")
     public String update(@PathVariable Integer id,
-                         @Valid @ModelAttribute("account") BankAccount bankAccount,
+                         @Valid @ModelAttribute(ACCOUNT) BankAccount bankAccount,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -74,16 +80,16 @@ public class BankAccountController {
         }
         bankAccount.setId(id);
         bankAccountService.update(bankAccount);
-        redirectAttributes.addFlashAttribute("message", String.format(updateMessage, bankAccount.getNumber()));
-        return "redirect:/accounts";
+        redirectAttributes.addFlashAttribute(MESSAGE, String.format(updateMessage, bankAccount.getNumber()));
+        return REDIRECT_ACCOUNTS;
     }
 
     @PostMapping("{id}/remove")
     public String remove(@PathVariable Integer id, BankAccount bankAccount, RedirectAttributes redirectAttributes){
         bankAccount.setId(id);
         bankAccountService.delete(bankAccount);
-        redirectAttributes.addFlashAttribute("message", String.format(removeMessage, bankAccount.getNumber()));
-        return "redirect:/accounts";
+        redirectAttributes.addFlashAttribute(MESSAGE, String.format(removeMessage, bankAccount.getNumber()));
+        return REDIRECT_ACCOUNTS;
     }
 
 }

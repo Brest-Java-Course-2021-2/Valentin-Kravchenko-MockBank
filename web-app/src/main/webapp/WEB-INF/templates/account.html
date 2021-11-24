@@ -14,7 +14,7 @@
             <div class="card-body text-primary fs-4">
                 <div class="row">
                     <div class="col-lg-10 col-md-8 col-sm-8">
-                        <span th:text="${account?.id} ? #{account.header.edit} : #{account.header.create}">
+                        <span th:text="${account.id} ? #{account.header.edit} : #{account.header.create}">
                             Header
                         </span>
                     </div>
@@ -22,7 +22,7 @@
                         <div class="btn-group">
                             <button type="submit"
                                     class="btn btn-success text-white"
-                                    th:text="${account?.id} ? #{account.button.edit} : #{account.button.create}">
+                                    th:text="${account.id} ? #{account.button.edit} : #{account.button.create}">
                                 Action
                             </button>
                             <a href="accounts.html"
@@ -42,23 +42,19 @@
                         Registration Date
                     </div>
                     <div class="my-auto"
-                         th:classappend="${account?.id} ? 'col-md-4' : 'col-md-10'">
-                        <input name="registrationDate"
-                               type="text"
+                         th:classappend="${account.id} ? 'col-md-4' : 'col-md-10'">
+                        <input type="text"
                                class="form-control"
-                               th:with="format=#{date.format}"
-                               th:value="${account} ? ${{account.registrationDate}}
-                                                    : ${#temporals.format(#temporals.createToday(), format)}"
+                               th:field="*{registrationDate}"
                                readonly/>
                     </div>
-                    <div class="col-md-2 my-auto" th:if="${account?.id}">
+                    <div class="col-md-2 my-auto" th:if="${account.id}">
                         Account Number
                     </div>
-                    <div class="col-md-4 my-auto" th:if="${account?.id}">
-                        <input name="number"
-                               type="text"
+                    <div class="col-md-4 my-auto" th:if="${account.id}">
+                        <input type="text"
                                class="form-control"
-                               th:value="*{number}"
+                               th:field="*{number}"
                                readonly/>
                     </div>
                 </div>
@@ -71,15 +67,14 @@
                         Customer
                     </div>
                     <div class="col-md-10 my-auto position-relative">
-                        <input name="customer"
-                               type="text"
+                        <input type="text"
                                class="form-control"
                                placeholder="Enter customer full name in the format {Fist Name} {Last Name}"
-                               th:value="${account} ? *{customer}"
-                               th:classappend="${account} and ${#fields.hasErrors('customer')} ? 'is-invalid'"
+                               th:field="*{customer}"
+                               th:classappend="${#fields.hasErrors('customer')} ? 'is-invalid'"
                                required/>
                         <div class="invalid-tooltip"
-                             th:if="${account} and ${#fields.hasErrors('customer')}"
+                             th:if="${#fields.hasErrors('customer')}"
                              th:errors="*{customer}">
                             Customer Error
                         </div>
