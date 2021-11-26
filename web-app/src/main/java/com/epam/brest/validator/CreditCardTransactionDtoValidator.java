@@ -3,14 +3,17 @@ package com.epam.brest.validator;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.dto.CreditCardTransactionDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.Objects;
 
-import static com.epam.brest.constant.ServiceConstant.*;
+import static com.epam.brest.constant.ControllerConstant.*;
 
+@Component
 public class CreditCardTransactionDtoValidator implements Validator {
 
     private final BankDataGenerator bankDataGenerator;
@@ -18,11 +21,8 @@ public class CreditCardTransactionDtoValidator implements Validator {
     @Value("${card.number.regexp}")
     private String numberRegexp;
 
-    @Value("${card.money.integer}")
-    private String integerValue;
-
-    @Value("${card.money.fraction}")
-    private String fractionValue;
+    @Value("${card.sum.money.regexp}")
+    private String sumOfMoneyRegexp;
 
     public CreditCardTransactionDtoValidator(BankDataGenerator bankDataGenerator) {
         this.bankDataGenerator = bankDataGenerator;
@@ -49,13 +49,13 @@ public class CreditCardTransactionDtoValidator implements Validator {
     }
 
     private void validateSumOfMoney(CreditCardTransactionDto creditCardTransactionDto, Errors errors) {
-        BigDecimal sumOfMoney = creditCardTransactionDto.getSumOfMoney();
-        if (sumOfMoney.signum() <= 0) {
-            errors.rejectValue(SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY_POSITIVE);
+        if(!creditCardTransactionDto.getSumOfMoney().matches(sumOfMoneyRegexp)) {
+            errors.rejectValue(SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
         } else {
-            int integerPart = Integer.parseInt(integerValue);
-            int fractionalPart = Integer.parseInt(fractionValue);
-            if ((sumOfMoney.precision() - sumOfMoney.scale()) > integerPart || sumOfMoney.scale() > fractionalPart) {
+            NumberFormat numberFormat = NumberFormat.getInstance(creditCardTransactionDto.getLocale());
+            ParsePosition parsePosition = new ParsePosition(0);
+            numberFormat.parse(creditCardTransactionDto.getSumOfMoney(), parsePosition);
+            if(creditCardTransactionDto.getSumOfMoney().length() != parsePosition.getIndex()) {
                 errors.rejectValue(SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
             }
         }

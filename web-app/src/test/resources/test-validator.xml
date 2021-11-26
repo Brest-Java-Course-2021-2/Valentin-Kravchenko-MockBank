@@ -3,12 +3,20 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="classpath*:bank-data-generator.xml"/>
+    <import resource="classpath*:test-bank-data-generator.xml"/>
 
     <bean id="bankAccountValidator" class="com.epam.brest.validator.BankAccountValidator" />
 
     <bean id="creditCardTransactionDtoValidator" class="com.epam.brest.validator.CreditCardTransactionDtoValidator">
         <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator" />
+    </bean>
+
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:validation.properties</value>
+            </list>
+        </property>
     </bean>
 
 </beans>

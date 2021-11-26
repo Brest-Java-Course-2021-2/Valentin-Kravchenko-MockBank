@@ -12,7 +12,7 @@ class ServiceUtilsTest {
 
     @Test
     void convertToExpirationDate() {
-        LocalDate currentDate = LocalDate.now(ZoneId.systemDefault());
+        LocalDate currentDate = LocalDate.now();
         LocalDate expirationDate = ServiceUtils.convertToExpirationDate(currentDate);
         assertEquals(expirationDate.getDayOfMonth(), YearMonth.now().atEndOfMonth().getDayOfMonth());
         assertEquals(currentDate.getMonth(), expirationDate.getMonth());

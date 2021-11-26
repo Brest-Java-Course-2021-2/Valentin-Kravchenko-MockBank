@@ -2,6 +2,7 @@ package com.epam.brest.formatter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.Formatter;
+import org.springframework.stereotype.Component;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;

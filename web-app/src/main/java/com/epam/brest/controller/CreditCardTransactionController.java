@@ -16,10 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 import static com.epam.brest.constant.ControllerConstant.*;
-import static com.epam.brest.constant.ControllerConstant.REDIRECT_CARDS;
 
 @Controller
-@RequestMapping("/transaction")
+@RequestMapping("/transaction/card")
 public class CreditCardTransactionController {
 
     private final CreditCardService creditCardService;

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/mvc
+                           https://www.springframework.org/schema/mvc/spring-mvc.xsd
+                           http://www.springframework.org/schema/context
+                           https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+    <context:component-scan base-package="com.epam.brest.controller"/>
+
+    <mvc:default-servlet-handler/>
+    <mvc:annotation-driven />
+
+    <tx:annotation-driven proxy-target-class="true"/>
+
+    <jdbc:initialize-database>
+        <jdbc:script location="classpath*:test-db-schema.sql"/>
+        <jdbc:script location="classpath*:test-db-data.sql"/>
+    </jdbc:initialize-database>
+
+    <bean id="propertySourcesPlaceholderConfigurer"
+          class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:dao.properties</value>
+                <value>classpath:service.properties</value>
+                <value>classpath:controller.properties</value>
+                <value>classpath:validation.properties</value>
+                <value>classpath:templates.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/WEB-INF/templates/"/>
+        <property name="suffix" value=".html"/>
+        <property name="templateMode" value="HTML5"/>
+        <property name="cacheable" value="false"/>
+    </bean>
+
+    <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolvers" ref="templateResolver"/>
+        <property name="templateEngineMessageSource" ref="messageSource"/>
+        <property name="additionalDialects">
+            <set>
+                <bean class="nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect"/>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine"/>
+        <property name="characterEncoding" value="UTF-8"/>
+    </bean>
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="templates"/>
+    </bean>
+
+    <bean id="bankAccountValidator" class="com.epam.brest.validator.BankAccountValidator" />
+
+    <bean id="creditCardTransactionDtoValidator" class="com.epam.brest.validator.CreditCardTransactionDtoValidator">
+        <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator" />
+    </bean>
+
+    <bean id="localValidatorFactoryBean" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+
+    <bean id="bankAccountServiceImpl" class="com.epam.brest.impl.BankAccountServiceImpl">
+        <constructor-arg name="bankAccountDao" ref="bankAccountSpringJdbcDao"/>
+        <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator"/>
+    </bean>
+
+    <bean id="bankAccountDtoServiceImpl" class="com.epam.brest.impl.BankAccountDtoServiceImpl">
+        <constructor-arg name="bankAccountDtoDao" ref="bankAccountDtoSpringJdbcDao"/>
+    </bean>
+
+    <bean id="creditCardServiceImpl" class="com.epam.brest.impl.CreditCardServiceImpl">
+        <constructor-arg name="creditCardDao" ref="creditCardSpringJdbcDao"/>
+        <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator"/>
+    </bean>
+
+    <bean id="creditCardDtoServiceImpl" class="com.epam.brest.impl.CreditCardDtoServiceImpl">
+        <constructor-arg name="creditCardDtoDao" ref="creditCardDtoSpringJdbcDao"/>
+    </bean>
+
+    <bean id="simpleBankDataGenerator" class="com.epam.brest.generator.impl.SimpleBankDataGenerator" />
+
+    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="bankAccountSpringJdbcDao" class="com.epam.brest.dao.impl.BankAccountSpringJdbcDao">
+        <constructor-arg name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="bankAccountDtoSpringJdbcDao" class="com.epam.brest.dao.impl.BankAccountDtoSpringJdbcDao">
+        <constructor-arg name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="creditCardSpringJdbcDao" class="com.epam.brest.dao.impl.CreditCardSpringJdbcDao">
+        <constructor-arg name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="creditCardDtoSpringJdbcDao" class="com.epam.brest.dao.impl.CreditCardDtoSpringJdbcDao">
+        <constructor-arg name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1"/>
+        <property name="username" value="sa"/>
+        <property name="password" value=""/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+</beans>

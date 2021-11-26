@@ -11,7 +11,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/web-app.xml</param-value>
+        <param-value>/test-web-app.xml</param-value>
     </context-param>
 
     <servlet>
@@ -21,6 +21,10 @@
             <param-name>contextConfigLocation</param-name>
             <param-value></param-value>
         </init-param>
+        <init-param>
+            <param-name>throwExceptionIfNoHandlerFound</param-name>
+            <param-value>true</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -28,9 +32,5 @@
         <servlet-name>app</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-
-    <error-page>
-        <location>/error</location>
-    </error-page>
 
 </web-app>

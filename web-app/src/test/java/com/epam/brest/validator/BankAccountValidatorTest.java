@@ -10,11 +10,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
-import static com.epam.brest.constant.ServiceConstant.CUSTOMER;
+import static com.epam.brest.constant.ControllerConstant.CUSTOMER;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(locations = {"classpath*:test-validator.xml", "classpath*:test-properties.xml"})
+@ContextConfiguration(locations = {"classpath*:test-validator.xml"})
 class BankAccountValidatorTest {
 
     private final Validator validator;

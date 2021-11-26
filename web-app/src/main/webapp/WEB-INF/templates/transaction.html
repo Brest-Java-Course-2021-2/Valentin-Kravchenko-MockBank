@@ -62,7 +62,7 @@
                             <input name="targetCardNumber"
                                    type="text"
                                    class="form-control"
-                                   placeholder="Enter card number in the format {16 digits}"
+                                   th:placeholder="#{card.number.placeholder}"
                                    th:value="*{targetCardNumber}"
                                    th:classappend="${#fields.hasErrors('targetCardNumber')} ? 'is-invalid'"
                                    th:readonly="not *{sourceCardNumber}"
@@ -86,7 +86,7 @@
                             <input name="sumOfMoney"
                                    type="text"
                                    class="form-control"
-                                   placeholder="Enter sum of money in the format {max 6 digits}.{max 2 digits}"
+                                   th:placeholder="#{card.sum.money.placeholder}"
                                    th:field="*{sumOfMoney}"
                                    th:classappend="${#fields.hasErrors('sumOfMoney')} ? 'is-invalid'"
                                    required/>
@@ -99,6 +99,7 @@
                     </div>
                 </div>
             </div>
+            <input name="locale" th:value="${#locale}" type="hidden">
         </div>
     </form>
 </th:block>

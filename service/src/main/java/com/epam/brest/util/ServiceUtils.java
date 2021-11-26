@@ -2,9 +2,9 @@ package com.epam.brest.util;
 
 import java.time.LocalDate;
 
-public final class ServiceUtils {
+import static com.epam.brest.constant.ServiceConstant.*;
 
-    private static final int CIRCULATION_IN_YEARS = 3;
+public final class ServiceUtils {
 
     private ServiceUtils() {
 

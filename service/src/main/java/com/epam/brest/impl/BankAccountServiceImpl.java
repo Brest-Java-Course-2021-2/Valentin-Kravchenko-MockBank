@@ -5,13 +5,15 @@ import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.BankAccountService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.epam.brest.constant.ServiceConstant.DELIMITER;
+import static com.epam.brest.constant.ServiceConstant.JOIN_DELIMITER;
 
+@Service
 @Transactional
 public class BankAccountServiceImpl implements BankAccountService {
 
@@ -51,7 +53,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         List<String> linkedCards = bankAccountDao.getLinkedCards(bankAccount);
         if (!linkedCards.isEmpty()) {
             throw new IllegalArgumentException(String.format(deleteError, bankAccount.getNumber(),
-                                               String.join(DELIMITER, linkedCards)));
+                                               String.join(JOIN_DELIMITER, linkedCards)));
         }
         return bankAccountDao.delete(bankAccount);
     }

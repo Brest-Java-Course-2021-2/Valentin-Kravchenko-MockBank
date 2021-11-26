@@ -3,10 +3,12 @@ package com.epam.brest.impl;
 import com.epam.brest.dao.BankAccountDtoDao;
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.service.BankAccountDtoService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 @Transactional
 public class BankAccountDtoServiceImpl implements BankAccountDtoService {
 
