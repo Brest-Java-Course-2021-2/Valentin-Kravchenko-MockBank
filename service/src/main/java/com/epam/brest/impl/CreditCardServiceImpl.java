@@ -87,7 +87,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         }
         CreditCard targetCreditCard = getCreditCard(creditCardTransactionDto.getTargetCardNumber());
         BigDecimal newBalanceSourceCreditCard = sourceCreditCard.getBalance().subtract(sumOfMoney);
-        BigDecimal newBalanceTargetCreditCard =targetCreditCard.getBalance().add(sumOfMoney);
+        BigDecimal newBalanceTargetCreditCard = targetCreditCard.getBalance().add(sumOfMoney);
         sourceCreditCard.setBalance(newBalanceSourceCreditCard);
         targetCreditCard.setBalance(newBalanceTargetCreditCard);
         return creditCardDao.update(sourceCreditCard) == 1 && creditCardDao.update(targetCreditCard) == 1;

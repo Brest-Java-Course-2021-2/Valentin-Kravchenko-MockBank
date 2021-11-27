@@ -4,6 +4,7 @@ import com.epam.brest.dao.BankAccountDao;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.BankAccountService;
+import com.epam.brest.util.ServiceUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,17 +46,20 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public Integer update(BankAccount bankAccount) {
-        return bankAccountDao.update(bankAccount);
+        BankAccount bankAccountFromDb = getById(bankAccount.getId());
+        ServiceUtils.copyProperties(bankAccount, bankAccountFromDb);
+        return bankAccountDao.update(bankAccountFromDb);
     }
 
     @Override
     public Integer delete(BankAccount bankAccount) {
-        List<String> linkedCards = bankAccountDao.getLinkedCards(bankAccount);
+        BankAccount bankAccountFromDb = getById(bankAccount.getId());
+        List<String> linkedCards = bankAccountDao.getLinkedCards(bankAccountFromDb);
         if (!linkedCards.isEmpty()) {
             throw new IllegalArgumentException(String.format(deleteError, bankAccount.getNumber(),
                                                String.join(JOIN_DELIMITER, linkedCards)));
         }
-        return bankAccountDao.delete(bankAccount);
+        return bankAccountDao.delete(bankAccountFromDb);
     }
 
     private String getIban() {
