@@ -3,10 +3,12 @@ package com.epam.brest.impl;
 import com.epam.brest.dao.CreditCardDtoDao;
 import com.epam.brest.model.dto.CreditCardDto;
 import com.epam.brest.service.CreditCardDtoService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 @Transactional
 public class CreditCardDtoServiceImpl implements CreditCardDtoService {
 

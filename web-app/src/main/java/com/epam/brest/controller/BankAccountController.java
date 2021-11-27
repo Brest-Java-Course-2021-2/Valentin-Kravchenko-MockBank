@@ -63,7 +63,7 @@ public class BankAccountController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()) {
-            return "account";
+            return ACCOUNT;
         }
         BankAccount newBankAccount = bankAccountService.create(bankAccount);
         redirectAttributes.addFlashAttribute(MESSAGE, String.format(createMessage, newBankAccount.getNumber()));
@@ -76,7 +76,7 @@ public class BankAccountController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return "account";
+            return ACCOUNT;
         }
         bankAccount.setId(id);
         bankAccountService.update(bankAccount);

@@ -1,6 +1,6 @@
 package com.epam.brest.model.dto;
 
-import java.math.BigDecimal;
+import java.util.Locale;
 
 /**
  *  Credit card data transfer object for performing transaction.
@@ -15,12 +15,17 @@ public class CreditCardTransactionDto {
     /**
      *  Deposit sum of money.
      */
-    private BigDecimal sumOfMoney;
+    private String sumOfMoney;
 
     /**
      *  Number of the source credit card.
      */
     private String sourceCardNumber;
+
+    /**
+     *  Current locale.
+     */
+    private Locale locale;
 
     public String getTargetCardNumber() {
         return targetCardNumber;
@@ -30,11 +35,11 @@ public class CreditCardTransactionDto {
         this.targetCardNumber = targetCardNumber;
     }
 
-    public BigDecimal getSumOfMoney() {
+    public String getSumOfMoney() {
         return sumOfMoney;
     }
 
-    public void setSumOfMoney(BigDecimal sumOfMoney) {
+    public void setSumOfMoney(String sumOfMoney) {
         this.sumOfMoney = sumOfMoney;
     }
 
@@ -45,4 +50,13 @@ public class CreditCardTransactionDto {
     public void setSourceCardNumber(String sourceCardNumber) {
         this.sourceCardNumber = sourceCardNumber;
     }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
 }

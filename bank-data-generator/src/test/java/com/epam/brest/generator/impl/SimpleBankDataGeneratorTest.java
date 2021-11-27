@@ -1,6 +1,7 @@
 package com.epam.brest.generator.impl;
 
 import com.epam.brest.generator.BankDataGenerator;
+import com.epam.brest.generator.config.BankDataGeneratorConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import static org.iban4j.CountryCode.BY;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration({"classpath*:bank-data-generator.xml"})
+@ContextConfiguration(classes = {BankDataGeneratorConfig.class})
 class SimpleBankDataGeneratorTest {
 
     private final BankDataGenerator bankDataGenerator;

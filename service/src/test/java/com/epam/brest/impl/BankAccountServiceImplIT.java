@@ -29,12 +29,20 @@ class BankAccountServiceImplIT extends BasicServiceIT {
     }
 
     @Test
-    void update() {
+    void updateSucceeded() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setId(1);
         bankAccount.setCustomer("Customer");
         Integer result = bankAccountService.update(bankAccount);
         assertEquals(result, 1);
+    }
+
+    @Test
+    void updateFailed() {
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setId(1000);
+        bankAccount.setCustomer("Customer");
+        assertThrows(IllegalArgumentException.class, () -> bankAccountService.update(bankAccount));
     }
 
     @Test

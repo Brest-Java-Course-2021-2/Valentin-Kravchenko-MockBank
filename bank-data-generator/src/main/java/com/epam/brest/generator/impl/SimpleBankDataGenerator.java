@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import static org.iban4j.CountryCode.BY;
 
+@Service
 public class SimpleBankDataGenerator implements BankDataGenerator {
 
     @Override

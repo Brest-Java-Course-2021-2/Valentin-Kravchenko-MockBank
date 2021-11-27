@@ -4,7 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="formatter" class="com.epam.brest.formatter.LocalDateFormatter" />
+    <bean id="localDateFormatter" class="com.epam.brest.formatter.LocalDateFormatter" />
+    <bean id="bigDecimalPrinter" class="com.epam.brest.formatter.BigDecimalPrinter" />
 
     <bean id="propertySourcesPlaceholderConfigurer"
           class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">

@@ -69,7 +69,7 @@
                     <div class="col-md-10 my-auto position-relative">
                         <input type="text"
                                class="form-control"
-                               placeholder="Enter customer full name in the format {Fist Name} {Last Name}"
+                               th:placeholder="#{account.customer.placeholder}"
                                th:field="*{customer}"
                                th:classappend="${#fields.hasErrors('customer')} ? 'is-invalid'"
                                required/>

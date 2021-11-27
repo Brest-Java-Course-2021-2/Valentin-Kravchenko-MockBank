@@ -13,10 +13,10 @@
         <span th:text="*{number}">4000003394112581</span>
     </div>
     <div class="col-lg-2 col-md-4 text-center">
-        <span th:text="*{{expirationDate}}"> 30.06.2023</span>
+        <span th:text="*{{expirationDate}}">30/06/2023</span>
     </div>
     <div class="col-lg-2 text-center">
-        <span th:text="*{balance}">2000.00</span>
+        <span th:text="*{{balance}}">2 000,00</span>
     </div>
     <div class="col-lg-2 text-center">
         <div th:replace="fragments/cards/actions :: actions(card=${card})"></div>

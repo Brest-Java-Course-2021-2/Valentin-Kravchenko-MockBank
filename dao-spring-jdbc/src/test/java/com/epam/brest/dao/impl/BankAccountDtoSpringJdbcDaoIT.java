@@ -12,15 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class BankAccountDtoSpringJdbcBasicDaoIT extends BasicDaoIT {
+class BankAccountDtoSpringJdbcDaoIT extends BasicDaoIT {
 
     private final BankAccountDtoDao bankAccountDtoDao;
     private final BankAccountDao bankAccountDao;
 
-    public BankAccountDtoSpringJdbcBasicDaoIT(@Autowired BankAccountDtoDao bankAccountDtoDao,
-                                              @Autowired BankAccountDao bankAccountDao) {
+    public BankAccountDtoSpringJdbcDaoIT(@Autowired BankAccountDtoDao bankAccountDtoDao,
+                                         @Autowired BankAccountDao bankAccountDao) {
         this.bankAccountDtoDao = bankAccountDtoDao;
         this.bankAccountDao = bankAccountDao;
     }

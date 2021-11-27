@@ -6,7 +6,7 @@ import com.epam.brest.service.CreditCardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,7 +51,8 @@ class CreditCardServiceImplIT extends BasicServiceIT {
         CreditCard creditCard = creditCardService.create(id);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(creditCard.getNumber());
-        creditCardTransactionDto.setSumOfMoney(new BigDecimal("1000.35"));
+        creditCardTransactionDto.setLocale(Locale.getDefault());
+        creditCardTransactionDto.setSumOfMoney("1000,35");
         boolean deposit = creditCardService.deposit(creditCardTransactionDto);
         assertTrue(deposit);
     }                   
@@ -63,12 +64,13 @@ class CreditCardServiceImplIT extends BasicServiceIT {
         CreditCard targetCreditCard = creditCardService.create(id);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(sourceCreditCard.getNumber());
-        creditCardTransactionDto.setSumOfMoney(new BigDecimal("1000.00"));
+        creditCardTransactionDto.setSumOfMoney("1000,00");
+        creditCardTransactionDto.setLocale(Locale.getDefault());
         boolean deposit = creditCardService.deposit(creditCardTransactionDto);
         assertTrue(deposit);
         creditCardTransactionDto.setSourceCardNumber(sourceCreditCard.getNumber());
         creditCardTransactionDto.setTargetCardNumber(targetCreditCard.getNumber());
-        creditCardTransactionDto.setSumOfMoney(new BigDecimal("500.00"));
+        creditCardTransactionDto.setSumOfMoney("500,00");
         boolean transfer = creditCardService.transfer(creditCardTransactionDto);
         assertTrue(transfer);
     }
@@ -80,12 +82,13 @@ class CreditCardServiceImplIT extends BasicServiceIT {
         CreditCard targetCreditCard = creditCardService.create(id);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(sourceCreditCard.getNumber());
-        creditCardTransactionDto.setSumOfMoney(new BigDecimal("100.00"));
+        creditCardTransactionDto.setSumOfMoney("100,00");
+        creditCardTransactionDto.setLocale(Locale.getDefault());
         boolean deposit = creditCardService.deposit(creditCardTransactionDto);
         assertTrue(deposit);
         creditCardTransactionDto.setSourceCardNumber(sourceCreditCard.getNumber());
         creditCardTransactionDto.setTargetCardNumber(targetCreditCard.getNumber());
-        creditCardTransactionDto.setSumOfMoney(new BigDecimal("500.00"));
+        creditCardTransactionDto.setSumOfMoney("500,00");
         assertThrows(IllegalArgumentException.class, () -> creditCardService.transfer(creditCardTransactionDto));
         CreditCard sourceCreditCardFromDb = creditCardService.getById(sourceCreditCard.getId());
         CreditCard targetCreditCardFromDb = creditCardService.getById(targetCreditCard.getId());

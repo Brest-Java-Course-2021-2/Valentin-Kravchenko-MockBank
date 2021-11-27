@@ -2,14 +2,15 @@ package com.epam.brest.validator;
 
 import com.epam.brest.model.entity.BankAccount;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import static com.epam.brest.constant.ServiceConstant.CUSTOMER;
-import static com.epam.brest.constant.ServiceConstant.ERROR_CODE_CUSTOMER;
+import static com.epam.brest.constant.ControllerConstant.CUSTOMER;
+import static com.epam.brest.constant.ControllerConstant.ERROR_CODE_CUSTOMER;
 
+@Component
 public class BankAccountValidator implements Validator {
-
 
     @Value("${account.customer.regexp}")
     private String customerRegexp;
