@@ -26,10 +26,10 @@ class BankAccountDtoSpringJdbcDaoIT extends BasicDaoIT {
 
     @Test
     void getAllWithTotalCards() {
-        List<BankAccountDto> accountDtos = bankAccountDtoDao.getAllWithTotalCards();
-        assertNotNull(accountDtos);
-        BankAccountDto firstBankAccountDto = accountDtos.get(0);
-        BankAccountDto lastBankAccountDto = accountDtos.get(accountDtos.size() - 1);
+        List<BankAccountDto> accounts = bankAccountDtoDao.getAllWithTotalCards();
+        assertNotNull(accounts);
+        BankAccountDto firstBankAccountDto = accounts.get(0);
+        BankAccountDto lastBankAccountDto = accounts.get(accounts.size() - 1);
         Optional<BankAccount> firstBankAccountFromDb = bankAccountDao.getById(firstBankAccountDto.getId());
         Optional<BankAccount> lastBankAccountFromDb = bankAccountDao.getById(lastBankAccountDto.getId());
         assertEquals(firstBankAccountDto.getId(), firstBankAccountFromDb.get().getId());
@@ -43,18 +43,18 @@ class BankAccountDtoSpringJdbcDaoIT extends BasicDaoIT {
     }
 
     @Test
-    void createNewAccountThenGetAllWithTotalCards() {
-        List<BankAccountDto> accountDtos = bankAccountDtoDao.getAllWithTotalCards();
-        assertNotNull(accountDtos);
-        int countBefore = accountDtos.size();
+    void getAllWithTotalCardsAfterCreateNewAccount() {
+        List<BankAccountDto> accounts = bankAccountDtoDao.getAllWithTotalCards();
+        assertNotNull(accounts);
+        int countBefore = accounts.size();
         BankAccount bankAccount = new BankAccount();
         bankAccount.setNumber("New number");
         bankAccount.setCustomer("New customer");
         bankAccount.setRegistrationDate(LocalDate.now());
         bankAccountDao.create(bankAccount);
-        accountDtos = bankAccountDtoDao.getAllWithTotalCards();
-        assertNotNull(accountDtos);
-        int countAfter = accountDtos.size();
+        accounts = bankAccountDtoDao.getAllWithTotalCards();
+        assertNotNull(accounts);
+        int countAfter = accounts.size();
         assertEquals(countBefore, countAfter - 1);
     }
 

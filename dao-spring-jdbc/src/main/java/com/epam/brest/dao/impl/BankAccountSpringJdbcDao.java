@@ -3,6 +3,8 @@ package com.epam.brest.dao.impl;
 import com.epam.brest.dao.AbstractSpringJdbcDao;
 import com.epam.brest.dao.BankAccountDao;
 import com.epam.brest.model.entity.BankAccount;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,6 +21,8 @@ import static com.epam.brest.dao.constant.ColumnName.ID;
 
 @Repository
 public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount> implements BankAccountDao {
+
+    private static final Logger LOGGER = LogManager.getLogger(BankAccountSpringJdbcDao.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final RowMapper<BankAccount> rowMapper;
@@ -58,46 +62,55 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
 
     @Override
     public List<BankAccount> getAll() {
+        LOGGER.debug("getAll(bankAccount)");
         return namedParameterJdbcTemplate.query(getAllSql, rowMapper);
     }
 
     @Override
     public Optional<BankAccount> getById(Integer id) {
+        LOGGER.debug("getById(bankAccount, id={})", id);
         return getById(getByIdSql, id, rowMapper);
     }
 
     @Override
     public Optional<BankAccount> getByNumber(String number) {
+        LOGGER.debug("getByNumber(number={})", number);
         return getByNumber(getByNumberSql, number, rowMapper);
     }
 
     @Override
     public BankAccount create(BankAccount bankAccount) {
+        LOGGER.debug("create(bankAccount={})", bankAccount);
         return create(insertSql, bankAccount);
     }
 
     @Override
     public Integer update(BankAccount bankAccount) {
+        LOGGER.debug("update(bankAccount={})", bankAccount);
         return update(updateSql, bankAccount);
     }
 
     @Override
     public Integer delete(BankAccount bankAccount) {
+        LOGGER.debug("delete(bankAccount={})", bankAccount);
         return delete(deleteSql, bankAccount);
     }
 
     @Override
     public Integer count() {
+        LOGGER.debug("count(bankAccount)");
         return namedParameterJdbcTemplate.queryForObject(countSql, new HashMap<>(), Integer.class);
     }
 
     @Override
     public boolean isAccountNumberExists(String number) {
+        LOGGER.debug("isAccountNumberExists(bankAccount, number={})", number);
         return isNumberExists(countNumberSql, number);
     }
 
     @Override
     public List<String> getLinkedCards(BankAccount bankAccount) {
+        LOGGER.debug("getLinkedCards(bankAccount={})", bankAccount);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), bankAccount.getId());
         return namedParameterJdbcTemplate.queryForList(getCardNumbersSql, sqlParameterSource, String.class);
     }

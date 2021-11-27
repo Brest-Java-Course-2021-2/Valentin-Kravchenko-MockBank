@@ -78,4 +78,16 @@ public class CreditCard extends BaseEntity {
     public int hashCode() {
         return Objects.hash(super.hashCode(), number, expirationDate, accountId);
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName()+ "{" +
+               "id='" + getId() + '\'' +
+               ", number='" + number + '\'' +
+               ", expirationDate=" + expirationDate +
+               ", balance=" + balance +
+               ", accountId=" + accountId +
+               '}';
+    }
+
 }
