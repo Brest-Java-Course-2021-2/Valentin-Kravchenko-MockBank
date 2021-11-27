@@ -64,4 +64,15 @@ public class BankAccount extends BaseEntity {
      public int hashCode() {
           return Objects.hash(super.hashCode(), number, customer, registrationDate);
      }
+
+     @Override
+     public String toString() {
+          return getClass().getSimpleName() + "{" +
+                 "id='" + getId() + '\'' +
+                 ", number='" + number + '\'' +
+                 ", customer='" + customer + '\'' +
+                 ", registrationDate=" + registrationDate +
+                 '}';
+     }
+
 }

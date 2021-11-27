@@ -3,10 +3,12 @@ package com.epam.brest.service;
 import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
 
+import java.util.List;
+
 public interface CreditCardService {
 
     /**
-     * Retrieves a credit card by its id.
+     * Return a credit card by its id.
      * @param id - credit id
      * @return the credit card with the given id
      * @throws IllegalArgumentException if none found
@@ -15,10 +17,10 @@ public interface CreditCardService {
 
     /**
      * Creates new credit card.
-     * @param bankAccountId - id of the bank account to which the new credit card will be linked
+     * @param accountId - id of the bank account to which the new credit card will be linked
      * @return the created credit card
      */
-    CreditCard create(Integer bankAccountId);
+    CreditCard create(Integer accountId);
 
     /**
      * Removes a given credit card.
@@ -42,5 +44,12 @@ public interface CreditCardService {
      * @throws IllegalArgumentException if source credit card doesn't contain enough money for the transfer
      */
     boolean transfer(CreditCardTransactionDto creditCardTransactionDto);
+
+    /**
+     * Return all credit cards linked with a bank account by its id.
+     * @param accountId - bank account id
+     * @return list of credit cards
+     */
+    List<CreditCard> getAllByAccountId(Integer accountId);
 
 }

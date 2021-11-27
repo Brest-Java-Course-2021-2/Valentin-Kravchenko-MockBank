@@ -25,7 +25,7 @@ class CreditCardSpringJdbcDaoIT extends BasicDaoIT {
     }
 
     @BeforeEach
-    void init() {
+    void setup() {
         cards = creditCardDao.getAll();
         firstCreditCard = cards.get(0);
         lastCreditCard = cards.get(cards.size() - 1);
@@ -102,6 +102,15 @@ class CreditCardSpringJdbcDaoIT extends BasicDaoIT {
     void isAccountNumberExists() {
         assertTrue(creditCardDao.isCardNumberExists(lastCreditCard.getNumber()));
         assertFalse(creditCardDao.isCardNumberExists("New number"));
+    }
+
+    @Test
+    void getAllByAccountId() {
+        List<CreditCard> cardsByAccountId = creditCardDao.getAllByAccountId(firstCreditCard.getAccountId());
+        assertNotNull(cardsByAccountId);
+        assertTrue(cardsByAccountId.size() > 0);
+        assertEquals(cardsByAccountId.get(0).getAccountId(), firstCreditCard.getAccountId());
+        assertEquals(cardsByAccountId.get(cardsByAccountId.size() - 1).getAccountId(), firstCreditCard.getAccountId());
     }
 
 }

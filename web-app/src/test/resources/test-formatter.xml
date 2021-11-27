@@ -11,7 +11,7 @@
           class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath*:templates.properties</value>
+                <value>classpath:templates.properties</value>
             </list>
         </property>
     </bean>
