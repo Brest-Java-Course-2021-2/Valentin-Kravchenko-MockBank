@@ -6,12 +6,17 @@ import com.epam.brest.model.entity.CreditCard;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+
+import static com.epam.brest.dao.constant.ColumnName.ID;
+import static com.epam.brest.dao.constant.ColumnName.NUMBER;
 
 @Repository
 public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> implements CreditCardDao {
@@ -42,6 +47,9 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
 
     @Value("${card.count.number}")
     private String countNumberSql;
+
+    @Value("${card.get.all.by.account.id}")
+    private String getAllByAccountIdSql;
 
     public CreditCardSpringJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(namedParameterJdbcTemplate);
@@ -87,6 +95,12 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
     @Override
     public boolean isCardNumberExists(String number) {
         return isNumberExists(countNumberSql, number);
+    }
+
+    @Override
+    public List<CreditCard> getAllByAccountId(Integer accountId) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), accountId);
+        return namedParameterJdbcTemplate.query(getAllByAccountIdSql, sqlParameterSource, rowMapper);
     }
 
 }

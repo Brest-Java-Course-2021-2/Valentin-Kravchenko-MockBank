@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -50,12 +51,12 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard create(Integer bankAccountId) {
+    public CreditCard create(Integer accountId) {
         CreditCard creditCard = new CreditCard();
         creditCard.setNumber(getCardNumber());
         creditCard.setExpirationDate(ServiceUtils.convertToExpirationDate(LocalDate.now()));
         creditCard.setBalance(new BigDecimal(INIT_BALANCE));
-        creditCard.setAccountId(bankAccountId);
+        creditCard.setAccountId(accountId);
         return creditCardDao.create(creditCard);
     }
 
@@ -71,7 +72,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     public boolean deposit(CreditCardTransactionDto creditCardTransactionDto) {
-        CreditCard creditCard = getCreditCard(creditCardTransactionDto.getTargetCardNumber());
+        CreditCard creditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
         BigDecimal sumOfMoney = getSumOfMoney(creditCardTransactionDto.getSumOfMoney(), creditCardTransactionDto.getLocale());
         BigDecimal newBalance = creditCard.getBalance().add(sumOfMoney);
         creditCard.setBalance(newBalance);
@@ -80,12 +81,12 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     public boolean transfer(CreditCardTransactionDto creditCardTransactionDto) {
-        CreditCard sourceCreditCard = getCreditCard(creditCardTransactionDto.getSourceCardNumber());
+        CreditCard sourceCreditCard = getByNumber(creditCardTransactionDto.getSourceCardNumber());
         BigDecimal sumOfMoney = getSumOfMoney(creditCardTransactionDto.getSumOfMoney(), creditCardTransactionDto.getLocale());
         if (sourceCreditCard.getBalance().compareTo(sumOfMoney) < 0) {
             throw new IllegalArgumentException(String.format(transferError, creditCardTransactionDto.getSourceCardNumber()));
         }
-        CreditCard targetCreditCard = getCreditCard(creditCardTransactionDto.getTargetCardNumber());
+        CreditCard targetCreditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
         BigDecimal newBalanceSourceCreditCard = sourceCreditCard.getBalance().subtract(sumOfMoney);
         BigDecimal newBalanceTargetCreditCard = targetCreditCard.getBalance().add(sumOfMoney);
         sourceCreditCard.setBalance(newBalanceSourceCreditCard);
@@ -93,7 +94,12 @@ public class CreditCardServiceImpl implements CreditCardService {
         return creditCardDao.update(sourceCreditCard) == 1 && creditCardDao.update(targetCreditCard) == 1;
     }
 
-    private CreditCard getCreditCard(String  cardNumber) {
+    @Override
+    public List<CreditCard> getAllByAccountId(Integer accountId) {
+        return creditCardDao.getAllByAccountId(accountId);
+    }
+
+    private CreditCard getByNumber(String cardNumber) {
         Optional<CreditCard> optionalCreditCard = creditCardDao.getByNumber(cardNumber);
         return optionalCreditCard.orElseThrow(() -> new IllegalArgumentException(String.format(findByNumberError, cardNumber)));
     }

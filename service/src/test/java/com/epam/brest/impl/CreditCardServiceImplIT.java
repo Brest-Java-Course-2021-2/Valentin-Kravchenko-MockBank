@@ -6,6 +6,7 @@ import com.epam.brest.service.CreditCardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,12 +21,12 @@ class CreditCardServiceImplIT extends BasicServiceIT {
 
     @Test
     void create() {
-        Integer id = 1;
-        CreditCard creditCard = creditCardService.create(id);
+        Integer accountId = 1;
+        CreditCard creditCard = creditCardService.create(1);
         assertNotNull(creditCard.getId());
         assertNotNull(creditCard.getNumber());
         assertEquals(creditCard.getBalance().intValue(), 0);
-        assertEquals(creditCard.getAccountId(), id);
+        assertEquals(creditCard.getAccountId(), accountId);
     }
 
     @Test
@@ -103,4 +104,15 @@ class CreditCardServiceImplIT extends BasicServiceIT {
         CreditCard creditCardFromDb = creditCardService.getById(creditCard.getId());
         assertEquals(creditCard, creditCardFromDb);
     }
+
+    @Test
+    void getAllByAccountId() {
+        Integer accountId = 1;
+        List<CreditCard> cards = creditCardService.getAllByAccountId(accountId);
+        assertNotNull(cards);
+        assertTrue(cards.size() > 0);
+        assertEquals(cards.get(0).getAccountId(), accountId);
+        assertEquals(cards.get(cards.size() - 1).getAccountId(), accountId);
+    }
+
 }
