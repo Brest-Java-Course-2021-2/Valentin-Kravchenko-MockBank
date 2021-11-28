@@ -1,6 +1,6 @@
 package com.epam.brest.model.entity;
 
-import com.epam.brest.model.BaseEntity;
+import com.epam.brest.model.BasicEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  *  Credit card model.
  */
-public class CreditCard extends BaseEntity {
+public class CreditCard extends BasicEntity {
 
     /**
      *  Credit card number.

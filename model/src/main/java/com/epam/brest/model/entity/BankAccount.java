@@ -1,6 +1,6 @@
 package com.epam.brest.model.entity;
 
-import com.epam.brest.model.BaseEntity;
+import com.epam.brest.model.BasicEntity;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  *  Bank account model.
  */
-public class BankAccount extends BaseEntity {
+public class BankAccount extends BasicEntity {
 
      /**
       *  International bank account number.

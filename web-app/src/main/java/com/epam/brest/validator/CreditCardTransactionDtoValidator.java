@@ -2,6 +2,8 @@ package com.epam.brest.validator;
 
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.dto.CreditCardTransactionDto;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -15,6 +17,8 @@ import static com.epam.brest.constant.ControllerConstant.*;
 
 @Component
 public class CreditCardTransactionDtoValidator implements Validator {
+
+    private static final Logger LOGGER = LogManager.getLogger(CreditCardTransactionDtoValidator.class);
 
     private final BankDataGenerator bankDataGenerator;
 
@@ -36,6 +40,7 @@ public class CreditCardTransactionDtoValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         CreditCardTransactionDto creditCardTransactionDto = (CreditCardTransactionDto) target;
+        LOGGER.debug("validate(creditCardTransactionDto={})", creditCardTransactionDto);
         String sourceCardNumber = creditCardTransactionDto.getSourceCardNumber();
         String targetCardNumber = creditCardTransactionDto.getTargetCardNumber();
         if (Objects.nonNull(sourceCardNumber)) {
@@ -49,19 +54,22 @@ public class CreditCardTransactionDtoValidator implements Validator {
     }
 
     private void validateSumOfMoney(CreditCardTransactionDto creditCardTransactionDto, Errors errors) {
-        if(!creditCardTransactionDto.getSumOfMoney().matches(sumOfMoneyRegexp)) {
+        String sumOfMoney = creditCardTransactionDto.getSumOfMoney();
+        LOGGER.info("validateSumOfMoney(sumOfMoney={})", sumOfMoney);
+        if(!sumOfMoney.matches(sumOfMoneyRegexp)) {
             errors.rejectValue(SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
         } else {
             NumberFormat numberFormat = NumberFormat.getInstance(creditCardTransactionDto.getLocale());
             ParsePosition parsePosition = new ParsePosition(0);
-            numberFormat.parse(creditCardTransactionDto.getSumOfMoney(), parsePosition);
-            if(creditCardTransactionDto.getSumOfMoney().length() != parsePosition.getIndex()) {
+            numberFormat.parse(sumOfMoney, parsePosition);
+            if(sumOfMoney.length() != parsePosition.getIndex()) {
                 errors.rejectValue(SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
             }
         }
     }
 
     private void validateCardNumber(String cardNumber, Errors errors, String field, String errorCode) {
+        LOGGER.info("validateCardNumber(cardNumber={})", cardNumber);
         if(!cardNumber.matches(numberRegexp) || !bankDataGenerator.isCardNumberValid(cardNumber)) {
             errors.rejectValue(field, errorCode);
         }

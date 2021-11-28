@@ -1,13 +1,13 @@
 package com.epam.brest.model.dto;
 
-import com.epam.brest.model.BaseEntity;
+import com.epam.brest.model.BasicEntity;
 
 import java.time.LocalDate;
 
 /**
  *  Bank account data transfer object.
  */
-public class BankAccountDto extends BaseEntity {
+public class BankAccountDto extends BasicEntity {
 
     /**
      *  International bank account number.

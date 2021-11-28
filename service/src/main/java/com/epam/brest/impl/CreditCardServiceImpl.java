@@ -103,7 +103,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         LOGGER.debug("deposit(targetCreditCard={})", targetCreditCard);
         BigDecimal sumOfMoney = getSumOfMoney(creditCardTransactionDto.getSumOfMoney(), creditCardTransactionDto.getLocale());
         BigDecimal newBalance = targetCreditCard.getBalance().add(sumOfMoney);
-        LOGGER.debug("deposit(newBalance={})", newBalance);
+        LOGGER.info("deposit(newBalance={})", newBalance);
         targetCreditCard.setBalance(newBalance);
         return creditCardDao.update(targetCreditCard) == 1;
     }
@@ -122,9 +122,9 @@ public class CreditCardServiceImpl implements CreditCardService {
         CreditCard targetCreditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
         LOGGER.debug("deposit(targetCreditCard={})", targetCreditCard);
         BigDecimal newSourceCreditCardBalance = sourceCreditCard.getBalance().subtract(sumOfMoney);
-        LOGGER.debug("deposit(newSourceCreditCardBalance={})", newSourceCreditCardBalance);
+        LOGGER.info("deposit(newSourceCreditCardBalance={})", newSourceCreditCardBalance);
         BigDecimal newTargetCreditCardBalance = targetCreditCard.getBalance().add(sumOfMoney);
-        LOGGER.debug("deposit(newTargetCreditCardBalance={})", newTargetCreditCardBalance);
+        LOGGER.info("deposit(newTargetCreditCardBalance={})", newTargetCreditCardBalance);
         sourceCreditCard.setBalance(newSourceCreditCardBalance);
         targetCreditCard.setBalance(newTargetCreditCardBalance);
         return creditCardDao.update(sourceCreditCard) == 1 && creditCardDao.update(targetCreditCard) == 1;
@@ -137,13 +137,13 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     private BigDecimal getSumOfMoney(String value, Locale locale) {
-        LOGGER.debug("getSumOfMoney(value={}, locale={})", value, locale);
+        LOGGER.info("getSumOfMoney(value={}, locale={})", value, locale);
         NumberFormat decimalFormat = NumberFormat.getInstance(locale);
         try {
             return new BigDecimal(decimalFormat.parse(value).toString());
         } catch (ParseException e) {
-            LOGGER.error("getSumOfMoney(error={})", e.getMessage());
-            throw new RuntimeException();
+            LOGGER.error("getSumOfMoney(error)", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -151,7 +151,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         String cardNumber;
         do {
             cardNumber = bankDataGenerator.generateCardNumber();
-            LOGGER.debug("generatedCardNumber={}", cardNumber);
+            LOGGER.info("generatedCardNumber={}", cardNumber);
         } while (creditCardDao.isCardNumberExists(cardNumber));
         return cardNumber;
     }

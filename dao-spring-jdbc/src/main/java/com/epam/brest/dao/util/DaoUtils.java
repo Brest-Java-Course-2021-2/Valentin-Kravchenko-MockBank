@@ -1,5 +1,7 @@
 package com.epam.brest.dao.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -7,6 +9,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import java.util.Arrays;
 
 public final class DaoUtils {
+
+    private static final Logger LOGGER = LogManager.getLogger(DaoUtils.class);
 
     private static final String REGEX = "([a-z])([A-Z]+)";
     private static final String REPLACEMENT = "$1_$2";
@@ -16,6 +20,7 @@ public final class DaoUtils {
     }
 
     public static SqlParameterSource extractSqlParameterSource(BeanPropertySqlParameterSource beanPropertySqlParameterSource) {
+        LOGGER.info("extractSqlParameterSource(beanPropertySqlParameterSource={})", beanPropertySqlParameterSource);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         Arrays.stream(beanPropertySqlParameterSource.getReadablePropertyNames())
               .filter(param -> !param.equals(EXCLUDING_PARAM))

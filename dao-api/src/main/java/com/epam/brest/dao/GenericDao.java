@@ -1,11 +1,11 @@
 package com.epam.brest.dao;
 
-import com.epam.brest.model.BaseEntity;
+import com.epam.brest.model.BasicEntity;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface GenericDao<T extends BaseEntity> {
+public interface GenericDao<T extends BasicEntity> {
 
     /**
      * Retrieves all entities.

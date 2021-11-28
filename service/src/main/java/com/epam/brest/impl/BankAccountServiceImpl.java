@@ -59,8 +59,9 @@ public class BankAccountServiceImpl implements BankAccountService {
     public BankAccount update(BankAccount bankAccount) {
         LOGGER.debug("update(bankAccount={})", bankAccount);
         BankAccount bankAccountFromDb = getById(bankAccount.getId());
-        LOGGER.debug("update(bankAccountFromDb={})", bankAccountFromDb);
+        LOGGER.info("update(bankAccountFromDb={})", bankAccountFromDb);
         ServiceUtils.copyProperties(bankAccount, bankAccountFromDb);
+        LOGGER.debug("update(updatedBankAccount={})", bankAccountFromDb);
         bankAccountDao.update(bankAccountFromDb);
         return bankAccountFromDb;
     }
@@ -84,7 +85,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         String iban;
         do {
             iban = bankDataGenerator.generateIban();
-            LOGGER.debug("generatedIban={}", iban);
+            LOGGER.info("generatedIban={}", iban);
         } while (bankAccountDao.isAccountNumberExists(iban));
         return iban;
     }
