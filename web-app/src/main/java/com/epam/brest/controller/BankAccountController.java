@@ -2,15 +2,20 @@ package com.epam.brest.controller;
 
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.BankAccountService;
+import com.epam.brest.util.ControllerUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.validation.Valid;
 import java.time.LocalDate;
 
@@ -19,6 +24,8 @@ import static com.epam.brest.constant.ControllerConstant.*;
 @Controller
 @RequestMapping("/account")
 public class BankAccountController {
+
+    private static final Logger LOGGER = LogManager.getLogger(BankAccountController.class);
 
     private final BankAccountService bankAccountService;
     private final Validator validator;
@@ -45,16 +52,20 @@ public class BankAccountController {
 
     @GetMapping()
     public String get(Model model) {
+        LOGGER.debug("get(/account)");
         BankAccount bankAccount = new BankAccount();
         bankAccount.setRegistrationDate(LocalDate.now());
         model.addAttribute(ACCOUNT, bankAccount);
+        LOGGER.debug("get(model={})", model);
         return ACCOUNT;
     }
 
     @GetMapping("{id}")
     public String get(@PathVariable Integer id, Model model) {
+        LOGGER.debug("get(/account/{})", id);
         BankAccount bankAccount = bankAccountService.getById(id);
         model.addAttribute(ACCOUNT, bankAccount);
+        LOGGER.debug("get(model={})", model);
         return ACCOUNT;
     }
 
@@ -62,11 +73,14 @@ public class BankAccountController {
     public String create(@Valid @ModelAttribute(ACCOUNT) BankAccount bankAccount,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes){
+        LOGGER.debug("create(/account, bankAccount={})", bankAccount);
         if (bindingResult.hasErrors()) {
+            LOGGER.error("create(/account, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
             return ACCOUNT;
         }
-        BankAccount newBankAccount = bankAccountService.create(bankAccount);
-        redirectAttributes.addFlashAttribute(MESSAGE, String.format(createMessage, newBankAccount.getNumber()));
+        BankAccount createdBankAccount = bankAccountService.create(bankAccount);
+        LOGGER.debug("create(/account, createdBankAccount={})", createdBankAccount);
+        redirectAttributes.addFlashAttribute(MESSAGE, String.format(createMessage, createdBankAccount.getNumber()));
         return REDIRECT_ACCOUNTS;
     }
 
@@ -75,20 +89,24 @@ public class BankAccountController {
                          @Valid @ModelAttribute(ACCOUNT) BankAccount bankAccount,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
+        LOGGER.debug("update(/account/{}, bankAccount={})", id, bankAccount);
         if (bindingResult.hasErrors()) {
+            LOGGER.error("update(/account, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
             return ACCOUNT;
         }
         bankAccount.setId(id);
-        bankAccountService.update(bankAccount);
-        redirectAttributes.addFlashAttribute(MESSAGE, String.format(updateMessage, bankAccount.getNumber()));
+        BankAccount updatedBankAccount = bankAccountService.update(bankAccount);
+        LOGGER.debug("update(/account/{}, updatedBankAccount={})", id, updatedBankAccount);
+        redirectAttributes.addFlashAttribute(MESSAGE, String.format(updateMessage, updatedBankAccount.getNumber()));
         return REDIRECT_ACCOUNTS;
     }
 
     @PostMapping("{id}/remove")
-    public String remove(@PathVariable Integer id, BankAccount bankAccount, RedirectAttributes redirectAttributes){
-        bankAccount.setId(id);
-        bankAccountService.delete(bankAccount);
-        redirectAttributes.addFlashAttribute(MESSAGE, String.format(removeMessage, bankAccount.getNumber()));
+    public String remove(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+        LOGGER.debug("remove(/account/{}/remove)", id);
+        BankAccount deletedBankAccount = bankAccountService.delete(id);
+        LOGGER.debug("remove(/account/{}/remove, deletedBankAccount={})", id, deletedBankAccount);
+        redirectAttributes.addFlashAttribute(MESSAGE, String.format(removeMessage, deletedBankAccount.getNumber()));
         return REDIRECT_ACCOUNTS;
     }
 

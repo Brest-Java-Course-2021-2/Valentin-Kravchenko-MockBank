@@ -5,30 +5,30 @@ import com.epam.brest.model.entity.CreditCard;
 
 import java.util.List;
 
-public interface CreditCardService {
+public interface CreditCardService extends GenericService<CreditCard> {
 
     /**
-     * Return a credit card by its id.
-     * @param id - credit id
-     * @return the credit card with the given id
+     * Returns a credit card by its number.
+     * @param number - credit card number
+     * @return the credit card with the given number
      * @throws IllegalArgumentException if none found
      */
-    CreditCard getById(Integer id);
+    CreditCard getByNumber(String number);
 
     /**
-     * Creates new credit card.
+     * Creates a new credit card.
      * @param accountId - id of the bank account to which the new credit card will be linked
-     * @return the created credit card
+     * @return the instance of the created credit card
      */
     CreditCard create(Integer accountId);
 
     /**
-     * Removes a given credit card.
-     * @param creditCard - credit card being deleted
-     * @return the number of rows affected
+     * Removes a credit card by its id.
+     * @param id - id of the credit card to delete
+     * @return the instance of the deleted credit card
      * @throws IllegalArgumentException if credit card has a positive balance
      */
-    Integer delete(CreditCard creditCard);
+    CreditCard delete(Integer id);
 
     /**
      * Deposits money to the credit card.
@@ -46,7 +46,7 @@ public interface CreditCardService {
     boolean transfer(CreditCardTransactionDto creditCardTransactionDto);
 
     /**
-     * Return all credit cards linked with a bank account by its id.
+     * Returns all the credit cards linked with a bank account by its id.
      * @param accountId - bank account id
      * @return list of credit cards
      */

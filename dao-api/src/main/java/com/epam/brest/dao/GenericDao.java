@@ -30,26 +30,26 @@ public interface GenericDao<T extends BaseEntity> {
     /**
      * Creates a given entity.
      * @param entity - entity instance
-     * @return the created entity
+     * @return the instance of the created entity
      */
     T create(T entity);
 
     /**
      * Updates a given entity.
-     * @param entity - entity containing updated data
+     * @param entity - entity instance
      * @return the number of rows affected
      */
     Integer update(T entity);
 
     /**
      * Removes an entity by its id.
-     * @param entity - entity being deleted
+     * @param id - id of the entity to delete
      * @return the number of rows affected
      */
-    Integer delete(T entity);
+    Integer delete(Integer id);
 
     /**
-     * Return the number of entities available.
+     * Returns the number of entities available.
      * @return the number of entities
      */
     Integer count();

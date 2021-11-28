@@ -39,14 +39,14 @@ class CreditCardControllerTest extends BasicControllerTest {
 
     @Test
     void removeSucceeded() throws Exception {
-        CreditCard creditCard = creditCardService.create(1);
-        String urlTemplate = "/card/" + creditCard.getId() + "/remove";
+        CreditCard createdCreditCard = creditCardService.create(1);
+        String urlTemplate = "/card/" + createdCreditCard.getId() + "/remove";
         mockMvc.perform(post(urlTemplate))
                .andExpect(status().is3xxRedirection())
                .andExpect(view().name("redirect:/cards"))
                .andExpect(redirectedUrl("/cards"))
                .andExpect(flash().attributeExists("message"));
-        assertThrows(IllegalArgumentException.class, () -> creditCardService.delete(creditCard));
+        assertThrows(IllegalArgumentException.class, () -> creditCardService.delete(createdCreditCard.getId()));
     }
 
     @Test

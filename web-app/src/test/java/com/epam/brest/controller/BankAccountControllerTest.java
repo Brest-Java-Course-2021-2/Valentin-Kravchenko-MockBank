@@ -26,7 +26,7 @@ class BankAccountControllerTest extends BasicControllerTest {
     }
 
     @Test
-    void getCreate() throws Exception {
+    void createGET() throws Exception {
         mockMvc.perform(get("/account"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
@@ -37,7 +37,7 @@ class BankAccountControllerTest extends BasicControllerTest {
     }
 
     @Test
-    void getUpdate() throws Exception {
+    void updateGET() throws Exception {
         BankAccount bankAccountFromDb = bankAccountService.getById(1);
         mockMvc.perform(get("/account/1"))
                .andExpect(status().isOk())
@@ -47,7 +47,7 @@ class BankAccountControllerTest extends BasicControllerTest {
     }
 
     @Test
-    void create() throws Exception {
+    void createPOST() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("customer", "New Customer");
         mockMvc.perform(post("/account").params(params))
@@ -58,7 +58,7 @@ class BankAccountControllerTest extends BasicControllerTest {
     }
 
     @Test
-    void updateSucceeded() throws Exception {
+    void updatePOSTSucceeded() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("customer", "Changed Customer");
         mockMvc.perform(post("/account/1").params(params))
@@ -71,7 +71,7 @@ class BankAccountControllerTest extends BasicControllerTest {
     }
 
     @Test
-    void updateWithInvalidCustomer() throws Exception {
+    void updatePOSTWithInvalidCustomer() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("customer", "Changed Customer1");
         mockMvc.perform(post("/account/1").params(params))
@@ -83,7 +83,7 @@ class BankAccountControllerTest extends BasicControllerTest {
     }
 
     @Test
-    void updateWithInvalidId() throws Exception {
+    void updatePOSTWithInvalidId() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("customer", "Changed Customer");
         mockMvc.perform(post("/account/1000").params(params))
@@ -97,14 +97,14 @@ class BankAccountControllerTest extends BasicControllerTest {
     void deleteSucceeded() throws Exception {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setCustomer("Customer");
-        BankAccount newBankAccount = bankAccountService.create(bankAccount);
-        String urlTemplate = "/account/" + newBankAccount.getId() + "/remove";
+        BankAccount createdBankAccount = bankAccountService.create(bankAccount);
+        String urlTemplate = "/account/" + createdBankAccount.getId() + "/remove";
         mockMvc.perform(post(urlTemplate))
                .andExpect(status().is3xxRedirection())
                .andExpect(view().name("redirect:/accounts"))
                .andExpect(redirectedUrl("/accounts"))
                .andExpect(flash().attributeExists("message"));
-        assertThrows(IllegalArgumentException.class, () -> bankAccountService.delete(newBankAccount));
+        assertThrows(IllegalArgumentException.class, () -> bankAccountService.delete(createdBankAccount.getId()));
     }
 
     @Test

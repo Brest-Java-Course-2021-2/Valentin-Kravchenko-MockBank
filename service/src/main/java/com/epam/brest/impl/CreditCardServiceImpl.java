@@ -6,6 +6,8 @@ import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.CreditCardService;
 import com.epam.brest.util.ServiceUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,8 @@ import static com.epam.brest.constant.ServiceConstant.INIT_BALANCE;
 @Service
 @Transactional
 public class CreditCardServiceImpl implements CreditCardService {
+
+    private static final Logger LOGGER = LogManager.getLogger(CreditCardServiceImpl.class);
 
     private final CreditCardDao creditCardDao;
     private final BankDataGenerator bankDataGenerator;
@@ -46,70 +50,100 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     public CreditCard getById(Integer id) {
-        Optional<CreditCard> optionalCreditCard = creditCardDao.getById(id);
-        return optionalCreditCard.orElseThrow(() -> new IllegalArgumentException(String.format(findByIdError, id)));
+        LOGGER.debug("getById(id={})", id);
+        return creditCardDao.getById(id)
+                            .orElseThrow(() -> {
+                                String error = String.format(findByIdError, id);
+                                LOGGER.error("getById(error={})", error);
+                                return new IllegalArgumentException(error);
+                            });
+    }
+
+    @Override
+    public CreditCard getByNumber(String cardNumber) {
+        LOGGER.debug("getByNumber(cardNumber={})", cardNumber);
+        return creditCardDao.getByNumber(cardNumber)
+                            .orElseThrow(() -> {
+                                String error = String.format(findByNumberError, cardNumber);
+                                LOGGER.error("getByNumber(error={})", error);
+                                return new IllegalArgumentException(error);
+                            });
     }
 
     @Override
     public CreditCard create(Integer accountId) {
-        CreditCard creditCard = new CreditCard();
-        creditCard.setNumber(getCardNumber());
-        creditCard.setExpirationDate(ServiceUtils.convertToExpirationDate(LocalDate.now()));
-        creditCard.setBalance(new BigDecimal(INIT_BALANCE));
-        creditCard.setAccountId(accountId);
-        return creditCardDao.create(creditCard);
+        LOGGER.debug("create(accountId={})", accountId);
+        CreditCard newCreditCard = new CreditCard();
+        newCreditCard.setNumber(getCardNumber());
+        newCreditCard.setExpirationDate(ServiceUtils.convertToExpirationDate(LocalDate.now()));
+        newCreditCard.setBalance(new BigDecimal(INIT_BALANCE));
+        newCreditCard.setAccountId(accountId);
+        LOGGER.debug("create(newCreditCard={})", newCreditCard);
+        return creditCardDao.create(newCreditCard);
     }
 
     @Override
-    public Integer delete(CreditCard creditCard) {
-        CreditCard creditCardFromDb = getById(creditCard.getId());
+    public CreditCard delete(Integer id) {
+        LOGGER.debug("delete(id={})", id);
+        CreditCard creditCardFromDb = getById(id);
+        LOGGER.debug("delete(creditCardFromDb={})", creditCardFromDb);
         if (creditCardFromDb.getBalance().signum() == 1) {
-            throw new IllegalArgumentException(String.format(deleteError, creditCardFromDb.getNumber(),
-                                                             creditCardFromDb.getBalance().toString()));
+            String error = String.format(deleteError, creditCardFromDb.getNumber(), creditCardFromDb.getBalance().toString());
+            LOGGER.error("delete(error={})", error);
+            throw new IllegalArgumentException(error);
         }
-        return creditCardDao.delete(creditCardFromDb);
+        creditCardDao.delete(creditCardFromDb.getId());
+        return creditCardFromDb;
     }
 
     @Override
     public boolean deposit(CreditCardTransactionDto creditCardTransactionDto) {
-        CreditCard creditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
+        LOGGER.debug("deposit(creditCardTransactionDto={})", creditCardTransactionDto);
+        CreditCard targetCreditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
+        LOGGER.debug("deposit(targetCreditCard={})", targetCreditCard);
         BigDecimal sumOfMoney = getSumOfMoney(creditCardTransactionDto.getSumOfMoney(), creditCardTransactionDto.getLocale());
-        BigDecimal newBalance = creditCard.getBalance().add(sumOfMoney);
-        creditCard.setBalance(newBalance);
-        return creditCardDao.update(creditCard) == 1;
+        BigDecimal newBalance = targetCreditCard.getBalance().add(sumOfMoney);
+        LOGGER.debug("deposit(newBalance={})", newBalance);
+        targetCreditCard.setBalance(newBalance);
+        return creditCardDao.update(targetCreditCard) == 1;
     }
 
     @Override
     public boolean transfer(CreditCardTransactionDto creditCardTransactionDto) {
+        LOGGER.debug("deposit(creditCardTransactionDto={})", creditCardTransactionDto);
         CreditCard sourceCreditCard = getByNumber(creditCardTransactionDto.getSourceCardNumber());
+        LOGGER.debug("deposit(sourceCreditCard={})", sourceCreditCard);
         BigDecimal sumOfMoney = getSumOfMoney(creditCardTransactionDto.getSumOfMoney(), creditCardTransactionDto.getLocale());
         if (sourceCreditCard.getBalance().compareTo(sumOfMoney) < 0) {
-            throw new IllegalArgumentException(String.format(transferError, creditCardTransactionDto.getSourceCardNumber()));
+            String error = String.format(transferError, creditCardTransactionDto.getSourceCardNumber());
+            LOGGER.error("deposit(error={})", error);
+            throw new IllegalArgumentException(error);
         }
         CreditCard targetCreditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
-        BigDecimal newBalanceSourceCreditCard = sourceCreditCard.getBalance().subtract(sumOfMoney);
-        BigDecimal newBalanceTargetCreditCard = targetCreditCard.getBalance().add(sumOfMoney);
-        sourceCreditCard.setBalance(newBalanceSourceCreditCard);
-        targetCreditCard.setBalance(newBalanceTargetCreditCard);
+        LOGGER.debug("deposit(targetCreditCard={})", targetCreditCard);
+        BigDecimal newSourceCreditCardBalance = sourceCreditCard.getBalance().subtract(sumOfMoney);
+        LOGGER.debug("deposit(newSourceCreditCardBalance={})", newSourceCreditCardBalance);
+        BigDecimal newTargetCreditCardBalance = targetCreditCard.getBalance().add(sumOfMoney);
+        LOGGER.debug("deposit(newTargetCreditCardBalance={})", newTargetCreditCardBalance);
+        sourceCreditCard.setBalance(newSourceCreditCardBalance);
+        targetCreditCard.setBalance(newTargetCreditCardBalance);
         return creditCardDao.update(sourceCreditCard) == 1 && creditCardDao.update(targetCreditCard) == 1;
     }
 
     @Override
     public List<CreditCard> getAllByAccountId(Integer accountId) {
+        LOGGER.debug("getAllByAccountId(accountId={})", accountId);
         return creditCardDao.getAllByAccountId(accountId);
     }
 
-    private CreditCard getByNumber(String cardNumber) {
-        Optional<CreditCard> optionalCreditCard = creditCardDao.getByNumber(cardNumber);
-        return optionalCreditCard.orElseThrow(() -> new IllegalArgumentException(String.format(findByNumberError, cardNumber)));
-    }
-
     private BigDecimal getSumOfMoney(String value, Locale locale) {
+        LOGGER.debug("getSumOfMoney(value={}, locale={})", value, locale);
         NumberFormat decimalFormat = NumberFormat.getInstance(locale);
         try {
             return new BigDecimal(decimalFormat.parse(value).toString());
         } catch (ParseException e) {
-            throw new IllegalArgumentException();
+            LOGGER.error("getSumOfMoney(error={})", e.getMessage());
+            throw new RuntimeException();
         }
     }
 
@@ -117,6 +151,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         String cardNumber;
         do {
             cardNumber = bankDataGenerator.generateCardNumber();
+            LOGGER.debug("generatedCardNumber={}", cardNumber);
         } while (creditCardDao.isCardNumberExists(cardNumber));
         return cardNumber;
     }

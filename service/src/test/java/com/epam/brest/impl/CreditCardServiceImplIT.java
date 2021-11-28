@@ -33,15 +33,15 @@ class CreditCardServiceImplIT extends BasicServiceIT {
     void deleteSucceeded() {
         Integer id = 1;
         CreditCard creditCard = creditCardService.create(id);
-        Integer result = creditCardService.delete(creditCard);
-        assertEquals(result, 1);
+        CreditCard deletedCreditCard = creditCardService.delete(creditCard.getId());
+        assertEquals(creditCard, deletedCreditCard);
     }
 
     @Test
     void deleteFailed() {
         CreditCard creditCard = new CreditCard();
         creditCard.setId(1);
-        assertThrows(IllegalArgumentException.class, () -> creditCardService.delete(creditCard));
+        assertThrows(IllegalArgumentException.class, () -> creditCardService.delete(creditCard.getId()));
         CreditCard creditCardFromDb = creditCardService.getById(creditCard.getId());
         assertEquals(creditCardFromDb.getId(), 1);
     }
@@ -106,6 +106,14 @@ class CreditCardServiceImplIT extends BasicServiceIT {
     }
 
     @Test
+    void getByNumber() {
+        Integer id = 1;
+        CreditCard creditCard = creditCardService.create(id);
+        CreditCard creditCardFromDb = creditCardService.getByNumber(creditCard.getNumber());
+        assertEquals(creditCard, creditCardFromDb);
+    }
+
+    @Test
     void getAllByAccountId() {
         Integer accountId = 1;
         List<CreditCard> cards = creditCardService.getAllByAccountId(accountId);
@@ -114,5 +122,4 @@ class CreditCardServiceImplIT extends BasicServiceIT {
         assertEquals(cards.get(0).getAccountId(), accountId);
         assertEquals(cards.get(cards.size() - 1).getAccountId(), accountId);
     }
-
 }

@@ -63,13 +63,13 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
 
     @Override
     public List<CreditCard> getAll() {
-        LOGGER.debug("getAll(creditCard)");
+        LOGGER.debug("getAll()");
         return namedParameterJdbcTemplate.query(getAllSql, rowMapper);
     }
 
     @Override
     public Optional<CreditCard> getById(Integer id) {
-        LOGGER.debug("getById(creditCard, id={})", id);
+        LOGGER.debug("getById(id={})", id);
         return getById(getByIdSql, id, rowMapper);
     }
 
@@ -92,20 +92,20 @@ public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> i
     }
 
     @Override
-    public Integer delete(CreditCard creditCard) {
-        LOGGER.debug("delete(creditCard={})", creditCard);
-        return delete(deleteSql, creditCard);
+    public Integer delete(Integer id) {
+        LOGGER.debug("delete(id={})", id);
+        return delete(deleteSql, id);
     }
 
     @Override
     public Integer count() {
-        LOGGER.debug("count(creditCard)");
+        LOGGER.debug("count()");
         return namedParameterJdbcTemplate.queryForObject(countSql, new HashMap<>(), Integer.class);
     }
 
     @Override
     public boolean isCardNumberExists(String number) {
-        LOGGER.debug("isAccountNumberExists(creditCard, number={})", number);
+        LOGGER.debug("isCardNumberExists(number={})", number);
         return isNumberExists(countNumberSql, number);
     }
 

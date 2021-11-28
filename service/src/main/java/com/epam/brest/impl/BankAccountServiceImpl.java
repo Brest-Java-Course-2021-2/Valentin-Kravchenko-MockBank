@@ -5,6 +5,8 @@ import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.BankAccountService;
 import com.epam.brest.util.ServiceUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ import static com.epam.brest.constant.ServiceConstant.JOIN_DELIMITER;
 @Service
 @Transactional
 public class BankAccountServiceImpl implements BankAccountService {
+
+    private static final Logger LOGGER = LogManager.getLogger(BankAccountServiceImpl.class);
 
     private final BankAccountDao bankAccountDao;
     private final BankDataGenerator bankDataGenerator;
@@ -34,38 +38,53 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BankAccount getById(Integer id) {
-        return bankAccountDao.getById(id).orElseThrow(() -> new IllegalArgumentException(String.format(findByIdError, id)));
+        LOGGER.debug("getById(id={})", id);
+        return bankAccountDao.getById(id)
+                             .orElseThrow(() -> {
+                                String error = String.format(findByIdError, id);
+                                LOGGER.error("getById(error={})", error);
+                                return new IllegalArgumentException(error);
+                             });
     }
 
     @Override
     public BankAccount create(BankAccount bankAccount) {
         bankAccount.setNumber(getIban());
         bankAccount.setRegistrationDate(LocalDate.now());
+        LOGGER.debug("create(bankAccount={})", bankAccount);
         return bankAccountDao.create(bankAccount);
     }
 
     @Override
-    public Integer update(BankAccount bankAccount) {
+    public BankAccount update(BankAccount bankAccount) {
+        LOGGER.debug("update(bankAccount={})", bankAccount);
         BankAccount bankAccountFromDb = getById(bankAccount.getId());
+        LOGGER.debug("update(bankAccountFromDb={})", bankAccountFromDb);
         ServiceUtils.copyProperties(bankAccount, bankAccountFromDb);
-        return bankAccountDao.update(bankAccountFromDb);
+        bankAccountDao.update(bankAccountFromDb);
+        return bankAccountFromDb;
     }
 
     @Override
-    public Integer delete(BankAccount bankAccount) {
-        BankAccount bankAccountFromDb = getById(bankAccount.getId());
-        List<String> linkedCards = bankAccountDao.getLinkedCards(bankAccountFromDb);
+    public BankAccount delete(Integer id) {
+        LOGGER.debug("delete(id={})", id);
+        BankAccount bankAccountFromDb = getById(id);
+        List<String> linkedCards = bankAccountDao.getLinkedCards(bankAccountFromDb.getId());
+        LOGGER.debug("delete(bankAccountFromDb={})", bankAccountFromDb);
         if (!linkedCards.isEmpty()) {
-            throw new IllegalArgumentException(String.format(deleteError, bankAccount.getNumber(),
-                                               String.join(JOIN_DELIMITER, linkedCards)));
+            String error = String.format(deleteError, bankAccountFromDb.getNumber(), String.join(JOIN_DELIMITER, linkedCards));
+            LOGGER.error("delete(error={})", error);
+            throw new IllegalArgumentException(error);
         }
-        return bankAccountDao.delete(bankAccountFromDb);
+        bankAccountDao.delete(bankAccountFromDb.getId());
+        return bankAccountFromDb;
     }
 
     private String getIban() {
         String iban;
         do {
             iban = bankDataGenerator.generateIban();
+            LOGGER.debug("generatedIban={}", iban);
         } while (bankAccountDao.isAccountNumberExists(iban));
         return iban;
     }

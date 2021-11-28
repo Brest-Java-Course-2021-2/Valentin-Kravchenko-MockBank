@@ -88,7 +88,7 @@ class BankAccountSpringJdbcDaoIT extends BasicDaoIT {
         bankAccount.setCustomer("New customer");
         bankAccount.setRegistrationDate(LocalDate.now());
         BankAccount newBankAccount = bankAccountDao.create(bankAccount);
-        Integer result = bankAccountDao.delete(newBankAccount);
+        Integer result = bankAccountDao.delete(newBankAccount.getId());
         assertEquals(result, 1);
         Optional<BankAccount> newBankAccountFromDb = bankAccountDao.getById(newBankAccount.getId());
         assertTrue(newBankAccountFromDb.isEmpty());
@@ -99,5 +99,12 @@ class BankAccountSpringJdbcDaoIT extends BasicDaoIT {
         assertTrue(bankAccountDao.isAccountNumberExists(firstBankAccount.getNumber()));
         assertFalse(bankAccountDao.isAccountNumberExists("New number"));
     }
-    
+
+    @Test
+    void getLinkedCards() {
+        List<String> linkedCards = bankAccountDao.getLinkedCards(firstBankAccount.getId());
+        assertNotNull(linkedCards);
+        assertTrue(linkedCards.size() > 0);
+    }
+
 }
