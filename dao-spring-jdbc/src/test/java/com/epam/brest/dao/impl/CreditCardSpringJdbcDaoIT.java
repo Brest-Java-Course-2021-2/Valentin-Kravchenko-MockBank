@@ -91,7 +91,7 @@ class CreditCardSpringJdbcDaoIT extends BasicDaoIT {
         creditCard.setBalance(new BigDecimal("0.00"));
         creditCard.setAccountId(1);
         CreditCard newCreditCard = creditCardDao.create(creditCard);
-        Integer result = creditCardDao.delete(newCreditCard);
+        Integer result = creditCardDao.delete(newCreditCard.getId());
         assertEquals(result, 1);
         Optional<CreditCard> creditCardFromDb = creditCardDao.getById(newCreditCard.getId());
         assertTrue(creditCardFromDb.isEmpty());

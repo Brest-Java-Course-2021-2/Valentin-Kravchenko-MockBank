@@ -31,10 +31,11 @@ class BankAccountServiceImplIT extends BasicServiceIT {
     @Test
     void updateSucceeded() {
         BankAccount bankAccount = new BankAccount();
+        String customer = "Customer";
         bankAccount.setId(1);
-        bankAccount.setCustomer("Customer");
-        Integer result = bankAccountService.update(bankAccount);
-        assertEquals(result, 1);
+        bankAccount.setCustomer(customer);
+        BankAccount updatedBankAccount = bankAccountService.update(bankAccount);
+        assertEquals(updatedBankAccount.getCustomer(), customer);
     }
 
     @Test
@@ -50,15 +51,15 @@ class BankAccountServiceImplIT extends BasicServiceIT {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setCustomer("Customer");
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
-        Integer result = bankAccountService.delete(createdBankAccount);
-        assertEquals(result, 1);
+        BankAccount deletedBankAccount = bankAccountService.delete(createdBankAccount.getId());
+        assertEquals(createdBankAccount, deletedBankAccount);
     }
 
     @Test
     void deleteFailed() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setId(1);
-        assertThrows(IllegalArgumentException.class, () -> bankAccountService.delete(bankAccount));
+        assertThrows(IllegalArgumentException.class, () -> bankAccountService.delete(bankAccount.getId()));
         BankAccount newBankAccountFromDb = bankAccountService.getById(bankAccount.getId());
         assertEquals(newBankAccountFromDb.getId(), 1);
     }

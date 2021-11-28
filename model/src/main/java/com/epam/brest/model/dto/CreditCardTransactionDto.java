@@ -59,4 +59,13 @@ public class CreditCardTransactionDto {
         this.locale = locale;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName()+ "{" +
+               "targetCardNumber='" + targetCardNumber + '\'' +
+               ", sumOfMoney='" + sumOfMoney + '\'' +
+               ", sourceCardNumber='" + sourceCardNumber + '\'' +
+               ", locale=" + locale +
+               '}';
+    }
 }

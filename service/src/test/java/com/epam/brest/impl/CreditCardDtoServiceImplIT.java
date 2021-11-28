@@ -19,9 +19,9 @@ class CreditCardDtoServiceImplIT extends BasicServiceIT {
 
     @Test
     void getAllWithAccountNumber() {
-        List<CreditCardDto> cardDtos = creditCardDtoService.getAllWithAccountNumber();
-        assertNotNull(cardDtos);
-        assertTrue(cardDtos.size() > 0);
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
+        assertNotNull(cards);
+        assertTrue(cards.size() > 0);
     }
 
 }

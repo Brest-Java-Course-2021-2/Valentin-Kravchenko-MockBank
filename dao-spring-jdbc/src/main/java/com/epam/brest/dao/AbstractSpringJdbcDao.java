@@ -52,8 +52,8 @@ public abstract class AbstractSpringJdbcDao<T extends BaseEntity> {
         return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 
-    public Integer delete(String sql, T entity) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), entity.getId());
+    public Integer delete(String sql, Integer id) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
         return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 

@@ -62,13 +62,13 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
 
     @Override
     public List<BankAccount> getAll() {
-        LOGGER.debug("getAll(bankAccount)");
+        LOGGER.debug("getAll()");
         return namedParameterJdbcTemplate.query(getAllSql, rowMapper);
     }
 
     @Override
     public Optional<BankAccount> getById(Integer id) {
-        LOGGER.debug("getById(bankAccount, id={})", id);
+        LOGGER.debug("getById(id={})", id);
         return getById(getByIdSql, id, rowMapper);
     }
 
@@ -91,27 +91,27 @@ public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount>
     }
 
     @Override
-    public Integer delete(BankAccount bankAccount) {
-        LOGGER.debug("delete(bankAccount={})", bankAccount);
-        return delete(deleteSql, bankAccount);
+    public Integer delete(Integer id) {
+        LOGGER.debug("delete(id={})", id);
+        return delete(deleteSql, id);
     }
 
     @Override
     public Integer count() {
-        LOGGER.debug("count(bankAccount)");
+        LOGGER.debug("count()");
         return namedParameterJdbcTemplate.queryForObject(countSql, new HashMap<>(), Integer.class);
     }
 
     @Override
     public boolean isAccountNumberExists(String number) {
-        LOGGER.debug("isAccountNumberExists(bankAccount, number={})", number);
+        LOGGER.debug("isAccountNumberExists(number={})", number);
         return isNumberExists(countNumberSql, number);
     }
 
     @Override
-    public List<String> getLinkedCards(BankAccount bankAccount) {
-        LOGGER.debug("getLinkedCards(bankAccount={})", bankAccount);
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), bankAccount.getId());
+    public List<String> getLinkedCards(Integer id) {
+        LOGGER.debug("getLinkedCards(id={})", id);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
         return namedParameterJdbcTemplate.queryForList(getCardNumbersSql, sqlParameterSource, String.class);
     }
 
