@@ -1,8 +1,8 @@
 package com.epam.brest.service;
 
-import com.epam.brest.model.BaseEntity;
+import com.epam.brest.model.BasicEntity;
 
-public interface GenericService<T extends BaseEntity> {
+public interface GenericService<T extends BasicEntity> {
 
     /**
      * Returns an entity by its id.

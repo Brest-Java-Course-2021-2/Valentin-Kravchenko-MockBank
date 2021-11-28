@@ -21,5 +21,8 @@ public class ControllerConstant {
     public static final String ERROR_CODE_SUM_OF_MONEY = "SumOfMoney.card.sumOfMoney";
     public static final String ERROR_CODE_TARGET_CARD_NUMBER = "CardNumber.card.targetCardNumber";
     public static final String ERROR_CODE_SOURCE_CARD_NUMBER = "CardNumber.card.sourceCardNumber";
+    public static final String JOIN_DELIMITER = ", ";
+    public static final String JOIN_PREFIX = "[";
+    public static final String JOIN_SUFFIX = "]";
 
 }

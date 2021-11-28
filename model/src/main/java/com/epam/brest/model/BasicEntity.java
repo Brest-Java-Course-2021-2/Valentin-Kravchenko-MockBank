@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  *  Base entity model.
  */
-public abstract class BaseEntity {
+public abstract class BasicEntity {
 
     /**
      *  Entity ID.
@@ -24,7 +24,7 @@ public abstract class BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BaseEntity that = (BaseEntity) o;
+        BasicEntity that = (BasicEntity) o;
         return Objects.equals(id, that.id);
     }
 
