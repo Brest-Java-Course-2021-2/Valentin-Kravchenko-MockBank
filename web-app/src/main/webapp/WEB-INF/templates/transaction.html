@@ -87,12 +87,12 @@
                                    type="text"
                                    class="form-control"
                                    th:placeholder="#{card.sum.money.placeholder}"
-                                   th:field="*{sumOfMoney}"
-                                   th:classappend="${#fields.hasErrors('sumOfMoney')} ? 'is-invalid'"
+                                   th:field="*{valueSumOfMoney}"
+                                   th:classappend="${#fields.hasErrors('valueSumOfMoney')} ? 'is-invalid'"
                                    required/>
                             <div class="invalid-tooltip"
-                                 th:if="${#fields.hasErrors('sumOfMoney')}"
-                                 th:errors="*{sumOfMoney}">
+                                 th:if="${#fields.hasErrors('valueSumOfMoney')}"
+                                 th:errors="*{valueSumOfMoney}">
                                 Sum of Money Error
                             </div>
                         </div>

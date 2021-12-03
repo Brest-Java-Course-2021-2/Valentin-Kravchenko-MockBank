@@ -16,10 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ContextConfiguration(locations = {"classpath*:test-formatter.xml"})
 class BigDecimalPrinterTest {
 
-    public static final String TEST_VALUE = "1200.23";
-    public static final String RU_VALUE = "1\u00A0200,23";
-    public static final String RU = "ru";
-
     private final Printer<BigDecimal> formatter;
 
     BigDecimalPrinterTest(@Autowired Printer<BigDecimal> formatter) {
@@ -28,8 +24,8 @@ class BigDecimalPrinterTest {
 
     @Test
     void print() {
-        String formattedValue = formatter.print(new BigDecimal(TEST_VALUE), new Locale(RU));
-        assertEquals(formattedValue, RU_VALUE);
+        String formattedValue = formatter.print(new BigDecimal("1200.23"), new Locale("ru"));
+        assertEquals(formattedValue, "1\u00A0200,23");
     }
     
 }

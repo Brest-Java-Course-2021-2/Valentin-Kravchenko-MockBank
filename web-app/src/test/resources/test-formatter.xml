@@ -7,13 +7,8 @@
     <bean id="localDateFormatter" class="com.epam.brest.formatter.LocalDateFormatter" />
     <bean id="bigDecimalPrinter" class="com.epam.brest.formatter.BigDecimalPrinter" />
 
-    <bean id="propertySourcesPlaceholderConfigurer"
-          class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:templates.properties</value>
-            </list>
-        </property>
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="locations" value="classpath:templates.properties" />
     </bean>
 
 </beans>

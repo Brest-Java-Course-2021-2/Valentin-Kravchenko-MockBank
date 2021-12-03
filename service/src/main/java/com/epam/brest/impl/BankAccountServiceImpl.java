@@ -42,7 +42,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccountDao.getById(id)
                              .orElseThrow(() -> {
                                 String error = String.format(findByIdError, id);
-                                LOGGER.error("getById(error={})", error);
+                                LOGGER.warn("getById(error={})", error);
                                 return new IllegalArgumentException(error);
                              });
     }
@@ -74,7 +74,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         LOGGER.debug("delete(bankAccountFromDb={})", bankAccountFromDb);
         if (!linkedCards.isEmpty()) {
             String error = String.format(deleteError, bankAccountFromDb.getNumber(), String.join(JOIN_DELIMITER, linkedCards));
-            LOGGER.error("delete(error={})", error);
+            LOGGER.warn("delete(error={})", error);
             throw new IllegalArgumentException(error);
         }
         bankAccountDao.delete(bankAccountFromDb.getId());

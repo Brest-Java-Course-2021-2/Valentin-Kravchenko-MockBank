@@ -11,6 +11,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.Printer;
+import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -55,6 +56,11 @@ public class WebAppConfig implements WebMvcConfigurer {
         WebMvcConfigurer.super.addFormatters(registry);
         registry.addFormatter(localDateFormatter());
         registry.addPrinter(bigDecimalPrinter());
+    }
+
+    @Bean
+    public NumberStyleFormatter numberStyleFormatter() {
+        return new NumberStyleFormatter();
     }
 
     @Bean

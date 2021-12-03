@@ -31,10 +31,10 @@ class CreditCardDtoSpringJdbcDaoIT extends BasicDaoIT {
 
     @Test
     void getAllWithAccountNumber() {
-        List<CreditCardDto> cardDtos = creditCardDtoDao.getAllWithAccountNumber();
-        assertNotNull(cardDtos);
-        CreditCardDto firstCreditCardDto = cardDtos.get(0);
-        CreditCardDto lastCreditCardDto = cardDtos.get(cardDtos.size() - 1);
+        List<CreditCardDto> cards = creditCardDtoDao.getAllWithAccountNumber();
+        assertNotNull(cards);
+        CreditCardDto firstCreditCardDto = cards.get(0);
+        CreditCardDto lastCreditCardDto = cards.get(cards.size() - 1);
         Optional<CreditCard> firstCreditCardFromDb = creditCardDao.getById(firstCreditCardDto.getId());
         Optional<CreditCard> lastCreditCardDtoFromDb = creditCardDao.getById(lastCreditCardDto.getId());
         assertEquals(firstCreditCardDto.getNumber(), firstCreditCardFromDb.get().getNumber());

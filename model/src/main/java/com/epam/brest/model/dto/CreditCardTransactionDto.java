@@ -1,5 +1,6 @@
 package com.epam.brest.model.dto;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 /**
@@ -15,7 +16,7 @@ public class CreditCardTransactionDto {
     /**
      *  Deposit sum of money.
      */
-    private String sumOfMoney;
+    private BigDecimal sumOfMoney;
 
     /**
      *  Number of the source credit card.
@@ -23,7 +24,12 @@ public class CreditCardTransactionDto {
     private String sourceCardNumber;
 
     /**
-     *  Current locale.
+     *  Deposit sum of money from http request.
+     */
+    private String valueSumOfMoney;
+
+    /**
+     *  Locale from http request.
      */
     private Locale locale;
 
@@ -35,11 +41,11 @@ public class CreditCardTransactionDto {
         this.targetCardNumber = targetCardNumber;
     }
 
-    public String getSumOfMoney() {
+    public BigDecimal getSumOfMoney() {
         return sumOfMoney;
     }
 
-    public void setSumOfMoney(String sumOfMoney) {
+    public void setSumOfMoney(BigDecimal sumOfMoney) {
         this.sumOfMoney = sumOfMoney;
     }
 
@@ -49,6 +55,14 @@ public class CreditCardTransactionDto {
 
     public void setSourceCardNumber(String sourceCardNumber) {
         this.sourceCardNumber = sourceCardNumber;
+    }
+
+    public String getValueSumOfMoney() {
+        return valueSumOfMoney;
+    }
+
+    public void setValueSumOfMoney(String valueSumOfMoney) {
+        this.valueSumOfMoney = valueSumOfMoney;
     }
 
     public Locale getLocale() {
@@ -61,11 +75,13 @@ public class CreditCardTransactionDto {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName()+ "{" +
+        return getClass().getSimpleName() + "{" +
                "targetCardNumber='" + targetCardNumber + '\'' +
-               ", sumOfMoney='" + sumOfMoney + '\'' +
+               ", sumOfMoney=" + sumOfMoney +
                ", sourceCardNumber='" + sourceCardNumber + '\'' +
+               ", valueSumOfMoney='" + valueSumOfMoney + '\'' +
                ", locale=" + locale +
                '}';
     }
+
 }

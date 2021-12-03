@@ -6,6 +6,7 @@ import com.epam.brest.service.CreditCardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,8 +53,7 @@ class CreditCardServiceImplIT extends BasicServiceIT {
         CreditCard creditCard = creditCardService.create(id);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(creditCard.getNumber());
-        creditCardTransactionDto.setLocale(Locale.getDefault());
-        creditCardTransactionDto.setSumOfMoney("1000,35");
+        creditCardTransactionDto.setSumOfMoney(new BigDecimal("1000.35"));
         boolean deposit = creditCardService.deposit(creditCardTransactionDto);
         assertTrue(deposit);
     }                   
@@ -65,13 +65,12 @@ class CreditCardServiceImplIT extends BasicServiceIT {
         CreditCard targetCreditCard = creditCardService.create(id);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(sourceCreditCard.getNumber());
-        creditCardTransactionDto.setSumOfMoney("1000,00");
-        creditCardTransactionDto.setLocale(Locale.getDefault());
+        creditCardTransactionDto.setSumOfMoney(new BigDecimal("1000.00"));
         boolean deposit = creditCardService.deposit(creditCardTransactionDto);
         assertTrue(deposit);
         creditCardTransactionDto.setSourceCardNumber(sourceCreditCard.getNumber());
         creditCardTransactionDto.setTargetCardNumber(targetCreditCard.getNumber());
-        creditCardTransactionDto.setSumOfMoney("500,00");
+        creditCardTransactionDto.setSumOfMoney(new BigDecimal("500.00"));
         boolean transfer = creditCardService.transfer(creditCardTransactionDto);
         assertTrue(transfer);
     }
@@ -83,13 +82,12 @@ class CreditCardServiceImplIT extends BasicServiceIT {
         CreditCard targetCreditCard = creditCardService.create(id);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(sourceCreditCard.getNumber());
-        creditCardTransactionDto.setSumOfMoney("100,00");
-        creditCardTransactionDto.setLocale(Locale.getDefault());
+        creditCardTransactionDto.setSumOfMoney(new BigDecimal("100.00"));
         boolean deposit = creditCardService.deposit(creditCardTransactionDto);
         assertTrue(deposit);
         creditCardTransactionDto.setSourceCardNumber(sourceCreditCard.getNumber());
         creditCardTransactionDto.setTargetCardNumber(targetCreditCard.getNumber());
-        creditCardTransactionDto.setSumOfMoney("500,00");
+        creditCardTransactionDto.setSumOfMoney(new BigDecimal("500.00"));
         assertThrows(IllegalArgumentException.class, () -> creditCardService.transfer(creditCardTransactionDto));
         CreditCard sourceCreditCardFromDb = creditCardService.getById(sourceCreditCard.getId());
         CreditCard targetCreditCardFromDb = creditCardService.getById(targetCreditCard.getId());
@@ -122,4 +120,5 @@ class CreditCardServiceImplIT extends BasicServiceIT {
         assertEquals(cards.get(0).getAccountId(), accountId);
         assertEquals(cards.get(cards.size() - 1).getAccountId(), accountId);
     }
+    
 }

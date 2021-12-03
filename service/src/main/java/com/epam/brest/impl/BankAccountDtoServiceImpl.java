@@ -1,8 +1,8 @@
 package com.epam.brest.impl;
 
 import com.epam.brest.dao.BankAccountDtoDao;
-import com.epam.brest.dao.impl.BankAccountSpringJdbcDao;
 import com.epam.brest.model.dto.BankAccountDto;
+import com.epam.brest.model.dto.BankAccountFilterDto;
 import com.epam.brest.service.BankAccountDtoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +27,12 @@ public class BankAccountDtoServiceImpl implements BankAccountDtoService {
     public List<BankAccountDto> getAllWithTotalCards() {
         LOGGER.debug("getAllWithTotalCards()");
         return bankAccountDtoDao.getAllWithTotalCards();
+    }
+
+    @Override
+    public List<BankAccountDto> getAllWithTotalCards(BankAccountFilterDto bankAccountFilterDto) {
+        LOGGER.debug("getAllWithTotalCards(bankAccountFilterDto={})", bankAccountFilterDto);
+        return bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
     }
 
 }

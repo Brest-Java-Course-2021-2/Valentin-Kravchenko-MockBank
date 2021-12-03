@@ -45,8 +45,7 @@ public abstract class AbstractSpringJdbcDao<T extends BasicEntity> {
     public T create(String sql, T entity) {
         LOGGER.info("create(sql={}, entity={})", sql, entity);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        BeanPropertySqlParameterSource beanPropertySqlParameterSource = new BeanPropertySqlParameterSource(entity);
-        SqlParameterSource sqlParameterSource = DaoUtils.extractSqlParameterSource(beanPropertySqlParameterSource);
+        SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(entity);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
         Integer id = Objects.requireNonNull(keyHolder.getKey()).intValue();
         entity.setId(id);
@@ -55,8 +54,7 @@ public abstract class AbstractSpringJdbcDao<T extends BasicEntity> {
 
     public Integer update(String sql, T entity) {
         LOGGER.info("update(sql={}, entity={})", sql, entity);
-        BeanPropertySqlParameterSource beanPropertySqlParameterSource = new BeanPropertySqlParameterSource(entity);
-        SqlParameterSource sqlParameterSource = DaoUtils.extractSqlParameterSource(beanPropertySqlParameterSource);
+        SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(entity);
         return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 

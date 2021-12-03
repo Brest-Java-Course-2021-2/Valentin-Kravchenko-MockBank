@@ -5,12 +5,13 @@ import com.epam.brest.model.dto.CreditCardTransactionDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.text.NumberFormat;
-import java.text.ParsePosition;
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Objects;
 
 import static com.epam.brest.constant.ControllerConstant.*;
@@ -21,6 +22,7 @@ public class CreditCardTransactionDtoValidator implements Validator {
     private static final Logger LOGGER = LogManager.getLogger(CreditCardTransactionDtoValidator.class);
 
     private final BankDataGenerator bankDataGenerator;
+    private final NumberStyleFormatter numberStyleFormatter;
 
     @Value("${card.number.regexp}")
     private String numberRegexp;
@@ -28,8 +30,10 @@ public class CreditCardTransactionDtoValidator implements Validator {
     @Value("${card.sum.money.regexp}")
     private String sumOfMoneyRegexp;
 
-    public CreditCardTransactionDtoValidator(BankDataGenerator bankDataGenerator) {
+    public CreditCardTransactionDtoValidator(BankDataGenerator bankDataGenerator,
+                                             NumberStyleFormatter numberStyleFormatter) {
         this.bankDataGenerator = bankDataGenerator;
+        this.numberStyleFormatter = numberStyleFormatter;
     }
 
     @Override
@@ -39,8 +43,8 @@ public class CreditCardTransactionDtoValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
+        LOGGER.debug("validate(target={})", target);
         CreditCardTransactionDto creditCardTransactionDto = (CreditCardTransactionDto) target;
-        LOGGER.debug("validate(creditCardTransactionDto={})", creditCardTransactionDto);
         String sourceCardNumber = creditCardTransactionDto.getSourceCardNumber();
         String targetCardNumber = creditCardTransactionDto.getTargetCardNumber();
         if (Objects.nonNull(sourceCardNumber)) {
@@ -54,16 +58,16 @@ public class CreditCardTransactionDtoValidator implements Validator {
     }
 
     private void validateSumOfMoney(CreditCardTransactionDto creditCardTransactionDto, Errors errors) {
-        String sumOfMoney = creditCardTransactionDto.getSumOfMoney();
-        LOGGER.info("validateSumOfMoney(sumOfMoney={})", sumOfMoney);
-        if(!sumOfMoney.matches(sumOfMoneyRegexp)) {
-            errors.rejectValue(SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
+        LOGGER.info("validateSumOfMoney(valueSumOfMoney={})", creditCardTransactionDto.getValueSumOfMoney());
+        if(!creditCardTransactionDto.getValueSumOfMoney().matches(sumOfMoneyRegexp)) {
+            errors.rejectValue(VALUE_SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
         } else {
-            NumberFormat numberFormat = NumberFormat.getInstance(creditCardTransactionDto.getLocale());
-            ParsePosition parsePosition = new ParsePosition(0);
-            numberFormat.parse(sumOfMoney, parsePosition);
-            if(sumOfMoney.length() != parsePosition.getIndex()) {
-                errors.rejectValue(SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
+            try {
+                BigDecimal sumOfMoney = (BigDecimal) numberStyleFormatter.parse(creditCardTransactionDto.getValueSumOfMoney(),
+                                                                                creditCardTransactionDto.getLocale());
+                creditCardTransactionDto.setSumOfMoney(sumOfMoney);
+            } catch (ParseException e) {
+                errors.rejectValue(VALUE_SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
             }
         }
     }
