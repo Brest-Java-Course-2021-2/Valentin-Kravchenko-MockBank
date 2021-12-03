@@ -29,11 +29,12 @@ class ServiceUtilsTest {
         BankAccount bankAccountTarget= new BankAccount();
         bankAccountTarget.setId(1);
         bankAccountTarget.setCustomer("Old Customer");
-        bankAccountTarget.setRegistrationDate(LocalDate.parse("2021-11-27"));
+        bankAccountTarget.setRegistrationDate(LocalDate.now());
         bankAccountTarget.setNumber("Number");
         ServiceUtils.copyProperties(bankAccountSource, bankAccountTarget);
         assertEquals(bankAccountTarget.getCustomer(), "New Customer");
         assertEquals(bankAccountTarget.getNumber(), "Number");
-        assertEquals(bankAccountTarget.getRegistrationDate(), LocalDate.parse("2021-11-27"));
+        assertEquals(bankAccountTarget.getRegistrationDate(), LocalDate.now());
     }
+    
 }

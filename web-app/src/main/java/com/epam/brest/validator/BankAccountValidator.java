@@ -26,8 +26,8 @@ public class BankAccountValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
+        LOGGER.debug("validate(target={})", target);
         BankAccount bankAccount = (BankAccount) target;
-        LOGGER.debug("validate(bankAccount={})", bankAccount);
         if (!bankAccount.getCustomer().matches(customerRegexp)) {
             errors.rejectValue(CUSTOMER, ERROR_CODE_CUSTOMER);
         }

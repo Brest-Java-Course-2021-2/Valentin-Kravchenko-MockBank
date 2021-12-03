@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class CreditCardControllerTest extends BasicControllerTest {
+class CreditCardControllerIT extends BasicControllerTest {
 
     private final CreditCardService creditCardService;
 
-    public CreditCardControllerTest(@Autowired CreditCardService creditCardService) {
+    public CreditCardControllerIT(@Autowired CreditCardService creditCardService) {
         this.creditCardService = creditCardService;
     }
 

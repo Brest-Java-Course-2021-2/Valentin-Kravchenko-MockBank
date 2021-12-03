@@ -17,11 +17,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class BankAccountControllerTest extends BasicControllerTest {
+class BankAccountControllerIT extends BasicControllerTest {
 
     private final BankAccountService bankAccountService;
 
-    public BankAccountControllerTest(@Autowired BankAccountService bankAccountService) {
+    public BankAccountControllerIT(@Autowired BankAccountService bankAccountService) {
         this.bankAccountService = bankAccountService;
     }
 

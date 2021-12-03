@@ -64,8 +64,8 @@ public class CreditCardTransactionController {
                           RedirectAttributes redirectAttributes) {
         LOGGER.debug("depositPOST(/transaction/card/{}/deposit, card={})", id, creditCardTransactionDto);
         if (bindingResult.hasErrors()) {
-            LOGGER.error("depositPOST(/transaction/card/{}/deposit, errorFields={})",
-                         id, ControllerUtils.extractErrorFields(bindingResult));
+            LOGGER.warn("depositPOST(/transaction/card/{}/deposit, errorFields={})",
+                        id, ControllerUtils.extractErrorFields(bindingResult));
             return TRANSACTION;
         }
         boolean isDeposit = creditCardService.deposit(creditCardTransactionDto);
@@ -92,8 +92,8 @@ public class CreditCardTransactionController {
                            RedirectAttributes redirectAttributes) {
         LOGGER.debug("transferPOST(/transaction/card/{}/transfer, card={})", id, creditCardTransactionDto);
         if (bindingResult.hasErrors()) {
-            LOGGER.error("transferPOST(/transaction/card/{}/transfer, errorFields={})",
-                         id, ControllerUtils.extractErrorFields(bindingResult));
+            LOGGER.warn("transferPOST(/transaction/card/{}/transfer, errorFields={})",
+                        id, ControllerUtils.extractErrorFields(bindingResult));
             return TRANSACTION;
         }
         boolean isTransfer = creditCardService.transfer(creditCardTransactionDto);

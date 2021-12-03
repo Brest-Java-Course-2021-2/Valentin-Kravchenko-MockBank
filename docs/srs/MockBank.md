@@ -32,10 +32,9 @@ The application allows users to:
     the search patterns  
     <img alt="Slide 2" height="60%" src="https://user-images.githubusercontent.com/75541561/140600578-0840936a-c039-4991-a7e5-3afaca79d9c6.PNG" width="60%"/>
   * In the case, there are no bank accounts matching the search patterns, the system generates an info message  
-    "No data found matching the given filter criteria"
-  * In the case, the search patterns are invalid, the system generates error message "Filter criteria are incorrect"
-  * To cancel the filter, the user clicks the **RESET** and the system generates and 
-    displays a list of all bank accounts
+    "No data was found matching the given search pattern(s)"
+  * In the case, the search patterns are invalid, the system generates the error message "Search pattern is incorrect!"
+  * To cancel the filter, the user clicks the **RESET** and the system generates and displays a list of all bank accounts
   * The search pattern for the account number is entered in the field located above the Number column, and for the client 
     it is entered in the field located above the Client column
 ##### Action to Edit a Bank Account:

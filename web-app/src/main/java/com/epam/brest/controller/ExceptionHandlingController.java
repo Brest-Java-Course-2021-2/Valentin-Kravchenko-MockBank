@@ -10,17 +10,15 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static com.epam.brest.constant.ControllerConstant.*;
+import static javax.servlet.http.HttpServletResponse.*;
 
 @ControllerAdvice
 public class ExceptionHandlingController {
 
     private static final Logger LOGGER = LogManager.getLogger(ExceptionHandlingController.class);
-
-    @Value("${exception.error}")
-    private String exceptionError;
 
     @Value("${handler.found.exception.error}")
     private String handlerError;
@@ -29,33 +27,34 @@ public class ExceptionHandlingController {
     private String propertyError;
 
     @ExceptionHandler({IllegalArgumentException.class})
-    public String handleError(Exception ex, RedirectAttributes redirectAttributes) {
-        LOGGER.error("handleError(IllegalArgumentException, message={})", ex.getMessage());
-        redirectAttributes.addFlashAttribute(ERROR, ex.getMessage());
-        return ex.getMessage().contains("account") ? REDIRECT_ACCOUNTS : REDIRECT_CARDS;
+    public String handleError(IllegalArgumentException e, RedirectAttributes redirectAttributes) {
+        LOGGER.warn("handleError(IllegalArgumentException.class, message={})", e.getMessage());
+        redirectAttributes.addFlashAttribute(ERROR, e.getMessage());
+        return e.getMessage().contains("account") ? REDIRECT_ACCOUNTS : REDIRECT_CARDS;
     }
 
     @ExceptionHandler({NoHandlerFoundException.class})
-    public String handleError(HttpServletRequest request, Model model) {
-        String error = String.format(handlerError, request.getRequestURI());
-        LOGGER.error("handleError(NoHandlerFoundException, message={})", error);
-        model.addAttribute(ERROR, error);
+    public String handleError(HttpServletResponse httpServletResponse, NoHandlerFoundException e, Model model) {
+        LOGGER.error("handleError(NoHandlerFoundException.class)", e);
+        httpServletResponse.setStatus(SC_NOT_FOUND);
+        model.addAttribute(ERROR, handlerError);
         return ERROR;
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    public String handleError(HttpServletRequest request, MethodArgumentTypeMismatchException ex, Model model) {
-        String error = String.format(propertyError, request.getRequestURI(), ex.getName(), ex.getValue());
-        LOGGER.error("handleError(MethodArgumentTypeMismatchException, message={})", error);
+    public String handleError(HttpServletResponse httpServletResponse, MethodArgumentTypeMismatchException e, Model model) {
+        LOGGER.error("handleError(MethodArgumentTypeMismatchException.class)", e);
+        httpServletResponse.setStatus(SC_BAD_REQUEST);
+        String error = String.format(propertyError, e.getName(), e.getValue());
         model.addAttribute(ERROR, error);
         return ERROR;
     }
 
     @ExceptionHandler({Exception.class})
-    public String handleError(HttpServletRequest request, Exception ex, Model model) {
-        String error = String.format(exceptionError, request.getRequestURI(), ex.getMessage());
-        LOGGER.error("handleError(Exception, message={})", error);
-        model.addAttribute(ERROR, error);
+    public String handleError(HttpServletResponse httpServletResponse, Exception e, Model model) {
+        LOGGER.error("handleError(Exception.class)", e);
+        httpServletResponse.setStatus(SC_INTERNAL_SERVER_ERROR);
+        model.addAttribute(ERROR, e.getMessage());
         return ERROR;
     }
 

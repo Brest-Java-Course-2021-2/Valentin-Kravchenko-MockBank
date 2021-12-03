@@ -1,19 +1,24 @@
 package com.epam.brest.controller;
 
 import com.epam.brest.model.dto.BankAccountDto;
+import com.epam.brest.model.dto.BankAccountFilterDto;
 import com.epam.brest.service.BankAccountDtoService;
+import com.epam.brest.util.ControllerUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-import static com.epam.brest.constant.ControllerConstant.ACCOUNTS;
+import static com.epam.brest.constant.ControllerConstant.*;
 
 @Controller
 @RequestMapping("/accounts")
@@ -22,17 +27,47 @@ public class BankAccountDtoController {
     private static final Logger LOGGER = LogManager.getLogger(BankAccountDtoController.class);
 
     private final BankAccountDtoService bankAccountDtoService;
+    private final Validator validator;
 
-    public BankAccountDtoController(BankAccountDtoService bankAccountDtoService) {
+    @Value("${filter.error}")
+    private String filterError;
+
+    public BankAccountDtoController(BankAccountDtoService bankAccountDtoService,
+                                    @Qualifier("bankAccountFilterDtoValidator") Validator validator) {
         this.bankAccountDtoService = bankAccountDtoService;
+        this.validator = validator;
+    }
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(validator);
     }
 
     @GetMapping()
     public String accounts(Model model) {
-        LOGGER.debug("accounts(/accounts)");
+        LOGGER.debug("accountsGET(/accounts)");
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
         model.addAttribute(ACCOUNTS, accounts);
-        LOGGER.debug("accounts(model={})", model);
+        LOGGER.debug("accountsGET(model={})", model);
+        return ACCOUNTS;
+    }
+
+    @PostMapping()
+    public String accounts(@Valid @ModelAttribute(FILTER) BankAccountFilterDto bankAccountFilterDto,
+                           BindingResult bindingResult,
+                           Model model) {
+        LOGGER.debug("accountsPOST(/accounts, bankAccountFilterDto={})", bankAccountFilterDto);
+        if (bindingResult.hasErrors()) {
+            LOGGER.warn("accountsPOST(/accounts, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
+            return ACCOUNTS;
+        }
+        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
+        if (accounts.isEmpty()) {
+            LOGGER.warn("accountsPOST(/accounts, accounts={})", accounts);
+            model.addAttribute(ERROR, filterError);
+        }
+        model.addAttribute(ACCOUNTS, accounts);
+        LOGGER.debug("accountsPOST(model={})", model);
         return ACCOUNTS;
     }
 

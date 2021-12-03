@@ -3,6 +3,7 @@ package com.epam.brest.dao.impl;
 import com.epam.brest.dao.BankAccountDao;
 import com.epam.brest.dao.BankAccountDtoDao;
 import com.epam.brest.model.dto.BankAccountDto;
+import com.epam.brest.model.dto.BankAccountFilterDto;
 import com.epam.brest.model.entity.BankAccount;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,31 @@ class BankAccountDtoSpringJdbcDaoIT extends BasicDaoIT {
         assertNotNull(accounts);
         int countAfter = accounts.size();
         assertEquals(countBefore, countAfter - 1);
+    }
+
+    @Test
+    void GetAllWithTotalCardsFilter() {
+        //Case 1
+        BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
+        String number = "S8416E1PX";
+        String customer = "vano";
+        bankAccountFilterDto.setNumber(number);
+        bankAccountFilterDto.setCustomer(customer);
+        List<BankAccountDto> accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+        assertEquals(accounts.size(), 1);
+        assertTrue(accounts.get(0).getNumber().contains(number));
+        assertTrue(accounts.get(0).getCustomer().contains(customer));
+        //case 2
+        bankAccountFilterDto.setCustomer(null);
+        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+        assertEquals(accounts.size(), 1);
+        assertTrue(accounts.get(0).getNumber().contains(number));
+        //case 3
+        customer = "Cusmoter";
+        bankAccountFilterDto.setNumber(null);
+        bankAccountFilterDto.setCustomer(customer);
+        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+        assertEquals(accounts.size(), 0);
     }
 
 }

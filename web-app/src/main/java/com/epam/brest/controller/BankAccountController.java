@@ -74,7 +74,7 @@ public class BankAccountController {
                          RedirectAttributes redirectAttributes){
         LOGGER.debug("create(/account, bankAccount={})", bankAccount);
         if (bindingResult.hasErrors()) {
-            LOGGER.error("create(/account, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
+            LOGGER.warn("create(/account, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
             return ACCOUNT;
         }
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
@@ -90,7 +90,7 @@ public class BankAccountController {
                          RedirectAttributes redirectAttributes) {
         LOGGER.debug("update(/account/{}, bankAccount={})", id, bankAccount);
         if (bindingResult.hasErrors()) {
-            LOGGER.error("update(/account, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
+            LOGGER.warn("update(/account, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
             return ACCOUNT;
         }
         bankAccount.setId(id);

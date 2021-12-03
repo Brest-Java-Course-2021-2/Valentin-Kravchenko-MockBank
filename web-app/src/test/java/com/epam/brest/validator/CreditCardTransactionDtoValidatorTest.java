@@ -12,7 +12,7 @@ import org.springframework.validation.Validator;
 
 import java.util.Locale;
 
-import static com.epam.brest.constant.ControllerConstant.SUM_OF_MONEY;
+import static com.epam.brest.constant.ControllerConstant.VALUE_SUM_OF_MONEY;
 import static com.epam.brest.constant.ControllerConstant.TARGET_CARD_NUMBER;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,89 +29,73 @@ class CreditCardTransactionDtoValidatorTest {
     }
 
     @Test
-    void creditCardIsInvalidCase1() {
+    void validateCreditCardIsInvalid() {
+        // Case 1
         String invalidCardNumber = "4929554996657100";
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(invalidCardNumber);
-        creditCardTransactionDto.setSumOfMoney("100,223");
+        creditCardTransactionDto.setValueSumOfMoney("100,223");
         creditCardTransactionDto.setLocale(new Locale(RU));
         DataBinder dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(TARGET_CARD_NUMBER));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(SUM_OF_MONEY));
-    }
-
-    @Test
-    void creditCardIsInvalidCase2() {
-        String invalidCardNumber = "492955499665710w";
-        CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
-        creditCardTransactionDto.setTargetCardNumber(invalidCardNumber);
-        creditCardTransactionDto.setSumOfMoney("1000333444,2");
+        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
+        // Case 1
+        creditCardTransactionDto.setTargetCardNumber("492955499665710w");
+        creditCardTransactionDto.setValueSumOfMoney("1000333444,2");
         creditCardTransactionDto.setLocale(new Locale(RU));
-        DataBinder dataBinder = new DataBinder(creditCardTransactionDto);
+        dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(TARGET_CARD_NUMBER));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(SUM_OF_MONEY));
-    }
-
-    @Test
-    void creditCardIsInvalidCase3() {
+        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
+        // Case 3
         String validCardNumber = "4024007151271862";
-        CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setSourceCardNumber(validCardNumber);
         creditCardTransactionDto.setTargetCardNumber(validCardNumber);
-        creditCardTransactionDto.setSumOfMoney("-1000");
+        creditCardTransactionDto.setValueSumOfMoney("-1000");
         creditCardTransactionDto.setLocale(new Locale(RU));
-        DataBinder dataBinder = new DataBinder(creditCardTransactionDto);
+        dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(TARGET_CARD_NUMBER));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(SUM_OF_MONEY));
-    }
-
-    @Test
-    void creditCardIsInvalidCase4() {
-        String cardNumber = "Card number";
-        CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
-        creditCardTransactionDto.setTargetCardNumber(cardNumber);
-        creditCardTransactionDto.setSumOfMoney("1000.55");
+        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
+        // Case 4
+        creditCardTransactionDto.setTargetCardNumber("4929554$96657100");
+        creditCardTransactionDto.setValueSumOfMoney("1000.55");
         creditCardTransactionDto.setLocale(new Locale(RU));
-        DataBinder dataBinder = new DataBinder(creditCardTransactionDto);
+        dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(TARGET_CARD_NUMBER));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(SUM_OF_MONEY));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
     }
 
     @Test
-    void creditCardIsValidCase1() {
+    void validateCreditCardIsValid() {
+        // Case 1
         String validCardNumber = "4929554996657108";
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(validCardNumber);
-        creditCardTransactionDto.setSumOfMoney("2005,55");
+        creditCardTransactionDto.setValueSumOfMoney("2005,55");
         creditCardTransactionDto.setLocale(new Locale(RU));
         DataBinder dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());
-    }
-
-    @Test
-    void creditCardIsValidCase2() {
+        // Case 2
         String validCardNumber1 = "4929554996657108";
         String validCardNumber2 = "4024007151271862";
-        CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setSourceCardNumber(validCardNumber1);
         creditCardTransactionDto.setTargetCardNumber(validCardNumber2);
-        creditCardTransactionDto.setSumOfMoney("5005");
+        creditCardTransactionDto.setValueSumOfMoney("50005");
         creditCardTransactionDto.setLocale(new Locale(RU));
-        DataBinder dataBinder = new DataBinder(creditCardTransactionDto);
+        dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());

@@ -24,7 +24,7 @@ class BankAccountSpringJdbcDaoIT extends BasicDaoIT {
     }
 
     @BeforeEach
-    void init() {
+    void setup() {
         accounts = bankAccountDao.getAll();
         firstBankAccount = accounts.get(0);
         lastBankAccount = accounts.get(accounts.size() - 1);

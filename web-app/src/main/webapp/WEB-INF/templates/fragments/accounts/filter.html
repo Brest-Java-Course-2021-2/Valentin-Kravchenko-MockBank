@@ -2,25 +2,53 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
 
-<div class="row mb-2 gy-2" th:fragment="filter">
-    <div class="col-lg-4 col-md-4">
-        <input type="text" class="form-control" placeholder="Account Number" />
+<!--/*@thymesVar id="filter" type="com.epam.brest.model.dto.BankAccountFilterDto"*/-->
+<form class="row mb-2 gy-2"
+      th:fragment="filter"
+      th:action="@{/accounts}"
+      th:object="${filter}"
+      method="post">
+    <div class="col-lg-4 col-md-4 position-relative">
+        <input type="text"
+               name="number"
+               class="form-control"
+               th:placeholder="#{accounts.number.placeholder}"
+               th:value="${filter?.number}"
+               th:classappend="${filter} and ${#fields.hasErrors('number')} ? 'is-invalid'"/>
+        <div class="invalid-tooltip"
+             th:if="${filter} and ${#fields.hasErrors('number')}"
+             th:errors="*{number}">
+            Number Error
+        </div>
     </div>
-    <div class="col-lg-3 col-md-4">
-        <input type="text" class="form-control" placeholder="Customer" />
+    <div class="col-lg-3 col-md-4 position-relative">
+        <input type="text"
+               name="customer"
+               class="form-control"
+               th:placeholder="#{accounts.customer.placeholder}"
+               th:value="${filter?.customer}"
+               th:classappend="${filter} and ${#fields.hasErrors('customer')} ? 'is-invalid'"/>
+        <div class="invalid-tooltip"
+             th:if="${filter} and ${#fields.hasErrors('customer')}"
+             th:errors="*{customer}">
+            Customer Error
+        </div>
     </div>
     <div class="col-lg-3 col-md-1">
     </div>
     <div class="col-lg-2 col-md-3 text-center my-auto">
         <div class="btn-group">
-            <a href="#" class="btn btn-info text-white" data-bs-toggle="button">
+            <button class="btn btn-info text-white"
+                    type="submit">
                 Apply
-            </a>
-            <a href="#" class="btn btn-warning text-white" data-bs-toggle="button">
+            </button>
+            <a href="../../accounts.html"
+               class="btn btn-warning text-white"
+               th:href="@{/accounts}">
                 Reset
             </a>
         </div>
     </div>
-</div>
+</form>
 
 </body>

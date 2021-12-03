@@ -11,13 +11,13 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class CreditCardDtoControllerTest extends BasicControllerTest {
+class CreditCardDtoControllerIT extends BasicControllerTest {
 
     private final CreditCardDtoService creditCardDtoService;
 
     private List<CreditCardDto> cards;
 
-    public CreditCardDtoControllerTest(@Autowired CreditCardDtoService creditCardDtoService) {
+    public CreditCardDtoControllerIT(@Autowired CreditCardDtoService creditCardDtoService) {
         this.creditCardDtoService = creditCardDtoService;
     }
 
