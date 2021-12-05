@@ -31,7 +31,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @ComponentScan("com.epam.brest")
 @PropertySource({"classpath:controller.properties",
                  "classpath:templates.properties",
-                 "classpath:validation.properties"})
+        "classpath:regexp.properties"})
 public class WebAppConfig implements WebMvcConfigurer {
 
     @Override

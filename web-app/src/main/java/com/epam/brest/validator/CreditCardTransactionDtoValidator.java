@@ -48,12 +48,12 @@ public class CreditCardTransactionDtoValidator implements Validator {
         String sourceCardNumber = creditCardTransactionDto.getSourceCardNumber();
         String targetCardNumber = creditCardTransactionDto.getTargetCardNumber();
         if (Objects.nonNull(sourceCardNumber)) {
-            validateCardNumber(sourceCardNumber, errors, SOURCE_CARD_NUMBER, ERROR_CODE_SOURCE_CARD_NUMBER);
+            validateCardNumber(sourceCardNumber, errors, SOURCE_CARD_NUMBER, ERROR_CODE_CARD_NUMBER_SOURCE_NUMBER);
             if (Objects.equals(targetCardNumber, sourceCardNumber)) {
-                errors.rejectValue(TARGET_CARD_NUMBER, ERROR_CODE_TARGET_NUMBER_DIFFERENT);
+                errors.rejectValue(TARGET_CARD_NUMBER, ERROR_CODE_NON_DUPLICATE_TARGET_CARD_NUMBER);
             }
         }
-        validateCardNumber(targetCardNumber, errors, TARGET_CARD_NUMBER, ERROR_CODE_TARGET_CARD_NUMBER);
+        validateCardNumber(targetCardNumber, errors, TARGET_CARD_NUMBER, ERROR_CODE_CARD_NUMBER_TARGET_NUMBER);
         validateSumOfMoney(creditCardTransactionDto, errors);
     }
 

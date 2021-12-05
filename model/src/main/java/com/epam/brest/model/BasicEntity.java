@@ -3,12 +3,12 @@ package com.epam.brest.model;
 import java.util.Objects;
 
 /**
- *  Base entity model.
+ *  Basic entity model.
  */
 public abstract class BasicEntity {
 
     /**
-     *  Entity ID.
+     *  Entity id.
      */
     private Integer id;
 

@@ -9,13 +9,13 @@ public interface BankAccountDtoService {
 
     /**
      * Returns all the bank accounts, each with the number of credit cards linked with it.
-     * @return list of bank accounts
+     * @return the list of bank accounts
      */
     List<BankAccountDto> getAllWithTotalCards();
 
     /**
      * Returns all the bank accounts, each with the number of credit cards linked with it.
-     * The return is carried out according to a given filter.
+     * Return is carried out according to a given filter.
      * @param bankAccountFilterDto - bank account filter instance
      * @return the list of bank accounts
      */

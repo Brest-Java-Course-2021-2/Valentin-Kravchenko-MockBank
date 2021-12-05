@@ -1,5 +1,6 @@
 package com.epam.brest.service;
 
+import com.epam.brest.model.dto.CreditCardDateRangeDto;
 import com.epam.brest.model.dto.CreditCardDto;
 
 import java.util.List;
@@ -7,9 +8,17 @@ import java.util.List;
 public interface CreditCardDtoService {
 
     /**
-     * Retrieves all the credit cards, each with the linked bank account number.
-     * @return list of credit cards
+     * Returns all the credit cards, each with the linked bank account number.
+     * @return the list of credit cards
      */
     List<CreditCardDto> getAllWithAccountNumber();
+
+    /**
+     * Returns all the credit cards, each with the linked bank account number.
+     * Return is carried out according to a given range of credit card expiration dates.
+     * @param creditCardDateRangeDto - credit card date range instance
+     * @return the list of credit cards
+     */
+    List<CreditCardDto> getAllWithAccountNumber(CreditCardDateRangeDto creditCardDateRangeDto);
 
 }

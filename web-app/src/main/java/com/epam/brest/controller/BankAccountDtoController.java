@@ -29,7 +29,7 @@ public class BankAccountDtoController {
     private final BankAccountDtoService bankAccountDtoService;
     private final Validator validator;
 
-    @Value("${filter.error}")
+    @Value("${account.filter.error}")
     private String filterError;
 
     public BankAccountDtoController(BankAccountDtoService bankAccountDtoService,

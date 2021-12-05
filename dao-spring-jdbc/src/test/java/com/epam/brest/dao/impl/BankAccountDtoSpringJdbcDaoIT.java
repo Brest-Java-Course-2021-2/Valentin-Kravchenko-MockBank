@@ -60,7 +60,7 @@ class BankAccountDtoSpringJdbcDaoIT extends BasicDaoIT {
     }
 
     @Test
-    void GetAllWithTotalCardsFilter() {
+    void getAllWithTotalCardsByFilter() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
         String number = "S8416E1PX";

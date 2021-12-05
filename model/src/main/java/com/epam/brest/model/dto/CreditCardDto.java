@@ -26,12 +26,12 @@ public class CreditCardDto extends BasicEntity {
     private BigDecimal balance;
 
     /**
-     *  ID of the Bank account linked with the credit card.
+     *   Bank account id linked with the credit card.
      */
     private Integer accountId;
 
     /**
-     *   Number of the bank account linked with the credit card.
+     *   Bank account number linked with the credit card.
      */
     private String accountNumber;
 
@@ -74,4 +74,16 @@ public class CreditCardDto extends BasicEntity {
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+               "number='" + number + '\'' +
+               ", expirationDate=" + expirationDate +
+               ", balance=" + balance +
+               ", accountId=" + accountId +
+               ", accountNumber='" + accountNumber + '\'' +
+               '}';
+    }
+
 }
