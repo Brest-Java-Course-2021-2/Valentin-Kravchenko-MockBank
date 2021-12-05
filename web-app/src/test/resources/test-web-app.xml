@@ -31,7 +31,7 @@
                 <value>classpath:dao.properties</value>
                 <value>classpath:service.properties</value>
                 <value>classpath:controller.properties</value>
-                <value>classpath:validation.properties</value>
+                <value>classpath:regexp.properties</value>
                 <value>classpath:templates.properties</value>
             </list>
         </property>
@@ -73,6 +73,8 @@
         <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator" />
         <constructor-arg name="numberStyleFormatter" ref="numberStyleFormatter" />
     </bean>
+
+    <bean id="creditCardDateRangeDtoValidator" class="com.epam.brest.validator.CreditCardDateRangeDtoValidator"/>
 
     <bean id="localValidatorFactoryBean" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
         <property name="validationMessageSource" ref="messageSource"/>

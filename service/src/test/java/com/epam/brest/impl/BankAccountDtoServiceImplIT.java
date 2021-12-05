@@ -27,7 +27,7 @@ class BankAccountDtoServiceImplIT extends BasicServiceIT {
     }
 
     @Test
-    void GetAllWithTotalCardsFilter() {
+    void getAllWithTotalCardsByFilter() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
         String number = "TQ99IK";

@@ -1,6 +1,6 @@
 package com.epam.brest.model.dto;
 
-import com.epam.brest.model.annotation.WrapInPercents;
+import com.epam.brest.model.annotation.WrapInPercentSigns;
 
 /**
  *  Bank account data transfer object for filtering.
@@ -10,13 +10,13 @@ public class BankAccountFilterDto {
     /**
      *  Search pattern for an international bank account number.
      */
-    @WrapInPercents
+    @WrapInPercentSigns
     private String number;
 
     /**
      *  Search pattern for a full name of the bank customer.
      */
-    @WrapInPercents
+    @WrapInPercentSigns
     private String customer;
 
     public String getNumber() {

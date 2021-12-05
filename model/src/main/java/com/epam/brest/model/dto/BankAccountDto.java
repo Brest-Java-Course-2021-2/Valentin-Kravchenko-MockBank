@@ -61,4 +61,14 @@ public class BankAccountDto extends BasicEntity {
         this.totalCards = totalCards;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+               "number='" + number + '\'' +
+               ", customer='" + customer + '\'' +
+               ", registrationDate=" + registrationDate +
+               ", totalCards=" + totalCards +
+               '}';
+    }
+
 }

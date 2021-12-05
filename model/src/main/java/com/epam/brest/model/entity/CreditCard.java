@@ -27,7 +27,7 @@ public class CreditCard extends BasicEntity {
     private BigDecimal balance;
 
     /**
-     *  ID of the bank account linked with the credit card.
+     *  Bank account id linked with the credit card.
      */
     private Integer accountId;
 
