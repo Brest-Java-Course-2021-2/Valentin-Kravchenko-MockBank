@@ -1,17 +1,24 @@
 package com.epam.brest.controller;
 
+import com.epam.brest.model.dto.CreditCardDateRangeDto;
 import com.epam.brest.model.dto.CreditCardDto;
 import com.epam.brest.service.CreditCardDtoService;
+import com.epam.brest.util.ControllerUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-import static com.epam.brest.constant.ControllerConstant.CARDS;
+import static com.epam.brest.constant.ControllerConstant.*;
 
 @Controller
 @RequestMapping("/cards")
@@ -20,17 +27,47 @@ public class CreditCardDtoController {
     private static final Logger LOGGER = LogManager.getLogger(CreditCardDtoController.class);
 
     private final CreditCardDtoService creditCardDtoService;
+    private final Validator validator;
 
-    public CreditCardDtoController(CreditCardDtoService creditCardDtoService) {
+    @Value("${card.filter.error}")
+    private String filterError;
+
+    public CreditCardDtoController(CreditCardDtoService creditCardDtoService,
+                                   @Qualifier("creditCardDateRangeDtoValidator") Validator validator) {
         this.creditCardDtoService = creditCardDtoService;
+        this.validator = validator;
+    }
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(validator);
     }
 
     @GetMapping()
     public String cards(Model model) {
-        LOGGER.debug("cards(/cards)");
+        LOGGER.debug("cardsGET(/cards)");
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
         model.addAttribute(CARDS, cards);
         LOGGER.debug("cards(model={})", model);
+        return CARDS;
+    }
+
+    @PostMapping()
+    public String cards(@Valid @ModelAttribute(FILTER) CreditCardDateRangeDto creditCardDateRangeDto,
+                        BindingResult bindingResult,
+                        Model model) {
+        LOGGER.debug("cardsPOST(/cards)");
+        if (bindingResult.hasErrors()) {
+            LOGGER.warn("cardsPOST(/cards, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
+            return CARDS;
+        }
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
+        if (cards.isEmpty()) {
+            LOGGER.warn("cardsPOST(/accounts, accounts={})", cards);
+            model.addAttribute(ERROR, filterError);
+        }
+        model.addAttribute(CARDS, cards);
+        LOGGER.debug("cardsPOST(model={})", model);
         return CARDS;
     }
 

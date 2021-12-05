@@ -42,7 +42,7 @@ class CreditCardTransactionDtoValidatorTest {
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(TARGET_CARD_NUMBER));
         assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
-        // Case 1
+        // Case 2
         creditCardTransactionDto.setTargetCardNumber("492955499665710w");
         creditCardTransactionDto.setValueSumOfMoney("1000333444,2");
         creditCardTransactionDto.setLocale(new Locale(RU));

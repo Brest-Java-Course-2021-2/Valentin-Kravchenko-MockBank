@@ -31,7 +31,7 @@ The application allows users to:
   * In the case, the search patterns are valid, the system generates and displays a list of bank accounts matching
     the search patterns  
     <img alt="Slide 2" height="60%" src="https://user-images.githubusercontent.com/75541561/140600578-0840936a-c039-4991-a7e5-3afaca79d9c6.PNG" width="60%"/>
-  * In the case, there are no bank accounts matching the search patterns, the system generates an info message  
+  * In the case, there are no bank accounts matching the search patterns, the system generates the info message  
     "No data was found matching the given search pattern(s)"
   * In the case, the search patterns are invalid, the system generates the error message "Search pattern is incorrect!"
   * To cancel the filter, the user clicks the **RESET** and the system generates and displays a list of all bank accounts
@@ -46,25 +46,25 @@ The application allows users to:
     * The system validates the given data
     * In the case, the given data is valid:
       * The system updates this data in the database
-      * In the case, an error occurred while updating data, the system generates an error message "There was error updating account"  
+      * In the case, the error occurred while updating data, the system generates the error message "There was error updating account"  
       * In the case, the update was successful:
         * The system redirect the user to the accounts page
         * The system generates an info message "Bank account {account number is presented here} updated successfully"
         * The system generates and displays a list of all bank accounts with updated data
-    * In the case, the given data is invalid, the system generates an error message "The given data is incorrect"
+    * In the case, the given data is invalid, the system generates the error message "The given data is incorrect"
   * In the case, user clicks the **CANCEL**, the system doesn't update the selected bank account and 
     redirects the user to the accounts page
 ##### Action to Remove a Bank Account:
   * The user clicks the **Remove** in the line of the selected bank account
   * The system checks the removed account for linked credit cards 
-  * In the case, the removed account is linked to credit cards, the system generates an error message 
+  * In the case, the removed account is linked to credit cards, the system generates the error message 
     "Account {account number is presented here} cannot be deleted" and displays a list of linked credit cards with one
   * In the case, the removed account isn't linked with credit cards:
     * The system redirect the user to the page to confirm account deletion   
       <img alt="Slide 4" height="60%" src="https://user-images.githubusercontent.com/75541561/140600581-419e6f4c-dd3b-42b4-87b4-5f758163f433.PNG" width="60%"/>
     * If user confirms account deletion: 
       * The system removes it from the database
-      * In the case, an error occurred while deleting data, the system generates an error message "There was error removing account"
+      * In the case, the error occurred while deleting data, the system generates the error message "There was error removing account"
       * In the case, the deletion was successful:
         * The system generates and displays an updated list of all bank accounts
         * The system generates an info message "Bank account {account number is presented here} removed successfully"
@@ -74,7 +74,7 @@ The application allows users to:
   * The system automatically generates a new credit card number
   * The system automatically sets the new credit card balance to zero
   * The system inserts this data in the database
-  * In the case, an error occurred while inserting data, the system generates an error message "Failed to add a new credit card"
+  * In the case, the error occurred while inserting data, the system generates the error message "Failed to add a new credit card"
   * In the case, the insertion was successful:
     * The system generates an info message "New credit card {card number is presented here} successfully 
     linked to bank account {account number is presented here}"
@@ -91,12 +91,12 @@ The application allows users to:
     * In the case, the given data is valid:
       * The system automatically generates a new bank account number  
       * The system inserts the above data in the database
-      * In the case, an error occurred while inserting data, the system generates an error message "Failed to create a new bank account"
+      * In the case, the error occurred while inserting data, the system generates the error message "Failed to create a new bank account"
       * In the case, the insertion was successful:
         * The system redirect the user to the accounts page
         * The system generates an info message "New bank account created successfully"
         * The system generates and displays an updated list of all bank accounts
-    * In the case, the given data is invalid, the system generates an error message "The given data is incorrect" 
+    * In the case, the given data is invalid, the system generates the error message "The given data is incorrect" 
   * In the case, user clicks the **CANCEL**, the system doesn't create the account and redirects the user   
     to the accounts page
 ### 3.2 Credit card requirements
@@ -123,19 +123,21 @@ The application allows users to:
     * In the case, the date is specified only for "Expiry to", the system displays all the credit cards 
       that expire on the specified date
     * Otherwise, the system displays all the credit cards with expiration dates in the specified range
-  * In the case, the given dates are invalid, the system generates error message "The filter criteria are incorrect"
+  * In the case, there are no credit cards matching the given date range, the system generates the info message  
+  "No data was found matching the date range"
+  * In the case, the given dates are invalid, the system generates the error message "Date format is incorrect!"
   * To cancel the filter, the user clicks the **RESET** and the system generates and displays a list of all 
     credit cards
 ##### Action to Remove a Credit Card:
   * The user clicks the **Remove** in the line of the selected credit card
   * The system checks the current balance of the removed card
-  * In the case, the current balance of the removed card is greater than zero, the system generates an error message  
+  * In the case, the current balance of the removed card is greater than zero, the system generates the error message  
   "The credit card {card number is presented here} cannot be deleted"
   * In the case, the current balance of the removed card is zero:
       * The system asks the user to confirm the card deletion
       * If user confirms the card deletion:
         * The system removes it from the database
-        * In the case, an error occurred while deleting data, the system generates an error message "There was error
+        * In the case, the error occurred while deleting data, the system generates the error message "There was error
           removing card"
         * In the case, the deletion was successful:
           * The system generates and displays an updated list of all credit cards
@@ -152,12 +154,12 @@ The application allows users to:
   * In the case, the given sum of money is correct:
     * The system increases the credit card balance by the given amount of money
     * The system updates this balance in the database
-    * In the case, an error occurred while updating data, the system generates an error message "Failed to deposit money"
+    * In the case, the error occurred while updating data, the system generates the error message "Failed to deposit money"
       * In the case, the update was successful:
         * The system redirect the user to the cards page
         * The system generates and displays a list of all credit cards with updated balance
         * The system generates an info message "Deposit transaction with {card number is presented here} was successful"
-    * In the case, the given amount of money is incorrect, the system generates an error message "The given amount of money is incorrect"
+    * In the case, the given amount of money is incorrect, the system generates the error message "The given amount of money is incorrect"
   * In the case, user clicks the **CANCEL**, the system doesn't deposit money to the selected credit card and
   redirects the user to the cards page
 ##### Action to Transfer Money:
@@ -174,14 +176,14 @@ The application allows users to:
       * The system decreases the source credit card balance by the given sum of money
       * The system increases the target credit card balance by the given sum of money
       * The system updates these balances in the database
-      * In the case, an error occurred while updating data:  
-        * The system generates an error message "Failed to transfer money"
+      * In the case, the error occurred while updating data:  
+        * The system generates the error message "Failed to transfer money"
         * The system rolls back updates
       * In the case, the update was successful:
           * The system redirect the user to the cards page
           * The system generates and displays a list of all credit cards with updated balances
           * The system generates an info message "The transfer was successful"
-    * In the case, the check failed, the system generates an error message "The transfer isn't possible" 
-  * In the case, the given data is incorrect, the system generates an error message "The given data is incorrect"
+    * In the case, the check failed, the system generates the error message "The transfer isn't possible" 
+  * In the case, the given data is incorrect, the system generates the error message "The given data is incorrect"
   * In the case, user clicks the **CANCEL**, the system doesn't transfer money to the specified credit card and
     redirects the user to the cards page  

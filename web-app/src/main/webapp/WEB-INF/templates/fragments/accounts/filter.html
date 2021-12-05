@@ -7,6 +7,7 @@
       th:fragment="filter"
       th:action="@{/accounts}"
       th:object="${filter}"
+      th:classappend="${filter} and ${#fields.hasErrors} ? 'pb-4'"
       method="post">
     <div class="col-lg-4 col-md-4 position-relative">
         <input type="text"

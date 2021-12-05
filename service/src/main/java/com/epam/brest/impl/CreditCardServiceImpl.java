@@ -1,6 +1,7 @@
 package com.epam.brest.impl;
 
 import com.epam.brest.dao.CreditCardDao;
+import com.epam.brest.exception.CreditCardException;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
@@ -55,7 +56,7 @@ public class CreditCardServiceImpl implements CreditCardService {
                             .orElseThrow(() -> {
                                 String error = String.format(findByIdError, id);
                                 LOGGER.warn("getById(error={})", error);
-                                return new IllegalArgumentException(error);
+                                return new CreditCardException(error);
                             });
     }
 
@@ -66,7 +67,7 @@ public class CreditCardServiceImpl implements CreditCardService {
                             .orElseThrow(() -> {
                                 String error = String.format(findByNumberError, cardNumber);
                                 LOGGER.warn("getByNumber(error={})", error);
-                                return new IllegalArgumentException(error);
+                                return new CreditCardException(error);
                             });
     }
 
@@ -90,7 +91,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         if (creditCardFromDb.getBalance().signum() == 1) {
             String error = String.format(deleteError, creditCardFromDb.getNumber(), creditCardFromDb.getBalance().toString());
             LOGGER.warn("delete(error={})", error);
-            throw new IllegalArgumentException(error);
+            throw new CreditCardException(error);
         }
         creditCardDao.delete(creditCardFromDb.getId());
         return creditCardFromDb;
@@ -117,7 +118,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         if (sourceCreditCard.getBalance().compareTo(sumOfMoney) < 0) {
             String error = String.format(transferError, creditCardTransactionDto.getSourceCardNumber());
             LOGGER.warn("deposit(error={})", error);
-            throw new IllegalArgumentException(error);
+            throw new CreditCardException(error);
         }
         CreditCard targetCreditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
         LOGGER.debug("deposit(targetCreditCard={})", targetCreditCard);

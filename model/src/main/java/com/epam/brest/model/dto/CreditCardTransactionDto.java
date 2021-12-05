@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 /**
- *  Credit card data transfer object for performing transaction.
+ *  Credit card data transfer object
+ *  to perform a transaction.
  */
 public class CreditCardTransactionDto {
 
@@ -24,12 +25,12 @@ public class CreditCardTransactionDto {
     private String sourceCardNumber;
 
     /**
-     *  Deposit sum of money from http request.
+     *  Value of the deposit sum of money from http request.
      */
     private String valueSumOfMoney;
 
     /**
-     *  Locale from http request.
+     *  Current locale from http request.
      */
     private Locale locale;
 

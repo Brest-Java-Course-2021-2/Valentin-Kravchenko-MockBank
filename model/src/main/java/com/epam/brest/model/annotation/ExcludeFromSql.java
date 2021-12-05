@@ -6,14 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *  Indicates that a value of the annotated field is used in a sql query for the LIKE parameter.
+ *  Indicates that a value of the annotated field
+ *  isn't used in SQL
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface WrapInPercents {
-
-    /**
-     *  Template for wrapping in percents.
-     */
-    String template() default "%%%s%%";
+public @interface ExcludeFromSql {
 }
