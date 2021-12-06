@@ -29,8 +29,7 @@ class CreditCardTransactionControllerIT extends BasicControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("transaction"))
-                .andExpect(model().attribute("card",
-                                             hasProperty("targetCardNumber", notNullValue())));
+                .andExpect(model().attribute("card", hasProperty("targetCardNumber", notNullValue())));
     }
 
     @Test
@@ -102,8 +101,7 @@ class CreditCardTransactionControllerIT extends BasicControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("transaction"))
-                .andExpect(model().attribute("card",
-                                             hasProperty("sourceCardNumber", notNullValue())));
+                .andExpect(model().attribute("card", hasProperty("sourceCardNumber", notNullValue())));
     }
 
     @Test
