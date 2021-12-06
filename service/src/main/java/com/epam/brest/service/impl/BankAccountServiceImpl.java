@@ -4,6 +4,7 @@ import com.epam.brest.dao.BankAccountDao;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.BankAccountService;
+import com.epam.brest.service.exception.BankAccountException;
 import com.epam.brest.service.util.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +44,7 @@ public class BankAccountServiceImpl implements BankAccountService {
                              .orElseThrow(() -> {
                                 String error = String.format(findByIdError, id);
                                 LOGGER.warn("getById(error={})", error);
-                                return new IllegalArgumentException(error);
+                                return new BankAccountException(error);
                              });
     }
 
@@ -75,7 +76,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         if (!linkedCards.isEmpty()) {
             String error = String.format(deleteError, bankAccountFromDb.getNumber(), String.join(JOIN_DELIMITER, linkedCards));
             LOGGER.warn("delete(error={})", error);
-            throw new IllegalArgumentException(error);
+            throw new BankAccountException(error);
         }
         bankAccountDao.delete(bankAccountFromDb.getId());
         return bankAccountFromDb;
