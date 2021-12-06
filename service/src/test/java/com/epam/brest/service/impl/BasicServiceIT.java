@@ -1,14 +1,14 @@
-package com.epam.brest.dao.impl;
+package com.epam.brest.service.impl;
 
-import com.epam.brest.dao.config.SpringJdbcDaoConfig;
-import com.epam.brest.testdb.config.H2Config;
+import com.epam.brest.service.config.ServiceConfig;
+import com.epam.brest.generator.config.BankDataGeneratorConfig;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {H2Config.class, SpringJdbcDaoConfig.class})
+@ContextConfiguration(classes = {BankDataGeneratorConfig.class, ServiceConfig.class})
 @Transactional
-public class BasicDaoIT {
+public class BasicServiceIT {
 }
