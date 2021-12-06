@@ -5,26 +5,17 @@
 
     <bean id="numberStyleFormatter" class="org.springframework.format.number.NumberStyleFormatter"/>
 
-    <bean id="bankAccountValidator" class="com.epam.brest.webapp.validator.BankAccountValidator" />
-
-    <bean id="bankAccountFilterDtoValidator" class="com.epam.brest.webapp.validator.BankAccountFilterDtoValidator"/>
-
-    <bean id="creditCardTransactionDtoValidator" class="com.epam.brest.webapp.validator.CreditCardTransactionDtoValidator">
+    <bean id="bankAccountValidator" class="com.epam.brest.validator.BankAccountValidator" />
+    <bean id="bankAccountFilterDtoValidator" class="com.epam.brest.validator.BankAccountFilterDtoValidator"/>
+    <bean id="creditCardTransactionDtoValidator" class="com.epam.brest.validator.CreditCardTransactionDtoValidator">
         <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator" />
         <constructor-arg name="numberStyleFormatter" ref="numberStyleFormatter" />
     </bean>
 
-    <bean id="creditCardDateRangeDtoValidator" class="com.epam.brest.webapp.validator.CreditCardDateRangeDtoValidator"/>
-
     <bean id="simpleBankDataGenerator" class="com.epam.brest.generator.impl.SimpleBankDataGenerator" />
 
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:controller.properties</value>
-                <value>classpath:regexp.properties</value>
-            </list>
-        </property>
+        <property name="locations" value="validation.properties" />
     </bean>
 
 </beans>

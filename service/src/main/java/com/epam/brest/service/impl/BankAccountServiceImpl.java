@@ -1,11 +1,10 @@
-package com.epam.brest.service.impl;
+package com.epam.brest.impl;
 
 import com.epam.brest.dao.BankAccountDao;
-import com.epam.brest.service.exception.BankAccountException;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.BankAccountService;
-import com.epam.brest.service.util.ServiceUtils;
+import com.epam.brest.util.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.epam.brest.service.constant.ServiceConstant.JOIN_DELIMITER;
+import static com.epam.brest.constant.ServiceConstant.JOIN_DELIMITER;
 
 @Service
 @Transactional
@@ -44,7 +43,7 @@ public class BankAccountServiceImpl implements BankAccountService {
                              .orElseThrow(() -> {
                                 String error = String.format(findByIdError, id);
                                 LOGGER.warn("getById(error={})", error);
-                                return new BankAccountException(error);
+                                return new IllegalArgumentException(error);
                              });
     }
 
@@ -76,7 +75,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         if (!linkedCards.isEmpty()) {
             String error = String.format(deleteError, bankAccountFromDb.getNumber(), String.join(JOIN_DELIMITER, linkedCards));
             LOGGER.warn("delete(error={})", error);
-            throw new BankAccountException(error);
+            throw new IllegalArgumentException(error);
         }
         bankAccountDao.delete(bankAccountFromDb.getId());
         return bankAccountFromDb;

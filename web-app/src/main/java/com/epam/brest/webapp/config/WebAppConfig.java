@@ -1,7 +1,7 @@
-package com.epam.brest.webapp.config;
+package com.epam.brest.config;
 
-import com.epam.brest.webapp.formatter.BigDecimalPrinter;
-import com.epam.brest.webapp.formatter.LocalDateFormatter;
+import com.epam.brest.formatter.BigDecimalPrinter;
+import com.epam.brest.formatter.LocalDateFormatter;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,7 +23,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static com.epam.brest.webapp.constant.ControllerConstant.TEMPLATES;
+import static com.epam.brest.constant.ControllerConstant.TEMPLATES;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Configuration
@@ -31,7 +31,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @ComponentScan("com.epam.brest")
 @PropertySource({"classpath:controller.properties",
                  "classpath:templates.properties",
-                 "classpath:regexp.properties"})
+                 "classpath:validation.properties"})
 public class WebAppConfig implements WebMvcConfigurer {
 
     @Override
