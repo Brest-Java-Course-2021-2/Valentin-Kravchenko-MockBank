@@ -4,11 +4,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="localDateFormatter" class="com.epam.brest.formatter.LocalDateFormatter" />
-    <bean id="bigDecimalPrinter" class="com.epam.brest.formatter.BigDecimalPrinter" />
+    <bean id="localDateFormatter" class="com.epam.brest.webapp.formatter.LocalDateFormatter" />
+    <bean id="bigDecimalPrinter" class="com.epam.brest.webapp.formatter.BigDecimalPrinter" />
 
-    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-        <property name="locations" value="classpath:templates.properties" />
+    <bean id="propertySourcesPlaceholderConfigurer"
+          class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:controller.properties</value>
+                <value>classpath:templates.properties</value>
+            </list>
+        </property>
     </bean>
 
 </beans>

@@ -12,7 +12,7 @@
                            http://www.springframework.org/schema/context
                            https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-    <context:component-scan base-package="com.epam.brest.controller"/>
+    <context:component-scan base-package="com.epam.brest.webapp.controller"/>
 
     <mvc:default-servlet-handler/>
     <mvc:annotation-driven />
@@ -65,36 +65,36 @@
 
     <bean id="numberStyleFormatter" class="org.springframework.format.number.NumberStyleFormatter"/>
 
-    <bean id="bankAccountValidator" class="com.epam.brest.validator.BankAccountValidator" />
+    <bean id="bankAccountValidator" class="com.epam.brest.webapp.validator.BankAccountValidator" />
 
-    <bean id="bankAccountFilterDtoValidator" class="com.epam.brest.validator.BankAccountFilterDtoValidator"/>
+    <bean id="bankAccountFilterDtoValidator" class="com.epam.brest.webapp.validator.BankAccountFilterDtoValidator"/>
 
-    <bean id="creditCardTransactionDtoValidator" class="com.epam.brest.validator.CreditCardTransactionDtoValidator">
+    <bean id="creditCardTransactionDtoValidator" class="com.epam.brest.webapp.validator.CreditCardTransactionDtoValidator">
         <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator" />
         <constructor-arg name="numberStyleFormatter" ref="numberStyleFormatter" />
     </bean>
 
-    <bean id="creditCardDateRangeDtoValidator" class="com.epam.brest.validator.CreditCardDateRangeDtoValidator"/>
+    <bean id="creditCardDateRangeDtoValidator" class="com.epam.brest.webapp.validator.CreditCardDateRangeDtoValidator" />
 
     <bean id="localValidatorFactoryBean" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
         <property name="validationMessageSource" ref="messageSource"/>
     </bean>
 
-    <bean id="bankAccountServiceImpl" class="com.epam.brest.impl.BankAccountServiceImpl">
+    <bean id="bankAccountServiceImpl" class="com.epam.brest.service.impl.BankAccountServiceImpl">
         <constructor-arg name="bankAccountDao" ref="bankAccountSpringJdbcDao"/>
         <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator"/>
     </bean>
 
-    <bean id="bankAccountDtoServiceImpl" class="com.epam.brest.impl.BankAccountDtoServiceImpl">
+    <bean id="bankAccountDtoServiceImpl" class="com.epam.brest.service.impl.BankAccountDtoServiceImpl">
         <constructor-arg name="bankAccountDtoDao" ref="bankAccountDtoSpringJdbcDao"/>
     </bean>
 
-    <bean id="creditCardServiceImpl" class="com.epam.brest.impl.CreditCardServiceImpl">
+    <bean id="creditCardServiceImpl" class="com.epam.brest.service.impl.CreditCardServiceImpl">
         <constructor-arg name="creditCardDao" ref="creditCardSpringJdbcDao"/>
         <constructor-arg name="bankDataGenerator" ref="simpleBankDataGenerator"/>
     </bean>
 
-    <bean id="creditCardDtoServiceImpl" class="com.epam.brest.impl.CreditCardDtoServiceImpl">
+    <bean id="creditCardDtoServiceImpl" class="com.epam.brest.service.impl.CreditCardDtoServiceImpl">
         <constructor-arg name="creditCardDtoDao" ref="creditCardDtoSpringJdbcDao"/>
     </bean>
 
