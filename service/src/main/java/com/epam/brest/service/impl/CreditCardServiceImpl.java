@@ -1,11 +1,11 @@
-package com.epam.brest.impl;
+package com.epam.brest.service.impl;
 
 import com.epam.brest.dao.CreditCardDao;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.CreditCardService;
-import com.epam.brest.util.ServiceUtils;
+import com.epam.brest.service.util.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,14 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
 
-import static com.epam.brest.constant.ServiceConstant.INIT_BALANCE;
+import static com.epam.brest.service.constant.ServiceConstant.INIT_BALANCE;
+
 
 @Service
 @Transactional

@@ -38,7 +38,7 @@ class CreditCardTransactionControllerIT extends BasicControllerTest {
         CreditCard creditCardFromDb = creditCardService.getById(1);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("targetCardNumber", creditCardFromDb.getNumber());
-        params.add("sumOfMoney", "1000,55");
+        params.add("valueSumOfMoney", "1000,55");
         params.add("locale", "ru");
         mockMvc.perform(post("/transaction/card/1/deposit").params(params))
                .andExpect(status().is3xxRedirection())
@@ -56,43 +56,43 @@ class CreditCardTransactionControllerIT extends BasicControllerTest {
         CreditCard creditCardFromDb = creditCardService.getById(1);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("targetCardNumber", creditCardFromDb.getNumber());
-        params.add("sumOfMoney", "1000,555");
+        params.add("valueSumOfMoney", "1000,555");
         params.add("locale", "ru");
         mockMvc.perform(post("/transaction/card/1/deposit").params(params))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("transaction"))
-                .andExpect(model().attribute("card", hasProperty("sumOfMoney", is("1000,555"))));
+                .andExpect(model().attribute("card", hasProperty("valueSumOfMoney", is("1000,555"))));
         // Case 2
         params.clear();
         params.add("targetCardNumber", creditCardFromDb.getNumber());
-        params.add("sumOfMoney", "1000.55");
+        params.add("valueSumOfMoney", "1000.55");
         params.add("locale", "ru");
         mockMvc.perform(post("/transaction/card/1/deposit").params(params))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("transaction"))
-                .andExpect(model().attribute("card", hasProperty("sumOfMoney", is("1000.55"))));
+                .andExpect(model().attribute("card", hasProperty("valueSumOfMoney", is("1000.55"))));
         // Case 3
         params.clear();
         params.add("targetCardNumber", creditCardFromDb.getNumber());
-        params.add("sumOfMoney", "00000");
+        params.add("valueSumOfMoney", "0100,23");
         params.add("locale", "ru");
         mockMvc.perform(post("/transaction/card/1/deposit").params(params))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("transaction"))
-                .andExpect(model().attribute("card", hasProperty("sumOfMoney", is("00000"))));
+                .andExpect(model().attribute("card", hasProperty("valueSumOfMoney", is("0100,23"))));
         // Case 4
         params.clear();
         params.add("targetCardNumber", creditCardFromDb.getNumber());
-        params.add("sumOfMoney", "-1000");
+        params.add("valueSumOfMoney", "-1000");
         params.add("locale", "ru");
         mockMvc.perform(post("/transaction/card/1/deposit").params(params))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("transaction"))
-                .andExpect(model().attribute("card", hasProperty("sumOfMoney", is("-1000"))));
+                .andExpect(model().attribute("card", hasProperty("valueSumOfMoney", is("-1000"))));
 
     }
 
@@ -113,7 +113,7 @@ class CreditCardTransactionControllerIT extends BasicControllerTest {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("sourceCardNumber", creditCardFromDbSource.getNumber());
         params.add("targetCardNumber", creditCardFromDbTarget.getNumber());
-        params.add("sumOfMoney", "100,1");
+        params.add("valueSumOfMoney", "100,1");
         params.add("locale", "ru");
         mockMvc.perform(post("/transaction/card/1/transfer").params(params))
                .andExpect(status().is3xxRedirection())
@@ -136,7 +136,7 @@ class CreditCardTransactionControllerIT extends BasicControllerTest {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("sourceCardNumber", creditCardFromDbSource.getNumber());
         params.add("targetCardNumber", creditCardFromDbSource.getNumber());
-        params.add("sumOfMoney", "100,1");
+        params.add("valueSumOfMoney", "100,1");
         params.add("locale", "ru");
         mockMvc.perform(post("/transaction/card/1/transfer").params(params))
                 .andExpect(status().isOk())
@@ -148,7 +148,7 @@ class CreditCardTransactionControllerIT extends BasicControllerTest {
         String invalidCardNumber = "4929554996657100";
         params.add("sourceCardNumber", creditCardFromDbSource.getNumber());
         params.add("targetCardNumber", invalidCardNumber);
-        params.add("sumOfMoney", "100,1");
+        params.add("valueSumOfMoney", "100,1");
         params.add("locale", "ru");
         mockMvc.perform(post("/transaction/card/1/transfer").params(params))
                 .andExpect(status().isOk())

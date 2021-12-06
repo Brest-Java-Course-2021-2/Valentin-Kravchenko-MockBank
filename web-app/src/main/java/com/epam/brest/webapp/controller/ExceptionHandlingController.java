@@ -1,4 +1,4 @@
-package com.epam.brest.controller;
+package com.epam.brest.webapp.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static com.epam.brest.constant.ControllerConstant.*;
+import static com.epam.brest.webapp.constant.ControllerConstant.*;
 import static javax.servlet.http.HttpServletResponse.*;
 
 @ControllerAdvice
