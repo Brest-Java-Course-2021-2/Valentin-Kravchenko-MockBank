@@ -86,7 +86,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         CreditCard creditCardFromDb = getById(id);
         LOGGER.debug("delete(creditCardFromDb={})", creditCardFromDb);
         if (creditCardFromDb.getBalance().signum() == 1) {
-            String error = String.format(deleteError, creditCardFromDb.getNumber(), creditCardFromDb.getBalance().toString());
+            String error = String.format(deleteError, creditCardFromDb.getNumber(), creditCardFromDb.getBalance().toPlainString());
             LOGGER.warn("delete(error={})", error);
             throw new CreditCardException(error);
         }

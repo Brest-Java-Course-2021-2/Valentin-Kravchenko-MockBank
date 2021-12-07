@@ -3,6 +3,7 @@ package com.epam.brest.service.impl;
 import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.CreditCardService;
+import com.epam.brest.service.exception.CreditCardException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +42,7 @@ class CreditCardServiceImplIT extends BasicServiceIT {
     void deleteFailed() {
         CreditCard creditCard = new CreditCard();
         creditCard.setId(1);
-        assertThrows(IllegalArgumentException.class, () -> creditCardService.delete(creditCard.getId()));
+        assertThrows(CreditCardException.class, () -> creditCardService.delete(creditCard.getId()));
         CreditCard creditCardFromDb = creditCardService.getById(creditCard.getId());
         assertEquals(creditCardFromDb.getId(), 1);
     }
@@ -87,7 +88,7 @@ class CreditCardServiceImplIT extends BasicServiceIT {
         creditCardTransactionDto.setSourceCardNumber(sourceCreditCard.getNumber());
         creditCardTransactionDto.setTargetCardNumber(targetCreditCard.getNumber());
         creditCardTransactionDto.setSumOfMoney(new BigDecimal("500.00"));
-        assertThrows(IllegalArgumentException.class, () -> creditCardService.transfer(creditCardTransactionDto));
+        assertThrows(CreditCardException.class, () -> creditCardService.transfer(creditCardTransactionDto));
         CreditCard sourceCreditCardFromDb = creditCardService.getById(sourceCreditCard.getId());
         CreditCard targetCreditCardFromDb = creditCardService.getById(targetCreditCard.getId());
         assertEquals(sourceCreditCardFromDb.getBalance().intValue(), 100);

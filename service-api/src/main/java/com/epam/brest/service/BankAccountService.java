@@ -22,7 +22,7 @@ public interface BankAccountService extends GenericService<BankAccount> {
      * Removes a given bank account.
      * @param id - id of the bank account to delete
      * @return the instance of the deleted bank account
-     * @throws IllegalArgumentException if bank account has linked credit card
+     * @throws BankAccountException if bank account has linked credit card
      */
     BankAccount delete(Integer id);
 
