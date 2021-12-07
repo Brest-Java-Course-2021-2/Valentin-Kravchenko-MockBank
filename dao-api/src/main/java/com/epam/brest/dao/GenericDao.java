@@ -9,7 +9,7 @@ public interface GenericDao<T extends BasicEntity> {
 
     /**
      * Retrieves all entities.
-     * @return list of all entities
+     * @return the list of all entities
      */
     List<T> getAll();
 

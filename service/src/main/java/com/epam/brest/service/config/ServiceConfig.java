@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ComponentScan({"com.epam.brest.dao", "com.epam.brest.service"})
+@ComponentScan({"com.epam.brest.service"})
 @PropertySource({"classpath:service.properties"})
 public class ServiceConfig {
 }

@@ -15,10 +15,12 @@
         <module>dao-api</module>
         <module>dao-spring-jdbc</module>
         <module>service-api</module>
+        <module>service-rest</module>
         <module>service</module>
         <module>bank-data-generator-api</module>
         <module>bank-data-generator</module>
         <module>web-app</module>
+        <module>rest-app</module>
     </modules>
 
     <properties>
@@ -76,6 +78,11 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
+                <artifactId>service-rest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
                 <artifactId>test-db</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -96,11 +103,6 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
                 <version>${spring.version}</version>
             </dependency>
@@ -111,18 +113,8 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -261,11 +253,6 @@
                     <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-maven-plugin</artifactId>
                     <version>${jetty-maven-plugin.version}</version>
-                    <configuration>
-                        <webApp>
-                            <contextPath>/</contextPath>
-                        </webApp>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

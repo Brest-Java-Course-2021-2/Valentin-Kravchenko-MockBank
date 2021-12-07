@@ -74,7 +74,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         List<String> linkedCards = bankAccountDao.getLinkedCards(bankAccountFromDb.getId());
         LOGGER.debug("delete(bankAccountFromDb={})", bankAccountFromDb);
         if (!linkedCards.isEmpty()) {
-            String error = String.format(deleteError, bankAccountFromDb.getNumber(), String.join(JOIN_DELIMITER, linkedCards));
+            String error = String.format(deleteError, String.join(JOIN_DELIMITER, linkedCards), bankAccountFromDb.getNumber());
             LOGGER.warn("delete(error={})", error);
             throw new BankAccountException(error);
         }

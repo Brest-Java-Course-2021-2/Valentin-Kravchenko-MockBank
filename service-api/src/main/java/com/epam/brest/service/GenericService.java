@@ -8,7 +8,7 @@ public interface GenericService<T extends BasicEntity> {
      * Returns an entity by its id.
      * @param id - entity id
      * @return the entity with the given id
-     * @throws IllegalArgumentException if none found
+     * @throws RuntimeException if none found
      */
     T getById(Integer id);
 

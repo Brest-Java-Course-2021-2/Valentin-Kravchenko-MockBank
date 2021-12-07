@@ -11,7 +11,7 @@ public interface CreditCardService extends GenericService<CreditCard> {
      * Returns a credit card by its number.
      * @param number - credit card number
      * @return the credit card with the given number
-     * @throws IllegalArgumentException if none found
+     * @throws CreditCardException if none found
      */
     CreditCard getByNumber(String number);
 
@@ -26,7 +26,7 @@ public interface CreditCardService extends GenericService<CreditCard> {
      * Removes a credit card by its id.
      * @param id - id of the credit card to delete
      * @return the instance of the deleted credit card
-     * @throws IllegalArgumentException if credit card has a positive balance
+     * @throws CreditCardException if credit card has a positive balance
      */
     CreditCard delete(Integer id);
 
@@ -41,7 +41,7 @@ public interface CreditCardService extends GenericService<CreditCard> {
      * Transfers money between credit cards.
      * @param creditCardTransactionDto - CreditCardTransactionDto instance
      * @return true - if the transaction was successful, false - otherwise
-     * @throws IllegalArgumentException if source credit card doesn't contain enough money for the transfer
+     * @throws CreditCardException if source credit card doesn't contain enough money for the transfer
      */
     boolean transfer(CreditCardTransactionDto creditCardTransactionDto);
 
