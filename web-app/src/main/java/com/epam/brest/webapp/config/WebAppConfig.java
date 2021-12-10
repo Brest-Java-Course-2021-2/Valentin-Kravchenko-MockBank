@@ -4,7 +4,6 @@ import com.epam.brest.webapp.formatter.BigDecimalPrinter;
 import com.epam.brest.webapp.formatter.LocalDateFormatter;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -13,7 +12,6 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.format.Printer;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -27,8 +25,6 @@ import static com.epam.brest.webapp.constant.ControllerConstant.TEMPLATES;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Configuration
-@EnableWebMvc
-@ComponentScan("com.epam.brest")
 @PropertySource({"classpath:controller.properties",
                  "classpath:templates.properties",
                  "classpath:regexp.properties"})
@@ -36,9 +32,8 @@ public class WebAppConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        WebMvcConfigurer.super.addResourceHandlers(registry);
-        registry.addResourceHandler("/resources/static/css/**").addResourceLocations("/resources/static/css/");
-        registry.addResourceHandler("/resources/static/js/**").addResourceLocations("/resources/static/js/");
+        registry.addResourceHandler("/static/css/**").addResourceLocations("/static/css/");
+        registry.addResourceHandler("/static/js/**").addResourceLocations("/static/js/");
     }
 
     @Bean
@@ -80,9 +75,9 @@ public class WebAppConfig implements WebMvcConfigurer {
     @Bean
     public SpringResourceTemplateResolver templateResolver(){
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setPrefix("/WEB-INF/templates/");
+        templateResolver.setPrefix("classpath:/templates/");
         templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML5");
+        templateResolver.setTemplateMode("HTML");
         templateResolver.setCacheable(false);
         return templateResolver;
     }

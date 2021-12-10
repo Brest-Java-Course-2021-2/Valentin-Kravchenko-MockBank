@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan({"com.epam.brest.dao", "com.epam.brest.testdb"})
 @Import(H2Config.class)
 @PropertySource({"classpath:dao.properties"})
 public class SpringJdbcDaoConfig {

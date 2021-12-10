@@ -1,9 +1,9 @@
 package com.epam.brest.service.config;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource({"classpath:service.properties"})
+@ComponentScan({"com.epam.brest.dao", "com.epam.brest.service"})
 public class ServiceConfig {
 }
