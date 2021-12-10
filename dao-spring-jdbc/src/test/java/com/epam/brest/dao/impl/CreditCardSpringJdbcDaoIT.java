@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CreditCardSpringJdbcDaoIT extends BasicDaoIT {
+class CreditCardSpringJdbcDaoIT extends DaoTestConfiguration {
 
     private final CreditCardDao creditCardDao;
     private List<CreditCard> cards;
