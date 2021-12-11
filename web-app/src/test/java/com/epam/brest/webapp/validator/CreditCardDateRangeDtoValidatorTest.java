@@ -2,18 +2,18 @@ package com.epam.brest.webapp.validator;
 
 import com.epam.brest.model.dto.CreditCardDateRangeDto;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
-import static com.epam.brest.webapp.constant.ControllerConstant.*;
+import static com.epam.brest.webapp.constant.ControllerConstant.VALUE_FROM_DATE;
+import static com.epam.brest.webapp.constant.ControllerConstant.VALUE_TO_DATE;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
 @ContextConfiguration(locations = {"classpath*:test-validator.xml"})
 class CreditCardDateRangeDtoValidatorTest {
 

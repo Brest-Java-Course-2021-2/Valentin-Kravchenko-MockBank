@@ -5,6 +5,7 @@ import com.epam.brest.model.dto.BankAccountFilterDto;
 import com.epam.brest.service.BankAccountDtoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -16,11 +17,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class BankAccountDtoControllerIT extends BasicControllerTest {
+class BankAccountDtoControllerIT extends ControllerTestConfiguration {
 
+    private final MockMvc mockMvc;
     private final BankAccountDtoService bankAccountDtoService;
 
-    public BankAccountDtoControllerIT(@Autowired BankAccountDtoService bankAccountDtoService) {
+    public BankAccountDtoControllerIT(@Autowired MockMvc mockMvc,
+                                      @Autowired BankAccountDtoService bankAccountDtoService) {
+        this.mockMvc = mockMvc;
         this.bankAccountDtoService = bankAccountDtoService;
     }
 

@@ -6,6 +6,7 @@ import com.epam.brest.service.CreditCardDtoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -18,13 +19,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class CreditCardDtoControllerIT extends BasicControllerTest {
+class CreditCardDtoControllerIT extends ControllerTestConfiguration {
 
+    private final MockMvc mockMvc;
     private final CreditCardDtoService creditCardDtoService;
 
     private List<CreditCardDto> cards;
 
-    public CreditCardDtoControllerIT(@Autowired CreditCardDtoService creditCardDtoService) {
+    public CreditCardDtoControllerIT(@Autowired MockMvc mockMvc,
+                                     @Autowired CreditCardDtoService creditCardDtoService) {
+        this.mockMvc = mockMvc;
         this.creditCardDtoService = creditCardDtoService;
     }
 

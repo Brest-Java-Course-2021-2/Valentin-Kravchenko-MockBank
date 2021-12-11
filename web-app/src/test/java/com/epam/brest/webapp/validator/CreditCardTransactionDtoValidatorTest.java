@@ -2,21 +2,20 @@ package com.epam.brest.webapp.validator;
 
 import com.epam.brest.model.dto.CreditCardTransactionDto;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
 import java.util.Locale;
 
-import static com.epam.brest.webapp.constant.ControllerConstant.VALUE_SUM_OF_MONEY;
 import static com.epam.brest.webapp.constant.ControllerConstant.TARGET_CARD_NUMBER;
+import static com.epam.brest.webapp.constant.ControllerConstant.VALUE_SUM_OF_MONEY;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
 @ContextConfiguration(locations = {"classpath*:test-validator.xml"})
 class CreditCardTransactionDtoValidatorTest {
 
