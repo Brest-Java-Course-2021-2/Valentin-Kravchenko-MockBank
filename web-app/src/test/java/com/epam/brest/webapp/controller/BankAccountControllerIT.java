@@ -2,8 +2,10 @@ package com.epam.brest.webapp.controller;
 
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.BankAccountService;
+import com.epam.brest.service.exception.BankAccountException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -17,11 +19,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class BankAccountControllerIT extends BasicControllerTest {
+class BankAccountControllerIT extends ControllerTestConfiguration {
 
+    private final MockMvc mockMvc;
     private final BankAccountService bankAccountService;
 
-    public BankAccountControllerIT(@Autowired BankAccountService bankAccountService) {
+    public BankAccountControllerIT(@Autowired MockMvc mockMvc,
+                                   @Autowired BankAccountService bankAccountService) {
+        this.mockMvc = mockMvc;
         this.bankAccountService = bankAccountService;
     }
 
@@ -31,8 +36,7 @@ class BankAccountControllerIT extends BasicControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("account"))
-                .andExpect(model().attribute("account",
-                                              hasProperty("registrationDate", is(LocalDate.now()))));
+                .andExpect(model().attribute("account", hasProperty("registrationDate", is(LocalDate.now()))));
 
     }
 
@@ -104,7 +108,7 @@ class BankAccountControllerIT extends BasicControllerTest {
                .andExpect(view().name("redirect:/accounts"))
                .andExpect(redirectedUrl("/accounts"))
                .andExpect(flash().attributeExists("message"));
-        assertThrows(IllegalArgumentException.class, () -> bankAccountService.delete(createdBankAccount.getId()));
+        assertThrows(BankAccountException.class, () -> bankAccountService.delete(createdBankAccount.getId()));
     }
 
     @Test

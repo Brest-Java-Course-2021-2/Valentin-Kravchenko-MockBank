@@ -2,8 +2,10 @@ package com.epam.brest.webapp.controller;
 
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.CreditCardService;
+import com.epam.brest.service.exception.CreditCardException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -14,11 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class CreditCardControllerIT extends BasicControllerTest {
+class CreditCardControllerIT extends ControllerTestConfiguration {
 
+    private final MockMvc mockMvc;
     private final CreditCardService creditCardService;
 
-    public CreditCardControllerIT(@Autowired CreditCardService creditCardService) {
+    public CreditCardControllerIT(@Autowired MockMvc mockMvc,
+                                  @Autowired CreditCardService creditCardService) {
+        this.mockMvc = mockMvc;
         this.creditCardService = creditCardService;
     }
 
@@ -46,7 +51,7 @@ class CreditCardControllerIT extends BasicControllerTest {
                .andExpect(view().name("redirect:/cards"))
                .andExpect(redirectedUrl("/cards"))
                .andExpect(flash().attributeExists("message"));
-        assertThrows(IllegalArgumentException.class, () -> creditCardService.delete(createdCreditCard.getId()));
+        assertThrows(CreditCardException.class, () -> creditCardService.delete(createdCreditCard.getId()));
     }
 
     @Test
