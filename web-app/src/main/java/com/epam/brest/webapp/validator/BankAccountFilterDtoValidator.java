@@ -30,18 +30,18 @@ public class BankAccountFilterDtoValidator implements Validator {
     public void validate(Object target, Errors errors) {
         LOGGER.debug("validate(target={})", target);
         BankAccountFilterDto bankAccountFilterDto = (BankAccountFilterDto) target;
-        if (bankAccountFilterDto.getNumber().isEmpty() &&
-            bankAccountFilterDto.getCustomer().isEmpty()) {
-            errors.rejectValue(NUMBER, ERROR_CODE_ACCOUNT_NUMBER_FILTER);
-            errors.rejectValue(CUSTOMER, ERROR_CODE_CUSTOMER_FILTER);
+        if (bankAccountFilterDto.getNumberPattern().isEmpty() &&
+            bankAccountFilterDto.getCustomerPattern().isEmpty()) {
+            errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_PATTERN_ACCOUNT_NUMBER);
+            errors.rejectValue(CUSTOMER_PATTERN, ERROR_CODE_CUSTOMER_PATTERN);
         }
-        if (!bankAccountFilterDto.getNumber().isEmpty() &&
-            !bankAccountFilterDto.getNumber().matches(numberRegexp)) {
-            errors.rejectValue(NUMBER, ERROR_CODE_ACCOUNT_NUMBER_FILTER);
+        if (!bankAccountFilterDto.getNumberPattern().isEmpty() &&
+            !bankAccountFilterDto.getNumberPattern().matches(numberRegexp)) {
+            errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_PATTERN_ACCOUNT_NUMBER);
         }
-        if (!bankAccountFilterDto.getCustomer().isEmpty() &&
-            !bankAccountFilterDto.getCustomer().matches(customerRegexp)) {
-            errors.rejectValue(CUSTOMER, ERROR_CODE_CUSTOMER_FILTER);
+        if (!bankAccountFilterDto.getCustomerPattern().isEmpty() &&
+            !bankAccountFilterDto.getCustomerPattern().matches(customerRegexp)) {
+            errors.rejectValue(CUSTOMER_PATTERN, ERROR_CODE_CUSTOMER_PATTERN);
         }
     }
 

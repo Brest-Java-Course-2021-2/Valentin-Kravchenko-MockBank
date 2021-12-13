@@ -23,45 +23,49 @@ public class ExceptionHandlingController {
     private static final Logger LOGGER = LogManager.getLogger(ExceptionHandlingController.class);
 
     @Value("${handler.found.exception.error}")
-    private String handlerError;
+    private String noHandlerFoundError;
 
     @Value("${property.access.error}")
-    private String propertyError;
+    private String argumentTypeErrorTemplate;
 
     @ExceptionHandler({BankAccountException.class})
     public String handleError(BankAccountException e, RedirectAttributes redirectAttributes) {
-        LOGGER.warn("handleError(BankAccountException.class, message={})", e.getMessage());
+        LOGGER.warn("handleBankAccountException, message={}", e.getMessage());
         redirectAttributes.addFlashAttribute(ERROR, e.getMessage());
         return REDIRECT_ACCOUNTS;
     }
 
     @ExceptionHandler({CreditCardException.class})
     public String handleError(CreditCardException e, RedirectAttributes redirectAttributes) {
-        LOGGER.warn("handleError(CreditCardException.class, message={})", e.getMessage());
+        LOGGER.warn("handleCreditCardException, message={}", e.getMessage());
         redirectAttributes.addFlashAttribute(ERROR, e.getMessage());
         return REDIRECT_CARDS;
     }
 
     @ExceptionHandler({NoHandlerFoundException.class})
-    public String handleError(HttpServletResponse httpServletResponse, NoHandlerFoundException e, Model model) {
-        LOGGER.error("handleError(NoHandlerFoundException.class)", e);
+    public String handleError(HttpServletResponse httpServletResponse,
+                              NoHandlerFoundException e,
+                              Model model) {
+        LOGGER.error("handleNoHandlerFoundException", e);
         httpServletResponse.setStatus(NOT_FOUND.value());
-        model.addAttribute(ERROR, handlerError);
+        model.addAttribute(ERROR, noHandlerFoundError);
         return ERROR;
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    public String handleError(HttpServletResponse httpServletResponse, MethodArgumentTypeMismatchException e, Model model) {
-        LOGGER.error("handleError(MethodArgumentTypeMismatchException.class)", e);
+    public String handleError(HttpServletResponse httpServletResponse,
+                              MethodArgumentTypeMismatchException e,
+                              Model model) {
+        LOGGER.error("handleMethodArgumentTypeMismatchException", e);
         httpServletResponse.setStatus(BAD_REQUEST.value());
-        String error = String.format(propertyError, e.getName(), e.getValue());
+        String error = String.format(argumentTypeErrorTemplate, e.getName(), e.getValue());
         model.addAttribute(ERROR, error);
         return ERROR;
     }
 
     @ExceptionHandler({Exception.class})
     public String handleError(HttpServletResponse httpServletResponse, Exception e, Model model) {
-        LOGGER.error("handleError(Exception.class)", e);
+        LOGGER.error("handleException", e);
         httpServletResponse.setStatus(INTERNAL_SERVER_ERROR.value());
         model.addAttribute(ERROR, INTERNAL_SERVER_ERROR.getReasonPhrase());
         return ERROR;

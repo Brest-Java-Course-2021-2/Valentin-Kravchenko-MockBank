@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
  *  Indicates that a value of the annotated field
  *  must be wrap in percent signs
  *  to execute SQL as a LIKE parameter.
+ *  Only for String type.
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

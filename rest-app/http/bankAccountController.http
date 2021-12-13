@@ -1,4 +1,0 @@
-GET http://localhost:8090/account
-Accept: application/json
-
-###

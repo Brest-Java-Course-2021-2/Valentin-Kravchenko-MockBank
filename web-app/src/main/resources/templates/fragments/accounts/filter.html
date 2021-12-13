@@ -11,27 +11,27 @@
       method="post">
     <div class="col-lg-4 col-md-4 position-relative">
         <input type="text"
-               name="number"
+               name="numberPattern"
                class="form-control"
                th:placeholder="#{accounts.number.placeholder}"
-               th:value="${filter?.number}"
-               th:classappend="${filter} and ${#fields.hasErrors('number')} ? 'is-invalid'"/>
+               th:value="${filter?.numberPattern}"
+               th:classappend="${filter} and ${#fields.hasErrors('numberPattern')} ? 'is-invalid'"/>
         <div class="invalid-tooltip"
-             th:if="${filter} and ${#fields.hasErrors('number')}"
-             th:errors="*{number}">
+             th:if="${filter} and ${#fields.hasErrors('numberPattern')}"
+             th:errors="*{numberPattern}">
             Number Error
         </div>
     </div>
     <div class="col-lg-3 col-md-4 position-relative">
         <input type="text"
-               name="customer"
+               name="customerPattern"
                class="form-control"
                th:placeholder="#{accounts.customer.placeholder}"
-               th:value="${filter?.customer}"
-               th:classappend="${filter} and ${#fields.hasErrors('customer')} ? 'is-invalid'"/>
+               th:value="${filter?.customerPattern}"
+               th:classappend="${filter} and ${#fields.hasErrors('customerPattern')} ? 'is-invalid'"/>
         <div class="invalid-tooltip"
-             th:if="${filter} and ${#fields.hasErrors('customer')}"
-             th:errors="*{customer}">
+             th:if="${filter} and ${#fields.hasErrors('customerPattern')}"
+             th:errors="*{customerPattern}">
             Customer Error
         </div>
     </div>

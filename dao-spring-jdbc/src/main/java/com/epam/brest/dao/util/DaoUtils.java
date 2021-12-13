@@ -1,6 +1,7 @@
 package com.epam.brest.dao.util;
 
 import com.epam.brest.model.annotation.ExcludeFromSql;
+import com.epam.brest.model.annotation.SqlColumn;
 import com.epam.brest.model.annotation.WrapInPercentSigns;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,13 +32,11 @@ public final class DaoUtils {
                 if (field.isAnnotationPresent(ExcludeFromSql.class)) {
                     return;
                 }
+                String param = getParamName(field);
                 field.setAccessible(true);
                 Optional.ofNullable(ReflectionUtils.getField(field, entity))
                         .map(value -> wrapInPercentSigns(field, value))
-                        .ifPresent(value -> {
-                            String param = convertToSnakeCase(field.getName());
-                            sqlParameterSource.addValue(param, value);
-                        });
+                        .ifPresent(value -> sqlParameterSource.addValue(param, value));
         });
         return sqlParameterSource;
     }
@@ -58,14 +57,29 @@ public final class DaoUtils {
                      .collect(Collectors.joining(AND_DELIMITER));
     }
 
+    private static String getParamName(Field field) {
+        if (field.isAnnotationPresent(SqlColumn.class)) {
+            String name = field.getAnnotation(SqlColumn.class).value();
+            return name.toUpperCase();
+        }
+        return convertToSnakeCase(field.getName());
+    }
+
     private static String convertToSnakeCase(String value) {
          return value.replaceAll(SQL_PARAM_REGEX, SQL_PARAM_REPLACEMENT).toUpperCase();
     }
 
     private static Object wrapInPercentSigns(Field field, Object value) {
         if (field.isAnnotationPresent(WrapInPercentSigns.class)) {
+            if (!(value instanceof String)) {
+               return value;
+            }
+            String strValue = (String) value;
+            if (strValue.isEmpty()) {
+                return null;
+            }
             String template = field.getAnnotation(WrapInPercentSigns.class).template();
-            return String.format(template, value);
+            return String.format(template, strValue);
         }
         return value;
     }

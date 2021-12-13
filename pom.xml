@@ -124,17 +124,17 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
-                <artifactId>test-db</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.epam.brest</groupId>
                 <artifactId>bank-data-generator-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>bank-data-generator</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>test-db</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
