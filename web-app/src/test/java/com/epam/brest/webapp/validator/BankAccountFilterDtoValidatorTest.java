@@ -27,21 +27,21 @@ class BankAccountFilterDtoValidatorTest {
     void validateIsValid() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        bankAccountFilterDto.setNumber("BY100TRE");
-        bankAccountFilterDto.setCustomer("Petr");
+        bankAccountFilterDto.setNumberPattern("BY100TRE");
+        bankAccountFilterDto.setCustomerPattern("Petr");
         DataBinder dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());
         //Case 2
-        bankAccountFilterDto.setCustomer("");
+        bankAccountFilterDto.setCustomerPattern("");
         dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());
         //Case 3
-        bankAccountFilterDto.setNumber("");
-        bankAccountFilterDto.setCustomer("Petr");
+        bankAccountFilterDto.setNumberPattern("");
+        bankAccountFilterDto.setCustomerPattern("Petr");
         dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
@@ -52,8 +52,8 @@ class BankAccountFilterDtoValidatorTest {
     void validateIsInvalid() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        bankAccountFilterDto.setNumber("BY100TRE@");
-        bankAccountFilterDto.setCustomer("Petr2");
+        bankAccountFilterDto.setNumberPattern("BY100TRE@");
+        bankAccountFilterDto.setCustomerPattern("Petr2");
         DataBinder dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
@@ -61,16 +61,16 @@ class BankAccountFilterDtoValidatorTest {
         assertNotNull(dataBinder.getBindingResult().getFieldError(NUMBER));
         assertNotNull(dataBinder.getBindingResult().getFieldError(CUSTOMER));
         //Case 2
-        bankAccountFilterDto.setNumber("BY100TRE@");
-        bankAccountFilterDto.setCustomer("");
+        bankAccountFilterDto.setNumberPattern("BY100TRE@");
+        bankAccountFilterDto.setCustomerPattern("");
         dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(NUMBER));
         //Case 3
-        bankAccountFilterDto.setNumber("");
-        bankAccountFilterDto.setCustomer("Petr2");
+        bankAccountFilterDto.setNumberPattern("");
+        bankAccountFilterDto.setCustomerPattern("Petr2");
         dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();

@@ -11,8 +11,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.epam.brest.dao.constant.ColumnName.ID;
-import static com.epam.brest.dao.constant.ColumnName.NUMBER;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DaoUtilsTest {
@@ -21,41 +19,46 @@ class DaoUtilsTest {
     void getSqlParameterSource() {
         //Case 1
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setId(1);
         bankAccount.setNumber("1");
+        bankAccount.setRegistrationDate(LocalDate.now());
         SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccount);
-        assertEquals(sqlParameterSource.getValue(ID.name()), 1);
-        assertEquals(sqlParameterSource.getValue(NUMBER.name()), "1");
+        assertEquals(sqlParameterSource.getValue("REGISTRATION_DATE"), LocalDate.now());
+        assertEquals(sqlParameterSource.getValue("NUMBER"), "1");
+        assertFalse(sqlParameterSource.hasValue("ID"));
+        assertFalse(sqlParameterSource.hasValue("CUSTOMER"));
         //Case 2
         CreditCard creditCard = new CreditCard();
         creditCard.setId(1);
         creditCard.setNumber("1");
         sqlParameterSource = DaoUtils.getSqlParameterSource(creditCard);
-        assertEquals(sqlParameterSource.getValue(ID.name()), 1);
-        assertEquals(sqlParameterSource.getValue(NUMBER.name()), "1");
+        assertEquals(sqlParameterSource.getValue("ID"), 1);
+        assertEquals(sqlParameterSource.getValue("NUMBER"), "1");
+        assertFalse(sqlParameterSource.hasValue("EXPIRATION_DATE"));
+        assertFalse(sqlParameterSource.hasValue("BALANCE"));
     }
 
     @Test
     void getSqlParameterSourceWhenAnnotationIsWrapInPercentSignsPresents() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        bankAccountFilterDto.setNumber("number");
-        bankAccountFilterDto.setCustomer("customer");
+        bankAccountFilterDto.setNumberPattern("number");
+        bankAccountFilterDto.setCustomerPattern("customer");
         SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
         assertEquals(sqlParameterSource.getValue("NUMBER"), "%number%");
         assertEquals(sqlParameterSource.getValue("CUSTOMER"), "%customer%");
         //Case 2
-        bankAccountFilterDto.setCustomer(null);
+        bankAccountFilterDto.setCustomerPattern("");
         sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
         assertEquals(sqlParameterSource.getValue("NUMBER"), "%number%");
+        assertFalse(sqlParameterSource.hasValue("CUSTOMER"));
     }
                                             
     @Test
-    void buildFilterWhereSqlInCaseSqlTemplateString() {
+    void buildFilterWhereSqlForCaseSqlTemplateIsString() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        bankAccountFilterDto.setNumber("number");
-        bankAccountFilterDto.setCustomer("customer");
+        bankAccountFilterDto.setNumberPattern("number");
+        bankAccountFilterDto.setCustomerPattern("customer");
         SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
         String template = "BA.$ LIKE :$";
         String filterWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, template);
@@ -63,7 +66,7 @@ class DaoUtilsTest {
         assertTrue(filterWhereSql.contains("AND"));
         assertTrue(filterWhereSql.contains("BA.CUSTOMER LIKE :CUSTOMER"));
         //Case 2
-        bankAccountFilterDto.setCustomer(null);
+        bankAccountFilterDto.setCustomerPattern("");
         sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
         filterWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, template);
         assertTrue(filterWhereSql.contains("BA.NUMBER LIKE :NUMBER"));
@@ -71,7 +74,7 @@ class DaoUtilsTest {
     }
 
     @Test
-    void buildFilterWhereSqlInCaseForSqlTemplateMap() {
+    void buildFilterWhereSqlForCaseForSqlTemplateIsMap() {
         //Case 1
         CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
         creditCardDateRangeDto.setFromDate(LocalDate.MIN);

@@ -32,20 +32,20 @@ class BankAccountDtoServiceImplIT extends ServiceTestConfiguration {
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
         String number = "TQ99IK";
         String customer = "Sergeev";
-        bankAccountFilterDto.setNumber(number);
-        bankAccountFilterDto.setCustomer(customer);
+        bankAccountFilterDto.setNumberPattern(number);
+        bankAccountFilterDto.setCustomerPattern(customer);
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 1);
         assertTrue(accounts.get(0).getNumber().contains(number));
         assertTrue(accounts.get(0).getCustomer().contains(customer));
         //case 2
-        bankAccountFilterDto.setNumber(null);
+        bankAccountFilterDto.setNumberPattern(null);
         accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 1);
         assertTrue(accounts.get(0).getCustomer().contains(customer));
         //case 3
-        bankAccountFilterDto.setNumber("BY");
-        bankAccountFilterDto.setCustomer(null);
+        bankAccountFilterDto.setNumberPattern("BY");
+        bankAccountFilterDto.setCustomerPattern(null);
         accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 3);
         assertTrue(accounts.stream().map(BankAccountDto::getNumber).allMatch(n -> n.contains("BY")));

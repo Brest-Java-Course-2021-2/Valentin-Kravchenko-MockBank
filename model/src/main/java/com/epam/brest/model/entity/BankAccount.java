@@ -1,6 +1,7 @@
 package com.epam.brest.model.entity;
 
 import com.epam.brest.model.BasicEntity;
+import com.epam.brest.model.validator.constraint.Customer;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -18,6 +19,7 @@ public class BankAccount extends BasicEntity {
      /**
       *  Full name of the bank customer holding the bank account.
       */
+     @Customer
      private String customer;
 
      /**

@@ -3,10 +3,11 @@ package com.epam.brest.webapp.config;
 import com.epam.brest.webapp.formatter.BigDecimalPrinter;
 import com.epam.brest.webapp.formatter.LocalDateFormatter;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.Printer;
@@ -21,19 +22,16 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static com.epam.brest.webapp.constant.ControllerConstant.TEMPLATES;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Configuration
-@PropertySource({"classpath:controller.properties",
-                 "classpath:templates.properties",
-                 "classpath:regexp.properties"})
+@PropertySource({"classpath:controller.properties"})
 public class WebAppConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/css/**").addResourceLocations("/static/css/");
-        registry.addResourceHandler("/static/js/**").addResourceLocations("/static/js/");
+        registry.addResourceHandler("/static/css/**").addResourceLocations("classpath:/static/css/");
+        registry.addResourceHandler("/static/js/**").addResourceLocations("classpath:/static/js/");
     }
 
     @Bean
@@ -59,20 +57,6 @@ public class WebAppConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename(TEMPLATES);
-        return messageSource;
-    }
-
-    @Bean
-    public LocalValidatorFactoryBean localValidatorFactoryBean(){
-        LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
-        localValidatorFactoryBean.setValidationMessageSource(messageSource());
-        return localValidatorFactoryBean;
-    }
-
-    @Bean
     public SpringResourceTemplateResolver templateResolver(){
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setPrefix("classpath:/templates/");
@@ -87,7 +71,9 @@ public class WebAppConfig implements WebMvcConfigurer {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.addDialect(new LayoutDialect());
-        templateEngine.setTemplateEngineMessageSource(messageSource());
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:templates");
+        templateEngine.setTemplateEngineMessageSource(messageSource);
         templateEngine.setEnableSpringELCompiler(true);
         return templateEngine;
     }

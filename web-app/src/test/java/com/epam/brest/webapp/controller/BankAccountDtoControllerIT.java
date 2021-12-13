@@ -39,31 +39,31 @@ class BankAccountDtoControllerIT extends ControllerTestConfiguration {
     }
 
     @Test
-    void accountsPOSTThereAreSearchResults() throws Exception {
+    void accountsPOST() throws Exception {
         // Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        String number = "TQ99IK";
-        String customer = "Sergeev";
-        bankAccountFilterDto.setNumber(number);
-        bankAccountFilterDto.setCustomer(customer);
+        String numberPattern = "TQ99IK";
+        String customerPattern = "Sergeev";
+        bankAccountFilterDto.setNumberPattern(numberPattern);
+        bankAccountFilterDto.setCustomerPattern(customerPattern);
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("number", number);
-        params.add("customer", customer);
+        params.add("numberPattern", numberPattern);
+        params.add("customerPattern", customerPattern);
         mockMvc.perform(post("/accounts").params(params))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("accounts"))
                 .andExpect(model().attribute("accounts", accounts));
         // Case 2
-        number = "BY";
-        customer = "";
-        bankAccountFilterDto.setNumber(number);
-        bankAccountFilterDto.setCustomer(customer);
+        numberPattern = "BY";
+        customerPattern = "";
+        bankAccountFilterDto.setNumberPattern(numberPattern);
+        bankAccountFilterDto.setCustomerPattern(customerPattern);
         accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         params.clear();
-        params.add("number", number);
-        params.add("customer", customer);
+        params.add("numberPattern", numberPattern);
+        params.add("customerPattern", customerPattern);
         mockMvc.perform(post("/accounts").params(params))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
@@ -74,14 +74,14 @@ class BankAccountDtoControllerIT extends ControllerTestConfiguration {
     @Test
     void accountsPOSTThereAreNoSearchResults() throws Exception {
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        String number = "EEEEE";
-        String customer = "Sergeenko";
-        bankAccountFilterDto.setNumber(number);
-        bankAccountFilterDto.setCustomer(customer);
+        String numberPattern = "EEEEE";
+        String customerPattern = "Sergeenko";
+        bankAccountFilterDto.setNumberPattern(numberPattern);
+        bankAccountFilterDto.setCustomerPattern(customerPattern);
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("number", number);
-        params.add("customer", customer);
+        params.add("numberPattern", numberPattern);
+        params.add("customerPattern", customerPattern);
         mockMvc.perform(post("/accounts").params(params))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
@@ -93,17 +93,17 @@ class BankAccountDtoControllerIT extends ControllerTestConfiguration {
 
     @Test
     void accountsPOSTFailed() throws Exception {
-        String number = "BYby";
-        String customer = "Sergeev2";
+        String numberPattern = "BYby";
+        String customerPattern = "Sergeev2";
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("number", number);
-        params.add("customer", customer);
+        params.add("numberPattern", numberPattern);
+        params.add("customerPattern", customerPattern);
         mockMvc.perform(post("/accounts").params(params))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("accounts"))
-                .andExpect(model().attribute("filter", hasProperty("number", is("BYby"))))
-                .andExpect(model().attribute("filter", hasProperty("customer", is("Sergeev2"))));
+                .andExpect(model().attribute("filter", hasProperty("numberPattern", is("BYby"))))
+                .andExpect(model().attribute("filter", hasProperty("customerPattern", is("Sergeev2"))));
     }
 
 }

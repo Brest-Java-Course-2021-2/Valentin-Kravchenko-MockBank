@@ -65,21 +65,21 @@ class BankAccountDtoSpringJdbcDaoIT extends DaoTestConfiguration {
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
         String number = "S8416E1PX";
         String customer = "vano";
-        bankAccountFilterDto.setNumber(number);
-        bankAccountFilterDto.setCustomer(customer);
+        bankAccountFilterDto.setNumberPattern(number);
+        bankAccountFilterDto.setCustomerPattern(customer);
         List<BankAccountDto> accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 1);
         assertTrue(accounts.get(0).getNumber().contains(number));
         assertTrue(accounts.get(0).getCustomer().contains(customer));
         //case 2
-        bankAccountFilterDto.setCustomer(null);
+        bankAccountFilterDto.setCustomerPattern(null);
         accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 1);
         assertTrue(accounts.get(0).getNumber().contains(number));
         //case 3
         customer = "Cusmoter";
-        bankAccountFilterDto.setNumber(null);
-        bankAccountFilterDto.setCustomer(customer);
+        bankAccountFilterDto.setNumberPattern(null);
+        bankAccountFilterDto.setCustomerPattern(customer);
         accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 0);
     }

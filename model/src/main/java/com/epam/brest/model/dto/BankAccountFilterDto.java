@@ -1,45 +1,54 @@
 package com.epam.brest.model.dto;
 
+import com.epam.brest.model.annotation.SqlColumn;
 import com.epam.brest.model.annotation.WrapInPercentSigns;
+import com.epam.brest.model.validator.constraint.AccountNumberPattern;
+import com.epam.brest.model.validator.constraint.AnyPatterns;
+import com.epam.brest.model.validator.constraint.CustomerPattern;
 
 /**
  *  Bank account data transfer object for filtering.
  */
+@AnyPatterns
 public class BankAccountFilterDto {
 
     /**
      *  Search pattern for an international bank account number.
      */
     @WrapInPercentSigns
-    private String number;
+    @AccountNumberPattern
+    @SqlColumn("number")
+    private String numberPattern;
 
     /**
      *  Search pattern for a full name of the bank customer.
      */
     @WrapInPercentSigns
-    private String customer;
+    @CustomerPattern
+    @SqlColumn("customer")
+    private String customerPattern;
 
-    public String getNumber() {
-        return number;
+    public String getNumberPattern() {
+        return numberPattern;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setNumberPattern(String numberPattern) {
+        this.numberPattern = numberPattern;
     }
 
-    public String getCustomer() {
-        return customer;
+    public String getCustomerPattern() {
+        return customerPattern;
     }
 
-    public void setCustomer(String customer) {
-        this.customer = customer;
+    public void setCustomerPattern(String customerPattern) {
+        this.customerPattern = customerPattern;
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
-               "number='" + number + '\'' +
-               ", customer='" + customer + '\'' +
+               "number='" + numberPattern + '\'' +
+               ", customer='" + customerPattern + '\'' +
                '}';
     }
 
