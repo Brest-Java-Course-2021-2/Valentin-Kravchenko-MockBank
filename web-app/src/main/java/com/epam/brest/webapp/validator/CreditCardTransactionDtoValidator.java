@@ -25,7 +25,7 @@ public class CreditCardTransactionDtoValidator implements Validator {
     private final NumberStyleFormatter numberStyleFormatter;
 
     @Value("${card.number.regexp}")
-    private String numberRegexp;
+    private String cardNumberRegexp;
 
     @Value("${card.sum.money.regexp}")
     private String sumOfMoneyRegexp;
@@ -45,15 +45,15 @@ public class CreditCardTransactionDtoValidator implements Validator {
     public void validate(Object target, Errors errors) {
         LOGGER.debug("validate(target={})", target);
         CreditCardTransactionDto creditCardTransactionDto = (CreditCardTransactionDto) target;
-        String sourceCardNumber = creditCardTransactionDto.getSourceCardNumber();
         String targetCardNumber = creditCardTransactionDto.getTargetCardNumber();
+        String sourceCardNumber = creditCardTransactionDto.getSourceCardNumber();
+        validateCardNumber(targetCardNumber, errors, TARGET_CARD_NUMBER, ERROR_CODE_TARGET_CARD_NUMBER);
         if (Objects.nonNull(sourceCardNumber)) {
-            validateCardNumber(sourceCardNumber, errors, SOURCE_CARD_NUMBER, ERROR_CODE_CARD_NUMBER_SOURCE_NUMBER);
+            validateCardNumber(sourceCardNumber, errors, SOURCE_CARD_NUMBER, ERROR_CODE_SOURCE_CARD_NUMBER);
             if (Objects.equals(targetCardNumber, sourceCardNumber)) {
-                errors.rejectValue(TARGET_CARD_NUMBER, ERROR_CODE_NON_DUPLICATE_TARGET_CARD_NUMBER);
+                errors.rejectValue(TARGET_CARD_NUMBER, ERROR_CODE_DIFFERENT_CARD_NUMBERS);
             }
         }
-        validateCardNumber(targetCardNumber, errors, TARGET_CARD_NUMBER, ERROR_CODE_CARD_NUMBER_TARGET_NUMBER);
         validateSumOfMoney(creditCardTransactionDto, errors);
     }
 
@@ -74,7 +74,7 @@ public class CreditCardTransactionDtoValidator implements Validator {
 
     private void validateCardNumber(String cardNumber, Errors errors, String field, String errorCode) {
         LOGGER.info("validateCardNumber(cardNumber={})", cardNumber);
-        if(!cardNumber.matches(numberRegexp) || !bankDataGenerator.isCardNumberValid(cardNumber)) {
+        if(!cardNumber.matches(cardNumberRegexp) || !bankDataGenerator.isCardNumberValid(cardNumber)) {
             errors.rejectValue(field, errorCode);
         }
     }

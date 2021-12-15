@@ -2,7 +2,7 @@ package com.epam.brest.webapp.controller;
 
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.model.dto.BankAccountFilterDto;
-import com.epam.brest.service.BankAccountDtoService;
+import com.epam.brest.service.api.BankAccountDtoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;

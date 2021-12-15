@@ -13,11 +13,9 @@ if (modal) {
     });
 }
 
-const submitCreateCardForm = (id, number) => {
+const submitCreateCardForm = id => {
     const form = document.querySelector("#createCardForm");
     const inputAccountId = document.querySelector("input[name='accountId']");
-    const inputAccountNumber = document.querySelector("input[name='accountNumber']");
     inputAccountId.value = id;
-    inputAccountNumber.value = number;
     form.submit();
 }

@@ -1,4 +1,4 @@
-package com.epam.brest.service;
+package com.epam.brest.service.api;
 
 import com.epam.brest.model.BasicEntity;
 

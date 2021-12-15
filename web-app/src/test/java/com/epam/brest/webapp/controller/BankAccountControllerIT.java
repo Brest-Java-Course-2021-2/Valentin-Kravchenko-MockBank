@@ -1,7 +1,7 @@
 package com.epam.brest.webapp.controller;
 
 import com.epam.brest.model.entity.BankAccount;
-import com.epam.brest.service.BankAccountService;
+import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.exception.BankAccountException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.AbstractSpringJdbcDao;
-import com.epam.brest.dao.BankAccountDao;
+import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.model.entity.BankAccount;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

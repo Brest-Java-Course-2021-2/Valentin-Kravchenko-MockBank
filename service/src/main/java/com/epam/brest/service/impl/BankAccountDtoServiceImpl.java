@@ -1,9 +1,9 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.dao.BankAccountDtoDao;
+import com.epam.brest.dao.api.BankAccountDtoDao;
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.model.dto.BankAccountFilterDto;
-import com.epam.brest.service.BankAccountDtoService;
+import com.epam.brest.service.api.BankAccountDtoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;

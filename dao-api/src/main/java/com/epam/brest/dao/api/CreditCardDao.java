@@ -1,4 +1,4 @@
-package com.epam.brest.dao;
+package com.epam.brest.dao.api;
 
 import com.epam.brest.model.entity.CreditCard;
 

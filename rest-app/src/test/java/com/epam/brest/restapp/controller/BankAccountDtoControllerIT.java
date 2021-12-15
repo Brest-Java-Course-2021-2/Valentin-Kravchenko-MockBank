@@ -2,7 +2,7 @@ package com.epam.brest.restapp.controller;
 
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.model.dto.BankAccountFilterDto;
-import com.epam.brest.service.BankAccountDtoService;
+import com.epam.brest.service.api.BankAccountDtoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +15,14 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class BankAccountDtoControllerTest extends RestControllerTestConfiguration {
+class BankAccountDtoControllerIT extends RestControllerTestConfiguration {
 
     private final MockMvc mockMvc;
     private final BankAccountDtoService bankAccountDtoService;
 
-    public BankAccountDtoControllerTest(@Autowired ObjectMapper objectMapper,
-                                        @Autowired MockMvc mockMvc,
-                                        @Autowired BankAccountDtoService bankAccountDtoService) {
+    public BankAccountDtoControllerIT(@Autowired ObjectMapper objectMapper,
+                                      @Autowired MockMvc mockMvc,
+                                      @Autowired BankAccountDtoService bankAccountDtoService) {
         super(objectMapper);
         this.mockMvc = mockMvc;
         this.bankAccountDtoService = bankAccountDtoService;

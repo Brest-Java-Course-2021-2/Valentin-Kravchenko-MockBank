@@ -1,9 +1,9 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.dao.CreditCardDtoDao;
+import com.epam.brest.dao.api.CreditCardDtoDao;
 import com.epam.brest.model.dto.CreditCardDateRangeDto;
 import com.epam.brest.model.dto.CreditCardDto;
-import com.epam.brest.service.CreditCardDtoService;
+import com.epam.brest.service.api.CreditCardDtoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;

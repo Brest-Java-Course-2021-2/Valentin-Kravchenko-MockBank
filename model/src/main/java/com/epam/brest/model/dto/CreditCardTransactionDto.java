@@ -1,17 +1,30 @@
 package com.epam.brest.model.dto;
 
+import com.epam.brest.model.validator.constraint.CardNumbers;
+import com.epam.brest.model.validator.constraint.DifferentCardNumbers;
+import com.epam.brest.model.validator.constraint.SumOfMoney;
+import com.epam.brest.model.validator.order.FirstOrder;
+import com.epam.brest.model.validator.order.SecondOrder;
+
+import javax.validation.Constraint;
+import javax.validation.GroupSequence;
 import java.math.BigDecimal;
 import java.util.Locale;
 
 /**
  *  Credit card data transfer object
- *  to perform a transaction.
+ *  to perform a bank transaction.
  */
+@CardNumbers(groups = {FirstOrder.class})
+@DifferentCardNumbers(groups = {SecondOrder.class})
+@SumOfMoney
+@GroupSequence({CreditCardTransactionDto.class, FirstOrder.class, SecondOrder.class})
 public class CreditCardTransactionDto {
 
     /**
      *  Number of the target credit card.
      */
+
     private String targetCardNumber;
 
     /**

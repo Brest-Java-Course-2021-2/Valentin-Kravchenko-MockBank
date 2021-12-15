@@ -1,9 +1,9 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.dao.BankAccountDao;
+import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.entity.BankAccount;
-import com.epam.brest.service.BankAccountService;
+import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.exception.BankAccountException;
 import com.epam.brest.service.util.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
@@ -39,11 +39,11 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BankAccount getById(Integer id) {
-        LOGGER.debug("getById(id={})", id);
+        LOGGER.debug("getBankAccountById(id={})", id);
         return bankAccountDao.getById(id)
                              .orElseThrow(() -> {
                                 String error = String.format(findByIdError, id);
-                                LOGGER.warn("getById(error={})", error);
+                                LOGGER.warn("getBankAccountById(error={})", error);
                                 return new BankAccountException(error);
                              });
     }

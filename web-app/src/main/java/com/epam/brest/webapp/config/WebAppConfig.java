@@ -3,7 +3,6 @@ package com.epam.brest.webapp.config;
 import com.epam.brest.webapp.formatter.BigDecimalPrinter;
 import com.epam.brest.webapp.formatter.LocalDateFormatter;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -11,8 +10,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.Printer;
-import org.springframework.format.number.NumberStyleFormatter;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -49,11 +46,6 @@ public class WebAppConfig implements WebMvcConfigurer {
         WebMvcConfigurer.super.addFormatters(registry);
         registry.addFormatter(localDateFormatter());
         registry.addPrinter(bigDecimalPrinter());
-    }
-
-    @Bean
-    public NumberStyleFormatter numberStyleFormatter() {
-        return new NumberStyleFormatter();
     }
 
     @Bean

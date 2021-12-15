@@ -1,6 +1,6 @@
 package com.epam.brest.dao.impl;
 
-import com.epam.brest.dao.CreditCardDtoDao;
+import com.epam.brest.dao.api.CreditCardDtoDao;
 import com.epam.brest.dao.util.DaoUtils;
 import com.epam.brest.model.dto.CreditCardDateRangeDto;
 import com.epam.brest.model.dto.CreditCardDto;

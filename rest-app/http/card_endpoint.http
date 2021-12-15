@@ -1,0 +1,33 @@
+GET http://localhost:8090/card/1/deposit
+Accept: application/json
+###
+GET http://localhost:8090/card/1/transfer
+Accept: application/json
+###
+POST http://localhost:8090/card
+Content-Type: application/json
+
+10
+###
+POST http://localhost:8090/card/1/deposit
+Content-Type: application/json
+
+{
+  "targetCardNumber": "4000003394112581",
+  "valueSumOfMoney": "1000,55",
+  "locale": "ru"
+}
+###
+POST http://localhost:8090/card/1/deposit
+Content-Type: application/json
+
+{
+  "targetCardNumber": "4000003394112581",
+  "sourceCardNumber": "4000002538269224",
+  "valueSumOfMoney": "350,5",
+  "locale": "ru"
+}
+###
+DELETE http://localhost:8090/card/1
+Accept: application/json
+###

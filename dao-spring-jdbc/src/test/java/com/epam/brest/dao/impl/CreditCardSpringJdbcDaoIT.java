@@ -1,6 +1,6 @@
 package com.epam.brest.dao.impl;
 
-import com.epam.brest.dao.CreditCardDao;
+import com.epam.brest.dao.api.CreditCardDao;
 import com.epam.brest.model.entity.CreditCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
