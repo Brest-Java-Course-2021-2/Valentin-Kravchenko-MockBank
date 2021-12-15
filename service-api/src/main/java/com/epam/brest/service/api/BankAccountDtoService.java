@@ -1,21 +1,21 @@
-package com.epam.brest.dao;
+package com.epam.brest.service.api;
 
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.model.dto.BankAccountFilterDto;
 
 import java.util.List;
 
-public interface BankAccountDtoDao {
+public interface BankAccountDtoService {
 
     /**
-     * Retrieves all the bank accounts, each with the number of credit cards linked with it.
+     * Returns all the bank accounts, each with the number of credit cards linked with it.
      * @return the list of bank accounts
      */
     List<BankAccountDto> getAllWithTotalCards();
 
     /**
-     * Retrieves all the bank accounts, each with the number of credit cards linked with it.
-     * Retrieving is carried out according to a given filter.
+     * Returns all the bank accounts, each with the number of credit cards linked with it.
+     * Return is carried out according to a given filter.
      * @param bankAccountFilterDto - bank account filter instance
      * @return the list of bank accounts
      */

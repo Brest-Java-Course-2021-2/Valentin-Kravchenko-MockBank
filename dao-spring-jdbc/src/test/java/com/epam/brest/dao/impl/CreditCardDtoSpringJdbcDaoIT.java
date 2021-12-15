@@ -1,8 +1,8 @@
 package com.epam.brest.dao.impl;
 
-import com.epam.brest.dao.BankAccountDao;
-import com.epam.brest.dao.CreditCardDao;
-import com.epam.brest.dao.CreditCardDtoDao;
+import com.epam.brest.dao.api.BankAccountDao;
+import com.epam.brest.dao.api.CreditCardDao;
+import com.epam.brest.dao.api.CreditCardDtoDao;
 import com.epam.brest.model.dto.CreditCardDateRangeDto;
 import com.epam.brest.model.dto.CreditCardDto;
 import com.epam.brest.model.entity.BankAccount;

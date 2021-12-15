@@ -1,13 +1,16 @@
 package com.epam.brest.restapp.controller;
 
 import com.epam.brest.model.entity.BankAccount;
-import com.epam.brest.service.BankAccountService;
+import com.epam.brest.service.api.BankAccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -69,9 +72,9 @@ class BankAccountControllerIT extends RestControllerTestConfiguration {
 
     @Test
     void createSucceeded() throws Exception {
-        BankAccount bankAccount = new BankAccount();
-        bankAccount.setCustomer("New Customer");
-        mockMvc.perform(doPost("/account", bankAccount))
+        Map<String, Object> body = new HashMap<>();
+        body.put("customer", "New Customer");
+        mockMvc.perform(doPost("/account", body))
                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(jsonPath("$.customer", is("New Customer")));
@@ -79,9 +82,9 @@ class BankAccountControllerIT extends RestControllerTestConfiguration {
 
     @Test
     void createFailed() throws Exception {
-        BankAccount bankAccount = new BankAccount();
-        bankAccount.setCustomer("New Customer1");
-        mockMvc.perform(doPost("/account", bankAccount))
+        Map<String, Object> body = new HashMap<>();
+        body.put("customer", "New Customer1");
+        mockMvc.perform(doPost("/account", body))
                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isBadRequest())
                .andExpect(jsonPath("$.validationErrors.customer").value("Customer full name is incorrect!"));

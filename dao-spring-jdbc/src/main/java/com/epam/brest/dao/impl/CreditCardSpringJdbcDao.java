@@ -1,7 +1,7 @@
 package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.AbstractSpringJdbcDao;
-import com.epam.brest.dao.CreditCardDao;
+import com.epam.brest.dao.api.CreditCardDao;
 import com.epam.brest.model.entity.CreditCard;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.epam.brest.dao.constant.ColumnName.ID;
-import static com.epam.brest.dao.constant.ColumnName.NUMBER;
 
 @Repository
 public class CreditCardSpringJdbcDao extends AbstractSpringJdbcDao<CreditCard> implements CreditCardDao {

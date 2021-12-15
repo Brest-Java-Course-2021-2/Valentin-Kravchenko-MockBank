@@ -2,7 +2,7 @@ package com.epam.brest.webapp.controller;
 
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.model.dto.BankAccountFilterDto;
-import com.epam.brest.service.BankAccountDtoService;
+import com.epam.brest.service.api.BankAccountDtoService;
 import com.epam.brest.webapp.util.ControllerUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

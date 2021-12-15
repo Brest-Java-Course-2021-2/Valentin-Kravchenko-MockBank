@@ -1,7 +1,8 @@
-package com.epam.brest.service;
+package com.epam.brest.service.api;
 
 import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.service.exception.CreditCardException;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface CreditCardService extends GenericService<CreditCard> {
      * @return the credit card with the given number
      * @throws CreditCardException if none found
      */
-    CreditCard getByNumber(String number);
+    CreditCard getByNumber(String number) throws CreditCardException;
 
     /**
      * Creates a new credit card.
@@ -28,7 +29,7 @@ public interface CreditCardService extends GenericService<CreditCard> {
      * @return the instance of the deleted credit card
      * @throws CreditCardException if credit card has a positive balance
      */
-    CreditCard delete(Integer id);
+    CreditCard delete(Integer id) throws CreditCardException;
 
     /**
      * Deposits money to the credit card.
@@ -43,7 +44,7 @@ public interface CreditCardService extends GenericService<CreditCard> {
      * @return true - if the transaction was successful, false - otherwise
      * @throws CreditCardException if source credit card doesn't contain enough money for the transfer
      */
-    boolean transfer(CreditCardTransactionDto creditCardTransactionDto);
+    boolean transfer(CreditCardTransactionDto creditCardTransactionDto) throws CreditCardException;
 
     /**
      * Returns all the credit cards linked with a bank account by its id.

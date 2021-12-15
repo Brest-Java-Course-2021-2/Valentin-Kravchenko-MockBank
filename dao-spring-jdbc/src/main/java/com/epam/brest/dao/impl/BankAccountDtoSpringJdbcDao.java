@@ -1,6 +1,6 @@
 package com.epam.brest.dao.impl;
 
-import com.epam.brest.dao.BankAccountDtoDao;
+import com.epam.brest.dao.api.BankAccountDtoDao;
 import com.epam.brest.dao.util.DaoUtils;
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.model.dto.BankAccountFilterDto;

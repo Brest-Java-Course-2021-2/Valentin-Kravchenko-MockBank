@@ -32,12 +32,12 @@ public class BankAccountFilterDtoValidator implements Validator {
         BankAccountFilterDto bankAccountFilterDto = (BankAccountFilterDto) target;
         if (bankAccountFilterDto.getNumberPattern().isEmpty() &&
             bankAccountFilterDto.getCustomerPattern().isEmpty()) {
-            errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_PATTERN_ACCOUNT_NUMBER);
+            errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_ACCOUNT_NUMBER_PATTERN);
             errors.rejectValue(CUSTOMER_PATTERN, ERROR_CODE_CUSTOMER_PATTERN);
         }
         if (!bankAccountFilterDto.getNumberPattern().isEmpty() &&
             !bankAccountFilterDto.getNumberPattern().matches(numberRegexp)) {
-            errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_PATTERN_ACCOUNT_NUMBER);
+            errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_ACCOUNT_NUMBER_PATTERN);
         }
         if (!bankAccountFilterDto.getCustomerPattern().isEmpty() &&
             !bankAccountFilterDto.getCustomerPattern().matches(customerRegexp)) {

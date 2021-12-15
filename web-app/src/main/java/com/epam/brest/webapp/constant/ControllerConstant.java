@@ -13,8 +13,8 @@ public class ControllerConstant {
     public static final String MESSAGE = "message";
     public static final String ERROR = "error";
     public static final String NUMBER = "number";
-    public static final String NUMBER_PATTERN = "numberPattern";
     public static final String CUSTOMER = "customer";
+    public static final String NUMBER_PATTERN = "numberPattern";
     public static final String CUSTOMER_PATTERN = "customerPattern";
     public static final String SOURCE_CARD_NUMBER = "sourceCardNumber";
     public static final String TARGET_CARD_NUMBER = "targetCardNumber";
@@ -23,11 +23,11 @@ public class ControllerConstant {
     public static final String VALUE_TO_DATE = "valueToDate";
     public static final String ERROR_CODE_CUSTOMER = "Customer.account.customer";
     public static final String ERROR_CODE_CUSTOMER_PATTERN = "CustomerPattern.account.dto.customerPattern";
-    public static final String ERROR_CODE_PATTERN_ACCOUNT_NUMBER = "AccountNumberPattern.account.dto.numberPattern";
-    public static final String ERROR_CODE_NON_DUPLICATE_TARGET_CARD_NUMBER = "NonDuplicateNumber.card.targetCardNumber";
-    public static final String ERROR_CODE_SUM_OF_MONEY = "SumOfMoney.card.valueSumOfMoney";
-    public static final String ERROR_CODE_CARD_NUMBER_SOURCE_NUMBER = "CardNumber.card.sourceCardNumber";
-    public static final String ERROR_CODE_CARD_NUMBER_TARGET_NUMBER = "CardNumber.card.targetCardNumber";
+    public static final String ERROR_CODE_ACCOUNT_NUMBER_PATTERN = "AccountNumberPattern.account.dto.numberPattern";
+    public static final String ERROR_CODE_DIFFERENT_CARD_NUMBERS = "DifferentCardNumbers.card.dto.targetCardNumber";
+    public static final String ERROR_CODE_SUM_OF_MONEY = "SumOfMoney.card.dto.valueSumOfMoney";
+    public static final String ERROR_CODE_SOURCE_CARD_NUMBER = "CardNumber.card.dto.sourceCardNumber";
+    public static final String ERROR_CODE_TARGET_CARD_NUMBER = "CardNumber.card.dto.targetCardNumber";
     public static final String ERROR_CODE_DATE_VALUE_FROM_DATE_FILTER = "Date.card.filter.valueFromDate";
     public static final String ERROR_CODE_DATE_VALUE_TO_DATE_FILTER = "Date.card.filter.valueToDate";
     public static final String ERROR_CODE_NON_DUPLICATE_VALUE_FROM_DATE_FILTER = "NonDuplicateDate.card.filter.valueFromDate";

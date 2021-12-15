@@ -1,6 +1,6 @@
 package com.epam.brest.dao.impl;
 
-import com.epam.brest.dao.BankAccountDao;
+import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.model.entity.BankAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

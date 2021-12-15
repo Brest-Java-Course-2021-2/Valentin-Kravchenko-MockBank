@@ -1,10 +1,10 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.dao.CreditCardDao;
+import com.epam.brest.dao.api.CreditCardDao;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
-import com.epam.brest.service.CreditCardService;
+import com.epam.brest.service.api.CreditCardService;
 import com.epam.brest.service.exception.CreditCardException;
 import com.epam.brest.service.util.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +18,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.epam.brest.service.constant.ServiceConstant.INIT_BALANCE;
-
 
 @Service
 @Transactional
@@ -48,11 +47,11 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     public CreditCard getById(Integer id) {
-        LOGGER.debug("getById(id={})", id);
+        LOGGER.debug("getCreditCardById(id={})", id);
         return creditCardDao.getById(id)
                             .orElseThrow(() -> {
                                 String error = String.format(findByIdError, id);
-                                LOGGER.warn("getById(error={})", error);
+                                LOGGER.warn("getCreditCardById(error={})", error);
                                 return new CreditCardException(error);
                             });
     }

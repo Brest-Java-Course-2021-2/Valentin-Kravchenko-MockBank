@@ -2,7 +2,7 @@ package com.epam.brest.webapp.controller;
 
 import com.epam.brest.model.dto.CreditCardDateRangeDto;
 import com.epam.brest.model.dto.CreditCardDto;
-import com.epam.brest.service.CreditCardDtoService;
+import com.epam.brest.service.api.CreditCardDtoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

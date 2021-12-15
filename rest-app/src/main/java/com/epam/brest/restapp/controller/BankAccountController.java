@@ -1,7 +1,7 @@
 package com.epam.brest.restapp.controller;
 
 import com.epam.brest.model.entity.BankAccount;
-import com.epam.brest.service.BankAccountService;
+import com.epam.brest.service.api.BankAccountService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;

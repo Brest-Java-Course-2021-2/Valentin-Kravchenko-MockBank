@@ -3,13 +3,13 @@ package com.epam.brest.model.dto;
 import com.epam.brest.model.annotation.SqlColumn;
 import com.epam.brest.model.annotation.WrapInPercentSigns;
 import com.epam.brest.model.validator.constraint.AccountNumberPattern;
-import com.epam.brest.model.validator.constraint.AnyPatterns;
+import com.epam.brest.model.validator.constraint.AnyPattern;
 import com.epam.brest.model.validator.constraint.CustomerPattern;
 
 /**
  *  Bank account data transfer object for filtering.
  */
-@AnyPatterns
+@AnyPattern
 public class BankAccountFilterDto {
 
     /**

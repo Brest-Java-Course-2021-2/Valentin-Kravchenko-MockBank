@@ -72,5 +72,12 @@ public class ExceptionHandlingController {
         errorResponse.setValidationErrors(validationErrors);
         return new ResponseEntity<>(errorResponse, BAD_REQUEST);
     }
-    
+
+    @ExceptionHandler({Exception.class})
+    @ResponseBody
+    public ResponseEntity<Void> handleError(Exception e) {
+        LOGGER.error("handleException", e);
+        return ResponseEntity.internalServerError().build();
+    }
+
 }

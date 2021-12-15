@@ -1,6 +1,7 @@
-package com.epam.brest.service;
+package com.epam.brest.service.api;
 
 import com.epam.brest.model.entity.BankAccount;
+import com.epam.brest.service.exception.BankAccountException;
 
 public interface BankAccountService extends GenericService<BankAccount> {
 
@@ -24,6 +25,6 @@ public interface BankAccountService extends GenericService<BankAccount> {
      * @return the instance of the deleted bank account
      * @throws BankAccountException if bank account has linked credit card
      */
-    BankAccount delete(Integer id);
+    BankAccount delete(Integer id) throws BankAccountException;
 
 }
