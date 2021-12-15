@@ -1,0 +1,26 @@
+GET http://localhost:8090/cards
+Accept: application/json
+###
+POST http://localhost:8090/cards
+Content-Type: application/json
+
+{
+  "valueFromDate": "05/2022",
+  "valueToDate": "07/2022"
+}
+###
+POST http://localhost:8090/cards
+Content-Type: application/json
+
+{
+  "valueFromDate": "07/2022",
+  "valueToDate": ""
+}
+###
+POST http://localhost:8090/cards
+Content-Type: application/json
+
+{
+  "valueFromDate": "",
+  "valueToDate": "07/2022"
+}

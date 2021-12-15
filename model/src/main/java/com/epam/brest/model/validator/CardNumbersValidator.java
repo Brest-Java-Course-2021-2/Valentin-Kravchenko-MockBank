@@ -5,7 +5,6 @@ import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.validator.constraint.CardNumbers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.ConstraintValidator;
@@ -34,15 +33,14 @@ public class CardNumbersValidator extends BasicValidator implements ConstraintVa
         String targetCardNumber = value.getTargetCardNumber();
         boolean isSourceCardNumberValid = true;
         boolean isTargetCardNumberValid = true;
-        HibernateConstraintValidatorContext validatorContext = context.unwrap(HibernateConstraintValidatorContext.class);
         if (Objects.nonNull(sourceCardNumber)) {
             if (isCardNumberInvalid(sourceCardNumber)) {
-                buildConstraint(validatorContext, SOURCE_CARD_NUMBER_TEMPLATE, SOURCE_CARD_NUMBER);
+                buildConstraint(context, SOURCE_CARD_NUMBER_TEMPLATE, SOURCE_CARD_NUMBER);
                 isSourceCardNumberValid = false;
             }
         }
         if(isCardNumberInvalid(targetCardNumber)) {
-            buildConstraint(validatorContext, TARGET_CARD_NUMBER_TEMPLATE, TARGET_CARD_NUMBER);
+            buildConstraint(context, TARGET_CARD_NUMBER_TEMPLATE, TARGET_CARD_NUMBER);
             isTargetCardNumberValid = false;
         }
         return isSourceCardNumberValid && isTargetCardNumberValid;

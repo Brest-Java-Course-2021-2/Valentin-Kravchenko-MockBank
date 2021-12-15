@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class BankAccountDtoControllerIT extends RestControllerTestConfiguration {
@@ -30,14 +31,14 @@ class BankAccountDtoControllerIT extends RestControllerTestConfiguration {
 
     @Test
     void accountsGET() throws Exception {
-        List<BankAccountDto> cards = bankAccountDtoService.getAllWithTotalCards();
-        int lastIdx = cards.size() - 1;
-        mockMvc.perform(MockMvcRequestBuilders.get("/accounts"))
+        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
+        int lastIdx = accounts.size() - 1;
+        mockMvc.perform(get("/accounts"))
                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
-               .andExpect(jsonPath("$.size()", is(cards.size())))
-               .andExpect(jsonPath("$[0].id", is(cards.get(0).getId())))
-               .andExpect(jsonPath("$[" + lastIdx + "].id", is(cards.get(lastIdx).getId())));
+               .andExpect(jsonPath("$.size()", is(accounts.size())))
+               .andExpect(jsonPath("$[0].id", is(accounts.get(0).getId())))
+               .andExpect(jsonPath("$[" + lastIdx + "].id", is(accounts.get(lastIdx).getId())));
     }
 
     @Test
@@ -63,7 +64,7 @@ class BankAccountDtoControllerIT extends RestControllerTestConfiguration {
         mockMvc.perform(doPost("/accounts", bankAccountFilterDto))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", is(1)))
+                .andExpect(jsonPath("$.size()", is(accounts.size())))
                 .andExpect(jsonPath("$[0].id", is(accounts.get(0).getId())));
 
     }

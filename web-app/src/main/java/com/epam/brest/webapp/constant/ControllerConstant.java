@@ -28,10 +28,10 @@ public class ControllerConstant {
     public static final String ERROR_CODE_SUM_OF_MONEY = "SumOfMoney.card.dto.valueSumOfMoney";
     public static final String ERROR_CODE_SOURCE_CARD_NUMBER = "CardNumber.card.dto.sourceCardNumber";
     public static final String ERROR_CODE_TARGET_CARD_NUMBER = "CardNumber.card.dto.targetCardNumber";
-    public static final String ERROR_CODE_DATE_VALUE_FROM_DATE_FILTER = "Date.card.filter.valueFromDate";
-    public static final String ERROR_CODE_DATE_VALUE_TO_DATE_FILTER = "Date.card.filter.valueToDate";
-    public static final String ERROR_CODE_NON_DUPLICATE_VALUE_FROM_DATE_FILTER = "NonDuplicateDate.card.filter.valueFromDate";
-    public static final String ERROR_CODE_NON_DUPLICATE_VALUE_TO_DATE_FILTER = "NonDuplicateDate.card.filter.valueToDate";
+    public static final String ERROR_CODE_VALUE_FROM_DATE = "DateRange.card.dto.valueFromDate";
+    public static final String ERROR_CODE_VALUE_TO_DATE = "DateRange.card.dto.valueToDate";
+    public static final String ERROR_CODE_DIFFERENT_DATES_VALUE_FROM_DATE = "DifferentDates.card.dto.valueFromDate";
+    public static final String ERROR_CODE_DIFFERENT_DATES_VALUE_TO_DATE = "DifferentDates.card.dto.valueToDate";
     public static final String JOIN_DELIMITER = ", ";
     public static final String JOIN_PREFIX = "[";
     public static final String JOIN_SUFFIX = "]";

@@ -3,7 +3,6 @@ package com.epam.brest.webapp.controller;
 import com.epam.brest.model.dto.CreditCardDateRangeDto;
 import com.epam.brest.model.dto.CreditCardDto;
 import com.epam.brest.service.api.CreditCardDtoService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,21 +23,16 @@ class CreditCardDtoControllerIT extends ControllerTestConfiguration {
     private final MockMvc mockMvc;
     private final CreditCardDtoService creditCardDtoService;
 
-    private List<CreditCardDto> cards;
-
     public CreditCardDtoControllerIT(@Autowired MockMvc mockMvc,
                                      @Autowired CreditCardDtoService creditCardDtoService) {
         this.mockMvc = mockMvc;
         this.creditCardDtoService = creditCardDtoService;
     }
 
-    @BeforeEach
-    void setup(){
-        cards = creditCardDtoService.getAllWithAccountNumber();
-    }
 
     @Test
     void cardsGET() throws Exception {
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
         mockMvc.perform(get("/cards"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
