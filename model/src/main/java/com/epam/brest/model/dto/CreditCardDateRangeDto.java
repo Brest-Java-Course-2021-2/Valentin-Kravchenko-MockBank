@@ -1,13 +1,21 @@
 package com.epam.brest.model.dto;
 
 import com.epam.brest.model.annotation.ExcludeFromSql;
+import com.epam.brest.model.validator.constraint.DateRange;
+import com.epam.brest.model.validator.constraint.DifferentDates;
+import com.epam.brest.model.validator.order.FirstOrder;
+import com.epam.brest.model.validator.order.SecondOrder;
 
+import javax.validation.GroupSequence;
 import java.time.LocalDate;
 
 /**
  *  Credit card data transfer object
  *  to filter by date range.
  */
+@DateRange(groups = {FirstOrder.class})
+@DifferentDates(groups = {SecondOrder.class})
+@GroupSequence({CreditCardDateRangeDto.class, FirstOrder.class, SecondOrder.class})
 public class CreditCardDateRangeDto {
 
     /**

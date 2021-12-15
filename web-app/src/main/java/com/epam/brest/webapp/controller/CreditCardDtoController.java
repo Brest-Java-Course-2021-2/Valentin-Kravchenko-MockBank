@@ -55,7 +55,7 @@ public class CreditCardDtoController {
     public String cards(@Valid @ModelAttribute(FILTER) CreditCardDateRangeDto creditCardDateRangeDto,
                         BindingResult bindingResult,
                         Model model) {
-        LOGGER.debug("cardsPOST(/cards)");
+        LOGGER.debug("cardsPOST(/cards, creditCardDateRangeDto={})", creditCardDateRangeDto);
         if (bindingResult.hasErrors()) {
             LOGGER.warn("cardsPOST(/cards, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
             return CARDS;

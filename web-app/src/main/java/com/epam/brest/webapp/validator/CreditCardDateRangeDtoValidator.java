@@ -36,12 +36,12 @@ public class CreditCardDateRangeDtoValidator implements Validator {
         CreditCardDateRangeDto creditCardDateRangeDto = (CreditCardDateRangeDto) target;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(datePattern);
         if ((creditCardDateRangeDto.getValueFromDate().isEmpty() && creditCardDateRangeDto.getValueToDate().isEmpty())) {
-            errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_DATE_VALUE_FROM_DATE_FILTER);
-            errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_DATE_VALUE_TO_DATE_FILTER);
+            errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_VALUE_FROM_DATE);
+            errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_VALUE_TO_DATE);
         }
         if (!creditCardDateRangeDto.getValueFromDate().isEmpty()) {
             if (!creditCardDateRangeDto.getValueFromDate().matches(dateRegexp)) {
-                errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_DATE_VALUE_FROM_DATE_FILTER);
+                errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_VALUE_FROM_DATE);
             } else {
                 YearMonth yearMonth = YearMonth.parse(creditCardDateRangeDto.getValueFromDate(), dateTimeFormatter);
                 creditCardDateRangeDto.setFromDate(yearMonth.atEndOfMonth());
@@ -49,7 +49,7 @@ public class CreditCardDateRangeDtoValidator implements Validator {
         }
         if (!creditCardDateRangeDto.getValueToDate().isEmpty()) {
             if (!creditCardDateRangeDto.getValueToDate().matches(dateRegexp)) {
-                errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_DATE_VALUE_TO_DATE_FILTER);
+                errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_VALUE_TO_DATE);
             } else {
                 YearMonth yearMonth = YearMonth.parse(creditCardDateRangeDto.getValueToDate(), dateTimeFormatter);
                 creditCardDateRangeDto.setToDate(yearMonth.atEndOfMonth());
@@ -58,8 +58,8 @@ public class CreditCardDateRangeDtoValidator implements Validator {
         if (Objects.nonNull(creditCardDateRangeDto.getFromDate()) &&
             Objects.nonNull(creditCardDateRangeDto.getToDate()) &&
             creditCardDateRangeDto.getFromDate().equals(creditCardDateRangeDto.getToDate())) {
-            errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_NON_DUPLICATE_VALUE_FROM_DATE_FILTER);
-            errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_NON_DUPLICATE_VALUE_TO_DATE_FILTER);
+            errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_DIFFERENT_DATES_VALUE_FROM_DATE);
+            errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_DIFFERENT_DATES_VALUE_TO_DATE);
         }
     }
 

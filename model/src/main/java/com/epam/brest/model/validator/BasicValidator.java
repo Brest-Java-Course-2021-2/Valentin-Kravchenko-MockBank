@@ -1,14 +1,11 @@
 package com.epam.brest.model.validator;
 
-import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
+import javax.validation.ConstraintValidatorContext;
 
 public abstract class BasicValidator {
 
-    public void buildConstraint(HibernateConstraintValidatorContext validatorContext, String template, String property) {
-        validatorContext.buildConstraintViolationWithTemplate(template)
-                        .addPropertyNode(property)
-                        .addConstraintViolation();
-
+    public void buildConstraint(ConstraintValidatorContext context, String template, String property) {
+        context.buildConstraintViolationWithTemplate(template).addPropertyNode(property).addConstraintViolation();
     }
 
 }

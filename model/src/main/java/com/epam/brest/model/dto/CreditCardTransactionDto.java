@@ -24,7 +24,6 @@ public class CreditCardTransactionDto {
     /**
      *  Number of the target credit card.
      */
-
     private String targetCardNumber;
 
     /**
