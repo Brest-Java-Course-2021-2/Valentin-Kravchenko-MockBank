@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CreditCardServiceImplIT extends ServiceTestConfiguration {
+class CreditCardServiceImplIT extends ServiceTestBasic {
 
     private final CreditCardService creditCardService;
 

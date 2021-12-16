@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
   "id": 1,
-  "customer": "Ivan Ivanchuk"
+  "customer": "Sidor Sidorov"
 }
 ###
 DELETE http://localhost:8090/account/1

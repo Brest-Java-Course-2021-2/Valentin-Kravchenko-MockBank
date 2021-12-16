@@ -15,11 +15,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest(classes = {RestApp.class})
 @AutoConfigureMockMvc
 @Transactional
-public class RestControllerTestConfiguration {
+public class RestControllerTestBasic {
 
     private final ObjectMapper objectMapper;
 
-    public RestControllerTestConfiguration(ObjectMapper objectMapper) {
+    public RestControllerTestBasic(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

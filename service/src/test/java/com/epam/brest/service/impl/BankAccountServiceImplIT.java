@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankAccountServiceImplIT extends ServiceTestConfiguration {
+class BankAccountServiceImplIT extends ServiceTestBasic {
 
     private final BankAccountService bankAccountService;
 

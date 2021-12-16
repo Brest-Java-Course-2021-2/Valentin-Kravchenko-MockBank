@@ -5,6 +5,14 @@ POST http://localhost:8090/accounts
 Content-Type: application/json
 
 {
+  "numberPattern": "TQ99IK",
+  "customerPattern": "Sergeev"
+}
+###
+POST http://localhost:8090/accounts
+Content-Type: application/json
+
+{
   "numberPattern": "",
   "customerPattern": "Ivan"
 }

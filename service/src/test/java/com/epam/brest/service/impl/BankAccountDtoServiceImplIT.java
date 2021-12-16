@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class BankAccountDtoServiceImplIT extends ServiceTestConfiguration {
+class BankAccountDtoServiceImplIT extends ServiceTestBasic {
 
     private final BankAccountDtoService bankAccountDtoService;
 

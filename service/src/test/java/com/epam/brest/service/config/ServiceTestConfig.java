@@ -5,5 +5,5 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan({"com.epam.brest.dao", "com.epam.brest.service"})
-public class ServiceConfig {
+public class ServiceTestConfig {
 }

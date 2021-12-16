@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankAccountSpringJdbcDaoIT extends DaoTestConfiguration {
+class BankAccountSpringJdbcDaoIT extends DaoTestBasic {
 
     private final BankAccountDao bankAccountDao;
     private List<BankAccount> accounts;
