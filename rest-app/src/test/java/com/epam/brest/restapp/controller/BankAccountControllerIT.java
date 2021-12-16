@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class BankAccountControllerIT extends RestControllerTestConfiguration {
+class BankAccountControllerIT extends RestControllerTestBasic {
 
     private final MockMvc mockMvc;
     private final BankAccountService bankAccountService;

@@ -17,7 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class CreditCardDtoSpringJdbcDaoIT extends DaoTestConfiguration {
+class CreditCardDtoSpringJdbcDaoIT extends DaoTestBasic {
 
     private final CreditCardDtoDao creditCardDtoDao;
     private final CreditCardDao creditCardDao;
