@@ -11,31 +11,31 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.List;
 
+import static com.epam.brest.webapp.constant.ControllerConstant.ACCOUNTS;
+import static com.epam.brest.webapp.constant.ControllerConstant.ERROR;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
-class BankAccountDtoControllerIT extends ControllerTestConfiguration {
+class BankAccountDtoControllerIT extends ControllerTestBasic {
 
-    private final MockMvc mockMvc;
+    public static final String FILTER = "filter";
+    public static final String NUMBER_PATTERN = "numberPattern";
+    public static final String CUSTOMER_PATTERN = "customerPattern";
+
     private final BankAccountDtoService bankAccountDtoService;
 
     public BankAccountDtoControllerIT(@Autowired MockMvc mockMvc,
                                       @Autowired BankAccountDtoService bankAccountDtoService) {
-        this.mockMvc = mockMvc;
+        super(mockMvc);
         this.bankAccountDtoService = bankAccountDtoService;
     }
 
     @Test
     void accountsGET() throws Exception {
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
-        mockMvc.perform(get("/accounts"))
-               .andExpect(status().isOk())
-               .andExpect(content().contentType("text/html;charset=UTF-8"))
-               .andExpect(view().name("accounts"))
-               .andExpect(model().attribute("accounts", accounts));
+        performGetAndExpectStatusOk(ACCOUNTS_ENDPOINT, ACCOUNTS)
+               .andExpect(model().attribute(ACCOUNTS, accounts));
     }
 
     @Test
@@ -48,13 +48,10 @@ class BankAccountDtoControllerIT extends ControllerTestConfiguration {
         bankAccountFilterDto.setCustomerPattern(customerPattern);
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("numberPattern", numberPattern);
-        params.add("customerPattern", customerPattern);
-        mockMvc.perform(post("/accounts").params(params))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("accounts"))
-                .andExpect(model().attribute("accounts", accounts));
+        params.add(NUMBER_PATTERN, numberPattern);
+        params.add(CUSTOMER_PATTERN, customerPattern);
+        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, params, ACCOUNTS)
+                .andExpect(model().attribute(ACCOUNTS, accounts));
         // Case 2
         numberPattern = "BY";
         customerPattern = "";
@@ -62,13 +59,10 @@ class BankAccountDtoControllerIT extends ControllerTestConfiguration {
         bankAccountFilterDto.setCustomerPattern(customerPattern);
         accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         params.clear();
-        params.add("numberPattern", numberPattern);
-        params.add("customerPattern", customerPattern);
-        mockMvc.perform(post("/accounts").params(params))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("accounts"))
-                .andExpect(model().attribute("accounts", accounts));
+        params.add(NUMBER_PATTERN, numberPattern);
+        params.add(CUSTOMER_PATTERN, customerPattern);
+        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, params, ACCOUNTS)
+                .andExpect(model().attribute(ACCOUNTS, accounts));
     }
 
     @Test
@@ -80,30 +74,24 @@ class BankAccountDtoControllerIT extends ControllerTestConfiguration {
         bankAccountFilterDto.setCustomerPattern(customerPattern);
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("numberPattern", numberPattern);
-        params.add("customerPattern", customerPattern);
-        mockMvc.perform(post("/accounts").params(params))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("accounts"))
-                .andExpect(model().attributeExists("error"))
-                .andExpect(model().attribute("accounts", accounts));
+        params.add(NUMBER_PATTERN, numberPattern);
+        params.add(CUSTOMER_PATTERN, customerPattern);
+        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, params, ACCOUNTS)
+                .andExpect(model().attributeExists(ERROR))
+                .andExpect(model().attribute(ACCOUNTS, accounts));
 
     }
 
     @Test
-    void accountsPOSTFailed() throws Exception {
+    void accountsPOSTWithInvalidNumberPatternAndSearchPattern() throws Exception {
         String numberPattern = "BYby";
         String customerPattern = "Sergeev2";
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("numberPattern", numberPattern);
-        params.add("customerPattern", customerPattern);
-        mockMvc.perform(post("/accounts").params(params))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("accounts"))
-                .andExpect(model().attribute("filter", hasProperty("numberPattern", is("BYby"))))
-                .andExpect(model().attribute("filter", hasProperty("customerPattern", is("Sergeev2"))));
+        params.add(NUMBER_PATTERN, numberPattern);
+        params.add(CUSTOMER_PATTERN, customerPattern);
+        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, params, ACCOUNTS)
+                .andExpect(model().attribute(FILTER, hasProperty(NUMBER_PATTERN, is("BYby"))))
+                .andExpect(model().attribute(FILTER, hasProperty(CUSTOMER_PATTERN, is("Sergeev2"))));
     }
 
 }

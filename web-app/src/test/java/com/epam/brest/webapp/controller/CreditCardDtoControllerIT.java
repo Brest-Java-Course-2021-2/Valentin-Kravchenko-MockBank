@@ -14,29 +14,22 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
-class CreditCardDtoControllerIT extends ControllerTestConfiguration {
+class CreditCardDtoControllerIT extends ControllerTestBasic {
 
-    private final MockMvc mockMvc;
     private final CreditCardDtoService creditCardDtoService;
 
     public CreditCardDtoControllerIT(@Autowired MockMvc mockMvc,
                                      @Autowired CreditCardDtoService creditCardDtoService) {
-        this.mockMvc = mockMvc;
+        super(mockMvc);
         this.creditCardDtoService = creditCardDtoService;
     }
-
 
     @Test
     void cardsGET() throws Exception {
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
-        mockMvc.perform(get("/cards"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("cards"))
+        performGetAndExpectStatusOk("/cards", "cards")
                 .andExpect(model().attribute("cards", cards));
     }
 
@@ -50,10 +43,7 @@ class CreditCardDtoControllerIT extends ControllerTestConfiguration {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("valueFromDate", "05/2022");
         params.add("valueToDate", "07/2022");
-        mockMvc.perform(post("/cards").params(params))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("cards"))
+        performPostAndExpectStatusOk("/cards", params, "cards")
                 .andExpect(model().attribute("cards", cards));
         //Case 2
         params.clear();
@@ -61,10 +51,7 @@ class CreditCardDtoControllerIT extends ControllerTestConfiguration {
         cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
         params.add("valueFromDate", "05/2022");
         params.add("valueToDate", "");
-        mockMvc.perform(post("/cards").params(params))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("cards"))
+        performPostAndExpectStatusOk("/cards", params, "cards")
                 .andExpect(model().attribute("cards", cards));
     }
 
@@ -76,24 +63,18 @@ class CreditCardDtoControllerIT extends ControllerTestConfiguration {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("valueFromDate", "");
         params.add("valueToDate", "07/2000");
-        mockMvc.perform(post("/cards").params(params))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("cards"))
+        performPostAndExpectStatusOk("/cards", params, "cards")
                 .andExpect(model().attributeExists("error"))
                 .andExpect(model().attribute("cards", cards));
 
     }
 
     @Test
-    void cardsPOSTFailed() throws Exception {
+    void cardsPOSTWithInvalidValueFromDateAndValueToDate() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("valueFromDate", "00/2022");
         params.add("valueToDate", "07.2022");
-        mockMvc.perform(post("/cards").params(params))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("cards"))
+        performPostAndExpectStatusOk("/cards", params, "cards")
                 .andExpect(model().attribute("filter", hasProperty("valueFromDate", is("00/2022"))))
                 .andExpect(model().attribute("filter", hasProperty("valueToDate", is("07.2022"))));
     }

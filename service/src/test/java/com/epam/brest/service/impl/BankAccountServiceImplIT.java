@@ -21,7 +21,7 @@ class BankAccountServiceImplIT extends ServiceTestBasic {
     @Test
     void create() {
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setCustomer("Customer");
+        bankAccount.setCustomer("New Customer");
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
         assertNotNull(createdBankAccount.getId());
         assertNotNull(createdBankAccount.getNumber());
@@ -30,9 +30,9 @@ class BankAccountServiceImplIT extends ServiceTestBasic {
     }
 
     @Test
-    void updateSucceeded() {
+    void update() {
         BankAccount bankAccount = new BankAccount();
-        String customer = "Customer";
+        String customer = "New Customer";
         bankAccount.setId(1);
         bankAccount.setCustomer(customer);
         BankAccount updatedBankAccount = bankAccountService.update(bankAccount);
@@ -40,29 +40,38 @@ class BankAccountServiceImplIT extends ServiceTestBasic {
     }
 
     @Test
-    void updateFailed() {
+    void failedUpdate() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setId(1000);
-        bankAccount.setCustomer("Customer");
+        bankAccount.setCustomer("New Customer");
         assertThrows(BankAccountException.class, () -> bankAccountService.update(bankAccount));
     }
 
     @Test
-    void deleteSucceeded() {
+    void remove() {
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setCustomer("Customer");
+        bankAccount.setCustomer("New Customer");
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
         BankAccount deletedBankAccount = bankAccountService.delete(createdBankAccount.getId());
         assertEquals(createdBankAccount, deletedBankAccount);
     }
 
     @Test
-    void deleteFailed() {
+    void failedRemove() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setId(1);
         assertThrows(BankAccountException.class, () -> bankAccountService.delete(bankAccount.getId()));
         BankAccount newBankAccountFromDb = bankAccountService.getById(bankAccount.getId());
         assertEquals(newBankAccountFromDb.getId(), 1);
+    }
+
+    @Test
+    void getById() {
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setCustomer("New Customer");
+        BankAccount createdBankAccount = bankAccountService.create(bankAccount);
+        BankAccount bankAccountFromDb = bankAccountService.getById(createdBankAccount.getId());
+        assertEquals(createdBankAccount, bankAccountFromDb);
     }
 
 }

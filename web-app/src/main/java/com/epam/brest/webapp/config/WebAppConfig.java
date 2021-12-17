@@ -25,11 +25,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @PropertySource({"classpath:controller.properties"})
 public class WebAppConfig implements WebMvcConfigurer {
 
-    @Override
+    /*@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/css/**").addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/static/js/**").addResourceLocations("classpath:/static/js/");
-    }
+    }*/
 
     @Bean
     public Formatter<LocalDate> localDateFormatter() {
@@ -43,12 +43,11 @@ public class WebAppConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        WebMvcConfigurer.super.addFormatters(registry);
         registry.addFormatter(localDateFormatter());
         registry.addPrinter(bigDecimalPrinter());
     }
 
-    @Bean
+   /* @Bean
     public SpringResourceTemplateResolver templateResolver(){
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setPrefix("classpath:/templates/");
@@ -56,12 +55,12 @@ public class WebAppConfig implements WebMvcConfigurer {
         templateResolver.setTemplateMode("HTML");
         templateResolver.setCacheable(false);
         return templateResolver;
-    }
+    }*/
 
     @Bean
-    public SpringTemplateEngine templateEngine(){
+    public SpringTemplateEngine templateEngine(SpringResourceTemplateResolver springResourceTemplateResolver){
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.setTemplateResolver(springResourceTemplateResolver);
         templateEngine.addDialect(new LayoutDialect());
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:templates");
@@ -71,9 +70,9 @@ public class WebAppConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public ThymeleafViewResolver viewResolver(){
+    public ThymeleafViewResolver viewResolver(SpringTemplateEngine springTemplateEngine){
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setTemplateEngine(springTemplateEngine);
         viewResolver.setCharacterEncoding(UTF_8.name());
         return viewResolver;
     }
