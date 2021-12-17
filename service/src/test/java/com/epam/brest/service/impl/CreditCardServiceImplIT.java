@@ -31,7 +31,7 @@ class CreditCardServiceImplIT extends ServiceTestBasic {
     }
 
     @Test
-    void deleteSucceeded() {
+    void remove() {
         Integer id = 1;
         CreditCard creditCard = creditCardService.create(id);
         CreditCard deletedCreditCard = creditCardService.delete(creditCard.getId());
@@ -39,7 +39,7 @@ class CreditCardServiceImplIT extends ServiceTestBasic {
     }
 
     @Test
-    void deleteFailed() {
+    void failedRemove() {
         CreditCard creditCard = new CreditCard();
         creditCard.setId(1);
         assertThrows(CreditCardException.class, () -> creditCardService.delete(creditCard.getId()));
@@ -59,7 +59,7 @@ class CreditCardServiceImplIT extends ServiceTestBasic {
     }                   
 
     @Test
-    void transferSucceeded() {
+    void transfer() {
         Integer id = 1;
         CreditCard sourceCreditCard = creditCardService.create(id);
         CreditCard targetCreditCard = creditCardService.create(id);
@@ -76,7 +76,7 @@ class CreditCardServiceImplIT extends ServiceTestBasic {
     }
 
     @Test
-    void transferFailed() {
+    void failedTransfer() {
         Integer id = 1;
         CreditCard sourceCreditCard = creditCardService.create(id);
         CreditCard targetCreditCard = creditCardService.create(id);

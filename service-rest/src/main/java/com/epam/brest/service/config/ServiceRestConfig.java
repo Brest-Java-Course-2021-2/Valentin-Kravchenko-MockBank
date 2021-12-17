@@ -12,11 +12,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 @PropertySource({"classpath:service-rest.properties"})
 public class ServiceRestConfig {
 
-    @Value("${base.url}")
-    private String baseUrl;
-
     @Bean
-    public WebClient webClient() {
+    public WebClient webClient(@Value("${base.url}") String baseUrl) {
         return WebClient.builder()
                         .baseUrl(baseUrl)
                         .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

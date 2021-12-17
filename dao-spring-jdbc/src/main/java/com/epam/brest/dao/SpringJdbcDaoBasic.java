@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -20,13 +19,13 @@ import java.util.Optional;
 import static com.epam.brest.dao.constant.ColumnName.ID;
 import static com.epam.brest.dao.constant.ColumnName.NUMBER;
 
-public abstract class AbstractSpringJdbcDao<T extends BasicEntity> {
+public abstract class SpringJdbcDaoBasic<T extends BasicEntity> {
 
-    private static final Logger LOGGER = LogManager.getLogger(AbstractSpringJdbcDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(SpringJdbcDaoBasic.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public AbstractSpringJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public SpringJdbcDaoBasic(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 

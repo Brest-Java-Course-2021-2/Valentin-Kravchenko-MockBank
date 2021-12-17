@@ -1,6 +1,6 @@
 package com.epam.brest.dao.impl;
 
-import com.epam.brest.dao.AbstractSpringJdbcDao;
+import com.epam.brest.dao.SpringJdbcDaoBasic;
 import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.model.entity.BankAccount;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import static com.epam.brest.dao.constant.ColumnName.ID;
 
 @Repository
-public class BankAccountSpringJdbcDao extends AbstractSpringJdbcDao<BankAccount> implements BankAccountDao {
+public class BankAccountSpringJdbcDao extends SpringJdbcDaoBasic<BankAccount> implements BankAccountDao {
 
     private static final Logger LOGGER = LogManager.getLogger(BankAccountSpringJdbcDao.class);
 

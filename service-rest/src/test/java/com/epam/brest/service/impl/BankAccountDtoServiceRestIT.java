@@ -10,25 +10,17 @@ import reactor.core.publisher.Mono;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class BankAccountDtoServiceRestTest extends ServiceRestTestBasic {
+class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
 
-    private final WebTestClient webTestClient;
-
-    public BankAccountDtoServiceRestTest(@Autowired WebTestClient webTestClient) {
-        this.webTestClient = webTestClient;
+    public BankAccountDtoServiceRestIT(@Autowired WebTestClient webTestClient) {
+        super(webTestClient);
     }
 
     @Test
     void getAllWithTotalCards(){
-        WebTestClient.ListBodySpec<BankAccountDto> bankAccountDtoListBodySpec =
-                webTestClient.get()
-                             .uri("/accounts")
-                             .exchange()
-                             .expectHeader().valueEquals("Content-Type", "application/json")
-                             .expectStatus().isOk()
-                             .expectBodyList(BankAccountDto.class)
-                             .value(notNullValue())
-                             .value(hasSize(greaterThan(0)));
+        getAndExpectStatusOk("/accounts").expectBodyList(BankAccountDto.class)
+                                                 .value(notNullValue())
+                                                 .value(hasSize(greaterThan(0)));
     }
 
     @Test
@@ -39,49 +31,30 @@ class BankAccountDtoServiceRestTest extends ServiceRestTestBasic {
         String customerPattern = "Sergeev";
         bankAccountFilterDto.setNumberPattern(numberPattern);
         bankAccountFilterDto.setCustomerPattern(customerPattern);
-        webTestClient.post()
-                     .uri("/accounts")
-                     .body(Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
-                     .exchange()
-                     .expectHeader().valueEquals("Content-Type", "application/json")
-                     .expectStatus().isOk()
+        postAndExpectStatusOk("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
                      .expectBodyList(BankAccountDto.class)
                      .consumeWith(result -> assertTrue(result.getResponseBody().get(0).getCustomer().contains(customerPattern)));
         //case 2
         bankAccountFilterDto.setNumberPattern("");
-        webTestClient.post()
-                     .uri("/accounts")
-                     .body(Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
-                     .exchange()
-                     .expectHeader().valueEquals("Content-Type", "application/json")
-                     .expectStatus().isOk()
+        postAndExpectStatusOk("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
                      .expectBody().jsonPath("$.size()", is(1));
         //case 3
         bankAccountFilterDto.setNumberPattern("BY");
         bankAccountFilterDto.setCustomerPattern("");
-        webTestClient.post()
-                     .uri("/accounts")
-                     .body(Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
-                     .exchange()
-                     .expectHeader().valueEquals("Content-Type", "application/json")
-                     .expectStatus().isOk()
+        postAndExpectStatusOk("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
                      .expectBodyList(BankAccountDto.class)
                      .consumeWith(result -> assertTrue(result.getResponseBody().stream().map(BankAccountDto::getNumber).allMatch(n -> n.contains("BY"))));
     }
 
     @Test
-    void getAllWithTotalCardsByFilterFailed() {
+    void getAllWithTotalCardsByFilterWithInvalidNumberPatternAndSearchPattern() {
         // Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
         String numberPattern = "BYby";
         String customerPattern = "Sergeev2";
         bankAccountFilterDto.setNumberPattern(numberPattern);
         bankAccountFilterDto.setCustomerPattern(customerPattern);
-        webTestClient.post()
-                     .uri("/accounts")
-                     .body(Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
-                     .exchange()
-                     .expectHeader().valueEquals("Content-Type", "application/json")
+        postAndExchange("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
                      .expectStatus().isBadRequest()
                      .expectBody()
                      .jsonPath("$.validationErrors.customerPattern").isEqualTo("Customer search pattern is incorrect!")
@@ -89,11 +62,7 @@ class BankAccountDtoServiceRestTest extends ServiceRestTestBasic {
         // Case 2
         bankAccountFilterDto.setNumberPattern("");
         bankAccountFilterDto.setCustomerPattern("");
-        webTestClient.post()
-                     .uri("/accounts")
-                     .body(Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
-                     .exchange()
-                     .expectHeader().valueEquals("Content-Type", "application/json")
+        postAndExchange("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
                      .expectStatus().isBadRequest()
                      .expectBody()
                      .jsonPath("$.validationErrors.customerPattern").isEqualTo("Customer search pattern is incorrect!")
