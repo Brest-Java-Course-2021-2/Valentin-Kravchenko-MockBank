@@ -19,6 +19,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class BankAccountControllerIT extends RestControllerTestBasic {
 
+    public static final String CUSTOMER = "customer";
+    public static final String NEW_CUSTOMER = "New Customer";
+    public static final String RESOURCE_NOT_FOUND = "Resource Not Found";
+    public static final String CUSTOMER_FULL_NAME_IS_INCORRECT = "Customer full name is incorrect!";
+
     private final BankAccountService bankAccountService;
 
     public BankAccountControllerIT(@Autowired MockMvc mockMvc,
@@ -57,15 +62,15 @@ class BankAccountControllerIT extends RestControllerTestBasic {
     @Test
     void getByIdInvalidEndpoint() throws Exception {
         performGetAndExpectStatus("/account/1/1", status().isNotFound())
-                .andExpect(jsonPath("$.message").value("Resource Not Found"));
+                .andExpect(jsonPath("$.message").value(RESOURCE_NOT_FOUND));
     }
 
     @Test
     void create() throws Exception {
         Map<String, Object> body = new HashMap<>();
-        body.put("customer", "New Customer");
+        body.put(CUSTOMER, NEW_CUSTOMER);
         performPostAndExpectStatusOk("/account", body)
-               .andExpect(jsonPath("$.customer", is("New Customer")));
+               .andExpect(jsonPath("$.customer", is(NEW_CUSTOMER)));
     }
 
     @Test
@@ -73,23 +78,23 @@ class BankAccountControllerIT extends RestControllerTestBasic {
         Map<String, Object> body = new HashMap<>();
         body.put("customer", "New Customer1");
         performPostAndExpectStatus("/account", body, status().isBadRequest())
-               .andExpect(jsonPath("$.validationErrors.customer").value("Customer full name is incorrect!"));
+               .andExpect(jsonPath("$.validationErrors.customer").value(CUSTOMER_FULL_NAME_IS_INCORRECT));
 
     }
 
     @Test
     void update() throws Exception {
         BankAccount bankAccount = bankAccountService.getById(1);
-        bankAccount.setCustomer("New Customer");
+        bankAccount.setCustomer(NEW_CUSTOMER);
         performPutAndExpectStatusOk("/account", bankAccount)
                 .andExpect(jsonPath("$.id", is(bankAccount.getId())))
-                .andExpect(jsonPath("$.customer", is("New Customer")));
+                .andExpect(jsonPath("$.customer", is(NEW_CUSTOMER)));
     }
 
     @Test
     void remove() throws Exception {
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setCustomer("New Customer");
+        bankAccount.setCustomer(NEW_CUSTOMER);
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
         performDeleteAndExpectStatusOk("/account/" + createdBankAccount.getId())
                .andExpect(jsonPath("$.id", is(createdBankAccount.getId())));

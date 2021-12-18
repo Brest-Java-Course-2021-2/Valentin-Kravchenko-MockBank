@@ -28,7 +28,6 @@ class BankAccountDtoSpringJdbcDaoIT extends DaoTestBasic {
     @Test
     void getAllWithTotalCards() {
         List<BankAccountDto> accounts = bankAccountDtoDao.getAllWithTotalCards();
-        assertNotNull(accounts);
         BankAccountDto firstBankAccountDto = accounts.get(0);
         BankAccountDto lastBankAccountDto = accounts.get(accounts.size() - 1);
         Optional<BankAccount> firstBankAccountFromDb = bankAccountDao.getById(firstBankAccountDto.getId());

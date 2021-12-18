@@ -78,7 +78,7 @@ public class CreditCardController {
         return TRANSACTION;
     }
 
-    @PostMapping()
+    @PostMapping
     public String create(Integer accountId, RedirectAttributes redirectAttributes){
         LOGGER.debug("create(/card, accountId={})", accountId);
         BankAccount bankAccountFromDb = bankAccountService.getById(accountId);
@@ -105,12 +105,12 @@ public class CreditCardController {
                           RedirectAttributes redirectAttributes) {
         LOGGER.debug("depositPOST(/transaction/card/{}/deposit, card={})", id, creditCardTransactionDto);
         if (bindingResult.hasErrors()) {
-            LOGGER.warn("depositPOST(/transaction/card/{}/deposit, errorFields={})",
-                    id, ControllerUtils.extractErrorFields(bindingResult));
+            LOGGER.warn("depositPOST(/transaction/card/{}/deposit, errorFields={})", id,
+                        ControllerUtils.extractErrorFields(bindingResult));
             return TRANSACTION;
         }
-        boolean isDeposit = creditCardService.deposit(creditCardTransactionDto);
-        LOGGER.debug("depositPOST(/transaction/card/{}/deposit, result={})", id, isDeposit);
+        CreditCard targetCreditCard = creditCardService.deposit(creditCardTransactionDto);
+        LOGGER.debug("depositPOST(/transaction/card/{}/deposit, creditCard={})", id, targetCreditCard);
         redirectAttributes.addFlashAttribute(MESSAGE, String.format(depositMessage, creditCardTransactionDto.getTargetCardNumber()));
         return REDIRECT_CARDS;
     }
@@ -122,14 +122,15 @@ public class CreditCardController {
                            RedirectAttributes redirectAttributes) {
         LOGGER.debug("transferPOST(/transaction/card/{}/transfer, card={})", id, creditCardTransactionDto);
         if (bindingResult.hasErrors()) {
-            LOGGER.warn("transferPOST(/transaction/card/{}/transfer, errorFields={})",
-                    id, ControllerUtils.extractErrorFields(bindingResult));
+            LOGGER.warn("transferPOST(/transaction/card/{}/transfer, errorFields={})", id,
+                        ControllerUtils.extractErrorFields(bindingResult));
             return TRANSACTION;
         }
-        boolean isTransfer = creditCardService.transfer(creditCardTransactionDto);
-        LOGGER.debug("transferPOST(/transaction/card/{}/transfer, result={})", id, isTransfer);
-        redirectAttributes.addFlashAttribute(MESSAGE, String.format(transferMessage, creditCardTransactionDto.getSourceCardNumber(),
-                creditCardTransactionDto.getTargetCardNumber()));
+        CreditCard sourceCreditCard = creditCardService.transfer(creditCardTransactionDto);
+        LOGGER.debug("transferPOST(/transaction/card/{}/transfer, creditCard={})", id, sourceCreditCard);
+        redirectAttributes.addFlashAttribute(MESSAGE, String.format(transferMessage,
+                                             creditCardTransactionDto.getSourceCardNumber(),
+                                             creditCardTransactionDto.getTargetCardNumber()));
         return REDIRECT_CARDS;
     }
 

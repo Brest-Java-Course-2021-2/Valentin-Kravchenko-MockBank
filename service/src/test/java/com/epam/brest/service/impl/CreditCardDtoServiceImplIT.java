@@ -33,11 +33,9 @@ class CreditCardDtoServiceImplIT extends ServiceTestBasic {
 
     @Test
     void getAllWithAccountNumber() {
-        assertNotNull(cards);
         assertTrue(cards.size() > 0);
         assertNotNull(firstCreditCard);
         assertNotNull(lastCreditCard);
-
     }
 
     @Test

@@ -22,7 +22,6 @@ class BankAccountDtoServiceImplIT extends ServiceTestBasic {
     @Test
     void getAllWithTotalCards() {
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
-        assertNotNull(accounts);
         assertTrue(accounts.size() > 0);
     }
 

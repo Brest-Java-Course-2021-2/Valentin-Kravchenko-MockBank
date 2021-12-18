@@ -22,7 +22,7 @@ public class BankAccountController {
         this.bankAccountService = bankAccountService;
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<BankAccount> get() {
         LOGGER.debug("get(/account)");
         BankAccount bankAccount = new BankAccount();
@@ -37,7 +37,7 @@ public class BankAccountController {
         return ResponseEntity.ok(bankAccount);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<BankAccount> create(@Valid @RequestBody BankAccount bankAccount){
         LOGGER.debug("create(/account, bankAccount={})", bankAccount);
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
@@ -45,7 +45,7 @@ public class BankAccountController {
         return ResponseEntity.ok(createdBankAccount);
     }
 
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<BankAccount> update(@Valid @RequestBody BankAccount bankAccount) {
         LOGGER.debug("update(/account, bankAccount={})", bankAccount);
         BankAccount updatedBankAccount = bankAccountService.update(bankAccount);

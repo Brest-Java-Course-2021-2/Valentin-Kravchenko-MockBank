@@ -44,7 +44,6 @@ class CreditCardDtoSpringJdbcDaoIT extends DaoTestBasic {
 
     @Test
     void getAllWithAccountNumber() {
-        assertNotNull(cards);
         Optional<CreditCard> firstCreditCardFromDb = creditCardDao.getById(firstCreditCard.getId());
         Optional<CreditCard> lastCreditCardDtoFromDb = creditCardDao.getById(lastCreditCard.getId());
         assertEquals(firstCreditCard.getNumber(), firstCreditCardFromDb.get().getNumber());

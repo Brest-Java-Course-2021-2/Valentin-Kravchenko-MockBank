@@ -23,14 +23,14 @@ public class CreditCardDtoController {
         this.creditCardDtoService = creditCardDtoService;
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<CreditCardDto>> cards() {
         LOGGER.debug("cardsGET(/cards)");
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
         return ResponseEntity.ok(cards);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<List<CreditCardDto>> cards(@Valid @RequestBody CreditCardDateRangeDto creditCardDateRangeDto) {
         LOGGER.debug("cardsPOST(/cards, creditCardDateRangeDto={})", creditCardDateRangeDto);
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);

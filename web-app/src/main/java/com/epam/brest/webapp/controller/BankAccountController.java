@@ -48,7 +48,7 @@ public class BankAccountController {
         binder.setValidator(validator);
     }
 
-    @GetMapping()
+    @GetMapping
     public String get(Model model) {
         LOGGER.debug("get(/account)");
         BankAccount bankAccount = new BankAccount();
@@ -67,7 +67,7 @@ public class BankAccountController {
         return ACCOUNT;
     }
 
-    @PostMapping()
+    @PostMapping
     public String create(@Valid @ModelAttribute(ACCOUNT) BankAccount bankAccount,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes){

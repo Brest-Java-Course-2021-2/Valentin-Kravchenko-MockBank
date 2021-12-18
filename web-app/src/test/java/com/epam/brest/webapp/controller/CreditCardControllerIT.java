@@ -1,7 +1,7 @@
 package com.epam.brest.webapp.controller;
 
 import com.epam.brest.model.entity.CreditCard;
-import com.epam.brest.service.api.CreditCardService;
+import com.epam.brest.service.api.ExtendedCreditCardService;
 import com.epam.brest.service.exception.CreditCardException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class CreditCardControllerIT extends ControllerTestBasic {
 
-    private final CreditCardService creditCardService;
+    private final ExtendedCreditCardService creditCardService;
 
     public CreditCardControllerIT(@Autowired MockMvc mockMvc,
-                                  @Autowired CreditCardService creditCardService) {
+                                  @Autowired ExtendedCreditCardService creditCardService) {
         super(mockMvc);
         this.creditCardService = creditCardService;
     }

@@ -42,7 +42,7 @@ public class CreditCardDtoController {
         binder.setValidator(validator);
     }
 
-    @GetMapping()
+    @GetMapping
     public String cards(Model model) {
         LOGGER.debug("cardsGET(/cards)");
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
@@ -51,7 +51,7 @@ public class CreditCardDtoController {
         return CARDS;
     }
 
-    @PostMapping()
+    @PostMapping
     public String cards(@Valid @ModelAttribute(FILTER) CreditCardDateRangeDto creditCardDateRangeDto,
                         BindingResult bindingResult,
                         Model model) {

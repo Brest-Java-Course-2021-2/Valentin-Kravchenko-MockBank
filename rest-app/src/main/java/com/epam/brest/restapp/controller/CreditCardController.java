@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/card")
@@ -23,6 +24,13 @@ public class CreditCardController {
     public CreditCardController(CreditCardService creditCardService, BankAccountService bankAccountService) {
         this.creditCardService = creditCardService;
         this.bankAccountService = bankAccountService;
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<CreditCard> getById(@PathVariable Integer id) {
+        LOGGER.debug("getById(/card/{})", id);
+        CreditCard creditCardFromDb = creditCardService.getById(id);
+        return ResponseEntity.ok(creditCardFromDb);
     }
 
     @GetMapping("{id}/deposit")
@@ -43,7 +51,7 @@ public class CreditCardController {
         return ResponseEntity.ok(creditCardTransactionDto);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<CreditCard> create(@RequestBody Integer accountId){
         LOGGER.debug("create(/card, accountId={})", accountId);
         bankAccountService.getById(accountId);
@@ -52,19 +60,19 @@ public class CreditCardController {
     }
 
     @PostMapping("{id}/deposit")
-    public ResponseEntity<Boolean> deposit(@PathVariable Integer id,
-                                           @Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto) {
+    public ResponseEntity<CreditCard> deposit(@PathVariable Integer id,
+                                              @Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto) {
         LOGGER.debug("depositPOST(/card/{}/deposit, card={})", id, creditCardTransactionDto);
-        boolean isDeposit = creditCardService.deposit(creditCardTransactionDto);
-        return ResponseEntity.ok(isDeposit);
+        CreditCard targetCreditCard = creditCardService.deposit(creditCardTransactionDto);
+        return ResponseEntity.ok(targetCreditCard);
     }
 
     @PostMapping("{id}/transfer")
-    public ResponseEntity<Boolean> transfer(@PathVariable Integer id,
-                                            @Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto) {
+    public ResponseEntity<CreditCard> transfer(@PathVariable Integer id,
+                                               @Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto) {
         LOGGER.debug("transferPOST(/card/{}/transfer, card={})", id, creditCardTransactionDto);
-        boolean isTransfer = creditCardService.transfer(creditCardTransactionDto);
-        return ResponseEntity.ok(isTransfer);
+        CreditCard sourceCreditCard = creditCardService.transfer(creditCardTransactionDto);
+        return ResponseEntity.ok(sourceCreditCard);
     }
 
     @DeleteMapping("{id}")

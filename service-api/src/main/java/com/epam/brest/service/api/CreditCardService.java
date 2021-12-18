@@ -4,17 +4,7 @@ import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.exception.CreditCardException;
 
-import java.util.List;
-
 public interface CreditCardService extends GenericService<CreditCard> {
-
-    /**
-     * Returns a credit card by its number.
-     * @param number - credit card number
-     * @return the credit card with the given number
-     * @throws CreditCardException if none found
-     */
-    CreditCard getByNumber(String number) throws CreditCardException;
 
     /**
      * Creates a new credit card.
@@ -34,23 +24,16 @@ public interface CreditCardService extends GenericService<CreditCard> {
     /**
      * Deposits money to the credit card.
      * @param creditCardTransactionDto - CreditCardTransactionDto instance
-     * @return true - if the transaction was successful, false - otherwise
+     * @return the instance of the target credit card in a deposit transaction
      */
-    boolean deposit(CreditCardTransactionDto creditCardTransactionDto);
+    CreditCard deposit(CreditCardTransactionDto creditCardTransactionDto);
 
     /**
      * Transfers money between credit cards.
      * @param creditCardTransactionDto - CreditCardTransactionDto instance
-     * @return true - if the transaction was successful, false - otherwise
+     * @return the instance of the source credit card in a transfer transaction
      * @throws CreditCardException if source credit card doesn't contain enough money for the transfer
      */
-    boolean transfer(CreditCardTransactionDto creditCardTransactionDto) throws CreditCardException;
-
-    /**
-     * Returns all the credit cards linked with a bank account by its id.
-     * @param accountId - bank account id
-     * @return list of credit cards
-     */
-    List<CreditCard> getAllByAccountId(Integer accountId);
+    CreditCard transfer(CreditCardTransactionDto creditCardTransactionDto) throws CreditCardException;
 
 }
