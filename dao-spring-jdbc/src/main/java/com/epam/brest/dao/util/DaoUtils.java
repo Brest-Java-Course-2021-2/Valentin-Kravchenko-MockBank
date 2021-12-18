@@ -74,12 +74,8 @@ public final class DaoUtils {
             if (!(value instanceof String)) {
                return value;
             }
-            String strValue = (String) value;
-            if (strValue.isEmpty()) {
-                return null;
-            }
             String template = field.getAnnotation(WrapInPercentSigns.class).template();
-            return String.format(template, strValue);
+            return String.format(template, value);
         }
         return value;
     }

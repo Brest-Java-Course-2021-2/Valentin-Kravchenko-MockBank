@@ -12,6 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
 
+    public static final String CUSTOMER_SEARCH_PATTERN_IS_INCORRECT = "Customer search pattern is incorrect!";
+    public static final String ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT = "Account number search pattern is incorrect!";
+
     public BankAccountDtoServiceRestIT(@Autowired WebTestClient webTestClient) {
         super(webTestClient);
     }
@@ -33,12 +36,12 @@ class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
                      .expectBodyList(BankAccountDto.class)
                      .consumeWith(result -> assertTrue(result.getResponseBody().get(0).getCustomer().contains(customerPattern)));
         //case 2
-        bankAccountFilterDto.setNumberPattern("");
+        bankAccountFilterDto.setNumberPattern(null);
         postAndExpectStatusOk("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
                      .expectBody().jsonPath("$.size()", is(1));
         //case 3
         bankAccountFilterDto.setNumberPattern("BY");
-        bankAccountFilterDto.setCustomerPattern("");
+        bankAccountFilterDto.setCustomerPattern(null);
         postAndExpectStatusOk("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
                      .expectBodyList(BankAccountDto.class)
                      .consumeWith(result -> assertTrue(result.getResponseBody().stream().map(BankAccountDto::getNumber).allMatch(n -> n.contains("BY"))));
@@ -48,6 +51,12 @@ class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
     void getAllWithTotalCardsByFilterWithInvalidNumberPatternAndSearchPattern() {
         // Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
+        postAndExchange("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
+                .expectStatus().isBadRequest()
+                .expectBody()
+                .jsonPath("$.validationErrors.customerPattern").isEqualTo(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT)
+                .jsonPath("$.validationErrors.numberPattern").isEqualTo(ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT);
+        // Case 2
         String numberPattern = "BYby";
         String customerPattern = "Sergeev2";
         bankAccountFilterDto.setNumberPattern(numberPattern);
@@ -55,16 +64,8 @@ class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
         postAndExchange("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
                      .expectStatus().isBadRequest()
                      .expectBody()
-                     .jsonPath("$.validationErrors.customerPattern").isEqualTo("Customer search pattern is incorrect!")
-                     .jsonPath("$.validationErrors.numberPattern").isEqualTo("Account number search pattern is incorrect!");
-        // Case 2
-        bankAccountFilterDto.setNumberPattern("");
-        bankAccountFilterDto.setCustomerPattern("");
-        postAndExchange("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
-                     .expectStatus().isBadRequest()
-                     .expectBody()
-                     .jsonPath("$.validationErrors.customerPattern").isEqualTo("Customer search pattern is incorrect!")
-                     .jsonPath("$.validationErrors.numberPattern").isEqualTo("Account number search pattern is incorrect!");
+                     .jsonPath("$.validationErrors.customerPattern").isEqualTo(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT)
+                     .jsonPath("$.validationErrors.numberPattern").isEqualTo(ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT);
     }
 
 }

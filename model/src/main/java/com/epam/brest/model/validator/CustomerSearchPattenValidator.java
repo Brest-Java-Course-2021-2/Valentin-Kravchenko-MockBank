@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Objects;
 
 public class CustomerSearchPattenValidator implements ConstraintValidator<CustomerPattern, String> {
 
@@ -18,7 +19,7 @@ public class CustomerSearchPattenValidator implements ConstraintValidator<Custom
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         LOGGER.debug("isValid(value={})", value);
-        if (value.isEmpty()) {
+        if (Objects.isNull(value)) {
             return true;
         }
         return value.matches(customerRegexp);

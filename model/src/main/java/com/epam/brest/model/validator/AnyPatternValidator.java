@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import java.util.Objects;
+
 import static com.epam.brest.model.constant.ModelConstant.*;
 
 public class AnyPatternValidator extends BasicValidator implements ConstraintValidator<AnyPattern, BankAccountFilterDto> {
@@ -17,7 +19,7 @@ public class AnyPatternValidator extends BasicValidator implements ConstraintVal
     @Override
     public boolean isValid(BankAccountFilterDto value, ConstraintValidatorContext context) {
         LOGGER.debug("isValid(value={})", value);
-        if (value.getCustomerPattern().isEmpty() && value.getNumberPattern().isEmpty()) {
+        if (Objects.isNull(value.getCustomerPattern()) && Objects.isNull(value.getNumberPattern())) {
             buildConstraint(context, CUSTOMER_PATTERN_TEMPLATE, CUSTOMER_PATTERN);
             buildConstraint(context, ACCOUNT_NUMBER_PATTERN_TEMPLATE, NUMBER_PATTERN);
             return false;

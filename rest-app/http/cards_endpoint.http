@@ -13,14 +13,12 @@ POST http://localhost:8090/cards
 Content-Type: application/json
 
 {
-  "valueFromDate": "07/2022",
-  "valueToDate": ""
+  "valueFromDate": "07/2022"
 }
 ###
 POST http://localhost:8090/cards
 Content-Type: application/json
 
 {
-  "valueFromDate": "",
   "valueToDate": "07/2022"
 }

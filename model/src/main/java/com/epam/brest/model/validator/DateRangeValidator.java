@@ -12,6 +12,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import static com.epam.brest.model.constant.ModelConstant.*;
 
@@ -31,12 +32,12 @@ public class DateRangeValidator extends BasicValidator implements ConstraintVali
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(datePattern);
         boolean isValueFromDateValid = true;
         boolean isValueToDateValid = true;
-        if ((value.getValueFromDate().isEmpty() && value.getValueToDate().isEmpty())) {
+        if ((Objects.isNull(value.getValueFromDate()) && Objects.isNull(value.getValueToDate()))) {
             buildConstraint(context, DATE_RANGE_VALUE_FROM_DATE_TEMPLATE, VALUE_FROM_DATE);
             buildConstraint(context, DATE_RANGE_VALUE_TO_DATE_TEMPLATE, VALUE_TO_DATE);
             return false;
         }
-        if (!value.getValueFromDate().isEmpty()) {
+        if (Objects.nonNull(value.getValueFromDate())) {
             if (!value.getValueFromDate().matches(dateRegexp)) {
                 buildConstraint(context, DATE_RANGE_VALUE_FROM_DATE_TEMPLATE, VALUE_FROM_DATE);
                 isValueFromDateValid = false;
@@ -45,7 +46,7 @@ public class DateRangeValidator extends BasicValidator implements ConstraintVali
                 value.setFromDate(yearMonth.atEndOfMonth());
             }
         }
-        if (!value.getValueToDate().isEmpty()) {
+        if (Objects.nonNull(value.getValueToDate())) {
             if (!value.getValueToDate().matches(dateRegexp)) {
                 buildConstraint(context, DATE_RANGE_VALUE_TO_DATE_TEMPLATE, VALUE_TO_DATE);
                 isValueToDateValid = false;
