@@ -12,6 +12,7 @@ import org.springframework.util.MultiValueMap;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.epam.brest.webapp.constant.ControllerConstant.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,6 +20,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 class CreditCardControllerIT extends ControllerTestBasic {
+
+    public static final String CARD_1_DEPOSIT = "/card/1/deposit";
+    public static final String CARD_1_TRANSFER = "/card/1/transfer";
+    public static final String ACCOUNT_ID = "accountId";
+    public static final String TARGET_CARD_NUMBER = "targetCardNumber";
+    public static final String SOURCE_CARD_NUMBER = "sourceCardNumber";
+    public static final String VALUE_SUM_OF_MONEY = "valueSumOfMoney";
+    public static final String LOCALE = "locale";
 
     private final ExtendedCreditCardService creditCardService;
 
@@ -32,9 +41,9 @@ class CreditCardControllerIT extends ControllerTestBasic {
     void create() throws Exception {
         List<CreditCard> cardsBeforeCreate = creditCardService.getAllByAccountId(1);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("accountId", "1");
-        performPostAndExpectStatus3xxRedirection("/card", params, "redirect:/accounts","/accounts")
-                .andExpect(flash().attributeExists("message"));
+        params.add(ACCOUNT_ID, "1");
+        performPostAndExpectStatus3xxRedirection("/card", params, REDIRECT_ACCOUNTS, ACCOUNTS_ENDPOINT)
+                .andExpect(flash().attributeExists(MESSAGE));
         List<CreditCard> cardsAfterCreate = creditCardService.getAllByAccountId(1);
         assertEquals(cardsBeforeCreate.size(), cardsAfterCreate.size() - 1);
     }
@@ -43,8 +52,8 @@ class CreditCardControllerIT extends ControllerTestBasic {
     void remove() throws Exception {
         CreditCard createdCreditCard = creditCardService.create(1);
         String endpoint = "/card/" + createdCreditCard.getId() + "/remove";
-        performPostAndExpectStatus3xxRedirection(endpoint, new LinkedMultiValueMap<>(), "redirect:/cards","/cards")
-               .andExpect(flash().attributeExists("message"));
+        performPostAndExpectStatus3xxRedirection(endpoint, new LinkedMultiValueMap<>(), REDIRECT_CARDS, CARDS_ENDPOINT)
+               .andExpect(flash().attributeExists(MESSAGE));
         assertThrows(CreditCardException.class, () -> creditCardService.delete(createdCreditCard.getId()));
     }
 
@@ -53,27 +62,27 @@ class CreditCardControllerIT extends ControllerTestBasic {
         List<CreditCard> cards = creditCardService.getAllByAccountId(1);
         CreditCard creditCard = cards.get(0);
         String endpoint = "/card/" + creditCard.getId() + "/remove";
-        performPostAndExpectStatus3xxRedirection(endpoint, new LinkedMultiValueMap<>(), "redirect:/cards","/cards")
-               .andExpect(flash().attributeExists("error"));
+        performPostAndExpectStatus3xxRedirection(endpoint, new LinkedMultiValueMap<>(), REDIRECT_CARDS, CARDS_ENDPOINT)
+               .andExpect(flash().attributeExists(ERROR));
         CreditCard creditCardFromDb = creditCardService.getById(creditCard.getId());
         assertEquals(creditCard, creditCardFromDb);
     }
 
     @Test
     void depositGET() throws Exception {
-        performGetAndExpectStatusOk("/card/1/deposit", "transaction")
-                .andExpect(model().attribute("card", hasProperty("targetCardNumber", notNullValue())));
+        performGetAndExpectStatusOk(CARD_1_DEPOSIT, TRANSACTION)
+                .andExpect(model().attribute(CARD, hasProperty(TARGET_CARD_NUMBER, notNullValue())));
     }
 
     @Test
     void depositPOST() throws Exception {
         CreditCard creditCardFromDb = creditCardService.getById(1);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("targetCardNumber", creditCardFromDb.getNumber());
-        params.add("valueSumOfMoney", "1000,55");
-        params.add("locale", "ru");
-        performPostAndExpectStatus3xxRedirection("/card/1/deposit", params, "redirect:/cards","/cards")
-                .andExpect(flash().attributeExists("message"));
+        params.add(TARGET_CARD_NUMBER, creditCardFromDb.getNumber());
+        params.add(VALUE_SUM_OF_MONEY, "1000,55");
+        params.add(LOCALE, "ru");
+        performPostAndExpectStatus3xxRedirection(CARD_1_DEPOSIT, params, REDIRECT_CARDS, CARDS_ENDPOINT)
+                .andExpect(flash().attributeExists(MESSAGE));
         BigDecimal updatedBalance = creditCardFromDb.getBalance().add(new BigDecimal("1000.55"));
         creditCardFromDb = creditCardService.getById(1);
         assertEquals(creditCardFromDb.getBalance(), updatedBalance);
@@ -84,30 +93,29 @@ class CreditCardControllerIT extends ControllerTestBasic {
         // Case 1
         CreditCard creditCardFromDb = creditCardService.getById(1);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("targetCardNumber", creditCardFromDb.getNumber());
-        params.add("valueSumOfMoney", "1000,555");
-        params.add("locale", "ru");
-        performPostAndExpectStatusOk("/card/1/deposit", params, "transaction")
-                .andExpect(model().attribute("card", hasProperty("valueSumOfMoney", is("1000,555"))));
+        params.add(TARGET_CARD_NUMBER, creditCardFromDb.getNumber());
+        params.add(VALUE_SUM_OF_MONEY, "1000,555");
+        params.add(LOCALE, "ru");
+        performPostAndExpectStatusOk(CARD_1_DEPOSIT, params, TRANSACTION)
+                .andExpect(model().attribute(CARD, hasProperty(VALUE_SUM_OF_MONEY, is("1000,555"))));
         // Case 2
-        params.replace("valueSumOfMoney", List.of("1000.55"));
-        performPostAndExpectStatusOk("/card/1/deposit", params, "transaction")
-                .andExpect(model().attribute("card", hasProperty("valueSumOfMoney", is("1000.55"))));
+        params.replace(VALUE_SUM_OF_MONEY, List.of("1000.55"));
+        performPostAndExpectStatusOk(CARD_1_DEPOSIT, params, TRANSACTION)
+                .andExpect(model().attribute(CARD, hasProperty(VALUE_SUM_OF_MONEY, is("1000.55"))));
         // Case 3
-        params.replace("valueSumOfMoney", List.of("0100,23"));
-        performPostAndExpectStatusOk("/card/1/deposit", params, "transaction")
-                .andExpect(model().attribute("card", hasProperty("valueSumOfMoney", is("0100,23"))));
+        params.replace(VALUE_SUM_OF_MONEY, List.of("0100,23"));
+        performPostAndExpectStatusOk(CARD_1_DEPOSIT, params, TRANSACTION)
+                .andExpect(model().attribute(CARD, hasProperty(VALUE_SUM_OF_MONEY, is("0100,23"))));
         // Case 4
-        params.replace("valueSumOfMoney", List.of("-1000"));
-        performPostAndExpectStatusOk("/card/1/deposit", params, "transaction")
-                .andExpect(model().attribute("card", hasProperty("valueSumOfMoney", is("-1000"))));
-
+        params.replace(VALUE_SUM_OF_MONEY, List.of("-1000"));
+        performPostAndExpectStatusOk(CARD_1_DEPOSIT, params, TRANSACTION)
+                .andExpect(model().attribute(CARD, hasProperty(VALUE_SUM_OF_MONEY, is("-1000"))));
     }
 
     @Test
     void transferGET() throws Exception {
-        performGetAndExpectStatusOk("/card/1/transfer", "transaction")
-                .andExpect(model().attribute("card", hasProperty("sourceCardNumber", notNullValue())));
+        performGetAndExpectStatusOk(CARD_1_TRANSFER, TRANSACTION)
+                .andExpect(model().attribute(CARD, hasProperty(SOURCE_CARD_NUMBER, notNullValue())));
     }
 
     @Test
@@ -115,12 +123,12 @@ class CreditCardControllerIT extends ControllerTestBasic {
         CreditCard creditCardFromDbSource = creditCardService.getById(1);
         CreditCard creditCardFromDbTarget = creditCardService.getById(2);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("sourceCardNumber", creditCardFromDbSource.getNumber());
-        params.add("targetCardNumber", creditCardFromDbTarget.getNumber());
-        params.add("valueSumOfMoney", "100,1");
-        params.add("locale", "ru");
-        performPostAndExpectStatus3xxRedirection("/card/1/transfer", params, "redirect:/cards","/cards")
-                .andExpect(flash().attributeExists("message"));
+        params.add(SOURCE_CARD_NUMBER, creditCardFromDbSource.getNumber());
+        params.add(TARGET_CARD_NUMBER, creditCardFromDbTarget.getNumber());
+        params.add(VALUE_SUM_OF_MONEY, "100,1");
+        params.add(LOCALE, "ru");
+        performPostAndExpectStatus3xxRedirection(CARD_1_TRANSFER, params, REDIRECT_CARDS, CARDS_ENDPOINT)
+                .andExpect(flash().attributeExists(MESSAGE));
         BigDecimal sumOfMoney = new BigDecimal("100.1");
         BigDecimal sourceBalance = creditCardFromDbSource.getBalance().subtract(sumOfMoney);
         BigDecimal targetBalance = creditCardFromDbTarget.getBalance().add(sumOfMoney);
@@ -135,19 +143,18 @@ class CreditCardControllerIT extends ControllerTestBasic {
         // Case 1
         CreditCard creditCardFromDbSource = creditCardService.getById(1);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("sourceCardNumber", creditCardFromDbSource.getNumber());
-        params.add("targetCardNumber", creditCardFromDbSource.getNumber());
-        params.add("valueSumOfMoney", "100,1");
-        params.add("locale", "ru");
-        performPostAndExpectStatusOk("/card/1/transfer", params, "transaction")
-                .andExpect(model().attribute("card", hasProperty("targetCardNumber", is(creditCardFromDbSource.getNumber()))));
+        params.add(SOURCE_CARD_NUMBER, creditCardFromDbSource.getNumber());
+        params.add(TARGET_CARD_NUMBER, creditCardFromDbSource.getNumber());
+        params.add(VALUE_SUM_OF_MONEY, "100,1");
+        params.add(LOCALE, "ru");
+        performPostAndExpectStatusOk(CARD_1_TRANSFER, params, TRANSACTION)
+                .andExpect(model().attribute(CARD, hasProperty(TARGET_CARD_NUMBER, is(creditCardFromDbSource.getNumber()))));
         // Case 2
         String invalidCardNumber = "4929554996657100";
-        params.replace("sourceCardNumber", List.of(creditCardFromDbSource.getNumber()));
-        params.replace("targetCardNumber",  List.of(invalidCardNumber));
-        performPostAndExpectStatusOk("/card/1/transfer", params, "transaction")
-                .andExpect(model().attribute("card", hasProperty("targetCardNumber", is(invalidCardNumber))));
-
+        params.replace(SOURCE_CARD_NUMBER, List.of(creditCardFromDbSource.getNumber()));
+        params.replace(TARGET_CARD_NUMBER,  List.of(invalidCardNumber));
+        performPostAndExpectStatusOk(CARD_1_TRANSFER, params, TRANSACTION)
+                .andExpect(model().attribute(CARD, hasProperty(TARGET_CARD_NUMBER, is(invalidCardNumber))));
     }
 
 }

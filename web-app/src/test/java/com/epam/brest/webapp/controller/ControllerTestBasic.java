@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ControllerTestBasic {
 
     public static final String ACCOUNTS_ENDPOINT = "/accounts";
+    public static final String CARDS_ENDPOINT = "/cards";
 
     private final MockMvc mockMvc;
 
