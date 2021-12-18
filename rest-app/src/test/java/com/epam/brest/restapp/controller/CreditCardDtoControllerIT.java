@@ -64,7 +64,7 @@ class CreditCardDtoControllerIT extends RestControllerTestBasic {
         creditCardDateRangeDto.setToDate(null);
         cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
         lastIdx = cards.size() - 1;
-        body.put(VALUE_TO_DATE, "");
+        body.remove(VALUE_TO_DATE);
         performPostAndExpectStatusOk("/cards", body)
                 .andExpect(jsonPath("$.size()", is(cards.size())))
                 .andExpect(jsonPath("$[0].id", is(cards.get(0).getId())))
@@ -74,7 +74,6 @@ class CreditCardDtoControllerIT extends RestControllerTestBasic {
     @Test
     void cardsPOSTThereAreNoSearchResults() throws Exception {
         Map<String, Object> body = new HashMap<>();
-        body.put(VALUE_FROM_DATE, "");
         body.put(VALUE_TO_DATE, "07/2000");
         performPostAndExpectStatusOk("/cards", body).andExpect(jsonPath("$.size()", is(0)));
     }
@@ -95,8 +94,7 @@ class CreditCardDtoControllerIT extends RestControllerTestBasic {
                 .andExpect(jsonPath("$.validationErrors.valueFromDate").value(RANGE_START_DATE_FORMAT_IS_INCORRECT))
                 .andExpect(jsonPath("$.validationErrors.valueToDate").value(RANGE_END_DATE_FORMAT_IS_INCORRECT));
         // Case 3
-        body.put(VALUE_FROM_DATE, "");
-        body.put(VALUE_TO_DATE, "");
+        body.clear();
         performPostAndExpectStatus("/cards", body, status().isBadRequest())
                 .andExpect(jsonPath("$.validationErrors.valueFromDate").value(RANGE_START_DATE_FORMAT_IS_INCORRECT))
                 .andExpect(jsonPath("$.validationErrors.valueToDate").value(RANGE_END_DATE_FORMAT_IS_INCORRECT));

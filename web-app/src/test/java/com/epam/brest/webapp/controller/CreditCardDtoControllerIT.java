@@ -12,11 +12,15 @@ import org.springframework.util.MultiValueMap;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.epam.brest.webapp.constant.ControllerConstant.*;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 class CreditCardDtoControllerIT extends ControllerTestBasic {
+
+    public static final String VALUE_FROM_DATE = "valueFromDate";
+    public static final String VALUE_TO_DATE = "valueToDate";
 
     private final CreditCardDtoService creditCardDtoService;
 
@@ -29,8 +33,8 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
     @Test
     void cardsGET() throws Exception {
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
-        performGetAndExpectStatusOk("/cards", "cards")
-                .andExpect(model().attribute("cards", cards));
+        performGetAndExpectStatusOk(CARDS_ENDPOINT, CARDS)
+                .andExpect(model().attribute(CARDS, cards));
     }
 
     @Test
@@ -41,18 +45,18 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
         creditCardDateRangeDto.setToDate(LocalDate.parse("2022-07-31"));
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("valueFromDate", "05/2022");
-        params.add("valueToDate", "07/2022");
-        performPostAndExpectStatusOk("/cards", params, "cards")
-                .andExpect(model().attribute("cards", cards));
+        params.add(VALUE_FROM_DATE, "05/2022");
+        params.add(VALUE_TO_DATE, "07/2022");
+        performPostAndExpectStatusOk(CARDS_ENDPOINT, params, CARDS)
+                .andExpect(model().attribute(CARDS, cards));
         //Case 2
         params.clear();
         creditCardDateRangeDto.setToDate(null);
         cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
-        params.add("valueFromDate", "05/2022");
-        params.add("valueToDate", "");
-        performPostAndExpectStatusOk("/cards", params, "cards")
-                .andExpect(model().attribute("cards", cards));
+        params.add(VALUE_FROM_DATE, "05/2022");
+        params.add(VALUE_TO_DATE, "");
+        performPostAndExpectStatusOk(CARDS_ENDPOINT, params, CARDS)
+                .andExpect(model().attribute(CARDS, cards));
     }
 
     @Test
@@ -61,22 +65,21 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
         creditCardDateRangeDto.setToDate(LocalDate.parse("2000-07-31"));
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("valueFromDate", "");
-        params.add("valueToDate", "07/2000");
-        performPostAndExpectStatusOk("/cards", params, "cards")
-                .andExpect(model().attributeExists("error"))
-                .andExpect(model().attribute("cards", cards));
-
+        params.add(VALUE_FROM_DATE, "");
+        params.add(VALUE_TO_DATE, "07/2000");
+        performPostAndExpectStatusOk(CARDS_ENDPOINT, params, CARDS)
+                .andExpect(model().attributeExists(ERROR))
+                .andExpect(model().attribute(CARDS, cards));
     }
 
     @Test
     void cardsPOSTWithInvalidValueFromDateAndValueToDate() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("valueFromDate", "00/2022");
-        params.add("valueToDate", "07.2022");
-        performPostAndExpectStatusOk("/cards", params, "cards")
-                .andExpect(model().attribute("filter", hasProperty("valueFromDate", is("00/2022"))))
-                .andExpect(model().attribute("filter", hasProperty("valueToDate", is("07.2022"))));
+        params.add(VALUE_FROM_DATE, "00/2022");
+        params.add(VALUE_TO_DATE, "07.2022");
+        performPostAndExpectStatusOk(CARDS_ENDPOINT, params, CARDS)
+                .andExpect(model().attribute(FILTER, hasProperty(VALUE_FROM_DATE, is("00/2022"))))
+                .andExpect(model().attribute(FILTER, hasProperty(VALUE_TO_DATE, is("07.2022"))));
     }
 
 }

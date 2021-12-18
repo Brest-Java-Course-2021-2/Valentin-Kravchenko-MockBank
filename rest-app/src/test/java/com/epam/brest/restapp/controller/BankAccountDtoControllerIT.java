@@ -42,7 +42,6 @@ class BankAccountDtoControllerIT extends RestControllerTestBasic {
     void accountsPOST() throws Exception {
         // Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        bankAccountFilterDto.setCustomerPattern("");
         bankAccountFilterDto.setNumberPattern("BY");
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         int lastIdx = accounts.size() - 1;
@@ -74,16 +73,12 @@ class BankAccountDtoControllerIT extends RestControllerTestBasic {
     void accountsPOSTWithInvalidNumberPatternAndSearchPattern() throws Exception {
         // Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        String numberPattern = "BYby";
-        String customerPattern = "Sergeev2";
-        bankAccountFilterDto.setNumberPattern(numberPattern);
-        bankAccountFilterDto.setCustomerPattern(customerPattern);
         performPostAndExpectStatus("/accounts", bankAccountFilterDto, status().isBadRequest())
                 .andExpect(jsonPath("$.validationErrors.customerPattern").value(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT))
                 .andExpect(jsonPath("$.validationErrors.numberPattern").value(ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT));
         // Case 2
-        bankAccountFilterDto.setNumberPattern("");
-        bankAccountFilterDto.setCustomerPattern("");
+        bankAccountFilterDto.setNumberPattern("BYby");
+        bankAccountFilterDto.setCustomerPattern("Sergeev2");
         performPostAndExpectStatus("/accounts", bankAccountFilterDto, status().isBadRequest())
                 .andExpect(jsonPath("$.validationErrors.customerPattern").value(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT))
                 .andExpect(jsonPath("$.validationErrors.numberPattern").value(ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT));
