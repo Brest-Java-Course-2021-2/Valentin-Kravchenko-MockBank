@@ -42,7 +42,7 @@ public class BankAccountDtoController {
         binder.setValidator(validator);
     }
 
-    @GetMapping()
+    @GetMapping
     public String accounts(Model model) {
         LOGGER.debug("accountsGET(/accounts)");
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
@@ -51,7 +51,7 @@ public class BankAccountDtoController {
         return ACCOUNTS;
     }
 
-    @PostMapping()
+    @PostMapping
     public String accounts(@Valid @ModelAttribute(FILTER) BankAccountFilterDto bankAccountFilterDto,
                            BindingResult bindingResult,
                            Model model) {

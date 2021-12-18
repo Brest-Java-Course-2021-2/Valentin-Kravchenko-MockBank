@@ -10,7 +10,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.Printer;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -24,12 +23,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Configuration
 @PropertySource({"classpath:controller.properties"})
 public class WebAppConfig implements WebMvcConfigurer {
-
-    /*@Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/css/**").addResourceLocations("classpath:/static/css/");
-        registry.addResourceHandler("/static/js/**").addResourceLocations("classpath:/static/js/");
-    }*/
 
     @Bean
     public Formatter<LocalDate> localDateFormatter() {
@@ -46,16 +39,6 @@ public class WebAppConfig implements WebMvcConfigurer {
         registry.addFormatter(localDateFormatter());
         registry.addPrinter(bigDecimalPrinter());
     }
-
-   /* @Bean
-    public SpringResourceTemplateResolver templateResolver(){
-        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setPrefix("classpath:/templates/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML");
-        templateResolver.setCacheable(false);
-        return templateResolver;
-    }*/
 
     @Bean
     public SpringTemplateEngine templateEngine(SpringResourceTemplateResolver springResourceTemplateResolver){

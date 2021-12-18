@@ -3,7 +3,6 @@ package com.epam.brest.service.impl;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.service.ServiceRestBasic;
 import com.epam.brest.service.api.BankAccountService;
-import com.epam.brest.service.exception.BankAccountException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.core.ParameterizedTypeReference;
@@ -35,7 +34,7 @@ public class BankAccountServiceRest extends ServiceRestBasic implements BankAcco
     }
 
     @Override
-    public BankAccount delete(Integer id) throws BankAccountException {
+    public BankAccount delete(Integer id) {
         LOGGER.debug("getById(endpoint={})", endpoint + "/" + id);
         return webClientDeleteBlock(endpoint + "/" + id, parameterizedTypeRef);
     }

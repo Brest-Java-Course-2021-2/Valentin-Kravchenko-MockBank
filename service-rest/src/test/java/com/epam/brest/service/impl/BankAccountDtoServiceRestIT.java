@@ -18,9 +18,7 @@ class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
 
     @Test
     void getAllWithTotalCards(){
-        getAndExpectStatusOk("/accounts").expectBodyList(BankAccountDto.class)
-                                                 .value(notNullValue())
-                                                 .value(hasSize(greaterThan(0)));
+        getAndExpectStatusOk("/accounts").expectBodyList(BankAccountDto.class).value(hasSize(greaterThan(0)));
     }
 
     @Test

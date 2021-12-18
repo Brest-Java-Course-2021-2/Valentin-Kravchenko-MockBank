@@ -23,14 +23,14 @@ public class BankAccountDtoController {
         this.bankAccountDtoService = bankAccountDtoService;
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<BankAccountDto>> accounts() {
         LOGGER.debug("accountsGET(/accounts)");
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
         return ResponseEntity.ok(accounts);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<List<BankAccountDto>> accounts(@Valid @RequestBody BankAccountFilterDto bankAccountFilterDto) {
         LOGGER.debug("accountsPOST(/accounts, bankAccountFilterDto={})", bankAccountFilterDto);
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);

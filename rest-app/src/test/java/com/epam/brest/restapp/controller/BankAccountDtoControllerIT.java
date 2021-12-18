@@ -16,6 +16,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class BankAccountDtoControllerIT extends RestControllerTestBasic {
 
+    public static final String CUSTOMER_SEARCH_PATTERN_IS_INCORRECT = "Customer search pattern is incorrect!";
+    public static final String ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT = "Account number search pattern is incorrect!";
+
     private final BankAccountDtoService bankAccountDtoService;
 
     public BankAccountDtoControllerIT(@Autowired ObjectMapper objectMapper,
@@ -46,7 +49,7 @@ class BankAccountDtoControllerIT extends RestControllerTestBasic {
         performPostAndExpectStatusOk("/accounts", bankAccountFilterDto)
                 .andExpect(jsonPath("$.size()", is(accounts.size())))
                 .andExpect(jsonPath("$[0].id", is(accounts.get(0).getId())))
-                .andExpect(jsonPath("$[" + lastIdx + "].id", is(accounts.get(lastIdx).getId())));
+                    .andExpect(jsonPath("$[" + lastIdx + "].id", is(accounts.get(lastIdx).getId())));
         // Case 2
         bankAccountFilterDto.setNumberPattern("TQ99IK");
         bankAccountFilterDto.setCustomerPattern("Sergeev");
@@ -76,14 +79,14 @@ class BankAccountDtoControllerIT extends RestControllerTestBasic {
         bankAccountFilterDto.setNumberPattern(numberPattern);
         bankAccountFilterDto.setCustomerPattern(customerPattern);
         performPostAndExpectStatus("/accounts", bankAccountFilterDto, status().isBadRequest())
-                .andExpect(jsonPath("$.validationErrors.customerPattern").value("Customer search pattern is incorrect!"))
-                .andExpect(jsonPath("$.validationErrors.numberPattern").value("Account number search pattern is incorrect!"));
+                .andExpect(jsonPath("$.validationErrors.customerPattern").value(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT))
+                .andExpect(jsonPath("$.validationErrors.numberPattern").value(ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT));
         // Case 2
         bankAccountFilterDto.setNumberPattern("");
         bankAccountFilterDto.setCustomerPattern("");
         performPostAndExpectStatus("/accounts", bankAccountFilterDto, status().isBadRequest())
-                .andExpect(jsonPath("$.validationErrors.customerPattern").value("Customer search pattern is incorrect!"))
-                .andExpect(jsonPath("$.validationErrors.numberPattern").value("Account number search pattern is incorrect!"));
+                .andExpect(jsonPath("$.validationErrors.customerPattern").value(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT))
+                .andExpect(jsonPath("$.validationErrors.numberPattern").value(ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT));
     }
 
 }

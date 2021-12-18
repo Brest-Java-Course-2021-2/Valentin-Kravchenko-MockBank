@@ -10,7 +10,7 @@ import static com.epam.brest.webapp.constant.ControllerConstant.REDIRECT_ACCOUNT
 @RequestMapping("/")
 public class RootController {
 
-    @GetMapping()
+    @GetMapping
     public String redirect() {
         return REDIRECT_ACCOUNTS;
     }

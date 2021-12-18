@@ -9,11 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/version")
 public class VersionController {
 
-    @Value("${controller.version}")
-    private String version;
-
-    @GetMapping()
-    public String version() {
+    @GetMapping
+    public String version(@Value("${controller.version}") String version) {
         return version;
     }
 

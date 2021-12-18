@@ -4,7 +4,7 @@ import com.epam.brest.dao.api.CreditCardDao;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
-import com.epam.brest.service.api.CreditCardService;
+import com.epam.brest.service.api.ExtendedCreditCardService;
 import com.epam.brest.service.exception.CreditCardException;
 import com.epam.brest.service.util.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +21,7 @@ import static com.epam.brest.service.constant.ServiceConstant.INIT_BALANCE;
 
 @Service
 @Transactional
-public class CreditCardServiceImpl implements CreditCardService {
+public class CreditCardServiceImpl implements ExtendedCreditCardService {
 
     private static final Logger LOGGER = LogManager.getLogger(CreditCardServiceImpl.class);
 
@@ -94,19 +94,19 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public boolean deposit(CreditCardTransactionDto creditCardTransactionDto) {
+    public CreditCard deposit(CreditCardTransactionDto creditCardTransactionDto) {
         LOGGER.debug("deposit(creditCardTransactionDto={})", creditCardTransactionDto);
         CreditCard targetCreditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
         LOGGER.debug("deposit(targetCreditCard={})", targetCreditCard);
         BigDecimal sumOfMoney = creditCardTransactionDto.getSumOfMoney();
         BigDecimal newBalance = targetCreditCard.getBalance().add(sumOfMoney);
-        LOGGER.info("deposit(newBalance={})", newBalance);
         targetCreditCard.setBalance(newBalance);
-        return creditCardDao.update(targetCreditCard) == 1;
+        creditCardDao.update(targetCreditCard);
+        return targetCreditCard;
     }
 
     @Override
-    public boolean transfer(CreditCardTransactionDto creditCardTransactionDto) {
+    public CreditCard transfer(CreditCardTransactionDto creditCardTransactionDto) {
         LOGGER.debug("deposit(creditCardTransactionDto={})", creditCardTransactionDto);
         CreditCard sourceCreditCard = getByNumber(creditCardTransactionDto.getSourceCardNumber());
         LOGGER.debug("deposit(sourceCreditCard={})", sourceCreditCard);
@@ -119,12 +119,12 @@ public class CreditCardServiceImpl implements CreditCardService {
         CreditCard targetCreditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
         LOGGER.debug("deposit(targetCreditCard={})", targetCreditCard);
         BigDecimal newSourceCreditCardBalance = sourceCreditCard.getBalance().subtract(sumOfMoney);
-        LOGGER.info("deposit(newSourceCreditCardBalance={})", newSourceCreditCardBalance);
         BigDecimal newTargetCreditCardBalance = targetCreditCard.getBalance().add(sumOfMoney);
-        LOGGER.info("deposit(newTargetCreditCardBalance={})", newTargetCreditCardBalance);
         sourceCreditCard.setBalance(newSourceCreditCardBalance);
         targetCreditCard.setBalance(newTargetCreditCardBalance);
-        return creditCardDao.update(sourceCreditCard) == 1 && creditCardDao.update(targetCreditCard) == 1;
+        creditCardDao.update(sourceCreditCard);
+        creditCardDao.update(targetCreditCard);
+        return sourceCreditCard;
     }
 
     @Override
