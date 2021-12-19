@@ -31,9 +31,9 @@ public class CreditCardDtoController {
     @Value("${card.filter.error}")
     private String filterError;
 
-    public CreditCardDtoController(CreditCardDtoService creditCardDtoService,
+    public CreditCardDtoController(CreditCardDtoService creditCardDtoServiceRest,
                                    Validator creditCardDateRangeDtoValidator) {
-        this.creditCardDtoService = creditCardDtoService;
+        this.creditCardDtoService = creditCardDtoServiceRest;
         this.validator = creditCardDateRangeDtoValidator;
     }
 

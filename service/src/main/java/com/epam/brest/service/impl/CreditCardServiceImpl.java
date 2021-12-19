@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 import static com.epam.brest.service.constant.ServiceConstant.INIT_BALANCE;
 
@@ -125,12 +124,6 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
         creditCardDao.update(sourceCreditCard);
         creditCardDao.update(targetCreditCard);
         return sourceCreditCard;
-    }
-
-    @Override
-    public List<CreditCard> getAllByAccountId(Integer accountId) {
-        LOGGER.debug("getAllByAccountId(accountId={})", accountId);
-        return creditCardDao.getAllByAccountId(accountId);
     }
 
     private String getCardNumber() {

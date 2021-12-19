@@ -1,6 +1,7 @@
 package com.epam.brest.restapp.controller;
 
 import com.epam.brest.model.entity.BankAccount;
+import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/account")
@@ -18,8 +20,8 @@ public class BankAccountController {
 
     private final BankAccountService bankAccountService;
 
-    public BankAccountController(BankAccountService bankAccountService) {
-        this.bankAccountService = bankAccountService;
+    public BankAccountController(BankAccountService bankAccountServiceImpl) {
+        this.bankAccountService = bankAccountServiceImpl;
     }
 
     @GetMapping
@@ -35,6 +37,13 @@ public class BankAccountController {
         LOGGER.debug("get(/account/{})", id);
         BankAccount bankAccount = bankAccountService.getById(id);
         return ResponseEntity.ok(bankAccount);
+    }
+
+    @GetMapping("{id}/cards")
+    public ResponseEntity<List<CreditCard>> getAllCards(@PathVariable Integer id) {
+        LOGGER.debug("get(/account/{}/cards)", id);
+        List<CreditCard> cards = bankAccountService.getAllCardsById(id);
+        return ResponseEntity.ok(cards);
     }
 
     @PostMapping

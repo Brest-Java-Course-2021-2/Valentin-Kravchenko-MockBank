@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/card")
@@ -21,8 +20,9 @@ public class CreditCardController {
     private final CreditCardService creditCardService;
     private final BankAccountService bankAccountService;
 
-    public CreditCardController(CreditCardService creditCardService, BankAccountService bankAccountService) {
-        this.creditCardService = creditCardService;
+    public CreditCardController(CreditCardService creditCardServiceImpl,
+                                BankAccountService bankAccountService) {
+        this.creditCardService = creditCardServiceImpl;
         this.bankAccountService = bankAccountService;
     }
 
@@ -59,18 +59,16 @@ public class CreditCardController {
         return ResponseEntity.ok(createdCreditCard);
     }
 
-    @PostMapping("{id}/deposit")
-    public ResponseEntity<CreditCard> deposit(@PathVariable Integer id,
-                                              @Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto) {
-        LOGGER.debug("depositPOST(/card/{}/deposit, card={})", id, creditCardTransactionDto);
+    @PostMapping("deposit")
+    public ResponseEntity<CreditCard> deposit(@Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto) {
+        LOGGER.debug("depositPOST(/card/deposit, card={})", creditCardTransactionDto);
         CreditCard targetCreditCard = creditCardService.deposit(creditCardTransactionDto);
         return ResponseEntity.ok(targetCreditCard);
     }
 
-    @PostMapping("{id}/transfer")
-    public ResponseEntity<CreditCard> transfer(@PathVariable Integer id,
-                                               @Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto) {
-        LOGGER.debug("transferPOST(/card/{}/transfer, card={})", id, creditCardTransactionDto);
+    @PostMapping("transfer")
+    public ResponseEntity<CreditCard> transfer(@Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto) {
+        LOGGER.debug("transferPOST(/card/transfer, card={})", creditCardTransactionDto);
         CreditCard sourceCreditCard = creditCardService.transfer(creditCardTransactionDto);
         return ResponseEntity.ok(sourceCreditCard);
     }

@@ -1,8 +1,10 @@
 package com.epam.brest.service.impl;
 
 import com.epam.brest.dao.api.BankAccountDao;
+import com.epam.brest.dao.api.CreditCardDao;
 import com.epam.brest.generator.BankDataGenerator;
 import com.epam.brest.model.entity.BankAccount;
+import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.exception.BankAccountException;
 import com.epam.brest.service.util.ServiceUtils;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.epam.brest.service.constant.ServiceConstant.JOIN_DELIMITER;
 
@@ -24,6 +27,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     private static final Logger LOGGER = LogManager.getLogger(BankAccountServiceImpl.class);
 
     private final BankAccountDao bankAccountDao;
+    private final CreditCardDao creditCardDao;
     private final BankDataGenerator bankDataGenerator;
 
     @Value("${account.error.find.by.id}")
@@ -32,8 +36,11 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Value("${account.error.delete}")
     private String deleteError;
 
-    public BankAccountServiceImpl(BankAccountDao bankAccountDao, BankDataGenerator bankDataGenerator) {
+    public BankAccountServiceImpl(BankAccountDao bankAccountDao,
+                                  CreditCardDao creditCardDao,
+                                  BankDataGenerator bankDataGenerator) {
         this.bankAccountDao = bankAccountDao;
+        this.creditCardDao = creditCardDao;
         this.bankDataGenerator = bankDataGenerator;
     }
 
@@ -71,15 +78,24 @@ public class BankAccountServiceImpl implements BankAccountService {
     public BankAccount delete(Integer id) {
         LOGGER.debug("delete(id={})", id);
         BankAccount bankAccountFromDb = getById(id);
-        List<String> linkedCards = bankAccountDao.getLinkedCards(bankAccountFromDb.getId());
+        List<CreditCard> linkedCards = getAllCardsById(bankAccountFromDb.getId());
         LOGGER.debug("delete(bankAccountFromDb={})", bankAccountFromDb);
         if (!linkedCards.isEmpty()) {
-            String error = String.format(deleteError, String.join(JOIN_DELIMITER, linkedCards), bankAccountFromDb.getNumber());
+            List<String> linkedCardNumbers = linkedCards.stream()
+                                                        .map(CreditCard::getNumber)
+                                                        .collect(Collectors.toList());
+            String error = String.format(deleteError, bankAccountFromDb.getNumber(), String.join(JOIN_DELIMITER, linkedCardNumbers));
             LOGGER.warn("delete(error={})", error);
             throw new BankAccountException(error);
         }
         bankAccountDao.delete(bankAccountFromDb.getId());
         return bankAccountFromDb;
+    }
+
+    @Override
+    public List<CreditCard> getAllCardsById(Integer id) {
+        LOGGER.debug("getAllByAccountId(accountId={})", id);
+        return creditCardDao.getAllByAccountId(id);
     }
 
     private String getIban() {

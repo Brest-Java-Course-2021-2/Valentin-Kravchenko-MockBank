@@ -37,9 +37,9 @@ public class BankAccountController {
     @Value("${account.message.remove}")
     private String removeMessage;
 
-    public BankAccountController(BankAccountService bankAccountService,
+    public BankAccountController(BankAccountService bankAccountServiceRest,
                                  Validator bankAccountValidator) {
-        this.bankAccountService = bankAccountService;
+        this.bankAccountService = bankAccountServiceRest;
         this.validator = bankAccountValidator;
     }
 

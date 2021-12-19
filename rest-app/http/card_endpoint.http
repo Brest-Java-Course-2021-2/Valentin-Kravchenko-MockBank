@@ -12,21 +12,21 @@ Content-Type: application/json
 
 1
 ###
-POST http://localhost:8090/card/1/deposit
+POST http://localhost:8090/card/deposit
 Content-Type: application/json
 
 {
-  "targetCardNumber": "4000003394112581",
-  "valueSumOfMoney": "1000,55",
+  "targetCardNumber": "4000007875097476",
+  "valueSumOfMoney": "1000,45",
   "locale": "ru"
 }
 ###
-POST http://localhost:8090/card/1/deposit
+POST http://localhost:8090/card/transfer
 Content-Type: application/json
 
 {
-  "targetCardNumber": "4000003394112581",
   "sourceCardNumber": "4000002538269224",
+  "targetCardNumber": "4000003394112581",
   "valueSumOfMoney": "350,5",
   "locale": "ru"
 }

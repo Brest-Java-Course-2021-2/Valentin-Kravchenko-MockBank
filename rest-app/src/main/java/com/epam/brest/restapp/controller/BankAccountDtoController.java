@@ -19,8 +19,8 @@ public class BankAccountDtoController {
 
     private final BankAccountDtoService bankAccountDtoService;
 
-    public BankAccountDtoController(BankAccountDtoService bankAccountDtoService) {
-        this.bankAccountDtoService = bankAccountDtoService;
+    public BankAccountDtoController(BankAccountDtoService bankAccountDtoServiceImpl) {
+        this.bankAccountDtoService = bankAccountDtoServiceImpl;
     }
 
     @GetMapping

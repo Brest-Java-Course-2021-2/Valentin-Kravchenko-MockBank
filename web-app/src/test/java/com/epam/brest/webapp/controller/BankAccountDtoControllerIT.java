@@ -26,39 +26,36 @@ class BankAccountDtoControllerIT extends ControllerTestBasic {
     private final BankAccountDtoService bankAccountDtoService;
 
     public BankAccountDtoControllerIT(@Autowired MockMvc mockMvc,
-                                      @Autowired BankAccountDtoService bankAccountDtoService) {
+                                      @Autowired BankAccountDtoService bankAccountDtoServiceRest) {
         super(mockMvc);
-        this.bankAccountDtoService = bankAccountDtoService;
+        this.bankAccountDtoService = bankAccountDtoServiceRest;
     }
 
     @Test
     void accountsGET() throws Exception {
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
-        performGetAndExpectStatusOk(ACCOUNTS_ENDPOINT, ACCOUNTS)
-               .andExpect(model().attribute(ACCOUNTS, accounts));
+        performGetAndExpectStatusOk(ACCOUNTS_ENDPOINT, ACCOUNTS).andExpect(model().attribute(ACCOUNTS, accounts));
     }
 
     @Test
     void accountsPOST() throws Exception {
         // Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        String numberPattern = "TQ99IK";
-        String customerPattern = "Sergeev";
+        String numberPattern = "BY";
         bankAccountFilterDto.setNumberPattern(numberPattern);
-        bankAccountFilterDto.setCustomerPattern(customerPattern);
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(NUMBER_PATTERN, numberPattern);
-        params.add(CUSTOMER_PATTERN, customerPattern);
+        params.add(CUSTOMER_PATTERN, "");
         performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, params, ACCOUNTS)
                 .andExpect(model().attribute(ACCOUNTS, accounts));
         // Case 2
-        numberPattern = "BY";
-        customerPattern = "";
+        params.clear();
+        numberPattern = "TQ99IK";
+        String customerPattern = "Sergeev";
         bankAccountFilterDto.setNumberPattern(numberPattern);
         bankAccountFilterDto.setCustomerPattern(customerPattern);
         accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
-        params.clear();
         params.add(NUMBER_PATTERN, numberPattern);
         params.add(CUSTOMER_PATTERN, customerPattern);
         performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, params, ACCOUNTS)
@@ -90,8 +87,8 @@ class BankAccountDtoControllerIT extends ControllerTestBasic {
         params.add(NUMBER_PATTERN, numberPattern);
         params.add(CUSTOMER_PATTERN, customerPattern);
         performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, params, ACCOUNTS)
-                .andExpect(model().attribute(FILTER, hasProperty(NUMBER_PATTERN, is("BYby"))))
-                .andExpect(model().attribute(FILTER, hasProperty(CUSTOMER_PATTERN, is("Sergeev2"))));
+                .andExpect(model().attribute(FILTER, hasProperty(NUMBER_PATTERN, is(numberPattern))))
+                .andExpect(model().attribute(FILTER, hasProperty(CUSTOMER_PATTERN, is(customerPattern))));
     }
 
 }

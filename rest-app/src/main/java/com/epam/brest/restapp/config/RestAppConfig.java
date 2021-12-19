@@ -20,14 +20,15 @@ public class RestAppConfig implements WebMvcConfigurer {
 
     @Bean
     public ObjectMapper objectMapper() {
-        SimpleModule bigDecimalModule = new SimpleModule();
-        bigDecimalModule.addSerializer(BigDecimal.class, new BidDecimalSerializer());
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addSerializer(BigDecimal.class, new BidDecimalSerializer());
         return JsonMapper.builder()
                          .addModule(new JavaTimeModule())
-                         .addModule(bigDecimalModule)
+                         .addModule(simpleModule)
                          .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                          .build()
-                         .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+                         .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                         .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
     }
 
 }

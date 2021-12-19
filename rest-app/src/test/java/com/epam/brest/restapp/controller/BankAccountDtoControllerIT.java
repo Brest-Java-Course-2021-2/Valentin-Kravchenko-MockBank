@@ -23,9 +23,9 @@ class BankAccountDtoControllerIT extends RestControllerTestBasic {
 
     public BankAccountDtoControllerIT(@Autowired ObjectMapper objectMapper,
                                       @Autowired MockMvc mockMvc,
-                                      @Autowired BankAccountDtoService bankAccountDtoService) {
+                                      @Autowired BankAccountDtoService bankAccountDtoServiceImpl) {
         super(mockMvc, objectMapper);
-        this.bankAccountDtoService = bankAccountDtoService;
+        this.bankAccountDtoService = bankAccountDtoServiceImpl;
     }
 
     @Test

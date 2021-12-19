@@ -1,9 +1,9 @@
 package com.epam.brest.service.impl;
 
 import com.epam.brest.service.config.ServiceRestTestConfig;
-import org.reactivestreams.Publisher;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
 
 @SpringBootTest(classes = {ServiceRestTestConfig.class})
 public class ServiceRestTestBasic {
@@ -22,28 +22,28 @@ public class ServiceRestTestBasic {
                             .expectStatus().isOk();
     }
 
-    <T, S extends Publisher<T>> WebTestClient.ResponseSpec postAndExchange(String endpoint, S publisher, Class<T> elementClass){
+    <T> WebTestClient.ResponseSpec postAndExchange(String endpoint, T element){
         return webTestClient.post()
                             .uri(endpoint)
-                            .body(publisher, elementClass)
+                            .body(Mono.just(element), element.getClass())
                             .exchange()
                             .expectHeader().valueEquals("Content-Type", "application/json");
     }
 
-    <T, S extends Publisher<T>> WebTestClient.ResponseSpec postAndExpectStatusOk(String endpoint, S publisher, Class<T> elementClass){
-        return postAndExchange(endpoint, publisher, elementClass).expectStatus().isOk();
+    <T> WebTestClient.ResponseSpec postAndExpectStatusOk(String endpoint, T element){
+        return postAndExchange(endpoint, element).expectStatus().isOk();
     }
 
-    <T, S extends Publisher<T>> WebTestClient.ResponseSpec putAndExchange(String endpoint, S publisher, Class<T> elementClass) {
+    <T> WebTestClient.ResponseSpec putAndExchange(String endpoint, T element) {
         return webTestClient.put()
                             .uri(endpoint)
-                            .body(publisher, elementClass)
+                            .body(Mono.just(element), element.getClass())
                             .exchange()
                             .expectHeader().valueEquals("Content-Type", "application/json");
     }
 
-    <T, S extends Publisher<T>> WebTestClient.ResponseSpec putAndExpectStatusOk(String endpoint, S publisher, Class<T> elementClass) {
-        return putAndExchange(endpoint, publisher, elementClass).expectStatus().isOk();
+    <T> WebTestClient.ResponseSpec putAndExpectStatusOk(String endpoint, T element) {
+        return putAndExchange(endpoint, element).expectStatus().isOk();
     }
 
     WebTestClient.ResponseSpec deleteAndExchange(String endpoint) {

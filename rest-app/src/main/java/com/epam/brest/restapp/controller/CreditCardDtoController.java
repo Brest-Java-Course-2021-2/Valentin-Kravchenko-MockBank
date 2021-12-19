@@ -19,8 +19,8 @@ public class CreditCardDtoController {
 
     private final CreditCardDtoService creditCardDtoService;
 
-    public CreditCardDtoController(CreditCardDtoService creditCardDtoService) {
-        this.creditCardDtoService = creditCardDtoService;
+    public CreditCardDtoController(CreditCardDtoService creditCardDtoServiceImpl) {
+        this.creditCardDtoService = creditCardDtoServiceImpl;
     }
 
     @GetMapping

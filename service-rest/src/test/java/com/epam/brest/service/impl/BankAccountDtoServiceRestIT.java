@@ -5,7 +5,6 @@ import com.epam.brest.model.dto.BankAccountFilterDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,17 +31,17 @@ class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
         String customerPattern = "Sergeev";
         bankAccountFilterDto.setNumberPattern(numberPattern);
         bankAccountFilterDto.setCustomerPattern(customerPattern);
-        postAndExpectStatusOk("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
+        postAndExpectStatusOk("/accounts", bankAccountFilterDto)
                      .expectBodyList(BankAccountDto.class)
                      .consumeWith(result -> assertTrue(result.getResponseBody().get(0).getCustomer().contains(customerPattern)));
         //case 2
         bankAccountFilterDto.setNumberPattern(null);
-        postAndExpectStatusOk("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
+        postAndExpectStatusOk("/accounts", bankAccountFilterDto)
                      .expectBody().jsonPath("$.size()", is(1));
         //case 3
         bankAccountFilterDto.setNumberPattern("BY");
         bankAccountFilterDto.setCustomerPattern(null);
-        postAndExpectStatusOk("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
+        postAndExpectStatusOk("/accounts", bankAccountFilterDto)
                      .expectBodyList(BankAccountDto.class)
                      .consumeWith(result -> assertTrue(result.getResponseBody().stream().map(BankAccountDto::getNumber).allMatch(n -> n.contains("BY"))));
     }
@@ -51,7 +50,7 @@ class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
     void getAllWithTotalCardsByFilterWithInvalidNumberPatternAndSearchPattern() {
         // Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        postAndExchange("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
+        postAndExchange("/accounts", bankAccountFilterDto)
                 .expectStatus().isBadRequest()
                 .expectBody()
                 .jsonPath("$.validationErrors.customerPattern").isEqualTo(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT)
@@ -61,7 +60,7 @@ class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
         String customerPattern = "Sergeev2";
         bankAccountFilterDto.setNumberPattern(numberPattern);
         bankAccountFilterDto.setCustomerPattern(customerPattern);
-        postAndExchange("/accounts", Mono.just(bankAccountFilterDto), BankAccountFilterDto.class)
+        postAndExchange("/accounts", bankAccountFilterDto)
                      .expectStatus().isBadRequest()
                      .expectBody()
                      .jsonPath("$.validationErrors.customerPattern").isEqualTo(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT)

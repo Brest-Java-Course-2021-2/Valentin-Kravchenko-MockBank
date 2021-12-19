@@ -4,6 +4,9 @@ Accept: application/json
 GET http://localhost:8090/account/1
 Accept: application/json
 ###
+GET http://localhost:8090/account/1/cards
+Accept: application/json
+###
 POST http://localhost:8090/account
 Content-Type: application/json
 
