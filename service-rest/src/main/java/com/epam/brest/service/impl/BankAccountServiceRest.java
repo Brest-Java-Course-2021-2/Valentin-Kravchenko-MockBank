@@ -1,48 +1,78 @@
 package com.epam.brest.service.impl;
 
 import com.epam.brest.model.entity.BankAccount;
+import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.ServiceRestBasic;
 import com.epam.brest.service.api.BankAccountService;
+import com.epam.brest.service.exception.BankAccountException;
+import com.epam.brest.service.exception.ErrorResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 public class BankAccountServiceRest extends ServiceRestBasic implements BankAccountService {
 
     private static final Logger LOGGER = LogManager.getLogger(BankAccountServiceRest.class);
 
+    public static final String CARDS_ENDPOINT = "/cards";
+
     private final String endpoint;
     private final ParameterizedTypeReference<BankAccount> parameterizedTypeRef;
+    private final ParameterizedTypeReference<List<CreditCard>> parameterizedTypeRefCreditCard;
 
     public BankAccountServiceRest(WebClient webClient, String endpoint) {
         super(webClient);
         this.endpoint = endpoint;
         parameterizedTypeRef = new ParameterizedTypeReference<>() {};
+        parameterizedTypeRefCreditCard = new ParameterizedTypeReference<>() {};
     }
 
     @Override
     public BankAccount create(BankAccount bankAccount) {
         LOGGER.debug("create(endpoint={})", endpoint);
-        return webClientPostBlock(endpoint, bankAccount, parameterizedTypeRef);
+        return postBlock(endpoint, bankAccount, parameterizedTypeRef);
     }
 
     @Override
     public BankAccount update(BankAccount bankAccount) {
         LOGGER.debug("update(endpoint={})", endpoint);
-        return webClientPutBlock(endpoint, bankAccount, parameterizedTypeRef);
+        return putRetrieve(endpoint, bankAccount)
+                .onStatus(HttpStatus::is4xxClientError, this::getMonoException)
+                .bodyToMono(parameterizedTypeRef)
+                .block();
     }
 
     @Override
     public BankAccount delete(Integer id) {
-        LOGGER.debug("getById(endpoint={})", endpoint + "/" + id);
-        return webClientDeleteBlock(endpoint + "/" + id, parameterizedTypeRef);
+        LOGGER.debug("getById(endpoint={})", endpoint + SLASH + id);
+        return deleteRetrieve(endpoint + SLASH + id)
+                .onStatus(HttpStatus::is4xxClientError, this::getMonoException)
+                .bodyToMono(parameterizedTypeRef)
+                .block();
     }
 
     @Override
     public BankAccount getById(Integer id) {
-        LOGGER.debug("getById(endpoint={})", endpoint + "/" + id);
-        return webClientGetBlock(endpoint + "/" + id, parameterizedTypeRef);
+        LOGGER.debug("getById(endpoint={})", endpoint + SLASH + id);
+        return getRetrieve(endpoint + SLASH + id)
+                .onStatus(HttpStatus::is4xxClientError, this::getMonoException)
+                .bodyToMono(parameterizedTypeRef)
+                .block();
+    }
+
+    @Override
+    public List<CreditCard> getAllCardsById(Integer id) {
+        return getBlock(endpoint + SLASH + id + CARDS_ENDPOINT, parameterizedTypeRefCreditCard);
+    }
+
+    private Mono<Throwable> getMonoException(ClientResponse response) {
+        return response.bodyToMono(ErrorResponse.class).flatMap(errorResponse -> Mono.error(new BankAccountException(errorResponse.getMessage())));
     }
 
 }

@@ -5,19 +5,18 @@ import com.epam.brest.model.dto.CreditCardDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CreditCardDtoServiceRestTest extends ServiceRestTestBasic {
+class CreditCardDtoServiceRestIT extends ServiceRestTestBasic {
 
     public static final String DATES_MUST_BE_DIFFERENT = "Dates must be different!";
     public static final String RANGE_START_DATE_FORMAT_IS_INCORRECT = "Range start date format is incorrect!";
     public static final String RANGE_END_DATE_FORMAT_IS_INCORRECT = "Range end date format is incorrect!";
 
-    public CreditCardDtoServiceRestTest(@Autowired WebTestClient webTestClient) {
+    public CreditCardDtoServiceRestIT(@Autowired WebTestClient webTestClient) {
         super(webTestClient);
     }
 
@@ -32,7 +31,7 @@ class CreditCardDtoServiceRestTest extends ServiceRestTestBasic {
         CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
         creditCardDateRangeDto.setValueFromDate("05/2022");
         creditCardDateRangeDto.setValueToDate("07/2022");
-        postAndExpectStatusOk("/cards", Mono.just(creditCardDateRangeDto), CreditCardDateRangeDto.class)
+        postAndExpectStatusOk("/cards", creditCardDateRangeDto)
                 .expectBodyList(CreditCardDto.class)
                 .consumeWith(result -> {
                     CreditCardDto firstCreditCardDto = result.getResponseBody().get(0);
@@ -45,7 +44,7 @@ class CreditCardDtoServiceRestTest extends ServiceRestTestBasic {
         // Case 2
         creditCardDateRangeDto.setValueFromDate("05/2022");
         creditCardDateRangeDto.setValueToDate(null);
-        postAndExpectStatusOk("/cards", Mono.just(creditCardDateRangeDto), CreditCardDateRangeDto.class)
+        postAndExpectStatusOk("/cards", creditCardDateRangeDto)
                 .expectBodyList(CreditCardDto.class)
                 .consumeWith(result -> {
                     CreditCardDto firstCreditCardDto = result.getResponseBody().get(0);
@@ -55,7 +54,7 @@ class CreditCardDtoServiceRestTest extends ServiceRestTestBasic {
         // Case 3
         creditCardDateRangeDto.setValueFromDate(null);
         creditCardDateRangeDto.setValueToDate("07/2022");
-        postAndExpectStatusOk("/cards", Mono.just(creditCardDateRangeDto), CreditCardDateRangeDto.class)
+        postAndExpectStatusOk("/cards", creditCardDateRangeDto)
                 .expectBodyList(CreditCardDto.class)
                 .consumeWith(result -> {
                     CreditCardDto lastCreditCardDto = result.getResponseBody().get(result.getResponseBody().size() - 1);
@@ -68,7 +67,7 @@ class CreditCardDtoServiceRestTest extends ServiceRestTestBasic {
     void getAllWithAccountNumberByFilterWithInvalidValueFromDateAndValueToDate() {
         // Case 1
         CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        postAndExchange("/cards", Mono.just(creditCardDateRangeDto), CreditCardDateRangeDto.class)
+        postAndExchange("/cards", creditCardDateRangeDto)
                 .expectStatus().isBadRequest()
                 .expectBody()
                 .jsonPath("$.validationErrors.valueFromDate").isEqualTo(RANGE_START_DATE_FORMAT_IS_INCORRECT)
@@ -76,7 +75,7 @@ class CreditCardDtoServiceRestTest extends ServiceRestTestBasic {
         // Case 2
         creditCardDateRangeDto.setValueFromDate("07/2022");
         creditCardDateRangeDto.setValueToDate("07/2022");
-        postAndExchange("/cards", Mono.just(creditCardDateRangeDto), CreditCardDateRangeDto.class)
+        postAndExchange("/cards", creditCardDateRangeDto)
                 .expectStatus().isBadRequest()
                 .expectBody()
                 .jsonPath("$.validationErrors.valueFromDate").isEqualTo(DATES_MUST_BE_DIFFERENT)
@@ -84,7 +83,7 @@ class CreditCardDtoServiceRestTest extends ServiceRestTestBasic {
         // Case 2
         creditCardDateRangeDto.setValueFromDate("00/2022");
         creditCardDateRangeDto.setValueToDate("07.2022");
-        postAndExchange("/cards", Mono.just(creditCardDateRangeDto), CreditCardDateRangeDto.class)
+        postAndExchange("/cards", creditCardDateRangeDto)
                 .expectStatus().isBadRequest()
                 .expectBody()
                 .jsonPath("$.validationErrors.valueFromDate").isEqualTo(RANGE_START_DATE_FORMAT_IS_INCORRECT)

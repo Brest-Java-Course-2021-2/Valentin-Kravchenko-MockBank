@@ -31,9 +31,9 @@ public class BankAccountDtoController {
     @Value("${account.filter.error}")
     private String filterError;
 
-    public BankAccountDtoController(BankAccountDtoService bankAccountDtoService,
+    public BankAccountDtoController(BankAccountDtoService bankAccountDtoServiceRest,
                                     Validator bankAccountFilterDtoValidator) {
-        this.bankAccountDtoService = bankAccountDtoService;
+        this.bankAccountDtoService = bankAccountDtoServiceRest;
         this.validator = bankAccountFilterDtoValidator;
     }
 

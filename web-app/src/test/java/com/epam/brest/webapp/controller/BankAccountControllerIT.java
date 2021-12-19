@@ -31,9 +31,9 @@ class BankAccountControllerIT extends ControllerTestBasic {
     private final BankAccountService bankAccountService;
 
     public BankAccountControllerIT(@Autowired MockMvc mockMvc,
-                                   @Autowired BankAccountService bankAccountService) {
+                                   @Autowired BankAccountService bankAccountServiceRest) {
         super(mockMvc);
-        this.bankAccountService = bankAccountService;
+        this.bankAccountService = bankAccountServiceRest;
     }
 
     @Test

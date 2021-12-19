@@ -9,7 +9,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static com.epam.brest.webapp.constant.ControllerConstant.*;
@@ -25,9 +24,9 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
     private final CreditCardDtoService creditCardDtoService;
 
     public CreditCardDtoControllerIT(@Autowired MockMvc mockMvc,
-                                     @Autowired CreditCardDtoService creditCardDtoService) {
+                                     @Autowired CreditCardDtoService creditCardDtoServiceRest) {
         super(mockMvc);
-        this.creditCardDtoService = creditCardDtoService;
+        this.creditCardDtoService = creditCardDtoServiceRest;
     }
 
     @Test
@@ -41,8 +40,8 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
     void cardsPOST() throws Exception {
         //Case 1
         CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setFromDate(LocalDate.parse("2022-05-31"));
-        creditCardDateRangeDto.setToDate(LocalDate.parse("2022-07-31"));
+        creditCardDateRangeDto.setValueFromDate("05/2022");
+        creditCardDateRangeDto.setValueToDate("07/2022");
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(VALUE_FROM_DATE, "05/2022");
@@ -51,7 +50,7 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
                 .andExpect(model().attribute(CARDS, cards));
         //Case 2
         params.clear();
-        creditCardDateRangeDto.setToDate(null);
+        creditCardDateRangeDto.setValueToDate(null);
         cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
         params.add(VALUE_FROM_DATE, "05/2022");
         params.add(VALUE_TO_DATE, "");
@@ -62,7 +61,7 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
     @Test
     void cardsPOSTThereAreNoSearchResults() throws Exception {
         CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setToDate(LocalDate.parse("2000-07-31"));
+        creditCardDateRangeDto.setValueToDate("07/2000");
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(VALUE_FROM_DATE, "");

@@ -34,14 +34,14 @@ class CreditCardDateRangeDtoValidatorTest {
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());
         // Case 2
-        creditCardDateRangeDto.setValueToDate("");
+        creditCardDateRangeDto.setValueToDate(null);
         dataBinder = new DataBinder(creditCardDateRangeDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());
         // Case 3
         creditCardDateRangeDto.setValueFromDate("06/2023");
-        creditCardDateRangeDto.setValueToDate("");
+        creditCardDateRangeDto.setValueToDate(null);
         dataBinder = new DataBinder(creditCardDateRangeDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();

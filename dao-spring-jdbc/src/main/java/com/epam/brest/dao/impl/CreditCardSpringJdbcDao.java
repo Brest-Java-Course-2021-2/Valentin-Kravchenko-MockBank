@@ -109,9 +109,9 @@ public class CreditCardSpringJdbcDao extends SpringJdbcDaoBasic<CreditCard> impl
     }
 
     @Override
-    public List<CreditCard> getAllByAccountId(Integer accountId) {
-        LOGGER.debug("getAllByAccountId(accountId={})", accountId);
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), accountId);
+    public List<CreditCard> getAllByAccountId(Integer id) {
+        LOGGER.debug("getAllByAccountId(id={})", id);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
         return namedParameterJdbcTemplate.query(getAllByAccountIdSql, sqlParameterSource, rowMapper);
     }
 

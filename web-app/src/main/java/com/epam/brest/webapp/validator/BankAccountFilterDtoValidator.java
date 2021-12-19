@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.Objects;
+
 import static com.epam.brest.webapp.constant.ControllerConstant.*;
 
 @Component
@@ -30,16 +32,16 @@ public class BankAccountFilterDtoValidator implements Validator {
     public void validate(Object target, Errors errors) {
         LOGGER.debug("validate(target={})", target);
         BankAccountFilterDto bankAccountFilterDto = (BankAccountFilterDto) target;
-        if (bankAccountFilterDto.getNumberPattern().isEmpty() &&
-            bankAccountFilterDto.getCustomerPattern().isEmpty()) {
+        if (Objects.isNull(bankAccountFilterDto.getNumberPattern()) &&
+            Objects.isNull(bankAccountFilterDto.getCustomerPattern())) {
             errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_ACCOUNT_NUMBER_PATTERN);
             errors.rejectValue(CUSTOMER_PATTERN, ERROR_CODE_CUSTOMER_PATTERN);
         }
-        if (!bankAccountFilterDto.getNumberPattern().isEmpty() &&
+        if (Objects.nonNull(bankAccountFilterDto.getNumberPattern()) &&
             !bankAccountFilterDto.getNumberPattern().matches(numberRegexp)) {
             errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_ACCOUNT_NUMBER_PATTERN);
         }
-        if (!bankAccountFilterDto.getCustomerPattern().isEmpty() &&
+        if (Objects.nonNull(bankAccountFilterDto.getCustomerPattern()) &&
             !bankAccountFilterDto.getCustomerPattern().matches(customerRegexp)) {
             errors.rejectValue(CUSTOMER_PATTERN, ERROR_CODE_CUSTOMER_PATTERN);
         }

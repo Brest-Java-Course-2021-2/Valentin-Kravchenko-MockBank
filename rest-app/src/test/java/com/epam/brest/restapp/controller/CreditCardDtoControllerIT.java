@@ -30,9 +30,9 @@ class CreditCardDtoControllerIT extends RestControllerTestBasic {
 
     public CreditCardDtoControllerIT(@Autowired ObjectMapper objectMapper,
                                      @Autowired MockMvc mockMvc,
-                                     @Autowired CreditCardDtoService creditCardDtoService) {
+                                     @Autowired CreditCardDtoService creditCardDtoServiceImpl) {
         super(mockMvc, objectMapper);
-        this.creditCardDtoService = creditCardDtoService;
+        this.creditCardDtoService = creditCardDtoServiceImpl;
     }
 
     @Test

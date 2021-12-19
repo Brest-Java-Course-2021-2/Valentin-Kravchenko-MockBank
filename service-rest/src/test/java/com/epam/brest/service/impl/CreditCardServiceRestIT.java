@@ -6,7 +6,6 @@ import com.epam.brest.model.entity.CreditCard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.util.Locale;
@@ -14,16 +13,21 @@ import java.util.Locale;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CreditCardServiceRestTest extends ServiceRestTestBasic {
+class CreditCardServiceRestIT extends ServiceRestTestBasic {
 
-    public CreditCardServiceRestTest(@Autowired WebTestClient webTestClient) {
+    public static final String CARD_DEPOSIT_ENDPOINT = "/card/deposit";
+    public static final String CARD_TRANSFER_ENDPOINT = "/card/transfer";
+    public static final String CARD_1_ENDPOINT = "/card/1";
+    public static final String CARD_ENDPOINT = "/card";
+
+    public CreditCardServiceRestIT(@Autowired WebTestClient webTestClient) {
         super(webTestClient);
     }
 
     @Test
     void create() {
         Integer accountId = 1;
-        postAndExpectStatusOk("/card", Mono.just(accountId), Integer.class)
+        postAndExpectStatusOk(CARD_ENDPOINT, accountId)
                 .expectBody(CreditCard.class)
                 .consumeWith(result -> assertEquals(result.getResponseBody().getAccountId(), accountId));
     }
@@ -31,7 +35,7 @@ class CreditCardServiceRestTest extends ServiceRestTestBasic {
     @Test
     void remove() {
         Integer accountId = 1;
-        CreditCard createdCreditCard = postAndExpectStatusOk("/card", Mono.just(accountId), Integer.class)
+        CreditCard createdCreditCard = postAndExpectStatusOk(CARD_ENDPOINT, accountId)
                                             .expectBody(CreditCard.class)
                                             .returnResult()
                                             .getResponseBody();
@@ -43,7 +47,7 @@ class CreditCardServiceRestTest extends ServiceRestTestBasic {
 
     @Test
     void failedRemove() {
-        deleteAndExchange("/card/1")
+        deleteAndExchange(CARD_1_ENDPOINT)
                 .expectStatus().isBadRequest()
                 .expectBody().jsonPath("$.message", notNullValue());
     }
@@ -51,7 +55,7 @@ class CreditCardServiceRestTest extends ServiceRestTestBasic {
     @Test
     void deposit() {
         Integer accountId = 1;
-        CreditCard createdCreditCard = postAndExpectStatusOk("/card", Mono.just(accountId), Integer.class)
+        CreditCard createdCreditCard = postAndExpectStatusOk("/card", accountId)
                                             .expectBody(CreditCard.class)
                                             .returnResult()
                                             .getResponseBody();
@@ -59,8 +63,7 @@ class CreditCardServiceRestTest extends ServiceRestTestBasic {
         creditCardTransactionDto.setTargetCardNumber(createdCreditCard.getNumber());
         creditCardTransactionDto.setValueSumOfMoney("1560,35");
         creditCardTransactionDto.setLocale(new Locale("ru"));
-        postAndExpectStatusOk("/card/" + createdCreditCard.getId() + "/deposit",
-                              Mono.just(creditCardTransactionDto), CreditCardTransactionDto.class)
+        postAndExpectStatusOk(CARD_DEPOSIT_ENDPOINT, creditCardTransactionDto)
                 .expectBody(CreditCard.class)
                 .consumeWith(result -> assertEquals(result.getResponseBody().getBalance(), new BigDecimal("1560.35")));
     }
@@ -68,11 +71,11 @@ class CreditCardServiceRestTest extends ServiceRestTestBasic {
     @Test
     void transfer() {
         Integer accountId = 1;
-        CreditCard sourceCreditCard = postAndExpectStatusOk("/card", Mono.just(accountId), Integer.class)
+        CreditCard sourceCreditCard = postAndExpectStatusOk("/card", accountId)
                                             .expectBody(CreditCard.class)
                                             .returnResult()
                                             .getResponseBody();
-        CreditCard targetCreditCard = postAndExpectStatusOk("/card", Mono.just(accountId), Integer.class)
+        CreditCard targetCreditCard = postAndExpectStatusOk("/card", accountId)
                                             .expectBody(CreditCard.class)
                                             .returnResult()
                                             .getResponseBody();
@@ -80,12 +83,10 @@ class CreditCardServiceRestTest extends ServiceRestTestBasic {
         creditCardTransactionDto.setTargetCardNumber(sourceCreditCard.getNumber());
         creditCardTransactionDto.setValueSumOfMoney("1000");
         creditCardTransactionDto.setLocale(new Locale("ru"));
-        postAndExpectStatusOk("/card/" + sourceCreditCard.getId() + "/deposit",
-                              Mono.just(creditCardTransactionDto), CreditCardTransactionDto.class);
+        postAndExpectStatusOk(CARD_DEPOSIT_ENDPOINT, creditCardTransactionDto);
         creditCardTransactionDto.setSourceCardNumber(sourceCreditCard.getNumber());
         creditCardTransactionDto.setTargetCardNumber(targetCreditCard.getNumber());
-        postAndExpectStatusOk("/card/" + sourceCreditCard.getId() + "/transfer",
-                              Mono.just(creditCardTransactionDto), CreditCardTransactionDto.class)
+        postAndExpectStatusOk(CARD_TRANSFER_ENDPOINT, creditCardTransactionDto)
                 .expectBody(CreditCard.class)
                 .consumeWith(result -> assertEquals(result.getResponseBody().getBalance().intValue(), 0));
     }
@@ -93,7 +94,7 @@ class CreditCardServiceRestTest extends ServiceRestTestBasic {
     @Test
     void failedTransfer() {
         Integer accountId = 1;
-        CreditCard createdCreditCard = postAndExpectStatusOk("/card", Mono.just(accountId), Integer.class)
+        CreditCard createdCreditCard = postAndExpectStatusOk("/card", accountId)
                                             .expectBody(CreditCard.class)
                                             .returnResult()
                                             .getResponseBody();
@@ -106,15 +107,14 @@ class CreditCardServiceRestTest extends ServiceRestTestBasic {
         creditCardTransactionDto.setTargetCardNumber(creditCardFromDb.getNumber());
         creditCardTransactionDto.setValueSumOfMoney("1000");
         creditCardTransactionDto.setLocale(new Locale("ru"));
-        postAndExchange("/card/" + createdCreditCard.getId() + "/transfer",
-                        Mono.just(creditCardTransactionDto), CreditCardTransactionDto.class)
+        postAndExchange(CARD_TRANSFER_ENDPOINT, creditCardTransactionDto)
                 .expectStatus().isBadRequest()
                 .expectBody().jsonPath("$.message", notNullValue());
     }
 
     @Test
     void getById() {
-        getAndExpectStatusOk("/card/1")
+        getAndExpectStatusOk(CARD_1_ENDPOINT)
                 .expectBody(CreditCard.class)
                 .consumeWith(result -> assertEquals(result.getResponseBody().getId(), 1));
     }

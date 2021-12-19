@@ -1,12 +1,14 @@
 package com.epam.brest.service.impl;
 
 import com.epam.brest.model.entity.BankAccount;
+import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.exception.BankAccountException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,6 +74,13 @@ class BankAccountServiceImplIT extends ServiceTestBasic {
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
         BankAccount bankAccountFromDb = bankAccountService.getById(createdBankAccount.getId());
         assertEquals(createdBankAccount, bankAccountFromDb);
+    }
+
+    @Test
+    void getAllCardsById() {
+        Integer id = 1;
+        List<CreditCard> cards = bankAccountService.getAllCardsById(id);
+        assertTrue(cards.stream().map(CreditCard::getAccountId).allMatch(accountId -> accountId.equals(id)));
     }
 
 }

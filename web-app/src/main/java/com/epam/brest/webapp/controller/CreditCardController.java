@@ -43,11 +43,11 @@ public class CreditCardController {
     @Value("${card.message.remove}")
     private String removeMessage;
 
-    public CreditCardController(CreditCardService creditCardService,
-                                BankAccountService bankAccountService,
+    public CreditCardController(CreditCardService creditCardServiceRest,
+                                BankAccountService bankAccountServiceRest,
                                 Validator creditCardTransactionDtoValidator) {
-        this.creditCardService = creditCardService;
-        this.bankAccountService = bankAccountService;
+        this.creditCardService = creditCardServiceRest;
+        this.bankAccountService = bankAccountServiceRest;
         this.validator = creditCardTransactionDtoValidator;
     }
 

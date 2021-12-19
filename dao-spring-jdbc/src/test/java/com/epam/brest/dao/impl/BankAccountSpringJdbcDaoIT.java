@@ -100,11 +100,4 @@ class BankAccountSpringJdbcDaoIT extends DaoTestBasic {
         assertFalse(bankAccountDao.isAccountNumberExists("New number"));
     }
 
-    @Test
-    void getLinkedCards() {
-        List<String> linkedCards = bankAccountDao.getLinkedCards(firstBankAccount.getId());
-        assertNotNull(linkedCards);
-        assertTrue(linkedCards.size() > 0);
-    }
-
 }

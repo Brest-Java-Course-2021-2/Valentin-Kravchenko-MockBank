@@ -9,8 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
-import static com.epam.brest.webapp.constant.ControllerConstant.CUSTOMER;
-import static com.epam.brest.webapp.constant.ControllerConstant.NUMBER;
+import static com.epam.brest.webapp.constant.ControllerConstant.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -34,13 +33,13 @@ class BankAccountFilterDtoValidatorTest {
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());
         //Case 2
-        bankAccountFilterDto.setCustomerPattern("");
+        bankAccountFilterDto.setCustomerPattern(null);
         dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());
         //Case 3
-        bankAccountFilterDto.setNumberPattern("");
+        bankAccountFilterDto.setNumberPattern(null);
         bankAccountFilterDto.setCustomerPattern("Petr");
         dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
@@ -58,24 +57,24 @@ class BankAccountFilterDtoValidatorTest {
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
-        assertNotNull(dataBinder.getBindingResult().getFieldError(NUMBER));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(CUSTOMER));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(NUMBER_PATTERN));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(CUSTOMER_PATTERN));
         //Case 2
         bankAccountFilterDto.setNumberPattern("BY100TRE@");
-        bankAccountFilterDto.setCustomerPattern("");
+        bankAccountFilterDto.setCustomerPattern(null);
         dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
-        assertNotNull(dataBinder.getBindingResult().getFieldError(NUMBER));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(NUMBER_PATTERN));
         //Case 3
-        bankAccountFilterDto.setNumberPattern("");
+        bankAccountFilterDto.setNumberPattern(null);
         bankAccountFilterDto.setCustomerPattern("Petr2");
         dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
-        assertNotNull(dataBinder.getBindingResult().getFieldError(CUSTOMER));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(CUSTOMER_PATTERN));
     }
 
 }

@@ -1,21 +1,22 @@
 package com.epam.brest.restapp.controller;
 
 import com.epam.brest.model.entity.BankAccount;
+import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class BankAccountControllerIT extends RestControllerTestBasic {
 
@@ -45,6 +46,16 @@ class BankAccountControllerIT extends RestControllerTestBasic {
         performGetAndExpectStatusOk("/account/1")
                 .andExpect(jsonPath("$.id", is(bankAccount.getId())))
                 .andExpect(jsonPath("$.customer", is(bankAccount.getCustomer())));
+    }
+
+    @Test
+    void getAllCardsById() throws Exception {
+        List<CreditCard> cards = bankAccountService.getAllCardsById(1);
+        int lastIdx = cards.size() - 1;
+        performGetAndExpectStatusOk("/account/1/cards")
+                .andExpect(jsonPath("$.size()", is(cards.size())))
+                .andExpect(jsonPath("$[0].accountId", is(1)))
+                .andExpect(jsonPath("$[" + lastIdx + "].accountId", is(1)));
     }
 
     @Test

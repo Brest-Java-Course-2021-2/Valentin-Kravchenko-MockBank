@@ -110,12 +110,4 @@ class CreditCardServiceImplIT extends ServiceTestBasic {
         assertEquals(creditCard, creditCardFromDb);
     }
 
-    @Test
-    void getAllByAccountId() {
-        Integer accountId = 1;
-        List<CreditCard> cards = creditCardService.getAllByAccountId(accountId);
-        assertEquals(cards.get(0).getAccountId(), accountId);
-        assertEquals(cards.get(cards.size() - 1).getAccountId(), accountId);
-    }
-    
 }

@@ -8,17 +8,11 @@ import java.util.List;
 public interface ExtendedCreditCardService extends CreditCardService {
 
     /**
-     * Returns all the credit cards linked with a bank account by its id.
-     * @param accountId - bank account id
-     * @return list of credit cards
-     */
-    List<CreditCard> getAllByAccountId(Integer accountId);
-
-    /**
      * Returns a credit card by its number.
      * @param number - credit card number
      * @return the credit card with the given number
-     * @throws CreditCardException if none found
+     * @throws CreditCardException if the credit card is not found
+     * by its number
      */
     CreditCard getByNumber(String number) throws CreditCardException;
 

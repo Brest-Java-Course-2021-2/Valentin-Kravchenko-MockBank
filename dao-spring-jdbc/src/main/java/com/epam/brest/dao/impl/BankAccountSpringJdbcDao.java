@@ -8,16 +8,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
-import static com.epam.brest.dao.constant.ColumnName.ID;
 
 @Repository
 public class BankAccountSpringJdbcDao extends SpringJdbcDaoBasic<BankAccount> implements BankAccountDao {
@@ -106,13 +102,6 @@ public class BankAccountSpringJdbcDao extends SpringJdbcDaoBasic<BankAccount> im
     public boolean isAccountNumberExists(String number) {
         LOGGER.debug("isAccountNumberExists(number={})", number);
         return isNumberExists(countNumberSql, number);
-    }
-
-    @Override
-    public List<String> getLinkedCards(Integer id) {
-        LOGGER.debug("getLinkedCards(id={})", id);
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
-        return namedParameterJdbcTemplate.queryForList(getCardNumbersSql, sqlParameterSource, String.class);
     }
 
 }

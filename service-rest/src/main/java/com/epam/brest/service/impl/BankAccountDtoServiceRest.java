@@ -27,13 +27,13 @@ public class BankAccountDtoServiceRest extends ServiceRestBasic implements BankA
     @Override
     public List<BankAccountDto> getAllWithTotalCards() {
         LOGGER.debug("getAllWithTotalCards(endpoint={})", endpoint);
-        return webClientGetBlock(endpoint, parameterizedTypeRef);
+        return getBlock(endpoint, parameterizedTypeRef);
     }
 
     @Override
     public List<BankAccountDto> getAllWithTotalCards(BankAccountFilterDto bankAccountFilterDto) {
         LOGGER.debug("getAllWithTotalCards(endpoint={}, bankAccountFilterDto={})", endpoint, bankAccountFilterDto);
-        return webClientPostBlock(endpoint, bankAccountFilterDto, parameterizedTypeRef);
+        return postBlock(endpoint, bankAccountFilterDto, parameterizedTypeRef);
     }
 
 }

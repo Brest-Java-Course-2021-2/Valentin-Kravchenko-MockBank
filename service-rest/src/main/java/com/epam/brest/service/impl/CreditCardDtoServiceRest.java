@@ -27,13 +27,13 @@ public class CreditCardDtoServiceRest extends ServiceRestBasic implements Credit
     @Override
     public List<CreditCardDto> getAllWithAccountNumber() {
         LOGGER.debug("getAllWithAccountNumber(endpoint={})", endpoint);
-        return webClientGetBlock(endpoint, parameterizedTypeRef);
+        return getBlock(endpoint, parameterizedTypeRef);
     }
 
     @Override
     public List<CreditCardDto> getAllWithAccountNumber(CreditCardDateRangeDto creditCardDateRangeDto) {
         LOGGER.debug("getAllWithTotalCards(endpoint={}, creditCardDateRangeDto={})", endpoint, creditCardDateRangeDto);
-        return webClientPostBlock(endpoint, creditCardDateRangeDto, parameterizedTypeRef);
+        return postBlock(endpoint, creditCardDateRangeDto, parameterizedTypeRef);
     }
 
 }
