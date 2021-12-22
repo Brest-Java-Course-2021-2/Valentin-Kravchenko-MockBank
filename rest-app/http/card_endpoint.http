@@ -1,18 +1,18 @@
-GET http://localhost:8090/card/1
+GET http://localhost:8090/api/card/1
 Accept: application/json
 ###
-GET http://localhost:8090/card/1/deposit
+GET http://localhost:8090/api/card/1/deposit
 Accept: application/json
 ###
-GET http://localhost:8090/card/1/transfer
+GET http://localhost:8090/api/card/1/transfer
 Accept: application/json
 ###
-POST http://localhost:8090/card
+POST http://localhost:8090/api/card
 Content-Type: application/json
 
 1
 ###
-POST http://localhost:8090/card/deposit
+POST http://localhost:8090/api/card/deposit
 Content-Type: application/json
 
 {
@@ -21,7 +21,7 @@ Content-Type: application/json
   "locale": "ru"
 }
 ###
-POST http://localhost:8090/card/transfer
+POST http://localhost:8090/api/card/transfer
 Content-Type: application/json
 
 {
@@ -31,5 +31,5 @@ Content-Type: application/json
   "locale": "ru"
 }
 ###
-DELETE http://localhost:8090/card/1
+DELETE http://localhost:8090/api/card/1
 Accept: application/json

@@ -1,12 +1,15 @@
 package com.epam.brest.service.impl;
 
+import com.epam.brest.restapp.RestApp;
 import com.epam.brest.service.config.ServiceRestTestConfig;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-@SpringBootTest(classes = {ServiceRestTestConfig.class})
+@SpringBootTest(classes = {RestApp.class, ServiceRestTestConfig.class})
 public class ServiceRestTestBasic {
+
+    public static final String API_ENDPOINT = "/api";
 
     private final WebTestClient webTestClient;
 
@@ -16,7 +19,7 @@ public class ServiceRestTestBasic {
 
     WebTestClient.ResponseSpec getAndExpectStatusOk(String endpoint){
         return webTestClient.get()
-                            .uri(endpoint)
+                            .uri(getUri(endpoint))
                             .exchange()
                             .expectHeader().valueEquals("Content-Type", "application/json")
                             .expectStatus().isOk();
@@ -24,7 +27,7 @@ public class ServiceRestTestBasic {
 
     <T> WebTestClient.ResponseSpec postAndExchange(String endpoint, T element){
         return webTestClient.post()
-                            .uri(endpoint)
+                            .uri(getUri(endpoint))
                             .body(Mono.just(element), element.getClass())
                             .exchange()
                             .expectHeader().valueEquals("Content-Type", "application/json");
@@ -36,7 +39,7 @@ public class ServiceRestTestBasic {
 
     <T> WebTestClient.ResponseSpec putAndExchange(String endpoint, T element) {
         return webTestClient.put()
-                            .uri(endpoint)
+                            .uri(getUri(endpoint))
                             .body(Mono.just(element), element.getClass())
                             .exchange()
                             .expectHeader().valueEquals("Content-Type", "application/json");
@@ -48,13 +51,17 @@ public class ServiceRestTestBasic {
 
     WebTestClient.ResponseSpec deleteAndExchange(String endpoint) {
         return webTestClient.delete()
-                            .uri(endpoint)
+                            .uri(getUri(endpoint))
                             .exchange()
                             .expectHeader().valueEquals("Content-Type", "application/json");
     }
 
     WebTestClient.ResponseSpec deleteAndExpectStatusOk(String endpoint) {
         return deleteAndExchange(endpoint).expectStatus().isOk();
+    }
+
+    private String getUri(String endpoint) {
+        return API_ENDPOINT + endpoint;
     }
 
 }

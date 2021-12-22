@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class BankAccountControllerIT extends RestControllerTestBasic {
+class BankAccountRestControllerIT extends RestControllerTestBasic {
 
     public static final String CUSTOMER = "customer";
     public static final String NEW_CUSTOMER = "New Customer";
@@ -27,9 +27,9 @@ class BankAccountControllerIT extends RestControllerTestBasic {
 
     private final BankAccountService bankAccountService;
 
-    public BankAccountControllerIT(@Autowired MockMvc mockMvc,
-                                   @Autowired ObjectMapper objectMapper,
-                                   @Autowired BankAccountService bankAccountService) {
+    public BankAccountRestControllerIT(@Autowired MockMvc mockMvc,
+                                       @Autowired ObjectMapper objectMapper,
+                                       @Autowired BankAccountService bankAccountService) {
         super(mockMvc, objectMapper);
         this.bankAccountService = bankAccountService;
     }

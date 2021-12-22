@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class CreditCardControllerIT extends RestControllerTestBasic {
+class CreditCardRestControllerIT extends RestControllerTestBasic {
 
     public static final String TARGET_CARD_NUMBER = "targetCardNumber";
     public static final String SOURCE_CARD_NUMBER = "sourceCardNumber";
@@ -34,10 +34,10 @@ class CreditCardControllerIT extends RestControllerTestBasic {
     private final CreditCardService creditCardService;
     private final BankAccountService bankAccountService;
 
-    public CreditCardControllerIT(@Autowired MockMvc mockMvc,
-                                  @Autowired ObjectMapper objectMapper,
-                                  @Autowired CreditCardService creditCardServiceImpl,
-                                  @Autowired BankAccountService bankAccountServiceImpl) {
+    public CreditCardRestControllerIT(@Autowired MockMvc mockMvc,
+                                      @Autowired ObjectMapper objectMapper,
+                                      @Autowired CreditCardService creditCardServiceImpl,
+                                      @Autowired BankAccountService bankAccountServiceImpl) {
         super(mockMvc, objectMapper);
         this.creditCardService = creditCardServiceImpl;
         this.bankAccountService = bankAccountServiceImpl;

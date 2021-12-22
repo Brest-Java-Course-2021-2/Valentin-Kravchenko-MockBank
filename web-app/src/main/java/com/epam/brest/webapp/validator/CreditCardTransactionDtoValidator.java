@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Objects;
 
@@ -62,7 +63,9 @@ public class CreditCardTransactionDtoValidator implements Validator {
             errors.rejectValue(VALUE_SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
         } else {
             try {
-                numberStyleFormatter.parse(creditCardTransactionDto.getValueSumOfMoney(), creditCardTransactionDto.getLocale());
+                BigDecimal sumOfMoney = (BigDecimal) numberStyleFormatter.parse(creditCardTransactionDto.getValueSumOfMoney(),
+                                                                                creditCardTransactionDto.getLocale());
+                creditCardTransactionDto.setSumOfMoney(sumOfMoney);
             } catch (ParseException e) {
                 errors.rejectValue(VALUE_SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
             }
