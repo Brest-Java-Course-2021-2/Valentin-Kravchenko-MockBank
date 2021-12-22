@@ -21,6 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class RestControllerTestBasic {
 
+    public static final String API_ENDPOINT = "/api";
+
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
 
@@ -30,7 +32,7 @@ public class RestControllerTestBasic {
     }
 
     ResultActions performGetAndExpectStatus(String endpoint, ResultMatcher status) throws Exception {
-        return mockMvc.perform(get(endpoint))
+        return mockMvc.perform(get(getUri(endpoint)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status);
     }
@@ -40,7 +42,7 @@ public class RestControllerTestBasic {
     }
 
     ResultActions performPostAndExpectStatus(String endpoint, Object body, ResultMatcher status) throws Exception {
-        return mockMvc.perform(doPost(endpoint, body))
+        return mockMvc.perform(doPost(getUri(endpoint), body))
                       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                       .andExpect(status);
     }
@@ -50,13 +52,13 @@ public class RestControllerTestBasic {
     }
 
     ResultActions performPutAndExpectStatusOk(String endpoint, Object body) throws Exception {
-        return mockMvc.perform(doPut(endpoint, body))
+        return mockMvc.perform(doPut(getUri(endpoint), body))
                       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                       .andExpect(status().isOk());
     }
 
     ResultActions performDeleteAndExpectStatus(String endpoint, ResultMatcher status) throws Exception {
-        return mockMvc.perform(delete(endpoint))
+        return mockMvc.perform(delete(getUri(endpoint)))
                       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                       .andExpect(status);
     }
@@ -81,6 +83,10 @@ public class RestControllerTestBasic {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getUri(String endpoint) {
+        return API_ENDPOINT + endpoint;
     }
 
 }

@@ -1,7 +1,7 @@
-GET http://localhost:8090/cards
+GET http://localhost:8090/api/cards
 Accept: application/json
 ###
-POST http://localhost:8090/cards
+POST http://localhost:8090/api/cards
 Content-Type: application/json
 
 {
@@ -9,14 +9,14 @@ Content-Type: application/json
   "valueToDate": "07/2022"
 }
 ###
-POST http://localhost:8090/cards
+POST http://localhost:8090/api/cards
 Content-Type: application/json
 
 {
   "valueFromDate": "07/2022"
 }
 ###
-POST http://localhost:8090/cards
+POST http://localhost:8090/api/cards
 Content-Type: application/json
 
 {

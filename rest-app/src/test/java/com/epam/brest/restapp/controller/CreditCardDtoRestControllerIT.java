@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class CreditCardDtoControllerIT extends RestControllerTestBasic {
+class CreditCardDtoRestControllerIT extends RestControllerTestBasic {
 
     public static final String DATES_MUST_BE_DIFFERENT = "Dates must be different!";
     public static final String RANGE_START_DATE_FORMAT_IS_INCORRECT = "Range start date format is incorrect!";
@@ -28,9 +28,9 @@ class CreditCardDtoControllerIT extends RestControllerTestBasic {
 
     private final CreditCardDtoService creditCardDtoService;
 
-    public CreditCardDtoControllerIT(@Autowired ObjectMapper objectMapper,
-                                     @Autowired MockMvc mockMvc,
-                                     @Autowired CreditCardDtoService creditCardDtoServiceImpl) {
+    public CreditCardDtoRestControllerIT(@Autowired ObjectMapper objectMapper,
+                                         @Autowired MockMvc mockMvc,
+                                         @Autowired CreditCardDtoService creditCardDtoServiceImpl) {
         super(mockMvc, objectMapper);
         this.creditCardDtoService = creditCardDtoServiceImpl;
     }

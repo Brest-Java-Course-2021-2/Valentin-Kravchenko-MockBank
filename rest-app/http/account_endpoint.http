@@ -1,20 +1,20 @@
-GET http://localhost:8090/account
+GET http://localhost:8090/api/account
 Accept: application/json
 ###
-GET http://localhost:8090/account/1
+GET http://localhost:8090/api/account/1
 Accept: application/json
 ###
-GET http://localhost:8090/account/1/cards
+GET http://localhost:8090/api/account/1/cards
 Accept: application/json
 ###
-POST http://localhost:8090/account
+POST http://localhost:8090/api/account
 Content-Type: application/json
 
 {
   "customer": "Sidor Sidorov"
 }
 ###
-PUT http://localhost:8090/account
+PUT http://localhost:8090/api/account
 Content-Type: application/json
 
 {
@@ -22,5 +22,5 @@ Content-Type: application/json
   "customer": "Sidor Sidorov"
 }
 ###
-DELETE http://localhost:8090/account/1
+DELETE http://localhost:8090/api/account/1
 Content-Type: application/json

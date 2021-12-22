@@ -12,27 +12,27 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/accounts")
-public class BankAccountDtoController {
+@RequestMapping("api/accounts")
+public class BankAccountDtoRestController {
 
-    private static final Logger LOGGER = LogManager.getLogger(BankAccountDtoController.class);
+    private static final Logger LOGGER = LogManager.getLogger(BankAccountDtoRestController.class);
 
     private final BankAccountDtoService bankAccountDtoService;
 
-    public BankAccountDtoController(BankAccountDtoService bankAccountDtoServiceImpl) {
+    public BankAccountDtoRestController(BankAccountDtoService bankAccountDtoServiceImpl) {
         this.bankAccountDtoService = bankAccountDtoServiceImpl;
     }
 
     @GetMapping
     public ResponseEntity<List<BankAccountDto>> accounts() {
-        LOGGER.debug("accountsGET(/accounts)");
+        LOGGER.debug("accountsGET(api/accounts)");
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
         return ResponseEntity.ok(accounts);
     }
 
     @PostMapping
     public ResponseEntity<List<BankAccountDto>> accounts(@Valid @RequestBody BankAccountFilterDto bankAccountFilterDto) {
-        LOGGER.debug("accountsPOST(/accounts, bankAccountFilterDto={})", bankAccountFilterDto);
+        LOGGER.debug("accountsPOST(api/accounts, bankAccountFilterDto={})", bankAccountFilterDto);
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         return ResponseEntity.ok(accounts);
     }

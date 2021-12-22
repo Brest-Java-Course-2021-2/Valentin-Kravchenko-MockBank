@@ -22,9 +22,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BankAccountControllerIT extends ControllerTestBasic {
 
     public static final String ACCOUNT_ENDPOINT = "/account";
-    public static final String ACCOUNT_ID_1 = "/account/1";
-    public static final String ACCOUNT_ID_1000 = "/account/1000";
-    public static final String ACCOUNT_ID_1_REMOVE = "/account/1/remove";
+    public static final String ACCOUNT_TEST_ID = "/account/1";
+    public static final String ACCOUNT_TEST_ID_NON_EXISTS = "/account/1000";
+    public static final String ACCOUNT_TEST_ID_REMOVE = "/account/1/remove";
     public static final String REGISTRATION_DATE = "registrationDate";
     public static final String NEW_CUSTOMER = "New Customer";
 
@@ -45,7 +45,7 @@ class BankAccountControllerIT extends ControllerTestBasic {
     @Test
     void updateGET() throws Exception {
         BankAccount bankAccountFromDb = bankAccountService.getById(1);
-        performGetAndExpectStatusOk(ACCOUNT_ID_1, ACCOUNT)
+        performGetAndExpectStatusOk(ACCOUNT_TEST_ID, ACCOUNT)
                .andExpect(model().attribute(ACCOUNT, bankAccountFromDb));
     }
 
@@ -61,7 +61,7 @@ class BankAccountControllerIT extends ControllerTestBasic {
     void succeededUpdatePOST() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(CUSTOMER, NEW_CUSTOMER);
-        performPostAndExpectStatus3xxRedirection(ACCOUNT_ID_1, params, REDIRECT_ACCOUNTS, ACCOUNTS_ENDPOINT)
+        performPostAndExpectStatus3xxRedirection(ACCOUNT_TEST_ID, params, REDIRECT_ACCOUNTS, ACCOUNTS_ENDPOINT)
                .andExpect(flash().attributeExists(MESSAGE));
         BankAccount bankAccountFromDb = bankAccountService.getById(1);
         assertEquals(bankAccountFromDb.getCustomer(), NEW_CUSTOMER);
@@ -71,7 +71,7 @@ class BankAccountControllerIT extends ControllerTestBasic {
     void updatePOSTWithInvalidCustomer() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(CUSTOMER, NEW_CUSTOMER + 1);
-        performPostAndExpectStatusOk(ACCOUNT_ID_1, params, ACCOUNT)
+        performPostAndExpectStatusOk(ACCOUNT_TEST_ID, params, ACCOUNT)
                 .andExpect(model().attribute(ACCOUNT, hasProperty(CUSTOMER, is(NEW_CUSTOMER + 1))));
     }
 
@@ -79,7 +79,7 @@ class BankAccountControllerIT extends ControllerTestBasic {
     void updatePOSTWithInvalidId() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(CUSTOMER, NEW_CUSTOMER);
-        performPostAndExpectStatus3xxRedirection(ACCOUNT_ID_1000, params, REDIRECT_ACCOUNTS, ACCOUNTS_ENDPOINT)
+        performPostAndExpectStatus3xxRedirection(ACCOUNT_TEST_ID_NON_EXISTS, params, REDIRECT_ACCOUNTS, ACCOUNTS_ENDPOINT)
                .andExpect(flash().attributeExists(ERROR));
     }
 
@@ -96,7 +96,7 @@ class BankAccountControllerIT extends ControllerTestBasic {
 
     @Test
     void failedRemove() throws Exception {
-        performPostAndExpectStatus3xxRedirection(ACCOUNT_ID_1_REMOVE, new LinkedMultiValueMap<>(), REDIRECT_ACCOUNTS, ACCOUNTS_ENDPOINT)
+        performPostAndExpectStatus3xxRedirection(ACCOUNT_TEST_ID_REMOVE, new LinkedMultiValueMap<>(), REDIRECT_ACCOUNTS, ACCOUNTS_ENDPOINT)
                .andExpect(flash().attributeExists(ERROR));
     }
 

@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/card")
-public class CreditCardController {
+@RequestMapping("api/card")
+public class CreditCardRestController {
 
-    private static final Logger LOGGER = LogManager.getLogger(CreditCardController.class);
+    private static final Logger LOGGER = LogManager.getLogger(CreditCardRestController.class);
 
     private final CreditCardService creditCardService;
     private final BankAccountService bankAccountService;
 
-    public CreditCardController(CreditCardService creditCardServiceImpl,
-                                BankAccountService bankAccountService) {
+    public CreditCardRestController(CreditCardService creditCardServiceImpl,
+                                    BankAccountService bankAccountServiceImpl) {
         this.creditCardService = creditCardServiceImpl;
-        this.bankAccountService = bankAccountService;
+        this.bankAccountService = bankAccountServiceImpl;
     }
 
     @GetMapping("{id}")

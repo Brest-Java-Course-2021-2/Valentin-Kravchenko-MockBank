@@ -14,16 +14,17 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class BankAccountDtoControllerIT extends RestControllerTestBasic {
+class BankAccountDtoRestControllerIT extends RestControllerTestBasic {
 
     public static final String CUSTOMER_SEARCH_PATTERN_IS_INCORRECT = "Customer search pattern is incorrect!";
     public static final String ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT = "Account number search pattern is incorrect!";
+    public static final String ACCOUNTS_ENDPOINT = "/accounts";
 
     private final BankAccountDtoService bankAccountDtoService;
 
-    public BankAccountDtoControllerIT(@Autowired ObjectMapper objectMapper,
-                                      @Autowired MockMvc mockMvc,
-                                      @Autowired BankAccountDtoService bankAccountDtoServiceImpl) {
+    public BankAccountDtoRestControllerIT(@Autowired ObjectMapper objectMapper,
+                                          @Autowired MockMvc mockMvc,
+                                          @Autowired BankAccountDtoService bankAccountDtoServiceImpl) {
         super(mockMvc, objectMapper);
         this.bankAccountDtoService = bankAccountDtoServiceImpl;
     }
@@ -45,7 +46,7 @@ class BankAccountDtoControllerIT extends RestControllerTestBasic {
         bankAccountFilterDto.setNumberPattern("BY");
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         int lastIdx = accounts.size() - 1;
-        performPostAndExpectStatusOk("/accounts", bankAccountFilterDto)
+        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountFilterDto)
                 .andExpect(jsonPath("$.size()", is(accounts.size())))
                 .andExpect(jsonPath("$[0].id", is(accounts.get(0).getId())))
                     .andExpect(jsonPath("$[" + lastIdx + "].id", is(accounts.get(lastIdx).getId())));
@@ -53,7 +54,7 @@ class BankAccountDtoControllerIT extends RestControllerTestBasic {
         bankAccountFilterDto.setNumberPattern("TQ99IK");
         bankAccountFilterDto.setCustomerPattern("Sergeev");
         accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
-        performPostAndExpectStatusOk("/accounts", bankAccountFilterDto)
+        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountFilterDto)
                 .andExpect(jsonPath("$.size()", is(accounts.size())))
                 .andExpect(jsonPath("$[0].id", is(accounts.get(0).getId())));
     }
@@ -65,7 +66,7 @@ class BankAccountDtoControllerIT extends RestControllerTestBasic {
         String customerPattern = "Sergeenko";
         bankAccountFilterDto.setNumberPattern(numberPattern);
         bankAccountFilterDto.setCustomerPattern(customerPattern);
-        performPostAndExpectStatusOk("/accounts", bankAccountFilterDto)
+        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountFilterDto)
                 .andExpect(jsonPath("$.size()", is(0)));
     }
 

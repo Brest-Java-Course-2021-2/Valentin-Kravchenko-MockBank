@@ -46,7 +46,7 @@ class BankAccountDtoControllerIT extends ControllerTestBasic {
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(NUMBER_PATTERN, numberPattern);
-        params.add(CUSTOMER_PATTERN, "");
+        params.add(CUSTOMER_PATTERN, EMPTY);
         performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, params, ACCOUNTS)
                 .andExpect(model().attribute(ACCOUNTS, accounts));
         // Case 2

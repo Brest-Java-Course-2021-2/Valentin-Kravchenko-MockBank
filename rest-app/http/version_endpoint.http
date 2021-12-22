@@ -1,2 +1,2 @@
-GET http://localhost:8090/version
+GET http://localhost:8090/api/version
 Accept: application/json

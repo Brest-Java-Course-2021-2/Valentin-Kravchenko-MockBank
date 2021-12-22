@@ -13,20 +13,20 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/account")
-public class BankAccountController {
+@RequestMapping("api/account")
+public class BankAccountRestController {
 
-    private static final Logger LOGGER = LogManager.getLogger(BankAccountController.class);
+    private static final Logger LOGGER = LogManager.getLogger(BankAccountRestController.class);
 
     private final BankAccountService bankAccountService;
 
-    public BankAccountController(BankAccountService bankAccountServiceImpl) {
+    public BankAccountRestController(BankAccountService bankAccountServiceImpl) {
         this.bankAccountService = bankAccountServiceImpl;
     }
 
     @GetMapping
     public ResponseEntity<BankAccount> get() {
-        LOGGER.debug("get(/account)");
+        LOGGER.debug("get(api/account)");
         BankAccount bankAccount = new BankAccount();
         bankAccount.setRegistrationDate(LocalDate.now());
         return ResponseEntity.ok(bankAccount);
@@ -34,23 +34,23 @@ public class BankAccountController {
 
     @GetMapping("{id}")
     public ResponseEntity<BankAccount> get(@PathVariable Integer id) {
-        LOGGER.debug("get(/account/{})", id);
+        LOGGER.debug("get(api/account/{})", id);
         BankAccount bankAccount = bankAccountService.getById(id);
         return ResponseEntity.ok(bankAccount);
     }
 
     @GetMapping("{id}/cards")
     public ResponseEntity<List<CreditCard>> getAllCards(@PathVariable Integer id) {
-        LOGGER.debug("get(/account/{}/cards)", id);
+        LOGGER.debug("get(api/account/{}/cards)", id);
         List<CreditCard> cards = bankAccountService.getAllCardsById(id);
         return ResponseEntity.ok(cards);
     }
 
     @PostMapping
     public ResponseEntity<BankAccount> create(@Valid @RequestBody BankAccount bankAccount){
-        LOGGER.debug("create(/account, bankAccount={})", bankAccount);
+        LOGGER.debug("create(api/account, bankAccount={})", bankAccount);
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
-        LOGGER.debug("create(/account, createdBankAccount={})", createdBankAccount);
+        LOGGER.debug("create(api/account, createdBankAccount={})", createdBankAccount);
         return ResponseEntity.ok(createdBankAccount);
     }
 
