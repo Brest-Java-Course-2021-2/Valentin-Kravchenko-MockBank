@@ -14,7 +14,9 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AccountNumberPattern {
+
     String message() default "{AccountNumberPattern.account.dto.numberPattern}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
 }

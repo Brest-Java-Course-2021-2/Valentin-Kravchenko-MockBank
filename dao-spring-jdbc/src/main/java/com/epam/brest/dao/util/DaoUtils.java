@@ -58,6 +58,7 @@ public final class DaoUtils {
     }
 
     private static String getParamName(Field field) {
+        LOGGER.trace("getParamName(field={})", field);
         if (field.isAnnotationPresent(SqlColumn.class)) {
             String name = field.getAnnotation(SqlColumn.class).value();
             return name.toUpperCase();
@@ -66,10 +67,12 @@ public final class DaoUtils {
     }
 
     private static String convertToSnakeCase(String value) {
-         return value.replaceAll(CAMEL_CASE_REGEXP, SNAKE_CASE_TEMPLATE).toUpperCase();
+        LOGGER.trace("convertToSnakeCase(value={})", value);
+        return value.replaceAll(CAMEL_CASE_REGEXP, SNAKE_CASE_TEMPLATE).toUpperCase();
     }
 
     private static Object convertToSqlRegexp(Field field, Object value) {
+        LOGGER.trace("convertToSqlRegexp(field={}, value={})", field, value);
         if (field.isAnnotationPresent(SqlRegexp.class)) {
             if (!(value instanceof String)) {
                 return value;

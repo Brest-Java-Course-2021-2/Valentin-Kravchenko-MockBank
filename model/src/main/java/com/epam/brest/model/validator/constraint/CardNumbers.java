@@ -16,7 +16,9 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CardNumbers {
+
     String message() default "";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
 }

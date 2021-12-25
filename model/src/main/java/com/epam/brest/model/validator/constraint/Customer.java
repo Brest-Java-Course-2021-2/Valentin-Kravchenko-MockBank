@@ -14,7 +14,9 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Customer {
+
     String message() default "{Customer.account.customer}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
 }

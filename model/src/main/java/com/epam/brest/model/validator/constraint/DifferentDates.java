@@ -1,6 +1,5 @@
 package com.epam.brest.model.validator.constraint;
 
-import com.epam.brest.model.validator.DifferentCardNumbersValidator;
 import com.epam.brest.model.validator.DifferentDatesValidator;
 
 import javax.validation.Constraint;
@@ -16,7 +15,9 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DifferentDates {
+
     String message() default "";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
 }
