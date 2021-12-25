@@ -1,2 +1,2 @@
 # Valentin-Kravchenko-MockBank
-Training project for Java Web Development course
+Training project for the Java Web Development course 2021-2

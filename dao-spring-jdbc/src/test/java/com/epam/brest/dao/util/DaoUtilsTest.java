@@ -11,19 +11,22 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.epam.brest.dao.constant.DaoConstant.AND_DELIMITER;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DaoUtilsTest {
 
-    public static final String NUMBER = "number";
-    public static final String CUSTOMER = "customer";
-    public static final String NUMBER_UPPER_CASE = "NUMBER";
-    public static final String CUSTOMER_UPPER_CASE = "CUSTOMER";
-    public static final String REGISTRATION_DATE_UPPER_CASE = "REGISTRATION_DATE";
-    public static final String ID_UPPER_CASE = "ID";
-    public static final String AND = "AND";
-    public static final String BA_NUMBER_LIKE_NUMBER = "BA.NUMBER LIKE :NUMBER";
-    public static final String BA_CUSTOMER_LIKE_CUSTOMER = "BA.CUSTOMER LIKE :CUSTOMER";
+    public static final String NUMBER = "NUMBER";
+    public static final String CUSTOMER = "CUSTOMER";
+    public static final String REGISTRATION_DATE = "REGISTRATION_DATE";
+    public static final String ID = "ID";
+    public static final String BALANCE = "BALANCE";
+    public static final String EXPIRATION_DATE = "EXPIRATION_DATE";
+    public static final String NUMBER_REGEXP = "(?=.*number).*";
+    public static final String CUSTOMER_REGEXP = "(?=.*customer).*";
+    public static final String BA_REGEXP = "BA.$ REGEXP :$";
+    public static final String BA_NUMBER_REGEXP_NUMBER = "BA.NUMBER REGEXP :NUMBER";
+    public static final String BA_CUSTOMER_REGEXP_CUSTOMER = "BA.CUSTOMER REGEXP :CUSTOMER";
     public static final String CC_EXPIRATION_DATE_FROM_DATE = "CC.EXPIRATION_DATE >= :FROM_DATE";
     public static final String CC_EXPIRATION_DATE_TO_DATE = "CC.EXPIRATION_DATE <= :TO_DATE";
     public static final String FROM_DATE = "FROM_DATE";
@@ -36,59 +39,59 @@ class DaoUtilsTest {
         bankAccount.setNumber("1");
         bankAccount.setRegistrationDate(LocalDate.now());
         SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccount);
-        assertEquals(sqlParameterSource.getValue(REGISTRATION_DATE_UPPER_CASE), LocalDate.now());
-        assertEquals(sqlParameterSource.getValue(NUMBER_UPPER_CASE), "1");
-        assertFalse(sqlParameterSource.hasValue(ID_UPPER_CASE));
-        assertFalse(sqlParameterSource.hasValue(CUSTOMER_UPPER_CASE));
+        assertEquals(sqlParameterSource.getValue(REGISTRATION_DATE), LocalDate.now());
+        assertEquals(sqlParameterSource.getValue(NUMBER), "1");
+        assertFalse(sqlParameterSource.hasValue(ID));
+        assertFalse(sqlParameterSource.hasValue(CUSTOMER));
         //Case 2
         CreditCard creditCard = new CreditCard();
         creditCard.setId(1);
         creditCard.setNumber("1");
         sqlParameterSource = DaoUtils.getSqlParameterSource(creditCard);
-        assertEquals(sqlParameterSource.getValue("ID"), 1);
-        assertEquals(sqlParameterSource.getValue(NUMBER_UPPER_CASE), "1");
-        assertFalse(sqlParameterSource.hasValue("EXPIRATION_DATE"));
-        assertFalse(sqlParameterSource.hasValue("BALANCE"));
+        assertEquals(sqlParameterSource.getValue(ID), 1);
+        assertEquals(sqlParameterSource.getValue(NUMBER), "1");
+        assertFalse(sqlParameterSource.hasValue(EXPIRATION_DATE));
+        assertFalse(sqlParameterSource.hasValue(BALANCE));
     }
 
     @Test
-    void getSqlParameterSourceWhenAnnotationIsWrapInPercentSignsPresents() {
+    void getSqlParameterSourceWhenAnnotationSqlRegexpPresents() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        bankAccountFilterDto.setNumberPattern(NUMBER);
-        bankAccountFilterDto.setCustomerPattern(CUSTOMER);
+        bankAccountFilterDto.setNumberPattern(NUMBER.toLowerCase());
+        bankAccountFilterDto.setCustomerPattern(CUSTOMER.toLowerCase());
         SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
-        assertEquals(sqlParameterSource.getValue(NUMBER_UPPER_CASE), "%number%");
-        assertEquals(sqlParameterSource.getValue(CUSTOMER_UPPER_CASE), "%customer%");
+        assertEquals(sqlParameterSource.getValue(NUMBER), NUMBER_REGEXP);
+        assertEquals(sqlParameterSource.getValue(CUSTOMER), CUSTOMER_REGEXP);
         //Case 2
         bankAccountFilterDto.setCustomerPattern(null);
         sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
-        assertEquals(sqlParameterSource.getValue(NUMBER_UPPER_CASE), "%number%");
-        assertFalse(sqlParameterSource.hasValue(CUSTOMER_UPPER_CASE));
+        assertEquals(sqlParameterSource.getValue(NUMBER), NUMBER_REGEXP);
+        assertFalse(sqlParameterSource.hasValue(CUSTOMER));
     }
                                             
     @Test
-    void buildFilterWhereSqlForCaseSqlTemplateIsString() {
+    void buildFilterWhereSqlInCaseSqlTemplateIsString() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        bankAccountFilterDto.setNumberPattern(NUMBER);
-        bankAccountFilterDto.setCustomerPattern(CUSTOMER);
+        bankAccountFilterDto.setNumberPattern(NUMBER.toLowerCase());
+        bankAccountFilterDto.setCustomerPattern(CUSTOMER.toLowerCase());
         SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
-        String template = "BA.$ LIKE :$";
-        String filterWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, template);
-        assertTrue(filterWhereSql.contains(BA_NUMBER_LIKE_NUMBER));
-        assertTrue(filterWhereSql.contains(AND));
-        assertTrue(filterWhereSql.contains(BA_CUSTOMER_LIKE_CUSTOMER));
+        String filterWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, BA_REGEXP);
+        assertTrue(filterWhereSql.contains(BA_NUMBER_REGEXP_NUMBER));
+        assertTrue(filterWhereSql.contains(AND_DELIMITER.trim()));
+        assertTrue(filterWhereSql.contains(BA_CUSTOMER_REGEXP_CUSTOMER));
         //Case 2
         bankAccountFilterDto.setCustomerPattern(null);
         sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
-        filterWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, template);
-        assertTrue(filterWhereSql.contains(BA_NUMBER_LIKE_NUMBER));
-        assertFalse(filterWhereSql.contains(AND));
+        filterWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, BA_REGEXP);
+        assertTrue(filterWhereSql.contains(BA_NUMBER_REGEXP_NUMBER));
+        assertFalse(filterWhereSql.contains(AND_DELIMITER.trim()));
+        assertFalse(filterWhereSql.contains(BA_CUSTOMER_REGEXP_CUSTOMER));
     }
 
     @Test
-    void buildFilterWhereSqlForCaseForSqlTemplateIsMap() {
+    void buildFilterWhereSqlInCaseSqlTemplateIsMap() {
         //Case 1
         CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
         creditCardDateRangeDto.setFromDate(LocalDate.MIN);
@@ -99,14 +102,14 @@ class DaoUtilsTest {
         SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(creditCardDateRangeDto);
         String filterWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, templateMap);
         assertTrue(filterWhereSql.contains(CC_EXPIRATION_DATE_FROM_DATE));
-        assertTrue(filterWhereSql.contains(AND));
+        assertTrue(filterWhereSql.contains(AND_DELIMITER.trim()));
         assertTrue(filterWhereSql.contains(CC_EXPIRATION_DATE_TO_DATE));
         //Case 2
         creditCardDateRangeDto.setToDate(null);
         sqlParameterSource = DaoUtils.getSqlParameterSource(creditCardDateRangeDto);
         filterWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, templateMap);
         assertTrue(filterWhereSql.contains(CC_EXPIRATION_DATE_FROM_DATE));
-        assertFalse(filterWhereSql.contains(AND));
+        assertFalse(filterWhereSql.contains(AND_DELIMITER.trim()));
     }
 
 }
