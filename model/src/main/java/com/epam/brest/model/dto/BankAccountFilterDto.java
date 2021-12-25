@@ -1,7 +1,7 @@
 package com.epam.brest.model.dto;
 
 import com.epam.brest.model.annotation.SqlColumn;
-import com.epam.brest.model.annotation.WrapInPercentSigns;
+import com.epam.brest.model.annotation.SqlRegexp;
 import com.epam.brest.model.validator.constraint.AccountNumberPattern;
 import com.epam.brest.model.validator.constraint.AnyPattern;
 import com.epam.brest.model.validator.constraint.CustomerPattern;
@@ -15,7 +15,7 @@ public class BankAccountFilterDto {
     /**
      *  Search pattern for an international bank account number.
      */
-    @WrapInPercentSigns
+    @SqlRegexp
     @AccountNumberPattern
     @SqlColumn("number")
     private String numberPattern;
@@ -23,7 +23,7 @@ public class BankAccountFilterDto {
     /**
      *  Search pattern for a full name of the bank customer.
      */
-    @WrapInPercentSigns
+    @SqlRegexp
     @CustomerPattern
     @SqlColumn("customer")
     private String customerPattern;

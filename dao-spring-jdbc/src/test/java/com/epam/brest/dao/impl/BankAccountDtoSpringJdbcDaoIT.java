@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BankAccountDtoSpringJdbcDaoIT extends DaoTestBasic {
 
+    public static final String SPLIT_REGEX = "\\s+";
+
     private final BankAccountDtoDao bankAccountDtoDao;
     private final BankAccountDao bankAccountDao;
 
@@ -62,23 +64,45 @@ class BankAccountDtoSpringJdbcDaoIT extends DaoTestBasic {
     void getAllWithTotalCardsByFilter() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        String number = "S8416E1PX";
-        String customer = "vano";
-        bankAccountFilterDto.setNumberPattern(number);
-        bankAccountFilterDto.setCustomerPattern(customer);
+        String numberPattern1 = "S8416E1PX";
+        String customerPattern1 = "Iv";
+        bankAccountFilterDto.setNumberPattern(numberPattern1);
+        bankAccountFilterDto.setCustomerPattern(customerPattern1);
         List<BankAccountDto> accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 1);
-        assertTrue(accounts.get(0).getNumber().contains(number));
-        assertTrue(accounts.get(0).getCustomer().contains(customer));
-        //case 2
-        bankAccountFilterDto.setCustomerPattern(null);
+        assertTrue(accounts.get(0).getNumber().contains(numberPattern1));
+        assertTrue(accounts.get(0).getCustomer().contains(customerPattern1));
+        //Case 2
+        String customerPattern2 = "ov";
+        bankAccountFilterDto.setNumberPattern(null);
+        bankAccountFilterDto.setCustomerPattern(customerPattern2);
+        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+        assertEquals(accounts.size(), 2);
+        assertTrue(accounts.stream().allMatch(acc -> acc.getCustomer().contains(customerPattern2)));
+        //Case 3
+        String numberPattern2 = "BY 99T6";
+        String customerPattern3 = "Iv ov";
+        bankAccountFilterDto.setNumberPattern(numberPattern2);
+        bankAccountFilterDto.setCustomerPattern(customerPattern3);
         accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 1);
-        assertTrue(accounts.get(0).getNumber().contains(number));
-        //case 3
-        customer = "Cusmoter";
+        String[] numberExpressions =  numberPattern2.split(SPLIT_REGEX);
+        String number = accounts.get(0).getNumber();
+        String[] customerExpressions = customerPattern3.split(SPLIT_REGEX);
+        String customer = accounts.get(0).getCustomer();
+        assertTrue(number.contains(numberExpressions[0]) && number.contains(numberExpressions[1]));
+        assertTrue(customer.contains(customerExpressions[0]) && customer.contains(customerExpressions[1]));
+        //case 4
+        String numberPattern3 = "BY";
+        bankAccountFilterDto.setNumberPattern(numberPattern3);
+        bankAccountFilterDto.setCustomerPattern(null);
+        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+        assertEquals(accounts.size(), 3);
+        assertTrue(accounts.stream().allMatch(acc -> acc.getNumber().contains(numberPattern3)));
+        //case 5
+        String customerPattern4 = "Customer";
         bankAccountFilterDto.setNumberPattern(null);
-        bankAccountFilterDto.setCustomerPattern(customer);
+        bankAccountFilterDto.setCustomerPattern(customerPattern4);
         accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 0);
     }

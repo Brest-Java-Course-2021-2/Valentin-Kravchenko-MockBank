@@ -29,8 +29,8 @@ public class BankAccountDtoSpringJdbcDao implements BankAccountDtoDao {
     @Value("${account.dto.get.all.by.filter}")
     private String getAllSqlByFilter;
 
-    @Value("${account.dto.sql.like.template}")
-    private String sqlLikeTemplate;
+    @Value("${account.dto.sql.regexp.template}")
+    private String sqlRegexpTemplate;
 
     public BankAccountDtoSpringJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -48,7 +48,7 @@ public class BankAccountDtoSpringJdbcDao implements BankAccountDtoDao {
         LOGGER.debug("getAllWithTotalCards(bankAccountFilterDto={})", bankAccountFilterDto);
         SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
         LOGGER.info("getAllWithTotalCards(sqlParameterSource={})", sqlParameterSource);
-        String dynamicWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, sqlLikeTemplate);
+        String dynamicWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, sqlRegexpTemplate);
         return namedParameterJdbcTemplate.query(String.format(getAllSqlByFilter, dynamicWhereSql), sqlParameterSource, rowMapper);
     }
 
