@@ -3,173 +3,214 @@
 The purpose of this project is to build a simple web-application to work with *bank accounts and linked them credit cards*.  
 ## 2. Scope
 The application allows users to:  
-* View and edit the list of bank accounts
-* Filter the list of accounts by account number and customer name  
-* Add a new credit card to the selected bank account
-* View and edit the list of credit cards
-* Filter the list of cards by expiration date
-* Deposit money to the selected credit card
-* Transfer money to the specified credit card
+  * View a list of all bank accounts
+  * Create a new bank account
+  * Edit the selected bank account
+  * Filter the list of bank accounts by account number and customer full name 
+  * Add a new credit card to the selected bank account
+  * View a list of all credit cards
+  * Filter the list of credit cards by expiration date
+  * Deposit money to the selected credit card
+  * Transfer money to the selected credit card
 ## 3. Overall description
-### 3.1 Bank account requirements
-**Users of the system should have the following management functions:**  
-#### 3.1.1 View, filter, and edit the list of bank accounts:
-##### Basic Action: 
+### 3.1 Bank Account Management Functions
+### 3.1.1 View and Filter a List of Bank Accounts:
+#### Basic Action: 
   * The user selects the **Accounts** tab
-  * The system generates and displays a list of all bank accounts
-    <img alt="Slide 1" height="60%" src="https://user-images.githubusercontent.com/75541561/140600577-f2016467-99f4-443d-beb7-78f78252ad95.PNG" width="60%"/>
+  * The system handles the request and displays a list of all bank accounts 
+    ![](/docs/jpeg/slide_1.jpeg)
   * The list of bank accounts includes the following columns:
-    * International bank account number
-    * Customer full name
-    * Date of the customer registration in the bank system
-    * Total number of credit cards linked with the account
-    * Links to edit, remove the account, and add a new credit card to the account
-##### Action to Filter the List of Bank Accounts:
-  * The user enters a search pattern into each input field or one of them 
-  * The user clicks the **APPLY**
+    * International Bank Account Number
+    * Customer Full Name
+    * Date of the Customer Registration in the bank system
+    * Total Number of Credit Cards linked with the bank account
+    * Links to edit and remove an account, and a link to add a new credit card to the account
+##### Filtering Action:
+  * The user enters a search pattern into each input field or one of them
+  * Valid format of a number search pattern is
+    \[FirstPattern(required)\]{up to 17 characters}\<space(optional)\>\[SecondPattern(optional)\]{up to 17 characters}
+    (for example, 'BY', 'BY 99T6')
+  * Allowed characters for the \[FirstPattern\] and [SecondPattern\] are \[A-Z0-9\]
+  * Valid format of a customer search pattern is 
+    \[FirstNamePattern\]{up to 63 characters}\<space\>\[LastNamePattern\]{up to 64 characters}
+    (for example, 'Iv Iva', 'an ov', 'ov', 'Iv'). Both or one of the patterns should be specified 
+  * Allowed characters for the \[FirstNamePattern\] and [LastNamePattern\] are \[A-Za-z\]
+  * The user clicks the **APPLY** button
   * The system validates the given search patterns
-  * In the case, the search patterns are valid, the system generates and displays a list of bank accounts matching
-    the search patterns  
-    <img alt="Slide 2" height="60%" src="https://user-images.githubusercontent.com/75541561/140600578-0840936a-c039-4991-a7e5-3afaca79d9c6.PNG" width="60%"/>
-  * In the case, there are no bank accounts matching the search patterns, the system generates the info message  
+  * In the case, the search patterns are valid, the system handles the request and displays a list of bank accounts matching
+    the search patterns
+    ![](/docs/jpeg/slide_2.jpeg)
+  * In the case, there are no bank accounts matching the search patterns, the system displays an info message  
     "No data was found matching the given search pattern(s)"
-  * In the case, the search patterns are invalid, the system generates the error message "Search pattern is incorrect!"
-  * To cancel the filter, the user clicks the **RESET** and the system generates and displays a list of all bank accounts
+    ![](/docs/jpeg/slide_3.jpeg)
+  * In the case, the search patterns are invalid, the system displays warnings 
+    "Number search pattern is incorrect!" and/or "Customer search pattern is incorrect!"
+    ![](/docs/jpeg/slide_4.jpeg)
+  * In the case, the user clicks the **RESET** button to call off the filter, the system displays a list of all bank accounts
   * The search pattern for the account number is entered in the field located above the Number column, and for the client 
     it is entered in the field located above the Client column
-##### Action to Edit a Bank Account:
-  * The user clicks the **Edit** in the line of the selected bank account
-  * The system redirects the user to the page containing an account editing form
-    <img alt="Slide 3" height="60%" src="https://user-images.githubusercontent.com/75541561/140600580-1fd3248f-b489-4005-bde0-065a59f5bafc.PNG" width="60%"/>
-  * The user changes the customer full name
-  * In the case, user clicks the **SAVE**:
-    * The system validates the given data
-    * In the case, the given data is valid:
-      * The system updates this data in the database
-      * In the case, the error occurred while updating data, the system generates the error message "There was error updating account"  
-      * In the case, the update was successful:
-        * The system redirect the user to the accounts page
-        * The system generates the info message "Bank account {account number is presented here} updated successfully"
-        * The system generates and displays a list of all bank accounts with updated data
-    * In the case, the given data is invalid, the system generates the error message "The given data is incorrect"
-  * In the case, user clicks the **CANCEL**, the system doesn't update the selected bank account and 
-    redirects the user to the accounts page
-##### Action to Remove a Bank Account:
-  * The user clicks the **Remove** in the line of the selected bank account
-  * The system checks the removed account for linked credit cards 
-  * In the case, the removed account is linked to credit cards, the system generates the error message 
-    "Credit cards {card numbers are presented here} are linked to bank account {account number is presented here}. 
-     It can't be removed!"
-  * In the case, the removed account isn't linked with credit cards:
-    * The system redirect the user to the page to confirm account deletion   
-      <img alt="Slide 4" height="60%" src="https://user-images.githubusercontent.com/75541561/140600581-419e6f4c-dd3b-42b4-87b4-5f758163f433.PNG" width="60%"/>
-    * If user confirms account deletion: 
-      * The system removes it from the database
-      * In the case, the error occurred while deleting data, the system generates the error message "There was error removing account"
-      * In the case, the deletion was successful:
-        * The system generates and displays an updated list of all bank accounts
-        * The system generates the info message "Bank account {account number is presented here} removed successfully"
-    * If user doesn't confirm the account deletion, the system doesn't remove the selected account
-##### Action to Add a New Credit Card to the Bank Account:
-  * The user clicks the **Add Card** in the line of the selected bank account
-  * The system automatically generates a new credit card number
-  * The system automatically sets the new credit card balance to zero
-  * The system inserts this data in the database
-  * In the case, the error occurred while inserting data, the system generates the error message "Failed to add a new credit card"
-  * In the case, the insertion was successful:
-    * The system generates the info message "New credit card {card number is presented here} successfully 
-    linked to bank account {account number is presented here}"
-    * The system generates and displays a list of all bank accounts with an added credit card  
-#### 3.1.2 Create a New Bank Account
-* Basic Action:
-  * The user clicks the **CREATE ACCOUNT**
-  * The system redirects the user to the page containing an account creating form
-    <img alt="Slide 5" height="60%" src="https://user-images.githubusercontent.com/75541561/140600582-c793dbdf-a448-4ecd-ac4f-709bb77a9350.PNG" width="60%"/>
-  * The system automatically sets a registration date corresponding to the current date
-  * The user enters the customer first and last name
-  * In the case, user clicks the **CREATE**:
-    * The system validates the given data
-    * In the case, the given data is valid:
-      * The system automatically generates a new bank account number  
-      * The system inserts the above data in the database
-      * In the case, the error occurred while inserting data, the system generates the error message "Failed to create a new bank account"
-      * In the case, the insertion was successful:
-        * The system redirect the user to the accounts page
-        * The system generates the info message "New bank account created successfully"
-        * The system generates and displays an updated list of all bank accounts
-    * In the case, the given data is invalid, the system generates the error message "The given data is incorrect" 
-  * In the case, user clicks the **CANCEL**, the system doesn't create the account and redirects the user   
-    to the accounts page
-### 3.2 Credit card requirements
-**Users of the system should have the following management functions:**
-#### 3.2.1 View, filter, and edit the list of credit cards:
+### 3.1.2 Create a New Bank Account
 ##### Basic Action:
-* The user selects the **Cards** tab
-    * The system generates and displays a list of all credit cards
-      <img alt="Slide 6" height="60%" src="https://user-images.githubusercontent.com/75541561/140600583-ef280d75-4fa2-45ab-b786-1d0505773421.PNG" width="60%"/>
-    * The list of bank accounts includes the following columns:
-        * Bank account number linked with the credit card 
-        * Credit card number
-        * Credit card expiration date 
-        * Credit card balance
-        * Links to remove the card, deposit and transfer money
-##### Action to Filter the List of Credit Cards:
+  * The user clicks the **CREATE ACCOUNT** button
+  * The system redirects the user to the page with a form for an account creating
+    ![](/docs/jpeg/slide_5.jpeg)
+##### Creating a bank account:
+  * The system automatically sets a registration date corresponding to the current date
+  * The user enters the customer full name
+  * Valid customer full name format is \[FirstName\]{up to 63 characters}\<space\>\[LastName\]{up to 64 characters}
+  (for example, Ivan Ivanov), \[FirstName\] and [LastName\] must start with a capital letter
+  * Allowed characters in the \[FirstName\] and [LastName\] are \[A-Za-z\]
+  * In the case, user clicks the **CREATE** button:
+    * The system validates the customer full name
+    * In the case, the customer full name is valid:
+      * The system automatically generates a new international bank account number
+      * The system inserts the above data in the database
+      * The system redirect the user to the 'Accounts' page
+      * The system displays an info message "New bank account created successfully"
+      * The system displays an updated list of all bank accounts
+      ![](/docs/jpeg/slide_6.jpeg)
+    * In the case, the customer full name is invalid, the system displays a warning "Customer full name is incorrect!"
+      ![](/docs/jpeg/slide_7.jpeg)
+##### Cancelling Create:
+  * The user clicks the **CANCEL** button
+  * The system redirects the user to the 'Accounts' page without creating a new bank account
+### 3.1.3 Edit a Bank Account:
+##### Basic Action:
+  * The user clicks the **Edit** link in the 'Actions' column of the selected bank account
+  * The system redirects the user to the page with a form for an account editing
+    ![](/docs/jpeg/slide_8.jpeg)
+##### Editing a bank account:
+  * The user changes the customer full name
+  * The user clicks the **SAVE** button:
+  * The system validates the customer full name
+    * In the case, the customer full name is valid:
+      * The system updates this data in the database
+      * The system redirects the user to the Accounts page
+      * The system displays an info message "Bank account {account number is presented here} updated successfully"
+      * The system displays a list of all bank accounts with updated data
+        ![](/docs/jpeg/slide_9.jpeg)
+    * In the case, the customer full name is invalid, the system displays a warning "Customer full name is incorrect!"
+##### Cancelling Edit:    
+  * The user clicks the **CANCEL** button 
+  * The system redirects the user to the 'Accounts' page without updating the selected bank account 
+### 3.1.4 Remove a Bank Account:
+##### Basic Action:
+  * The user clicks the **Remove** link in the 'Actions' column of the selected bank account
+  * The system displays dialog box to confirm account deletion
+  * The dialog box indicates the number of the removed bank account
+    ![](/docs/jpeg/slide_10.jpeg)
+##### Confirm Deletion:
+  * The user clicks the **Remove** button in the dialog box
+  * The system checks the removed bank account for linked credit cards
+  * In the case, the removed account is linked to credit cards, the system displays an error message
+    "Credit cards {card numbers are presented here} are linked to bank account {account number is presented here}.
+    It can't be removed!"
+    ![](/docs/jpeg/slide_11.jpeg)
+  * In the case, the removed account isn't linked with credit cards:
+    * The system removes the selected bank account from the database
+    * The system displays an info message "Bank account {account number is presented here} removed successfully"
+    * The system displays an updated list of all bank accounts
+      ![](/docs/jpeg/slide_12.jpeg)
+      ![](/docs/jpeg/slide_13.jpeg)
+##### Cancelling Deletion:
+  * The user clicks the **Cancel** button in the dialog box
+  * The system closes dialog box without removing the selected bank account
+### 3.1.5 Add a New Credit Card to the Bank Account:
+##### Basic Action:
+  * The user clicks the **Add Card** link in the 'Actions' column of the selected bank account
+  * The system automatically generates a new credit card number
+  * The system automatically sets a zero balance for the new credit card
+  * The system inserts this data in the database
+  * The system displays an info message "New credit card {card number is presented here} successfully 
+    linked to bank account {account number is presented here}"
+  * The system displays a list of all bank accounts with an updated 'Cards' column for the selected bank account  
+
+### 3.2 Credit Card Management Functions
+#### 3.2.1 View and Filter a List of Credit Cards:
+##### Basic Action:
+  * The user selects the **Cards** tab
+  * The system handles request and displays a list of all credit cards
+    ![](/docs/jpeg/slide_14.jpeg)
+  * The list of bank accounts includes the following columns:
+    * International Bank Account Number 
+    * Credit Card Number
+    * Credit Card Expiration Date 
+    * Credit Card Balance
+    * Link to remove a credit card, and links to deposit and transfer money
+##### Filtering Action:
   * The user enters the required date into each input field or one of them
-  * The user clicks the **APPLY**
+  * Valid format of date is \[Month(required)\]{2 digits}\</\>\[Year(required)\]{4 digits}
+    (for example, '06/2021')
+  * The user clicks the **APPLY** button
   * The system validates the given dates
-  * In the case, the given dates are valid, the system generates and displays a list of credit cards to 
-  following rules:
-    * In the case, the date is specified only for "Expiry from", the system displays all the credit cards in which
-      the expiration date begins at the specified date
-    * In the case, the date is specified only for "Expiry to", the system displays all the credit cards 
-      that expire on the specified date
-    * Otherwise, the system displays all the credit cards with expiration dates in the specified range
-  * In the case, there are no credit cards matching the given date range, the system generates the info message  
-  "No data was found matching the date range"
-  * In the case, the given dates are invalid, the system generates the error message "Date format is incorrect!"
-  * To cancel the filter, the user clicks the **RESET** and the system generates and displays a list of all 
-    credit cards
-##### Action to Remove a Credit Card:
-  * The user clicks the **Remove** in the line of the selected credit card
+  * In the case, the given dates are valid, the system displays a list of credit cards to following rules:
+    * In the case, the date is specified only for "Expiry from" input field, the system displays a list of credit cards 
+      in which the expiration date starts at the specified date
+      ![](/docs/jpeg/slide_15.jpeg)
+    * In the case, the date is specified only for "Expiry to" input field, the system displays a list of credit cards
+      in which the expiration date ends on the specified date
+      ![](/docs/jpeg/slide_16.jpeg)
+    * Otherwise, the system displays a list of credit cards with expiration dates in the specified range
+      ![](/docs/jpeg/slide_17.jpeg)
+  * In the case, there are no credit cards matching the given date range, the system displays an info message  
+    "No data was found matching the date range"
+    ![](/docs/jpeg/slide_18.jpeg) 
+  * In the case, the given dates are invalid, the system displays a warning "Range start/end date format is incorrect!"
+    ![](/docs/jpeg/slide_19.jpeg)
+  * In the case, the user clicks the **RESET** button to call off the filter, the system displays a list of all credit cards
+### 3.2.2 Remove a Credit Card:
+##### Basic Action:
+  * The user clicks the **Remove** link in the 'Actions' column of the selected credit card
+  * The system displays dialog box to confirm card deletion
+  * The dialog box indicates the number of the removed credit card
+    ![](/docs/jpeg/slide_20.jpeg)
+##### Confirm Deletion:
+  * The user clicks the **Remove** button in the dialog box
   * The system checks the current balance of the removed card
-  * In the case, the current balance of the removed card is greater than zero, the system generates the error message  
+  * In the case, the current balance of the removed card is greater than zero, the system displays an error message  
     "Credit card {card number is presented here} balance is {card balance is presented here}. It can't be removed!"
+    ![](/docs/jpeg/slide_21.jpeg)
   * In the case, the current balance of the removed card is zero:
-      * The system asks the user to confirm the card deletion
-      * If user confirms the card deletion:
-        * The system removes it from the database
-        * In the case, the error occurred while deleting data, the system generates the error message "There was error
-          removing card"
-        * In the case, the deletion was successful:
-          * The system generates and displays an updated list of all credit cards
-          * The system generates the info message "Credit card {card number is presented here} removed successfully"
-  * If user doesn't confirm the card deletion, the system doesn't remove the selected card and redirect the user 
-    to the cards page 
-##### Action to Deposit Money:
-  * The user clicks the **Deposit** in the line of the selected bank account
-  * The system redirects the user to the page containing a money deposit form
-    <img alt="Slide 7" height="60%" src="https://user-images.githubusercontent.com/75541561/140600584-e0507df6-49c2-46c9-aa77-2bfb575ce189.PNG" width="60%"/>
+    * The system removes the selected credit card from the database
+    * The system generates an info message "Credit card {card number is presented here} removed successfully"
+    * The system displays an updated list of all credit cards
+    ![](/docs/jpeg/slide_22.jpeg)
+##### Cancelling Deletion:
+  * The user clicks the **Cancel** button in the dialog box
+  * The system closes dialog box without removing the selected credit card 
+### 3.2.3 Deposit Money:
+##### Basic Action:
+  * The user clicks the **Deposit** link in the 'Actions' column of the selected credit card
+  * The system redirects the user to the page with a form for money deposit
+    ![](/docs/jpeg/slide_23.jpeg)
+##### Deposit Money:
   * The user enters sum of money what will be deposited to the card balance
-  * The user clicks the **ACCEPT**
+  * Valid format of a sum of money is {up to 6 digits}\<,>{up to 2 digits} (for example, '1024', '1024,1', '0,45')
+  * The user clicks the **ACCEPT** button
   * The system validates the given sum of money
   * In the case, the given sum of money is correct:
     * The system increases the credit card balance by the given amount of money
     * The system updates this balance in the database
-    * In the case, the error occurred while updating data, the system generates the error message "Failed to deposit money"
-      * In the case, the update was successful:
-        * The system redirect the user to the cards page
-        * The system generates and displays a list of all credit cards with updated balance
-        * The system generates the info message "Deposit transaction with {card number is presented here} was successful"
-    * In the case, the given amount of money is incorrect, the system generates the error message "The given amount of money is incorrect"
-  * In the case, user clicks the **CANCEL**, the system doesn't deposit money to the selected credit card and
-  redirects the user to the cards page
-##### Action to Transfer Money:
-  * The user clicks the **Transfer** in the line of the selected bank account
-  * The system redirects the user to the page containing a money transfer form
-    <img alt="Slide 8" height="60%" src="https://user-images.githubusercontent.com/75541561/140600585-c58a614c-8933-44eb-8e91-c22a8f977b14.PNG" width="60%"/>
-  * The user enters credit card number to transfer money 
-  * The user enters sum of money what will be transferred to the specified credit card
-  * The user clicks the **ACCEPT**
+    * The system redirect the user to the cards page
+    * The system generates the info message "Deposit transaction for the credit card {card number is presented here} was successful"
+    * The system generates and displays a list of all credit cards with updated balance
+      ![](/docs/jpeg/slide_24.jpeg)
+  * In the case, the given amount of money is incorrect, the system displays a warning "Sum of money is incorrect!"
+    ![](/docs/jpeg/slide_25.jpeg)
+##### Cancelling Deposit Money: 
+  * The user clicks the **CANCEL** button 
+  * The system redirects the user to the 'Cards' page without performing a deposit transaction
+### 3.2.4 Transfer Money:
+##### Basic Action:
+  * The user clicks the **Transfer** link in the 'Actions' column of the selected credit card
+  * The system redirects the user to the page to the page with a form for money transfer
+    ![](/docs/jpeg/slide_26.jpeg)
+##### Transfer Money:  
+  * The user enters target credit card number to transfer money 
+  * The user enters sum of money what will be transferred to the specified credit card balance
+  * Valid format of a credit card number is {16 digits}
+  * Valid format of a sum of money is the same as format of a sum of money for a deposit money
+  * The user clicks the **ACCEPT** button
   * The system validates the credit card number and the given sum of money
   * In the case, the given data is correct:
     * The system checks the source credit card balance for the possibility of debiting money 
@@ -177,14 +218,17 @@ The application allows users to:
       * The system decreases the source credit card balance by the given sum of money
       * The system increases the target credit card balance by the given sum of money
       * The system updates these balances in the database
-      * In the case, the error occurred while updating data:  
-        * The system generates the error message "Failed to transfer money"
-        * The system rolls back updates
-      * In the case, the update was successful:
-          * The system redirect the user to the cards page
-          * The system generates and displays a list of all credit cards with updated balances
-          * The system generates the info message "The transfer was successful"
-    * In the case, the check failed, the system generates the error message "The transfer isn't possible" 
-  * In the case, the given data is incorrect, the system generates the error message "The given data is incorrect"
-  * In the case, user clicks the **CANCEL**, the system doesn't transfer money to the specified credit card and
-    redirects the user to the cards page  
+      * The system redirect the user to the cards page
+      * The system generates and displays a list of all credit cards with updated balances
+      * The system generates the info message "Transfer transaction between credit cards 
+        {card numbers are presented here} was successful"
+        ![](/docs/jpeg/slide_27.jpeg)
+    * In the case, the check failed, the system generates an error message 
+      "The source credit card {card number is presented here} doesn't contain enough money for the transfer!"
+      ![](/docs/jpeg/slide_28.jpeg)
+  * In the case, the given data is incorrect, the system generates displays warnings 
+    "Sum of money is incorrect!" and/or "Target credit card number is invalid!"
+    ![](/docs/jpeg/slide_29.jpeg)
+##### Cancelling Transfer Money:
+  * The user clicks the **CANCEL** button
+  * The system redirects the user to the 'Cards' page without performing a transfer transaction  

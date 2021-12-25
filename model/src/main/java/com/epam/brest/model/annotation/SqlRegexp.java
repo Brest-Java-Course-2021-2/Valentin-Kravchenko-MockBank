@@ -6,18 +6,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *  Indicates that a value of the annotated field
- *  must be wrap in percent signs
- *  to execute SQL as a LIKE parameter.
- *  Only for String type.
+ *  Converts all the expressions in the annotated field value
+ *  to a regexp using a specified pattern
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface WrapInPercentSigns {
+public @interface SqlRegexp {
 
     /**
-     *  Template for wrapping in percent signs.
+     *  Regexp pattern.
      */
-    String template() default "%%%s%%";
-
+    String pattern() default "(?=.*%s)";
+    
 }

@@ -2,7 +2,7 @@ package com.epam.brest.dao.util;
 
 import com.epam.brest.model.annotation.ExcludeFromSql;
 import com.epam.brest.model.annotation.SqlColumn;
-import com.epam.brest.model.annotation.WrapInPercentSigns;
+import com.epam.brest.model.annotation.SqlRegexp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -35,7 +35,7 @@ public final class DaoUtils {
                 String param = getParamName(field);
                 field.setAccessible(true);
                 Optional.ofNullable(ReflectionUtils.getField(field, entity))
-                        .map(value -> wrapInPercentSigns(field, value))
+                        .map(value -> convertToSqlRegexp(field, value))
                         .ifPresent(value -> sqlParameterSource.addValue(param, value));
         });
         return sqlParameterSource;
@@ -45,7 +45,7 @@ public final class DaoUtils {
         LOGGER.info("buildFilterWhereSql(sqlParameterSource={}, sqlTemplate={})", sqlParameterSource, sqlTemplate);
         Objects.requireNonNull(sqlParameterSource.getParameterNames());
         return Arrays.stream(sqlParameterSource.getParameterNames())
-                     .map(param -> sqlTemplate.replaceAll(SQL_TEMPLATE_REPLACEMENT_REGEX, param))
+                     .map(param -> sqlTemplate.replaceAll(REPLACEMENT_REGEXP, param))
                      .collect(Collectors.joining(AND_DELIMITER));
     }
 
@@ -66,16 +66,20 @@ public final class DaoUtils {
     }
 
     private static String convertToSnakeCase(String value) {
-         return value.replaceAll(SQL_PARAM_REGEX, SQL_PARAM_REPLACEMENT).toUpperCase();
+         return value.replaceAll(CAMEL_CASE_REGEXP, SNAKE_CASE_TEMPLATE).toUpperCase();
     }
 
-    private static Object wrapInPercentSigns(Field field, Object value) {
-        if (field.isAnnotationPresent(WrapInPercentSigns.class)) {
+    private static Object convertToSqlRegexp(Field field, Object value) {
+        if (field.isAnnotationPresent(SqlRegexp.class)) {
             if (!(value instanceof String)) {
-               return value;
+                return value;
             }
-            String template = field.getAnnotation(WrapInPercentSigns.class).template();
-            return String.format(template, value);
+            String strValue = (String) value;
+            String pattern = field.getAnnotation(SqlRegexp.class).pattern();
+            String regexp = Arrays.stream(strValue.split(SPLIT_REGEXP))
+                                  .map(exp -> String.format(pattern, exp))
+                                  .collect(Collectors.joining());
+            return regexp + SQL_REGEXP_POSTFIX;
         }
         return value;
     }
