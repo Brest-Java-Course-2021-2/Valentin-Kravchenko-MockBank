@@ -4,4 +4,4 @@
 ***
 ### Project Details
 An overall description of the project is presented [here](/docs/srs/MockBank.md)
-### Project Tech Stacks
+### Project Tech Stack
