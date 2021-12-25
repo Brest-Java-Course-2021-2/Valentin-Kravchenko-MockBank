@@ -1,6 +1,5 @@
 package com.epam.brest.model.validator.constraint;
 
-
 import com.epam.brest.model.validator.CardNumbersValidator;
 
 import javax.validation.Constraint;
@@ -16,7 +15,9 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CardNumbers {
+
     String message() default "";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
 }
