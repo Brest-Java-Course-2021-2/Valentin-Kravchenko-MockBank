@@ -124,7 +124,6 @@ The application allows users to:
   * The system displays an info message "New credit card {card number is presented here} successfully 
     linked to bank account {account number is presented here}"
   * The system displays a list of all bank accounts with an updated 'Cards' column for the selected bank account  
-
 ### 3.2 Credit Card Management Functions
 #### 3.2.1 View and Filter a List of Credit Cards:
 ##### Basic Action:
