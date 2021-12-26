@@ -59,12 +59,21 @@
     curl -X DELETE --location "http://localhost:8090/api/card/1" \
     -H "Accept: application/json" | json_pp
 #### deposit money
+##### case 1
     curl -X POST --location "http://localhost:8090/api/card/deposit" \
     -H "Content-Type: application/json" \
     -d "{
           \"targetCardNumber\": \"4000003394112581\",
           \"valueSumOfMoney\": \"1000,55\",
           \"locale\": \"ru\"
+        }" | json_pp
+##### case 2
+    curl -X POST --location "http://localhost:8090/api/card/deposit" \
+    -H "Content-Type: application/json" \
+    -d "{
+          \"targetCardNumber\": \"4000003394112581\",
+          \"valueSumOfMoney\": \"1000.55\",
+          \"locale\": \"en\"
         }" | json_pp
 #### transfer money
     curl -X POST --location "http://localhost:8090/api/card/transfer" \

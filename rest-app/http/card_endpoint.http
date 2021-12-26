@@ -21,6 +21,15 @@ Content-Type: application/json
   "locale": "ru"
 }
 ###
+POST http://localhost:8090/api/card/deposit
+Content-Type: application/json
+
+{
+  "targetCardNumber": "4000003394112581",
+  "valueSumOfMoney": "1000.55",
+  "locale": "en"
+}
+###
 POST http://localhost:8090/api/card/transfer
 Content-Type: application/json
 

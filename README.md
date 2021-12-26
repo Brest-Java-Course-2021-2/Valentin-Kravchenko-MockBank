@@ -1,7 +1,7 @@
 ### Training Project for the Java Web Development Course 2021-2
 ![MockBank](https://img.shields.io/badge/MockBank-1.0-0d6efd?labelColor=lightgrey)
 ### Project Details
-An overall description of the project is presented [here](/docs/srs/MockBank.md)
+The overall description of the project is presented [here](/docs/srs/MockBank.md)
 ### Project Tech Stack
 ![Java](https://img.shields.io/badge/Java-11-007396?logo=java&)  
 ![Maven](https://img.shields.io/badge/Maven-3.8.1-C71A36?logo=apachemaven)  
@@ -23,7 +23,7 @@ Docker Engine v20
     docker network create mockbank-net
 #### Run Rest Server
     docker run -d -p 8090:8090 --name mockbank-rest --network mockbank-net valvikx/mockbank-rest
-The list of available REST endpoints is presented [here](/docs/curl/RestEndpoints.md) 
+The list of available Rest endpoints is presented [here](/docs/curl/RestEndpoints.md) 
 #### Run Client Application
     docker run -d -p 8080:8080 --env BASE_URL=http://mockbank-rest:8090 --name mockbank-web --network mockbank-net valvikx/mockbank-web    
-Go to [http://localhost:8080/](http://localhost:8080/) for open a start page
+Go to [http://localhost:8080](http://localhost:8080) for open a start page

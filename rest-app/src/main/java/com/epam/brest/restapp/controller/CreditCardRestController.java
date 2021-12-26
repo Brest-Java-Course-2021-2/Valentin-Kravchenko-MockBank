@@ -28,14 +28,14 @@ public class CreditCardRestController {
 
     @GetMapping("{id}")
     public ResponseEntity<CreditCard> getById(@PathVariable Integer id) {
-        LOGGER.debug("getById(/card/{})", id);
+        LOGGER.debug("getById(api/card/{})", id);
         CreditCard creditCardFromDb = creditCardService.getById(id);
         return ResponseEntity.ok(creditCardFromDb);
     }
 
     @GetMapping("{id}/deposit")
     public ResponseEntity<CreditCardTransactionDto> deposit(@PathVariable Integer id) {
-        LOGGER.debug("depositGET(/card/{}/deposit)", id);
+        LOGGER.debug("depositGET(api/card/{}/deposit)", id);
         CreditCard creditCardFromDb = creditCardService.getById(id);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(creditCardFromDb.getNumber());
@@ -44,7 +44,7 @@ public class CreditCardRestController {
 
     @GetMapping("{id}/transfer")
     public ResponseEntity<CreditCardTransactionDto> transfer(@PathVariable Integer id) {
-        LOGGER.debug("transferGET(/card/{}/transfer)", id);
+        LOGGER.debug("transferGET(api/card/{}/transfer)", id);
         CreditCard creditCardFromDb = creditCardService.getById(id);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setSourceCardNumber(creditCardFromDb.getNumber());
@@ -53,7 +53,7 @@ public class CreditCardRestController {
 
     @PostMapping
     public ResponseEntity<CreditCard> create(@RequestBody Integer accountId){
-        LOGGER.debug("create(/card, accountId={})", accountId);
+        LOGGER.debug("create(api/card, accountId={})", accountId);
         bankAccountService.getById(accountId);
         CreditCard createdCreditCard = creditCardService.create(accountId);
         return ResponseEntity.ok(createdCreditCard);
@@ -61,21 +61,21 @@ public class CreditCardRestController {
 
     @PostMapping("deposit")
     public ResponseEntity<CreditCard> deposit(@Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto) {
-        LOGGER.debug("depositPOST(/card/deposit, card={})", creditCardTransactionDto);
+        LOGGER.debug("depositPOST(api/card/deposit, card={})", creditCardTransactionDto);
         CreditCard targetCreditCard = creditCardService.deposit(creditCardTransactionDto);
         return ResponseEntity.ok(targetCreditCard);
     }
 
     @PostMapping("transfer")
     public ResponseEntity<CreditCard> transfer(@Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto) {
-        LOGGER.debug("transferPOST(/card/transfer, card={})", creditCardTransactionDto);
+        LOGGER.debug("transferPOST(api/card/transfer, card={})", creditCardTransactionDto);
         CreditCard sourceCreditCard = creditCardService.transfer(creditCardTransactionDto);
         return ResponseEntity.ok(sourceCreditCard);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<CreditCard> remove(@PathVariable Integer id){
-        LOGGER.debug("remove(/card/{})", id);
+        LOGGER.debug("remove(api/card/{})", id);
         CreditCard deletedCreditCard = creditCardService.delete(id);
         return ResponseEntity.ok(deletedCreditCard);
     }
