@@ -17,7 +17,7 @@ The application allows users to:
 ### 3.1.1 View and Filter a List of Bank Accounts:
 #### Basic Action: 
   * The user selects the **Accounts** tab
-  * The system handles the request and displays a list of all bank accounts 
+  * The system handles the request and displays a list of all bank accounts sorted by customer registration date 
     ![](/docs/jpeg/slide_1.jpeg)
   * The list of bank accounts includes the following columns:
     * International Bank Account Number
@@ -128,7 +128,7 @@ The application allows users to:
 #### 3.2.1 View and Filter a List of Credit Cards:
 ##### Basic Action:
   * The user selects the **Cards** tab
-  * The system handles request and displays a list of all credit cards
+  * The system handles request and displays a list of all credit cards sorted by expiration date
     ![](/docs/jpeg/slide_14.jpeg)
   * The list of bank accounts includes the following columns:
     * International Bank Account Number 
