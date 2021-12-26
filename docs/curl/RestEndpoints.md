@@ -26,7 +26,7 @@
     -H "Content-Type: application/json" | json_pp
 #### get all
     curl -X GET --location "http://localhost:8090/api/accounts" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" | json_pp
 #### get all by filter
 ##### case 1
      curl -X POST --location "http://localhost:8090/api/accounts" \
@@ -34,19 +34,19 @@
     -d "{
           \"numberPattern\": \"BY 99T6\",
           \"customerPattern\": \"an ov\"
-        }"
+        }" | json_pp
 ##### case 2    
     curl -X POST --location "http://localhost:8090/api/accounts" \
     -H "Content-Type: application/json" \
     -d "{
           \"numberPattern\": \"BY\"
-        }"
+        }" | json_pp
 ##### case 3  
     curl -X POST --location "http://localhost:8090/api/accounts" \
     -H "Content-Type: application/json" \
     -d "{
           \"customerPattern\": \"ov\"
-        }"
+        }" | json_pp
 ### Credit Card
 #### get one
     curl -X GET --location "http://localhost:8090/api/card/1" \
@@ -77,7 +77,7 @@
         }" | json_pp
 #### get all
     curl -X GET --location "http://localhost:8090/api/cards" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" | json_pp
 #### get all by filter
 ##### case 1
     curl -X POST --location "http://localhost:8090/api/cards" \
@@ -85,16 +85,16 @@
     -d "{
           \"valueFromDate\": \"06/2022\",
           \"valueToDate\": \"08/2023\"
-        }"
+        }" | json_pp
 ##### case 2 
     curl -X POST --location "http://localhost:8090/api/cards" \
     -H "Content-Type: application/json" \
     -d "{
           \"valueFromDate\": \"07/2023\"
-        }"
+        }" | json_pp
 ##### case 3
     curl -X POST --location "http://localhost:8090/api/cards" \
     -H "Content-Type: application/json" \
     -d "{
           \"valueToDate\": \"07/2023\"
-        }"
+        }" | json_pp
