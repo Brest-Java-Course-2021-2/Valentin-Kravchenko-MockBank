@@ -32,7 +32,6 @@
         <thymeleaf-layout-dialect.version>3.0.0</thymeleaf-layout-dialect.version>
         <iban4j.version>3.2.3-RELEASE</iban4j.version>
         <h2.version>1.4.200</h2.version>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
         <project.testresult.directory>${project.build.directory}/testResults</project.testresult.directory>

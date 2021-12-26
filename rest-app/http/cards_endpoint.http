@@ -5,20 +5,20 @@ POST http://localhost:8090/api/cards
 Content-Type: application/json
 
 {
-  "valueFromDate": "05/2022",
-  "valueToDate": "07/2022"
+  "valueFromDate": "06/2022",
+  "valueToDate": "08/2023"
 }
 ###
 POST http://localhost:8090/api/cards
 Content-Type: application/json
 
 {
-  "valueFromDate": "07/2022"
+  "valueFromDate": "07/2023"
 }
 ###
 POST http://localhost:8090/api/cards
 Content-Type: application/json
 
 {
-  "valueToDate": "07/2022"
+  "valueToDate": "07/2023"
 }

@@ -66,7 +66,7 @@ The application allows users to:
       * The system automatically generates a new international bank account number
       * The system inserts the above data in the database
       * The system redirect the user to the 'Accounts' page
-      * The system displays an info message "New bank account created successfully"
+      * The system displays an info message "New bank account {account number is indicated here} created successfully"
       * The system displays an updated list of all bank accounts
       ![](/docs/jpeg/slide_6.jpeg)
     * In the case, the customer full name is invalid, the system displays a warning "Customer full name is incorrect!"
@@ -86,7 +86,7 @@ The application allows users to:
     * In the case, the customer full name is valid:
       * The system updates this data in the database
       * The system redirects the user to the Accounts page
-      * The system displays an info message "Bank account {account number is presented here} updated successfully"
+      * The system displays an info message "Bank account {account number is indicated here} updated successfully"
       * The system displays a list of all bank accounts with updated data
         ![](/docs/jpeg/slide_9.jpeg)
     * In the case, the customer full name is invalid, the system displays a warning "Customer full name is incorrect!"
@@ -103,12 +103,12 @@ The application allows users to:
   * The user clicks the **Remove** button in the dialog box
   * The system checks the removed bank account for linked credit cards
   * In the case, the removed account is linked to credit cards, the system displays an error message
-    "Credit cards {card numbers are presented here} are linked to bank account {account number is presented here}.
+    "Credit cards {card numbers are indicated here} are linked to bank account {account number is indicated here}.
     It can't be removed!"
     ![](/docs/jpeg/slide_11.jpeg)
   * In the case, the removed account isn't linked with credit cards:
     * The system removes the selected bank account from the database
-    * The system displays an info message "Bank account {account number is presented here} removed successfully"
+    * The system displays an info message "Bank account {account number is indicated here} removed successfully"
     * The system displays an updated list of all bank accounts
       ![](/docs/jpeg/slide_12.jpeg)
       ![](/docs/jpeg/slide_13.jpeg)
@@ -121,8 +121,8 @@ The application allows users to:
   * The system automatically generates a new credit card number
   * The system automatically sets a zero balance for the new credit card
   * The system inserts this data in the database
-  * The system displays an info message "New credit card {card number is presented here} successfully 
-    linked to bank account {account number is presented here}"
+  * The system displays an info message "New credit card {card number is indicated here} successfully 
+    linked to bank account {account number is indicated here}"
   * The system displays a list of all bank accounts with an updated 'Cards' column for the selected bank account  
 ### 3.2 Credit Card Management Functions
 #### 3.2.1 View and Filter a List of Credit Cards:
@@ -167,11 +167,11 @@ The application allows users to:
   * The user clicks the **Remove** button in the dialog box
   * The system checks the current balance of the removed card
   * In the case, the current balance of the removed card is greater than zero, the system displays an error message  
-    "Credit card {card number is presented here} balance is {card balance is presented here}. It can't be removed!"
+    "Credit card {card number is indicated here} balance is {card balance is indicated here}. It can't be removed!"
     ![](/docs/jpeg/slide_21.jpeg)
   * In the case, the current balance of the removed card is zero:
     * The system removes the selected credit card from the database
-    * The system generates an info message "Credit card {card number is presented here} removed successfully"
+    * The system generates an info message "Credit card {card number is indicated here} removed successfully"
     * The system displays an updated list of all credit cards
     ![](/docs/jpeg/slide_22.jpeg)
 ##### Cancelling Deletion:
@@ -191,7 +191,7 @@ The application allows users to:
     * The system increases the credit card balance by the given amount of money
     * The system updates this balance in the database
     * The system redirect the user to the cards page
-    * The system generates the info message "Deposit transaction for the credit card {card number is presented here} was successful"
+    * The system generates the info message "Deposit transaction for the credit card {card number is indicated here} was successful"
     * The system generates and displays a list of all credit cards with updated balance
       ![](/docs/jpeg/slide_24.jpeg)
   * In the case, the given amount of money is incorrect, the system displays a warning "Sum of money is incorrect!"
@@ -220,10 +220,10 @@ The application allows users to:
       * The system redirect the user to the cards page
       * The system generates and displays a list of all credit cards with updated balances
       * The system generates the info message "Transfer transaction between credit cards 
-        {card numbers are presented here} was successful"
+        {card numbers are indicated here} was successful"
         ![](/docs/jpeg/slide_27.jpeg)
     * In the case, the check failed, the system generates an error message 
-      "The source credit card {card number is presented here} doesn't contain enough money for the transfer!"
+      "The source credit card {card number is indicated here} doesn't contain enough money for the transfer!"
       ![](/docs/jpeg/slide_28.jpeg)
   * In the case, the given data is incorrect, the system generates displays warnings 
     "Sum of money is incorrect!" and/or "Target credit card number is invalid!"

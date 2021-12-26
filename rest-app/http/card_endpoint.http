@@ -16,8 +16,8 @@ POST http://localhost:8090/api/card/deposit
 Content-Type: application/json
 
 {
-  "targetCardNumber": "4000007875097476",
-  "valueSumOfMoney": "1000,45",
+  "targetCardNumber": "4000003394112581",
+  "valueSumOfMoney": "1000,55",
   "locale": "ru"
 }
 ###
@@ -25,9 +25,9 @@ POST http://localhost:8090/api/card/transfer
 Content-Type: application/json
 
 {
-  "sourceCardNumber": "4000002538269224",
-  "targetCardNumber": "4000003394112581",
-  "valueSumOfMoney": "350,5",
+  "sourceCardNumber": "4000003394112581",
+  "targetCardNumber": "4000002538269224",
+  "valueSumOfMoney": "1000,6",
   "locale": "ru"
 }
 ###

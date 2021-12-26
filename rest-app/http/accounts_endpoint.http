@@ -5,15 +5,15 @@ POST http://localhost:8090/api/accounts
 Content-Type: application/json
 
 {
-  "numberPattern": "TQ99IK",
-  "customerPattern": "Sergeev"
+  "numberPattern": "BY 99T6",
+  "customerPattern": "an ov"
 }
 ###
 POST http://localhost:8090/api/accounts
 Content-Type: application/json
 
 {
-  "customerPattern": "Ivan"
+  "customerPattern": "ov"
 }
 ###
 POST http://localhost:8090/api/accounts
