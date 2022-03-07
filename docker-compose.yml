@@ -24,7 +24,7 @@ services:
     networks:
       - mockbank-net
     depends_on:
-      - mockbank-rest
+      - rest-app
 
 networks:
   mockbank-net:

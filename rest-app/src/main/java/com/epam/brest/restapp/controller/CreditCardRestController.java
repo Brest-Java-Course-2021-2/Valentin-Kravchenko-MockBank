@@ -4,6 +4,7 @@ import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.api.CreditCardService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Tag(name = "Credit Cards API")
 @RestController
 @RequestMapping("api/card")
 public class CreditCardRestController {

@@ -3,6 +3,7 @@ package com.epam.brest.restapp.controller;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
+@Tag(name = "Bank Accounts API")
 @RestController
 @RequestMapping("api/account")
 public class BankAccountRestController {

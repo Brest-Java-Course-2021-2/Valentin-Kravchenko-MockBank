@@ -1,6 +1,7 @@
 package com.epam.brest.model.dto;
 
 import com.epam.brest.model.BasicEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 
@@ -12,21 +13,25 @@ public class BankAccountDto extends BasicEntity {
     /**
      *  International bank account number.
      */
+    @Schema(example = "BY80F29S8416E1PXLF9VHCGM99T6")
     private String number;
 
     /**
      *  Full name of the bank customer holding the bank account.
      */
+    @Schema(example = "Ivan Ivanov")
     private String customer;
 
     /**
      *  Date of the customer registration in the bank system.
      */
+    @Schema(example = "2020-06-28")
     private LocalDate registrationDate;
 
     /**
      *  Total cards linked to the bank account.
      */
+    @Schema(example = "2")
     private Integer totalCards;
 
     public String getNumber() {
