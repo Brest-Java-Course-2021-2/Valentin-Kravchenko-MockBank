@@ -28,10 +28,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <spring-boot.version>2.6.1</spring-boot.version>
+        <spring-boot.version>2.6.4</spring-boot.version>
         <thymeleaf-layout-dialect.version>3.0.0</thymeleaf-layout-dialect.version>
         <iban4j.version>3.2.3-RELEASE</iban4j.version>
         <h2.version>1.4.200</h2.version>
+        <springdoc-openapi-ui.version>1.6.6</springdoc-openapi-ui.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
         <project.testresult.directory>${project.build.directory}/testResults</project.testresult.directory>
@@ -146,6 +147,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-webflux</artifactId>
                 <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi-ui.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>

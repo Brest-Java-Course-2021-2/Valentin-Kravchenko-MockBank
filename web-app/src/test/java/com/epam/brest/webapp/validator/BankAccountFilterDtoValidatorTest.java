@@ -9,6 +9,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
+import java.math.BigDecimal;
+
 import static com.epam.brest.webapp.constant.ControllerConstant.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -75,6 +77,15 @@ class BankAccountFilterDtoValidatorTest {
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(CUSTOMER_PATTERN));
+    }
+
+    @Test
+    void temp() {
+       BigDecimal a = new BigDecimal("0.00");
+        int i = a.compareTo(BigDecimal.valueOf(0));
+        System.out.println(i);
+
+
     }
 
 }

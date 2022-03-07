@@ -22,6 +22,7 @@ public class BigDecimalPrinter implements Printer<BigDecimal> {
         LOGGER.trace("print(bigDecimal={}, locale={})", object, locale);
         DecimalFormat decimalFormat = new DecimalFormat(bigDecimalPattern, DecimalFormatSymbols.getInstance(locale));
         return decimalFormat.format(object);
+
     }
 
 }

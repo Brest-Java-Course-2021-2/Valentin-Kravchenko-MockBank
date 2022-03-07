@@ -5,6 +5,7 @@ import com.epam.brest.model.annotation.SqlRegexp;
 import com.epam.brest.model.validator.constraint.AccountNumberPattern;
 import com.epam.brest.model.validator.constraint.AnyPattern;
 import com.epam.brest.model.validator.constraint.CustomerPattern;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  *  Bank account data transfer object for filtering.
@@ -18,6 +19,7 @@ public class BankAccountFilterDto {
     @SqlRegexp
     @AccountNumberPattern
     @SqlColumn("number")
+    @Schema(example = "BY 99T6")
     private String numberPattern;
 
     /**
@@ -26,6 +28,7 @@ public class BankAccountFilterDto {
     @SqlRegexp
     @CustomerPattern
     @SqlColumn("customer")
+    @Schema(example = "an ov")
     private String customerPattern;
 
     public String getNumberPattern() {

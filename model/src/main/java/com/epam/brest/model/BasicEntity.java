@@ -1,5 +1,7 @@
 package com.epam.brest.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Objects;
 
 /**
@@ -10,6 +12,7 @@ public abstract class BasicEntity {
     /**
      *  Entity id.
      */
+    @Schema(example = "1")
     private Integer id;
 
     public Integer getId() {
