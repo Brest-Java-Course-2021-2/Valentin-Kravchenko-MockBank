@@ -2,7 +2,6 @@ package com.epam.brest.restapp.controller;
 
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.model.dto.BankAccountFilterDto;
-import com.epam.brest.restapp.exception.ErrorResponse;
 import com.epam.brest.service.api.BankAccountDtoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,7 +31,7 @@ public class BankAccountDtoRestController {
         this.bankAccountDtoService = bankAccountDtoServiceImpl;
     }
 
-    @Operation(description = "List of all bank accounts",
+    @Operation(summary = "List of all bank accounts",
                responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(implementation = BankAccountDto.class))),
                                          responseCode = "200", description = "OK")}
     )
@@ -43,9 +42,9 @@ public class BankAccountDtoRestController {
         return ResponseEntity.ok(accounts);
     }
 
-    @Operation(description = "List of filtered bank accounts",
+    @Operation(summary = "List of filtered bank accounts",
                responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(implementation = BankAccountDto.class))),
-                            responseCode = "200", description = "OK"),
+                            responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
                             responseCode = "400", description = "If the search patterns are invalid")}
     )

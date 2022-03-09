@@ -1,6 +1,7 @@
 package com.epam.brest.model.entity;
 
 import com.epam.brest.model.BasicEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,21 +15,25 @@ public class CreditCard extends BasicEntity {
     /**
      *  Credit card number.
      */
+    @Schema(example = "4000003394112581")
     private String number;
 
     /**
      *  Credit card expiration date.
      */
+    @Schema(example = "2023-07-31")
     private LocalDate expirationDate;
 
     /**
      *  Credit card balance.
      */
+    @Schema(example = "1000")
     private BigDecimal balance;
 
     /**
      *  Bank account id linked with the credit card.
      */
+    @Schema(example = "1")
     private Integer accountId;
 
     public String getNumber() {

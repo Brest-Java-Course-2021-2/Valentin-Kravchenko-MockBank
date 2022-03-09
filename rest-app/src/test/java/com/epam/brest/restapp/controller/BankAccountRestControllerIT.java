@@ -60,7 +60,7 @@ class BankAccountRestControllerIT extends RestControllerTestBasic {
 
     @Test
     void getByNonExistingId() throws Exception {
-        performGetAndExpectStatus("/account/100", status().isBadRequest())
+        performGetAndExpectStatus("/account/100", status().isNotFound())
                .andExpect(jsonPath("$.message").value(containsString("100")));
     }
 
