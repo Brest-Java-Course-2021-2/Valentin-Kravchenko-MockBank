@@ -3,6 +3,7 @@ package com.epam.brest.restapp.controller;
 import com.epam.brest.restapp.exception.ErrorResponse;
 import com.epam.brest.service.exception.BankAccountException;
 import com.epam.brest.service.exception.CreditCardException;
+import com.epam.brest.service.exception.ResourceNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,12 +36,15 @@ public class ExceptionHandlingRestController {
     @Value("${http.message.readable.error}")
     private String httpMessageNotReadableErrorMessage;
 
-    @ExceptionHandler({BankAccountException.class, CreditCardException.class})
+    @ExceptionHandler({BankAccountException.class, CreditCardException.class, ResourceNotFoundException.class})
     @ResponseBody
     public ResponseEntity<ErrorResponse> handleError(RuntimeException e) {
         LOGGER.warn("handleServiceException, message={}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(e.getMessage());
+        if (e instanceof ResourceNotFoundException) {
+            return new ResponseEntity<>(errorResponse, NOT_FOUND);
+        }
         return new ResponseEntity<>(errorResponse, BAD_REQUEST);
     }
 

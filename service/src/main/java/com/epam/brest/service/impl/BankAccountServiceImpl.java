@@ -7,6 +7,7 @@ import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.exception.BankAccountException;
+import com.epam.brest.service.exception.ResourceNotFoundException;
 import com.epam.brest.service.util.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,7 +52,7 @@ public class BankAccountServiceImpl implements BankAccountService {
                              .orElseThrow(() -> {
                                 String error = String.format(findByIdError, id);
                                 LOGGER.warn("getBankAccountById(error={})", error);
-                                return new BankAccountException(error);
+                                return new ResourceNotFoundException(error);
                              });
     }
 
@@ -95,7 +96,9 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public List<CreditCard> getAllCardsById(Integer id) {
         LOGGER.debug("getAllByAccountId(accountId={})", id);
-        return creditCardDao.getAllByAccountId(id);
+        BankAccount bankAccountFromDb = getById(id);
+        LOGGER.debug("getAllCardsById(bankAccountFromDb={})", bankAccountFromDb);
+        return creditCardDao.getAllByAccountId(bankAccountFromDb.getId());
     }
 
     private String getIban() {

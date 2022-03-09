@@ -6,6 +6,7 @@ import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.api.ExtendedCreditCardService;
 import com.epam.brest.service.exception.CreditCardException;
+import com.epam.brest.service.exception.ResourceNotFoundException;
 import com.epam.brest.service.util.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,7 +52,7 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
                             .orElseThrow(() -> {
                                 String error = String.format(findByIdError, id);
                                 LOGGER.warn("getCreditCardById(error={})", error);
-                                return new CreditCardException(error);
+                                return new ResourceNotFoundException(error);
                             });
     }
 
@@ -62,7 +63,7 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
                             .orElseThrow(() -> {
                                 String error = String.format(findByNumberError, cardNumber);
                                 LOGGER.warn("getByNumber(error={})", error);
-                                return new CreditCardException(error);
+                                return new ResourceNotFoundException(error);
                             });
     }
 

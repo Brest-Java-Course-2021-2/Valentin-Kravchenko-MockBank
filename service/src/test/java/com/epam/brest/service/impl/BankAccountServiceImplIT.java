@@ -4,6 +4,7 @@ import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.model.entity.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.exception.BankAccountException;
+import com.epam.brest.service.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,7 +47,7 @@ class BankAccountServiceImplIT extends ServiceTestBasic {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setId(1000);
         bankAccount.setCustomer("New Customer");
-        assertThrows(BankAccountException.class, () -> bankAccountService.update(bankAccount));
+        assertThrows(ResourceNotFoundException.class, () -> bankAccountService.update(bankAccount));
     }
 
     @Test
