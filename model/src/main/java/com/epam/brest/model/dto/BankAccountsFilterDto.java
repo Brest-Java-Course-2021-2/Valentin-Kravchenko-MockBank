@@ -11,24 +11,24 @@ import io.swagger.v3.oas.annotations.media.Schema;
  *  Bank account data transfer object for filtering.
  */
 @AnyPattern
-public class BankAccountFilterDto {
+public class BankAccountsFilterDto {
 
     /**
-     *  Search pattern for an international bank account number.
+     *  Bank account number search pattern.
      */
     @SqlRegexp
     @AccountNumberPattern
     @SqlColumn("number")
-    @Schema(example = "BY 99T6")
+    @Schema(example = "BY 99T6", description = "Bank account number search pattern")
     private String numberPattern;
 
     /**
-     *  Search pattern for a full name of the bank customer.
+     *  Bank customer full name search pattern.
      */
     @SqlRegexp
     @CustomerPattern
     @SqlColumn("customer")
-    @Schema(example = "an ov")
+    @Schema(example = "an ov", description = "Bank customer full name search pattern")
     private String customerPattern;
 
     public String getNumberPattern() {

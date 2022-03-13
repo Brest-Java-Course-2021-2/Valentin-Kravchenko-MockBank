@@ -24,7 +24,7 @@ public interface CreditCardService extends GenericService<CreditCard> {
     CreditCard delete(Integer id) throws CreditCardException, ResourceNotFoundException;
 
     /**
-     * Deposits money to the credit card.
+     * Deposits money to a credit card.
      * @param creditCardTransactionDto - CreditCardTransactionDto instance
      * @return the instance of the target credit card after a deposit transaction
      * @throws ResourceNotFoundException if the target credit card is not found by its number
@@ -32,10 +32,10 @@ public interface CreditCardService extends GenericService<CreditCard> {
     CreditCard deposit(CreditCardTransactionDto creditCardTransactionDto) throws ResourceNotFoundException;
 
     /**
-     * Transfers money between credit cards.
+     * Transfers money from a credit card.
      * @param creditCardTransactionDto - CreditCardTransactionDto instance
      * @return the instance of the source credit card after a transfer transaction
-     * @throws CreditCardException if the source credit card doesn't contain enough money for the transfer
+     * @throws CreditCardException if the source credit card doesn't contain enough money for a transfer
      * @throws ResourceNotFoundException if credit cards were not found by their numbers
      */
     CreditCard transfer(CreditCardTransactionDto creditCardTransactionDto) throws CreditCardException, ResourceNotFoundException;

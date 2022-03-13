@@ -2,7 +2,7 @@ package com.epam.brest.service.impl;
 
 import com.epam.brest.dao.api.BankAccountDtoDao;
 import com.epam.brest.model.dto.BankAccountDto;
-import com.epam.brest.model.dto.BankAccountFilterDto;
+import com.epam.brest.model.dto.BankAccountsFilterDto;
 import com.epam.brest.service.api.BankAccountDtoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,9 +30,9 @@ public class BankAccountDtoServiceImpl implements BankAccountDtoService {
     }
 
     @Override
-    public List<BankAccountDto> getAllWithTotalCards(BankAccountFilterDto bankAccountFilterDto) {
-        LOGGER.debug("getAllWithTotalCards(bankAccountFilterDto={})", bankAccountFilterDto);
-        return bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+    public List<BankAccountDto> getAllWithTotalCards(BankAccountsFilterDto bankAccountsFilterDto) {
+        LOGGER.debug("getAllWithTotalCards(bankAccountFilterDto={})", bankAccountsFilterDto);
+        return bankAccountDtoDao.getAllWithTotalCards(bankAccountsFilterDto);
     }
 
 }

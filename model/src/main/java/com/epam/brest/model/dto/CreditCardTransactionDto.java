@@ -5,15 +5,14 @@ import com.epam.brest.model.validator.constraint.DifferentCardNumbers;
 import com.epam.brest.model.validator.constraint.SumOfMoney;
 import com.epam.brest.model.validator.order.FirstOrder;
 import com.epam.brest.model.validator.order.SecondOrder;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.validation.Constraint;
 import javax.validation.GroupSequence;
 import java.math.BigDecimal;
 import java.util.Locale;
 
 /**
- *  Credit card data transfer object
- *  to perform a bank transaction.
+ *  Credit card transaction data transfer object.
  */
 @CardNumbers(groups = {FirstOrder.class})
 @DifferentCardNumbers(groups = {SecondOrder.class})
@@ -24,21 +23,25 @@ public class CreditCardTransactionDto {
     /**
      *  Number of the target credit card.
      */
+    @Schema(example = "4000003394112581")
     private String targetCardNumber;
 
     /**
      *  Deposit sum of money.
      */
+    @Schema(hidden = true)
     private BigDecimal sumOfMoney;
 
     /**
      *  Number of the source credit card.
      */
+    @Schema(example = "4000002538269224")
     private String sourceCardNumber;
 
     /**
      *  Value of the deposit sum of money from http request.
      */
+    @Schema(example = "1000,00")
     private String valueSumOfMoney;
 
     /**

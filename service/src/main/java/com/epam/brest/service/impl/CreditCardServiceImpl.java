@@ -70,6 +70,7 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
     @Override
     public CreditCard create(Integer accountId) {
         LOGGER.debug("create(accountId={})", accountId);
+
         CreditCard newCreditCard = new CreditCard();
         newCreditCard.setNumber(getCardNumber());
         newCreditCard.setExpirationDate(ServiceUtils.convertToExpirationDate(LocalDate.now()));

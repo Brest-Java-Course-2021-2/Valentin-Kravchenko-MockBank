@@ -1,6 +1,7 @@
 package com.epam.brest.model.dto;
 
 import com.epam.brest.model.BasicEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,11 +14,13 @@ public class CreditCardDto extends BasicEntity {
     /**
      *  Credit card number.
      */
+    @Schema(example = "4000003394112581", description = "Credit card number")
     private String number;
 
     /**
      *  Credit card expiration date.
      */
+    @Schema(example = "2023-07-31", description = "Credit card expiration date")
     private LocalDate expirationDate;
 
     /**
@@ -28,11 +31,13 @@ public class CreditCardDto extends BasicEntity {
     /**
      *   Bank account id linked with the credit card.
      */
+    @Schema(example = "1")
     private Integer accountId;
 
     /**
      *   Bank account number linked with the credit card.
      */
+    @Schema(example = "BY80F29S8416E1PXLF9VHCGM99T6", description = "Bank account number linked with the credit card")
     private String accountNumber;
 
     public String getNumber() {

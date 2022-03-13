@@ -3,7 +3,7 @@ package com.epam.brest.dao.impl;
 import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.dao.api.CreditCardDao;
 import com.epam.brest.dao.api.CreditCardDtoDao;
-import com.epam.brest.model.dto.CreditCardDateRangeDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.dto.CreditCardDto;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.model.entity.CreditCard;
@@ -57,23 +57,23 @@ class CreditCardDtoSpringJdbcDaoIT extends DaoTestBasic {
     @Test
     void getGetAllWithAccountNumberByDateRange() {
         //Case 1
-        CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setFromDate(firstCreditCard.getExpirationDate());
-        creditCardDateRangeDto.setToDate(lastCreditCard.getExpirationDate());
-        List<CreditCardDto> cards = creditCardDtoDao.getAllWithAccountNumber(creditCardDateRangeDto);
+        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
+        creditCardsFilterDto.setFromDate(firstCreditCard.getExpirationDate());
+        creditCardsFilterDto.setToDate(lastCreditCard.getExpirationDate());
+        List<CreditCardDto> cards = creditCardDtoDao.getAllWithAccountNumber(creditCardsFilterDto);
         assertNotNull(cards);
         assertEquals(cards.get(0).getExpirationDate(), firstCreditCard.getExpirationDate());
         assertEquals(cards.get(cards.size() - 1).getExpirationDate(), lastCreditCard.getExpirationDate());
         //Case 2
-        creditCardDateRangeDto.setToDate(null);
-        cards = creditCardDtoDao.getAllWithAccountNumber(creditCardDateRangeDto);
+        creditCardsFilterDto.setToDate(null);
+        cards = creditCardDtoDao.getAllWithAccountNumber(creditCardsFilterDto);
         assertNotNull(cards);
         assertEquals(cards.get(0).getExpirationDate(), firstCreditCard.getExpirationDate());
         assertEquals(cards.get(cards.size() - 1).getExpirationDate(), lastCreditCard.getExpirationDate());
         //Case 3
-        creditCardDateRangeDto.setFromDate(null);
-        creditCardDateRangeDto.setToDate(lastCreditCard.getExpirationDate());
-        cards = creditCardDtoDao.getAllWithAccountNumber(creditCardDateRangeDto);
+        creditCardsFilterDto.setFromDate(null);
+        creditCardsFilterDto.setToDate(lastCreditCard.getExpirationDate());
+        cards = creditCardDtoDao.getAllWithAccountNumber(creditCardsFilterDto);
         assertNotNull(cards);
         assertEquals(cards.get(0).getExpirationDate(), firstCreditCard.getExpirationDate());
         assertEquals(cards.get(cards.size() - 1).getExpirationDate(), lastCreditCard.getExpirationDate());

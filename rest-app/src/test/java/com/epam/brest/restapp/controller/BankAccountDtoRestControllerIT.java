@@ -1,7 +1,7 @@
 package com.epam.brest.restapp.controller;
 
 import com.epam.brest.model.dto.BankAccountDto;
-import com.epam.brest.model.dto.BankAccountFilterDto;
+import com.epam.brest.model.dto.BankAccountsFilterDto;
 import com.epam.brest.service.api.BankAccountDtoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -42,45 +42,45 @@ class BankAccountDtoRestControllerIT extends RestControllerTestBasic {
     @Test
     void accountsPOST() throws Exception {
         // Case 1
-        BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        bankAccountFilterDto.setNumberPattern("BY");
-        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
+        BankAccountsFilterDto bankAccountsFilterDto = new BankAccountsFilterDto();
+        bankAccountsFilterDto.setNumberPattern("BY");
+        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountsFilterDto);
         int lastIdx = accounts.size() - 1;
-        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountFilterDto)
+        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountsFilterDto)
                 .andExpect(jsonPath("$.size()", is(accounts.size())))
                 .andExpect(jsonPath("$[0].id", is(accounts.get(0).getId())))
                     .andExpect(jsonPath("$[" + lastIdx + "].id", is(accounts.get(lastIdx).getId())));
         // Case 2
-        bankAccountFilterDto.setNumberPattern("TQ99IK");
-        bankAccountFilterDto.setCustomerPattern("Sergeev");
-        accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
-        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountFilterDto)
+        bankAccountsFilterDto.setNumberPattern("TQ99IK");
+        bankAccountsFilterDto.setCustomerPattern("Sergeev");
+        accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountsFilterDto);
+        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountsFilterDto)
                 .andExpect(jsonPath("$.size()", is(accounts.size())))
                 .andExpect(jsonPath("$[0].id", is(accounts.get(0).getId())));
     }
 
     @Test
     void accountsPOSTThereAreNoSearchResults() throws Exception {
-        BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
+        BankAccountsFilterDto bankAccountsFilterDto = new BankAccountsFilterDto();
         String numberPattern = "EEEEE";
         String customerPattern = "Sergeenko";
-        bankAccountFilterDto.setNumberPattern(numberPattern);
-        bankAccountFilterDto.setCustomerPattern(customerPattern);
-        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountFilterDto)
+        bankAccountsFilterDto.setNumberPattern(numberPattern);
+        bankAccountsFilterDto.setCustomerPattern(customerPattern);
+        performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountsFilterDto)
                 .andExpect(jsonPath("$.size()", is(0)));
     }
 
     @Test
     void accountsPOSTWithInvalidNumberPatternAndSearchPattern() throws Exception {
         // Case 1
-        BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        performPostAndExpectStatus("/accounts", bankAccountFilterDto, status().isBadRequest())
+        BankAccountsFilterDto bankAccountsFilterDto = new BankAccountsFilterDto();
+        performPostAndExpectStatus("/accounts", bankAccountsFilterDto, status().isBadRequest())
                 .andExpect(jsonPath("$.validationErrors.customerPattern").value(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT))
                 .andExpect(jsonPath("$.validationErrors.numberPattern").value(ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT));
         // Case 2
-        bankAccountFilterDto.setNumberPattern("BYby");
-        bankAccountFilterDto.setCustomerPattern("Sergeev2");
-        performPostAndExpectStatus("/accounts", bankAccountFilterDto, status().isBadRequest())
+        bankAccountsFilterDto.setNumberPattern("BYby");
+        bankAccountsFilterDto.setCustomerPattern("Sergeev2");
+        performPostAndExpectStatus("/accounts", bankAccountsFilterDto, status().isBadRequest())
                 .andExpect(jsonPath("$.validationErrors.customerPattern").value(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT))
                 .andExpect(jsonPath("$.validationErrors.numberPattern").value(ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT));
     }

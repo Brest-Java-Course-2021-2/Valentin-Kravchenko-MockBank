@@ -1,6 +1,6 @@
 package com.epam.brest.webapp.validator;
 
-import com.epam.brest.model.dto.BankAccountFilterDto;
+import com.epam.brest.model.dto.BankAccountsFilterDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,24 +25,24 @@ public class BankAccountFilterDtoValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return BankAccountFilterDto.class.equals(clazz);
+        return BankAccountsFilterDto.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
         LOGGER.debug("validate(target={})", target);
-        BankAccountFilterDto bankAccountFilterDto = (BankAccountFilterDto) target;
-        if (Objects.isNull(bankAccountFilterDto.getNumberPattern()) &&
-            Objects.isNull(bankAccountFilterDto.getCustomerPattern())) {
+        BankAccountsFilterDto bankAccountsFilterDto = (BankAccountsFilterDto) target;
+        if (Objects.isNull(bankAccountsFilterDto.getNumberPattern()) &&
+            Objects.isNull(bankAccountsFilterDto.getCustomerPattern())) {
             errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_ACCOUNT_NUMBER_PATTERN);
             errors.rejectValue(CUSTOMER_PATTERN, ERROR_CODE_CUSTOMER_PATTERN);
         }
-        if (Objects.nonNull(bankAccountFilterDto.getNumberPattern()) &&
-            !bankAccountFilterDto.getNumberPattern().matches(numberRegexp)) {
+        if (Objects.nonNull(bankAccountsFilterDto.getNumberPattern()) &&
+            !bankAccountsFilterDto.getNumberPattern().matches(numberRegexp)) {
             errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_ACCOUNT_NUMBER_PATTERN);
         }
-        if (Objects.nonNull(bankAccountFilterDto.getCustomerPattern()) &&
-            !bankAccountFilterDto.getCustomerPattern().matches(customerRegexp)) {
+        if (Objects.nonNull(bankAccountsFilterDto.getCustomerPattern()) &&
+            !bankAccountsFilterDto.getCustomerPattern().matches(customerRegexp)) {
             errors.rejectValue(CUSTOMER_PATTERN, ERROR_CODE_CUSTOMER_PATTERN);
         }
     }

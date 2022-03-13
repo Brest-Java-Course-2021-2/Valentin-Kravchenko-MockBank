@@ -3,7 +3,7 @@ package com.epam.brest.dao.impl;
 import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.dao.api.BankAccountDtoDao;
 import com.epam.brest.model.dto.BankAccountDto;
-import com.epam.brest.model.dto.BankAccountFilterDto;
+import com.epam.brest.model.dto.BankAccountsFilterDto;
 import com.epam.brest.model.entity.BankAccount;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,28 +63,28 @@ class BankAccountDtoSpringJdbcDaoIT extends DaoTestBasic {
     @Test
     void getAllWithTotalCardsByFilter() {
         //Case 1
-        BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
+        BankAccountsFilterDto bankAccountsFilterDto = new BankAccountsFilterDto();
         String numberPattern1 = "S8416E1PX";
         String customerPattern1 = "Iv";
-        bankAccountFilterDto.setNumberPattern(numberPattern1);
-        bankAccountFilterDto.setCustomerPattern(customerPattern1);
-        List<BankAccountDto> accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+        bankAccountsFilterDto.setNumberPattern(numberPattern1);
+        bankAccountsFilterDto.setCustomerPattern(customerPattern1);
+        List<BankAccountDto> accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountsFilterDto);
         assertEquals(accounts.size(), 1);
         assertTrue(accounts.get(0).getNumber().contains(numberPattern1));
         assertTrue(accounts.get(0).getCustomer().contains(customerPattern1));
         //Case 2
         String customerPattern2 = "ov";
-        bankAccountFilterDto.setNumberPattern(null);
-        bankAccountFilterDto.setCustomerPattern(customerPattern2);
-        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+        bankAccountsFilterDto.setNumberPattern(null);
+        bankAccountsFilterDto.setCustomerPattern(customerPattern2);
+        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountsFilterDto);
         assertEquals(accounts.size(), 2);
         assertTrue(accounts.stream().allMatch(acc -> acc.getCustomer().contains(customerPattern2)));
         //Case 3
         String numberPattern2 = "BY 99T6";
         String customerPattern3 = "Iv ov";
-        bankAccountFilterDto.setNumberPattern(numberPattern2);
-        bankAccountFilterDto.setCustomerPattern(customerPattern3);
-        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+        bankAccountsFilterDto.setNumberPattern(numberPattern2);
+        bankAccountsFilterDto.setCustomerPattern(customerPattern3);
+        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountsFilterDto);
         assertEquals(accounts.size(), 1);
         String[] numberExpressions =  numberPattern2.split(SPLIT_REGEX);
         String number = accounts.get(0).getNumber();
@@ -94,16 +94,16 @@ class BankAccountDtoSpringJdbcDaoIT extends DaoTestBasic {
         assertTrue(customer.contains(customerExpressions[0]) && customer.contains(customerExpressions[1]));
         //case 4
         String numberPattern3 = "BY";
-        bankAccountFilterDto.setNumberPattern(numberPattern3);
-        bankAccountFilterDto.setCustomerPattern(null);
-        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+        bankAccountsFilterDto.setNumberPattern(numberPattern3);
+        bankAccountsFilterDto.setCustomerPattern(null);
+        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountsFilterDto);
         assertEquals(accounts.size(), 3);
         assertTrue(accounts.stream().allMatch(acc -> acc.getNumber().contains(numberPattern3)));
         //case 5
         String customerPattern4 = "Customer";
-        bankAccountFilterDto.setNumberPattern(null);
-        bankAccountFilterDto.setCustomerPattern(customerPattern4);
-        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountFilterDto);
+        bankAccountsFilterDto.setNumberPattern(null);
+        bankAccountsFilterDto.setCustomerPattern(customerPattern4);
+        accounts = bankAccountDtoDao.getAllWithTotalCards(bankAccountsFilterDto);
         assertEquals(accounts.size(), 0);
     }
 

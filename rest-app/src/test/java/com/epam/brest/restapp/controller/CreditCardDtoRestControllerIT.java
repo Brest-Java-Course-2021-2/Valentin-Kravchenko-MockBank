@@ -1,12 +1,11 @@
 package com.epam.brest.restapp.controller;
 
-import com.epam.brest.model.dto.CreditCardDateRangeDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.dto.CreditCardDto;
 import com.epam.brest.service.api.CreditCardDtoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -48,10 +47,10 @@ class CreditCardDtoRestControllerIT extends RestControllerTestBasic {
     @Test
     void cardsPOST() throws Exception {
         //Case 1
-        CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setFromDate(LocalDate.parse("2022-05-31"));
-        creditCardDateRangeDto.setToDate(LocalDate.parse("2022-07-31"));
-        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
+        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
+        creditCardsFilterDto.setFromDate(LocalDate.parse("2022-05-31"));
+        creditCardsFilterDto.setToDate(LocalDate.parse("2022-07-31"));
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
         int lastIdx = cards.size() - 1;
         Map<String, Object> body = new HashMap<>();
         body.put(VALUE_FROM_DATE, "05/2022");
@@ -61,8 +60,8 @@ class CreditCardDtoRestControllerIT extends RestControllerTestBasic {
                 .andExpect(jsonPath("$[0].id", is(cards.get(0).getId())))
                 .andExpect(jsonPath("$[" + lastIdx + "].id", is(cards.get(lastIdx).getId())));
         //Case 2
-        creditCardDateRangeDto.setToDate(null);
-        cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
+        creditCardsFilterDto.setToDate(null);
+        cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
         lastIdx = cards.size() - 1;
         body.remove(VALUE_TO_DATE);
         performPostAndExpectStatusOk("/cards", body)

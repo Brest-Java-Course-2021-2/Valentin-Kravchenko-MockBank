@@ -2,7 +2,7 @@ package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.api.CreditCardDtoDao;
 import com.epam.brest.dao.util.DaoUtils;
-import com.epam.brest.model.dto.CreditCardDateRangeDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.dto.CreditCardDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,9 +45,9 @@ public class CreditCardDtoSpringJdbcDao implements CreditCardDtoDao {
     }
 
     @Override
-    public List<CreditCardDto> getAllWithAccountNumber(CreditCardDateRangeDto creditCardDateRangeDto) {
-        LOGGER.debug("getAllWithTotalCards(getAllWithAccountNumber={})", creditCardDateRangeDto);
-        SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(creditCardDateRangeDto);
+    public List<CreditCardDto> getAllWithAccountNumber(CreditCardsFilterDto creditCardsFilterDto) {
+        LOGGER.debug("getAllWithTotalCards(getAllWithAccountNumber={})", creditCardsFilterDto);
+        SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(creditCardsFilterDto);
         LOGGER.info("getAllWithTotalCards(sqlParameterSource={})", sqlParameterSource);
         String dynamicWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, sqlWhereDateRangeMap);
         return namedParameterJdbcTemplate.query(String.format(getAllSqlByDateRange, dynamicWhereSql), sqlParameterSource, rowMapper);

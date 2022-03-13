@@ -1,7 +1,7 @@
 package com.epam.brest.service.impl;
 
 import com.epam.brest.dao.api.CreditCardDtoDao;
-import com.epam.brest.model.dto.CreditCardDateRangeDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.dto.CreditCardDto;
 import com.epam.brest.service.api.CreditCardDtoService;
 import org.apache.logging.log4j.LogManager;
@@ -30,9 +30,9 @@ public class CreditCardDtoServiceImpl implements CreditCardDtoService {
     }
 
     @Override
-    public List<CreditCardDto> getAllWithAccountNumber(CreditCardDateRangeDto creditCardDateRangeDto) {
-        LOGGER.debug("getAllWithAccountNumber(creditCardDateRangeDto={})", creditCardDateRangeDto);
-        return creditCardDtoDao.getAllWithAccountNumber(creditCardDateRangeDto);
+    public List<CreditCardDto> getAllWithAccountNumber(CreditCardsFilterDto creditCardsFilterDto) {
+        LOGGER.debug("getAllWithAccountNumber(creditCardDateRangeDto={})", creditCardsFilterDto);
+        return creditCardDtoDao.getAllWithAccountNumber(creditCardsFilterDto);
     }
 
 }
