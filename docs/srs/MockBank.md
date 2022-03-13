@@ -181,8 +181,9 @@ The application allows users to:
   * The system redirects the user to the page with a form for money deposit
     ![](/docs/jpeg/slide_23.jpeg)
 ##### Deposit Money:
-  * The user enters sum of money what will be deposited to the card balance
-  * Valid format of a sum of money is {up to 6 digits}\<,>{up to 2 digits} (for example, '1024', '1024,1', '0,45')
+  * The user enters a sum of money what will be deposited to a card balance
+  * Valid format of the sum of money is {up to 6 digits}{, or .}{up to 2 digits}. For example, 1025, 1730.1, 0,45
+  * Decimal separator type depends on the specified locale.
   * The user clicks the **ACCEPT** button
   * The system validates the given sum of money
   * In the case, the given sum of money is correct:
