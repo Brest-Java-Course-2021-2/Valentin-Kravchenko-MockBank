@@ -41,12 +41,14 @@ public class OpenApiConfig {
                                                                                            "customer", new StringSchema().example("Ivan Ivanoff"))))
                                                         .addSchemas("createCreditCard", new IntegerSchema().example(1))
                                                         .addSchemas("depositMoney",
-                                                                    getObjectSchema(Map.of("targetCardNumber",  new StringSchema().example("4000003394112581"),
-                                                                                           "valueSumOfMoney", new StringSchema().example("1000,00"),
-                                                                                           "locale", new StringSchema().example("ru"))))
+                                                                    getObjectSchema(Map.of("targetCardNumber",
+                                                                                           new StringSchema().example("4000003394112581").description("Number of a target credit card"),
+                                                                                           "valueSumOfMoney",
+                                                                                           new StringSchema().example("1500,00").description("Value of a sum of money"),
+                                                                                           "locale", new StringSchema().example("ru").description("Current locale"))))
                                                         .addSchemas("transferMoney",
                                                                     getResolvedSchema(CreditCardTransactionDto.class,
-                                                                                  "locale", new StringSchema().example("ru")))
+                                                                                  "locale", new StringSchema().example("ru").description("Current locale")))
                                                         .addSchemas("creditCard",
                                                                     getResolvedSchema(CreditCard.class,
                                                                 "balance", new StringSchema().example("1000.00").description("Credit card balance")))

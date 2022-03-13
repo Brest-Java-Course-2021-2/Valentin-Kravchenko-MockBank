@@ -86,13 +86,18 @@ public class CreditCardRestController {
         return ResponseEntity.ok(createdCreditCard);
     }
 
-    @Operation(summary = "Deposit money to a credit card",
+    @Operation(summary = "Credit card deposit transaction",
+               description = "Deposits a specified sum of money to the balance of the target credit card. " +
+                             "Valid format of the sum of money is {up to 6 digits}{, or .}{up to 2 digits}. " +
+                             "For example, 1025, 1730.1, 0,45. " +
+                             "Decimal separator type depends on the specified locale",
                responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                                         responseCode = "404", description = "If the credit card with the given number not found"),
+                                         responseCode = "404", description = "If the target credit card with the given number not found"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
-                                         responseCode = "400", description = "if the target credit card number is invalid")})
+                                         responseCode = "400", description = "If the target credit card number is invalid" +
+                                                                             "and/or format of the sum of money is incorrect")})
     @PostMapping("deposit")
     public ResponseEntity<CreditCard> deposit(
             @Parameter(description = "Credit card transaction DTO",
@@ -105,13 +110,19 @@ public class CreditCardRestController {
         return ResponseEntity.ok(targetCreditCard);
     }
 
-    @Operation(summary = "Transfer money from a credit card",
+    @Operation(summary = "Credit card transfer transaction",
+               description = "Transfers a specified sum of money from the balance of the source credit card " +
+                             "to the balance of the target credit card." +
+                             "Valid format of the sum of money is {up to 6 digits}{, or .}{up to 2 digits}. " +
+                             "For example, 1025, 1730.1, 0,45. " +
+                             "Decimal separator type depends on the specified locale",
                responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                                         responseCode = "404", description = "If the credit cards were not found by their numbers"),
+                                         responseCode = "404", description = "If the source or target credit card was not found by number"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
-                                         responseCode = "400", description = "if the source credit card doesn't contain enough money for a transfer")})
+                                         responseCode = "400", description = "if the source credit card doesn't contain enough money for a transfer " +
+                                                                             "and/or format of the sum of money is incorrect")})
     @PostMapping("transfer")
     public ResponseEntity<CreditCard> transfer(
             @Parameter(description = "Credit card transaction DTO",
@@ -132,7 +143,7 @@ public class CreditCardRestController {
                          @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
                                       responseCode = "400", description = "if the credit card has a positive balance")})
     @DeleteMapping("{id}")
-    public ResponseEntity<CreditCard> remove(
+    public ResponseEntity<CreditCard> delete(
             @Parameter(description = "Credit card ID", required = true)
             @PathVariable Integer id
     ){

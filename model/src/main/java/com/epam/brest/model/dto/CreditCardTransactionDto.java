@@ -21,9 +21,9 @@ import java.util.Locale;
 public class CreditCardTransactionDto {
 
     /**
-     *  Number of the target credit card.
+     *  Number of a target credit card.
      */
-    @Schema(example = "4000003394112581")
+    @Schema(example = "4000003394112581", description = "Number of a target credit card")
     private String targetCardNumber;
 
     /**
@@ -33,19 +33,19 @@ public class CreditCardTransactionDto {
     private BigDecimal sumOfMoney;
 
     /**
-     *  Number of the source credit card.
+     *  Number of a source credit card.
      */
-    @Schema(example = "4000002538269224")
+    @Schema(example = "4000002538269224", description = "Number of a source credit card")
     private String sourceCardNumber;
 
     /**
-     *  Value of the deposit sum of money from http request.
+     *  Value of a sum of money from a http request.
      */
-    @Schema(example = "1000,00")
+    @Schema(example = "1000,00", description = "Value of a sum of money")
     private String valueSumOfMoney;
 
     /**
-     *  Current locale from http request.
+     *  Current locale from a http request.
      */
     private Locale locale;
 
