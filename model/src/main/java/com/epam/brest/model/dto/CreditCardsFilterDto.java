@@ -5,6 +5,7 @@ import com.epam.brest.model.validator.constraint.DateRange;
 import com.epam.brest.model.validator.constraint.DifferentDates;
 import com.epam.brest.model.validator.order.FirstOrder;
 import com.epam.brest.model.validator.order.SecondOrder;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.GroupSequence;
 import java.time.LocalDate;
@@ -15,29 +16,33 @@ import java.time.LocalDate;
  */
 @DateRange(groups = {FirstOrder.class})
 @DifferentDates(groups = {SecondOrder.class})
-@GroupSequence({CreditCardDateRangeDto.class, FirstOrder.class, SecondOrder.class})
-public class CreditCardDateRangeDto {
+@GroupSequence({CreditCardsFilterDto.class, FirstOrder.class, SecondOrder.class})
+public class CreditCardsFilterDto {
 
     /**
-     *  Start date of the range for credit card expiration.
+     *  Start date of the credit card expiration range.
      */
+    @Schema(hidden = true)
     private LocalDate fromDate;
 
     /**
-     *  End date of the range for credit card expiration.
+     *  End date of the credit card expiration range.
      */
+    @Schema(hidden = true)
     private LocalDate toDate;
 
     /**
-     *  Value of the start date of the range from http request.
+     *  Start date format of the credit card expiration range.
      */
     @ExcludeFromSql
+    @Schema(example = "06/2022", description = "Start date of the credit card expiration range")
     private String valueFromDate;
 
     /**
-     *  Value of the end date of the range from http request.
+     *  End date format of the credit card expiration range.
      */
     @ExcludeFromSql
+    @Schema(example = "08/2023", description = "End date of the credit card expiration range")
     private String valueToDate;
 
     public LocalDate getFromDate() {

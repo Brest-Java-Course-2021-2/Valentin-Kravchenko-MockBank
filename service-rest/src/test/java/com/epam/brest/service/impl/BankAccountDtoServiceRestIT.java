@@ -1,7 +1,7 @@
 package com.epam.brest.service.impl;
 
 import com.epam.brest.model.dto.BankAccountDto;
-import com.epam.brest.model.dto.BankAccountFilterDto;
+import com.epam.brest.model.dto.BankAccountsFilterDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -26,22 +26,22 @@ class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
     @Test
     void getAllWithTotalCardsByFilter() {
         // Case 1
-        BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
+        BankAccountsFilterDto bankAccountsFilterDto = new BankAccountsFilterDto();
         String numberPattern = "TQ99IK";
         String customerPattern = "Sergeev";
-        bankAccountFilterDto.setNumberPattern(numberPattern);
-        bankAccountFilterDto.setCustomerPattern(customerPattern);
-        postAndExpectStatusOk("/accounts", bankAccountFilterDto)
+        bankAccountsFilterDto.setNumberPattern(numberPattern);
+        bankAccountsFilterDto.setCustomerPattern(customerPattern);
+        postAndExpectStatusOk("/accounts", bankAccountsFilterDto)
                      .expectBodyList(BankAccountDto.class)
                      .consumeWith(result -> assertTrue(result.getResponseBody().get(0).getCustomer().contains(customerPattern)));
         //case 2
-        bankAccountFilterDto.setNumberPattern(null);
-        postAndExpectStatusOk("/accounts", bankAccountFilterDto)
+        bankAccountsFilterDto.setNumberPattern(null);
+        postAndExpectStatusOk("/accounts", bankAccountsFilterDto)
                      .expectBody().jsonPath("$.size()", is(1));
         //case 3
-        bankAccountFilterDto.setNumberPattern("BY");
-        bankAccountFilterDto.setCustomerPattern(null);
-        postAndExpectStatusOk("/accounts", bankAccountFilterDto)
+        bankAccountsFilterDto.setNumberPattern("BY");
+        bankAccountsFilterDto.setCustomerPattern(null);
+        postAndExpectStatusOk("/accounts", bankAccountsFilterDto)
                      .expectBodyList(BankAccountDto.class)
                      .consumeWith(result -> assertTrue(result.getResponseBody().stream().map(BankAccountDto::getNumber).allMatch(n -> n.contains("BY"))));
     }
@@ -49,8 +49,8 @@ class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
     @Test
     void getAllWithTotalCardsByFilterWithInvalidNumberPatternAndSearchPattern() {
         // Case 1
-        BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        postAndExchange("/accounts", bankAccountFilterDto)
+        BankAccountsFilterDto bankAccountsFilterDto = new BankAccountsFilterDto();
+        postAndExchange("/accounts", bankAccountsFilterDto)
                 .expectStatus().isBadRequest()
                 .expectBody()
                 .jsonPath("$.validationErrors.customerPattern").isEqualTo(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT)
@@ -58,9 +58,9 @@ class BankAccountDtoServiceRestIT extends ServiceRestTestBasic {
         // Case 2
         String numberPattern = "BYby";
         String customerPattern = "Sergeev2";
-        bankAccountFilterDto.setNumberPattern(numberPattern);
-        bankAccountFilterDto.setCustomerPattern(customerPattern);
-        postAndExchange("/accounts", bankAccountFilterDto)
+        bankAccountsFilterDto.setNumberPattern(numberPattern);
+        bankAccountsFilterDto.setCustomerPattern(customerPattern);
+        postAndExchange("/accounts", bankAccountsFilterDto)
                      .expectStatus().isBadRequest()
                      .expectBody()
                      .jsonPath("$.validationErrors.customerPattern").isEqualTo(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT)

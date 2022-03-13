@@ -57,7 +57,7 @@ public class BankAccountRestController {
     }
 
     @Operation(summary = "List of all credit cards linked with a bank account",
-               responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(implementation = CreditCard.class))),
+               responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(ref = "#/components/schemas/creditCard"))),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
                                          responseCode = "404", description = "If the bank account with the given ID not found") })
@@ -108,7 +108,7 @@ public class BankAccountRestController {
     }
 
     @Operation(summary = "Delete bank account by its ID",
-              responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
+               responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
                                         responseCode = "200"),
                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
                                         responseCode = "404", description = "If the bank account with the given ID not found"),

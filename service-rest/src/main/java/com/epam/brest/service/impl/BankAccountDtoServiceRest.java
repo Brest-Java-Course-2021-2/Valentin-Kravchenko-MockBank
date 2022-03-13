@@ -1,7 +1,7 @@
 package com.epam.brest.service.impl;
 
 import com.epam.brest.model.dto.BankAccountDto;
-import com.epam.brest.model.dto.BankAccountFilterDto;
+import com.epam.brest.model.dto.BankAccountsFilterDto;
 import com.epam.brest.service.ServiceRestBasic;
 import com.epam.brest.service.api.BankAccountDtoService;
 import org.apache.logging.log4j.LogManager;
@@ -31,9 +31,9 @@ public class BankAccountDtoServiceRest extends ServiceRestBasic implements BankA
     }
 
     @Override
-    public List<BankAccountDto> getAllWithTotalCards(BankAccountFilterDto bankAccountFilterDto) {
-        LOGGER.debug("getAllWithTotalCards(endpoint={}, bankAccountFilterDto={})", endpoint, bankAccountFilterDto);
-        return postBlock(endpoint, bankAccountFilterDto, parameterizedTypeRef);
+    public List<BankAccountDto> getAllWithTotalCards(BankAccountsFilterDto bankAccountsFilterDto) {
+        LOGGER.debug("getAllWithTotalCards(endpoint={}, bankAccountFilterDto={})", endpoint, bankAccountsFilterDto);
+        return postBlock(endpoint, bankAccountsFilterDto, parameterizedTypeRef);
     }
 
 }

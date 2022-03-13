@@ -15,25 +15,24 @@ public class CreditCard extends BasicEntity {
     /**
      *  Credit card number.
      */
-    @Schema(example = "4000003394112581")
+    @Schema(example = "4000003394112581", description = "Credit card number")
     private String number;
 
     /**
      *  Credit card expiration date.
      */
-    @Schema(example = "2023-07-31")
+    @Schema(example = "2023-07-31", description = "Credit card expiration date")
     private LocalDate expirationDate;
 
     /**
      *  Credit card balance.
      */
-    @Schema(example = "1000")
     private BigDecimal balance;
 
     /**
      *  Bank account id linked with the credit card.
      */
-    @Schema(example = "1")
+    @Schema(example = "1", description = "Bank account id linked with the credit card")
     private Integer accountId;
 
     public String getNumber() {

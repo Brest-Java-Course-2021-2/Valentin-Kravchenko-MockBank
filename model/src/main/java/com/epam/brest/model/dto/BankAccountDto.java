@@ -13,25 +13,25 @@ public class BankAccountDto extends BasicEntity {
     /**
      *  International bank account number.
      */
-    @Schema(example = "BY80F29S8416E1PXLF9VHCGM99T6")
+    @Schema(example = "BY80F29S8416E1PXLF9VHCGM99T6", description = "International bank account number")
     private String number;
 
     /**
      *  Full name of the bank customer holding the bank account.
      */
-    @Schema(example = "Ivan Ivanov")
+    @Schema(example = "Ivan Ivanov", description = "Full name of the bank customer holding the bank account")
     private String customer;
 
     /**
      *  Date of the customer registration in the bank system.
      */
-    @Schema(example = "2020-06-28")
+    @Schema(example = "2020-06-28", description = "Date of the customer registration in the bank syste")
     private LocalDate registrationDate;
 
     /**
      *  Total cards linked to the bank account.
      */
-    @Schema(example = "2")
+    @Schema(example = "2", description = "Total cards linked to the bank account")
     private Integer totalCards;
 
     public String getNumber() {

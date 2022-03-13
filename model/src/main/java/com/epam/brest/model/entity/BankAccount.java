@@ -15,20 +15,20 @@ public class BankAccount extends BasicEntity {
      /**
       *  International bank account number.
       */
-     @Schema(example = "BY80F29S8416E1PXLF9VHCGM99T6")
+     @Schema(example = "BY80F29S8416E1PXLF9VHCGM99T6", description = "International bank account number")
      private String number;
 
      /**
       *  Full name of the bank customer holding the bank account.
       */
      @Customer
-     @Schema(example = "Ivan Ivanov")
+     @Schema(example = "Ivan Ivanov", description = "Full name of the bank customer holding the bank account")
      private String customer;
 
      /**
       *  Date of the customer registration in the bank system.
       */
-     @Schema(example = "2020-06-28")
+     @Schema(example = "2020-06-28", description = "Date of the customer registration in the bank syste")
      private LocalDate registrationDate;
 
      public String getNumber() {

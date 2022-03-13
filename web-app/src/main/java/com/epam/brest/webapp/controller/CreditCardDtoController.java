@@ -1,6 +1,6 @@
 package com.epam.brest.webapp.controller;
 
-import com.epam.brest.model.dto.CreditCardDateRangeDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.dto.CreditCardDto;
 import com.epam.brest.service.api.CreditCardDtoService;
 import com.epam.brest.webapp.util.ControllerUtils;
@@ -52,15 +52,15 @@ public class CreditCardDtoController {
     }
 
     @PostMapping
-    public String cards(@Valid @ModelAttribute(FILTER) CreditCardDateRangeDto creditCardDateRangeDto,
+    public String cards(@Valid @ModelAttribute(FILTER) CreditCardsFilterDto creditCardsFilterDto,
                         BindingResult bindingResult,
                         Model model) {
-        LOGGER.debug("cardsPOST(/cards, creditCardDateRangeDto={})", creditCardDateRangeDto);
+        LOGGER.debug("cardsPOST(/cards, creditCardDateRangeDto={})", creditCardsFilterDto);
         if (bindingResult.hasErrors()) {
             LOGGER.warn("cardsPOST(/cards, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
             return CARDS;
         }
-        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
         if (cards.isEmpty()) {
             LOGGER.warn("cardsPOST(/accounts, accounts={})", cards);
             model.addAttribute(ERROR, filterError);

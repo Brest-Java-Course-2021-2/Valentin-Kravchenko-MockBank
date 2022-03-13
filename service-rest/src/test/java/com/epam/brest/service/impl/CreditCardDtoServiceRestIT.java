@@ -1,6 +1,6 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.model.dto.CreditCardDateRangeDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.dto.CreditCardDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,10 @@ class CreditCardDtoServiceRestIT extends ServiceRestTestBasic {
     @Test
     void getAllWithAccountNumberByFilter() {
         // Case 1
-        CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setValueFromDate("05/2022");
-        creditCardDateRangeDto.setValueToDate("07/2022");
-        postAndExpectStatusOk("/cards", creditCardDateRangeDto)
+        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
+        creditCardsFilterDto.setValueFromDate("05/2022");
+        creditCardsFilterDto.setValueToDate("07/2022");
+        postAndExpectStatusOk("/cards", creditCardsFilterDto)
                 .expectBodyList(CreditCardDto.class)
                 .consumeWith(result -> {
                     CreditCardDto firstCreditCardDto = result.getResponseBody().get(0);
@@ -42,9 +42,9 @@ class CreditCardDtoServiceRestIT extends ServiceRestTestBasic {
                     assertEquals(lastCreditCardDto.getExpirationDate().getYear(), 2022);
                 });
         // Case 2
-        creditCardDateRangeDto.setValueFromDate("05/2022");
-        creditCardDateRangeDto.setValueToDate(null);
-        postAndExpectStatusOk("/cards", creditCardDateRangeDto)
+        creditCardsFilterDto.setValueFromDate("05/2022");
+        creditCardsFilterDto.setValueToDate(null);
+        postAndExpectStatusOk("/cards", creditCardsFilterDto)
                 .expectBodyList(CreditCardDto.class)
                 .consumeWith(result -> {
                     CreditCardDto firstCreditCardDto = result.getResponseBody().get(0);
@@ -52,9 +52,9 @@ class CreditCardDtoServiceRestIT extends ServiceRestTestBasic {
                     assertEquals(firstCreditCardDto.getExpirationDate().getYear(), 2022);
                 });
         // Case 3
-        creditCardDateRangeDto.setValueFromDate(null);
-        creditCardDateRangeDto.setValueToDate("07/2022");
-        postAndExpectStatusOk("/cards", creditCardDateRangeDto)
+        creditCardsFilterDto.setValueFromDate(null);
+        creditCardsFilterDto.setValueToDate("07/2022");
+        postAndExpectStatusOk("/cards", creditCardsFilterDto)
                 .expectBodyList(CreditCardDto.class)
                 .consumeWith(result -> {
                     CreditCardDto lastCreditCardDto = result.getResponseBody().get(result.getResponseBody().size() - 1);
@@ -66,24 +66,24 @@ class CreditCardDtoServiceRestIT extends ServiceRestTestBasic {
     @Test
     void getAllWithAccountNumberByFilterWithInvalidValueFromDateAndValueToDate() {
         // Case 1
-        CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        postAndExchange("/cards", creditCardDateRangeDto)
+        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
+        postAndExchange("/cards", creditCardsFilterDto)
                 .expectStatus().isBadRequest()
                 .expectBody()
                 .jsonPath("$.validationErrors.valueFromDate").isEqualTo(RANGE_START_DATE_FORMAT_IS_INCORRECT)
                 .jsonPath("$.validationErrors.valueToDate").isEqualTo(RANGE_END_DATE_FORMAT_IS_INCORRECT);
         // Case 2
-        creditCardDateRangeDto.setValueFromDate("07/2022");
-        creditCardDateRangeDto.setValueToDate("07/2022");
-        postAndExchange("/cards", creditCardDateRangeDto)
+        creditCardsFilterDto.setValueFromDate("07/2022");
+        creditCardsFilterDto.setValueToDate("07/2022");
+        postAndExchange("/cards", creditCardsFilterDto)
                 .expectStatus().isBadRequest()
                 .expectBody()
                 .jsonPath("$.validationErrors.valueFromDate").isEqualTo(DATES_MUST_BE_DIFFERENT)
                 .jsonPath("$.validationErrors.valueToDate").isEqualTo(DATES_MUST_BE_DIFFERENT);
         // Case 2
-        creditCardDateRangeDto.setValueFromDate("00/2022");
-        creditCardDateRangeDto.setValueToDate("07.2022");
-        postAndExchange("/cards", creditCardDateRangeDto)
+        creditCardsFilterDto.setValueFromDate("00/2022");
+        creditCardsFilterDto.setValueToDate("07.2022");
+        postAndExchange("/cards", creditCardsFilterDto)
                 .expectStatus().isBadRequest()
                 .expectBody()
                 .jsonPath("$.validationErrors.valueFromDate").isEqualTo(RANGE_START_DATE_FORMAT_IS_INCORRECT)

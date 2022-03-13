@@ -6,10 +6,10 @@ The application allows users to:
   * View a list of all bank accounts
   * Create a new bank account
   * Edit the selected bank account
-  * Filter the list of bank accounts by account number and customer full name 
+  * Filter bank accounts by account number and customer full name 
   * Add a new credit card to the selected bank account
   * View a list of all credit cards
-  * Filter the list of credit cards by expiration date
+  * Filter credit cards by expiration date
   * Deposit money to the selected credit card
   * Transfer money to the selected credit card
 ## 3. Overall description
@@ -27,14 +27,13 @@ The application allows users to:
     * Links to edit and remove an account, and a link to add a new credit card to the account
 ##### Filtering Action:
   * The user enters a search pattern into each input field or one of them
-  * Valid format of a number search pattern is
-    \[FirstPattern(required)\]{up to 17 characters}\<space(optional)\>\[SecondPattern(optional)\]{up to 17 characters}
-    (for example, 'BY', 'BY 99T6')
-  * Allowed characters for the \[FirstPattern\] and [SecondPattern\] are \[A-Z0-9\]
-  * Valid format of a customer search pattern is 
-    \[FirstNamePattern\]{up to 63 characters}\<space\>\[LastNamePattern\]{up to 64 characters}
-    (for example, 'Iv Iva', 'an ov', 'ov', 'Iv'). Both or one of the patterns should be specified 
+  * Valid format of the account number search pattern is FirstNumberPattern(required, up to 17 characters)\<space\>\SecondNumberPattern(optional, up to 17 characters).
+    For example, 'BY', 'BY 99T6'
+  * Allowed characters for the \[FirstNumberPattern\] and [SecondNumberPattern\] are \[A-Z0-9\]
+  * Valid format of the customer search pattern is FirstNamePattern(up to 63 characters)\<space\>LastNamePattern(up to 64 characters).
+    For example, 'Iv Iva', 'an ov', 'ov', 'Iv'
   * Allowed characters for the \[FirstNamePattern\] and [LastNamePattern\] are \[A-Za-z\]
+  * Both or one of the patterns should be specified 
   * The user clicks the **APPLY** button
   * The system validates the given search patterns
   * In the case, the search patterns are valid, the system handles the request and displays a list of bank accounts matching
@@ -138,8 +137,7 @@ The application allows users to:
     * Link to remove a credit card, and links to deposit and transfer money
 ##### Filtering Action:
   * The user enters the required date into each input field or one of them
-  * Valid format of date is \[Month(required)\]{2 digits}\</\>\[Year(required)\]{4 digits}
-    (for example, '06/2021')
+  * Valid date format is Month(required, 2 digits)/Year(required, 4 digits). For example, '06/2021'
   * The user clicks the **APPLY** button
   * The system validates the given dates
   * In the case, the given dates are valid, the system displays a list of credit cards to following rules:

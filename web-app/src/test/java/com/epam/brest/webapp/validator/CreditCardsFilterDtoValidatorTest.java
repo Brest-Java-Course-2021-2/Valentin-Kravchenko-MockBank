@@ -1,6 +1,6 @@
 package com.epam.brest.webapp.validator;
 
-import com.epam.brest.model.dto.CreditCardDateRangeDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,34 +15,34 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ContextConfiguration(locations = {"classpath*:test-validator.xml"})
-class CreditCardDateRangeDtoValidatorTest {
+class CreditCardsFilterDtoValidatorTest {
 
     private final Validator validator;
 
-    CreditCardDateRangeDtoValidatorTest(@Autowired @Qualifier("creditCardDateRangeDtoValidator") Validator validator) {
+    CreditCardsFilterDtoValidatorTest(@Autowired @Qualifier("creditCardDateRangeDtoValidator") Validator validator) {
         this.validator = validator;
     }
 
     @Test
     void validateDateRangeIsValid(){
         // Case 1
-        CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setValueFromDate("06/2023");
-        creditCardDateRangeDto.setValueToDate("06/2025");
-        DataBinder dataBinder = new DataBinder(creditCardDateRangeDto);
+        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
+        creditCardsFilterDto.setValueFromDate("06/2023");
+        creditCardsFilterDto.setValueToDate("06/2025");
+        DataBinder dataBinder = new DataBinder(creditCardsFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());
         // Case 2
-        creditCardDateRangeDto.setValueToDate(null);
-        dataBinder = new DataBinder(creditCardDateRangeDto);
+        creditCardsFilterDto.setValueToDate(null);
+        dataBinder = new DataBinder(creditCardsFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());
         // Case 3
-        creditCardDateRangeDto.setValueFromDate("06/2023");
-        creditCardDateRangeDto.setValueToDate(null);
-        dataBinder = new DataBinder(creditCardDateRangeDto);
+        creditCardsFilterDto.setValueFromDate("06/2023");
+        creditCardsFilterDto.setValueToDate(null);
+        dataBinder = new DataBinder(creditCardsFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertFalse(dataBinder.getBindingResult().hasErrors());
@@ -51,30 +51,30 @@ class CreditCardDateRangeDtoValidatorTest {
     @Test
     void validateDateRangeIsInvalid(){
         // Case 1
-        CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setValueFromDate("06.2023");
-        creditCardDateRangeDto.setValueToDate("06/1025");
-        DataBinder dataBinder = new DataBinder(creditCardDateRangeDto);
+        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
+        creditCardsFilterDto.setValueFromDate("06.2023");
+        creditCardsFilterDto.setValueToDate("06/1025");
+        DataBinder dataBinder = new DataBinder(creditCardsFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_FROM_DATE));
         assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_TO_DATE));
         // Case 1
-        creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setValueFromDate("06/2023");
-        creditCardDateRangeDto.setValueToDate("06/2023");
-        dataBinder = new DataBinder(creditCardDateRangeDto);
+        creditCardsFilterDto = new CreditCardsFilterDto();
+        creditCardsFilterDto.setValueFromDate("06/2023");
+        creditCardsFilterDto.setValueToDate("06/2023");
+        dataBinder = new DataBinder(creditCardsFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_FROM_DATE));
         assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_TO_DATE));
         // Case 1
-        creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setValueFromDate("23/2023");
-        creditCardDateRangeDto.setValueToDate("00/2023");
-        dataBinder = new DataBinder(creditCardDateRangeDto);
+        creditCardsFilterDto = new CreditCardsFilterDto();
+        creditCardsFilterDto.setValueFromDate("23/2023");
+        creditCardsFilterDto.setValueToDate("00/2023");
+        dataBinder = new DataBinder(creditCardsFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());

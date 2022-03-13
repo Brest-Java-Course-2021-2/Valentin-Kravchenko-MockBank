@@ -1,17 +1,22 @@
 package com.epam.brest.restapp.config;
 
+import com.epam.brest.model.dto.CreditCardDto;
+import com.epam.brest.model.dto.CreditCardTransactionDto;
+import com.epam.brest.model.entity.CreditCard;
+import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.media.IntegerSchema;
-import io.swagger.v3.oas.models.media.MapSchema;
-import io.swagger.v3.oas.models.media.ObjectSchema;
-import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.media.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Map;
 
 @Configuration
 public class OpenApiConfig {
@@ -32,8 +37,32 @@ public class OpenApiConfig {
                                                         .addSchemas("createBankAccount",
                                                                     new ObjectSchema().addProperties("customer", new StringSchema().example("Sergey Sergeev")))
                                                         .addSchemas("updateBankAccount",
-                                                                    new ObjectSchema().addProperties("id", new IntegerSchema().example(1))
-                                                                                      .addProperties("customer", new StringSchema().example("Ivan Ivanoff"))));
+                                                                    getObjectSchema(Map.of("id", new IntegerSchema().example(1),
+                                                                                           "customer", new StringSchema().example("Ivan Ivanoff"))))
+                                                        .addSchemas("createCreditCard", new IntegerSchema().example(1))
+                                                        .addSchemas("depositMoney",
+                                                                    getObjectSchema(Map.of("targetCardNumber",  new StringSchema().example("4000003394112581"),
+                                                                                           "valueSumOfMoney", new StringSchema().example("1000,00"),
+                                                                                           "locale", new StringSchema().example("ru"))))
+                                                        .addSchemas("transferMoney",
+                                                                    getResolvedSchema(CreditCardTransactionDto.class,
+                                                                                  "locale", new StringSchema().example("ru")))
+                                                        .addSchemas("creditCard",
+                                                                    getResolvedSchema(CreditCard.class,
+                                                                "balance", new StringSchema().example("1000.00").description("Credit card balance")))
+                                                        .addSchemas("creditCardDto",
+                                                                    getResolvedSchema(CreditCardDto.class,
+                                                                "balance", new StringSchema().example("1000.00").description("Credit card balance"))));
+    }
+
+    private Schema getObjectSchema(Map<String, Schema> properties){
+        return new ObjectSchema().properties(properties);
+    }
+
+    private Schema getResolvedSchema(Class className, String key, Schema propertiesItem){
+        ResolvedSchema resolvedSchema = ModelConverters.getInstance()
+                                                       .resolveAsResolvedSchema(new AnnotatedType(className).resolveAsRef(false));
+        return resolvedSchema.schema.addProperties(key, propertiesItem);
     }
 
 }

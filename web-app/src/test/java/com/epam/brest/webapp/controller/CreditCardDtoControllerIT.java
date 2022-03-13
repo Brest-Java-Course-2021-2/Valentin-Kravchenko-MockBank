@@ -1,6 +1,6 @@
 package com.epam.brest.webapp.controller;
 
-import com.epam.brest.model.dto.CreditCardDateRangeDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.dto.CreditCardDto;
 import com.epam.brest.service.api.CreditCardDtoService;
 import org.junit.jupiter.api.Test;
@@ -46,17 +46,17 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
     @Test
     void cardsPOST() throws Exception {
         //Case 1
-        CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setFromDate(LocalDate.parse(FROM_DATE_TEST_ISO_PATTERN));
-        creditCardDateRangeDto.setToDate(LocalDate.parse(TO_DATE_TEST_ISO_PATTERN));
-        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
+        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
+        creditCardsFilterDto.setFromDate(LocalDate.parse(FROM_DATE_TEST_ISO_PATTERN));
+        creditCardsFilterDto.setToDate(LocalDate.parse(TO_DATE_TEST_ISO_PATTERN));
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(VALUE_FROM_DATE, FROM_DATE_TEST_VALUE);
         params.add(VALUE_TO_DATE, TO_DATE_TEST_VALUE);
         performPostAndExpectStatusOk(CARDS_ENDPOINT, params, CARDS).andExpect(model().attribute(CARDS, cards));
         //Case 2
-        creditCardDateRangeDto.setToDate(null);
-        cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
+        creditCardsFilterDto.setToDate(null);
+        cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
         params.clear();
         params.add(VALUE_FROM_DATE, FROM_DATE_TEST_VALUE);
         params.add(VALUE_TO_DATE, EMPTY);
@@ -65,9 +65,9 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
 
     @Test
     void cardsPOSTThereAreNoSearchResults() throws Exception {
-        CreditCardDateRangeDto creditCardDateRangeDto = new CreditCardDateRangeDto();
-        creditCardDateRangeDto.setToDate(LocalDate.parse("2000-07-31"));
-        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardDateRangeDto);
+        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
+        creditCardsFilterDto.setToDate(LocalDate.parse("2000-07-31"));
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(VALUE_FROM_DATE, EMPTY);
         params.add(VALUE_TO_DATE, "07/2000");
