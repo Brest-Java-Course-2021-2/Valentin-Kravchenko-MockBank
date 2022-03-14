@@ -32,7 +32,7 @@ public interface CreditCardService extends GenericService<CreditCard> {
     CreditCard deposit(CreditCardTransactionDto creditCardTransactionDto) throws ResourceNotFoundException;
 
     /**
-     * Transfers money from a credit card.
+     * Transfers money between credit cards.
      * @param creditCardTransactionDto - CreditCardTransactionDto instance
      * @return the instance of the source credit card after a transfer transaction
      * @throws CreditCardException if the source credit card doesn't contain enough money for a transfer

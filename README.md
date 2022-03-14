@@ -17,13 +17,17 @@ The overall description of the project is presented [here](/docs/srs/MockBank.md
 ![H2](https://img.shields.io/badge/H2-1.4.200-01B4E4)  
 ![Docker](https://img.shields.io/badge/Docker-20.10.11-2496ED?logo=docker)  
 ### Project Requirements
-Docker Engine v20
+JDK 11+  
+Apache Maven 3.6.3+  
+Docker Engine 20.10.11+
 ### Run Application 
 #### Create Docker Network
     docker network create mockbank-net
 #### Run Rest Server
     docker run -d -p 8090:8090 --name mockbank-rest --network mockbank-net valvikx/mockbank-rest
-The list of available Rest endpoints is presented [here](/docs/curl/RestEndpoints.md) 
+#### Rest API (OpenAPI 3)
+  The Swagger UI page will be available at [http://localhost:8090/swagger-ui.html](http://localhost:8090/swagger-ui.html)
 #### Run Client Application
-    docker run -d -p 8080:8080 --env BASE_URL=http://mockbank-rest:8090 --name mockbank-web --network mockbank-net valvikx/mockbank-web    
-Go to [http://localhost:8080](http://localhost:8080) for open a start page
+    docker run -d -p 8080:8080 --env BASE_URL=http://mockbank-rest:8090 --name mockbank-web --network mockbank-net valvikx/mockbank-web
+#### Client UI
+  The start page will be available at [http://localhost:8080](http://localhost:8080)
