@@ -204,8 +204,8 @@ The application allows users to:
   * The system redirects the user to the page to the page with a form for money transfer
     ![](/docs/jpeg/slide_26.jpeg)
 ##### Transfer Money:  
-  * The user enters target credit card number to transfer money 
-  * The user enters sum of money what will be transferred to the specified credit card balance
+  * The user enters the target credit card number to transfer money 
+  * The user enters a sum of money what will be transferred to the specified credit card balance
   * Valid format of a credit card number is {16 digits}
   * Valid format of a sum of money is the same as format of a sum of money for a deposit money
   * The user clicks the **ACCEPT** button
