@@ -1,10 +1,12 @@
 package com.epam.brest.dao.impl;
 
+import com.epam.brest.dao.annotation.DaoIT;
 import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.model.entity.BankAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,14 +14,16 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankAccountSpringJdbcDaoIT extends DaoTestBasic {
+@DaoIT
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class BankAccountSpringJdbcDaoIT {
 
     private final BankAccountDao bankAccountDao;
     private List<BankAccount> accounts;
     private BankAccount firstBankAccount;
     private BankAccount lastBankAccount;
 
-    public BankAccountSpringJdbcDaoIT(@Autowired BankAccountDao bankAccountDao) {
+    public BankAccountSpringJdbcDaoIT(BankAccountDao bankAccountDao) {
         this.bankAccountDao = bankAccountDao;
     }
 

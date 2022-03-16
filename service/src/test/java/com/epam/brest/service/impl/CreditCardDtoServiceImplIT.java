@@ -1,18 +1,20 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.dto.CreditCardDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
+import com.epam.brest.service.annotation.ServiceIT;
 import com.epam.brest.service.api.CreditCardDtoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class CreditCardDtoServiceImplIT extends ServiceTestBasic {
+@ServiceIT
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class CreditCardDtoServiceImplIT {
 
     private final CreditCardDtoService creditCardDtoService;
 
@@ -20,7 +22,7 @@ class CreditCardDtoServiceImplIT extends ServiceTestBasic {
     private CreditCardDto firstCreditCard;
     private CreditCardDto lastCreditCard;
 
-    public CreditCardDtoServiceImplIT(@Autowired CreditCardDtoService creditCardDtoService) {
+    public CreditCardDtoServiceImplIT(CreditCardDtoService creditCardDtoService) {
         this.creditCardDtoService = creditCardDtoService;
     }
 
@@ -46,13 +48,13 @@ class CreditCardDtoServiceImplIT extends ServiceTestBasic {
         creditCardsFilterDto.setToDate(lastCreditCard.getExpirationDate());
         List<CreditCardDto> cardsByFilter = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
         assertEquals(cards, cardsByFilter);
-        //Case 1
+        //Case 2
         creditCardsFilterDto.setFromDate(lastCreditCard.getExpirationDate().plusYears(10));
         creditCardsFilterDto.setToDate(null);
         cardsByFilter = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
         assertNotNull(cardsByFilter);
         assertEquals(cardsByFilter.size(), 0);
-        //Case 2
+        //Case 3
         creditCardsFilterDto.setFromDate(null);
         creditCardsFilterDto.setToDate(firstCreditCard.getExpirationDate().minusYears(10));
         cardsByFilter = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);

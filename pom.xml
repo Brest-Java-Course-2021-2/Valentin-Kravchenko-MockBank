@@ -43,11 +43,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>nz.net.ultraq.thymeleaf</groupId>
-                <artifactId>thymeleaf-layout-dialect</artifactId>
-                <version>${thymeleaf-layout-dialect.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.iban4j</groupId>
                 <artifactId>iban4j</artifactId>
                 <version>${iban4j.version}</version>
@@ -111,6 +106,11 @@
                 <groupId>com.epam.brest</groupId>
                 <artifactId>web-app</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>nz.net.ultraq.thymeleaf</groupId>
+                <artifactId>thymeleaf-layout-dialect</artifactId>
+                <version>${thymeleaf-layout-dialect.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>

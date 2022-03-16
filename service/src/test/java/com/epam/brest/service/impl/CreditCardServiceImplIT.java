@@ -2,21 +2,23 @@ package com.epam.brest.service.impl;
 
 import com.epam.brest.model.dto.CreditCardTransactionDto;
 import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.service.annotation.ServiceIT;
 import com.epam.brest.service.api.ExtendedCreditCardService;
 import com.epam.brest.service.exception.CreditCardException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CreditCardServiceImplIT extends ServiceTestBasic {
+@ServiceIT
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class CreditCardServiceImplIT {
 
     private final ExtendedCreditCardService creditCardService;
 
-    public CreditCardServiceImplIT(@Autowired ExtendedCreditCardService creditCardService) {
+    public CreditCardServiceImplIT(ExtendedCreditCardService creditCardService) {
         this.creditCardService = creditCardService;
     }
 

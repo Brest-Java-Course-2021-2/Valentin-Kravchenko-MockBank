@@ -1,12 +1,13 @@
 package com.epam.brest.dao.impl;
 
+import com.epam.brest.dao.annotation.DaoIT;
 import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.dao.api.BankAccountDtoDao;
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.model.dto.BankAccountsFilterDto;
 import com.epam.brest.model.entity.BankAccount;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,15 +15,17 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankAccountDtoSpringJdbcDaoIT extends DaoTestBasic {
+@DaoIT
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class BankAccountDtoSpringJdbcDaoIT {
 
     public static final String SPLIT_REGEX = "\\s+";
 
     private final BankAccountDtoDao bankAccountDtoDao;
     private final BankAccountDao bankAccountDao;
 
-    public BankAccountDtoSpringJdbcDaoIT(@Autowired BankAccountDtoDao bankAccountDtoDao,
-                                         @Autowired BankAccountDao bankAccountDao) {
+    public BankAccountDtoSpringJdbcDaoIT(BankAccountDtoDao bankAccountDtoDao,
+                                         BankAccountDao bankAccountDao) {
         this.bankAccountDtoDao = bankAccountDtoDao;
         this.bankAccountDao = bankAccountDao;
     }
