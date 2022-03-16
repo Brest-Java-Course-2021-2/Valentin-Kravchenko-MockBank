@@ -2,20 +2,23 @@ package com.epam.brest.service.impl;
 
 import com.epam.brest.model.dto.BankAccountDto;
 import com.epam.brest.model.dto.BankAccountsFilterDto;
+import com.epam.brest.service.annotation.ServiceIT;
 import com.epam.brest.service.api.BankAccountDtoService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class BankAccountDtoServiceImplIT extends ServiceTestBasic {
+@ServiceIT
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class BankAccountDtoServiceImplIT {
 
     private final BankAccountDtoService bankAccountDtoService;
 
-    BankAccountDtoServiceImplIT(@Autowired BankAccountDtoService bankAccountDtoService) {
+    BankAccountDtoServiceImplIT(BankAccountDtoService bankAccountDtoService) {
         this.bankAccountDtoService = bankAccountDtoService;
     }
 

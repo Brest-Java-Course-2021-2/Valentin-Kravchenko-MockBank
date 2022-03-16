@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = {RestApp.class})
 @AutoConfigureMockMvc
 @Transactional
-public class RestControllerTestBasic {
+public abstract class RestControllerTestBasic {
 
     public static final String API_ENDPOINT = "/api";
 

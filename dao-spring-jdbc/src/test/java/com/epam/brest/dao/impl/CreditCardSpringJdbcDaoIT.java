@@ -1,10 +1,11 @@
 package com.epam.brest.dao.impl;
 
+import com.epam.brest.dao.annotation.DaoIT;
 import com.epam.brest.dao.api.CreditCardDao;
 import com.epam.brest.model.entity.CreditCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,14 +14,16 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CreditCardSpringJdbcDaoIT extends DaoTestBasic {
+@DaoIT
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class CreditCardSpringJdbcDaoIT {
 
     private final CreditCardDao creditCardDao;
     private List<CreditCard> cards;
     private CreditCard firstCreditCard;
     private CreditCard lastCreditCard;
 
-    public CreditCardSpringJdbcDaoIT(@Autowired CreditCardDao creditCardDao) {
+    public CreditCardSpringJdbcDaoIT(CreditCardDao creditCardDao) {
         this.creditCardDao = creditCardDao;
     }
 

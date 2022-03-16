@@ -2,22 +2,25 @@ package com.epam.brest.service.impl;
 
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.service.annotation.ServiceIT;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.exception.BankAccountException;
 import com.epam.brest.service.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankAccountServiceImplIT extends ServiceTestBasic {
+@ServiceIT
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class BankAccountServiceImplIT {
 
     private final BankAccountService bankAccountService;
 
-    public BankAccountServiceImplIT(@Autowired BankAccountService bankAccountService) {
+    public BankAccountServiceImplIT(BankAccountService bankAccountService) {
         this.bankAccountService = bankAccountService;
     }
 

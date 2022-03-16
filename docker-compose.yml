@@ -1,16 +1,16 @@
+version: "3"
 services:
-
   rest-app:
     container_name: mockbank-rest
     build:
       context: rest-app
       dockerfile: Dockerfile
     image: valvikx/mockbank-rest:latest
+    restart: always
     ports:
       - "8090:8090"
     networks:
       - mockbank-net
-
   web-app:
     container_name: mockbank-web
     build:
@@ -19,12 +19,13 @@ services:
     image: valvikx/mockbank-web:latest
     ports:
       - "8080:8080"
+    restart: always
     environment:
       - BASE_URL=http://mockbank-rest:8090
     networks:
       - mockbank-net
     depends_on:
       - rest-app
-
 networks:
   mockbank-net:
+    driver: bridge

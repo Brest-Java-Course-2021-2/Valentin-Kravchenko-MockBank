@@ -1,15 +1,16 @@
 package com.epam.brest.dao.impl;
 
+import com.epam.brest.dao.annotation.DaoIT;
 import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.dao.api.CreditCardDao;
 import com.epam.brest.dao.api.CreditCardDtoDao;
-import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.dto.CreditCardDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.entity.BankAccount;
 import com.epam.brest.model.entity.CreditCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class CreditCardDtoSpringJdbcDaoIT extends DaoTestBasic {
+@DaoIT
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class CreditCardDtoSpringJdbcDaoIT {
 
     private final CreditCardDtoDao creditCardDtoDao;
     private final CreditCardDao creditCardDao;
@@ -27,9 +30,9 @@ class CreditCardDtoSpringJdbcDaoIT extends DaoTestBasic {
     private CreditCardDto firstCreditCard;
     private CreditCardDto lastCreditCard;
 
-    public CreditCardDtoSpringJdbcDaoIT(@Autowired CreditCardDtoDao creditCardDtoDao,
-                                        @Autowired CreditCardDao creditCardDao,
-                                        @Autowired BankAccountDao bankAccountDao) {
+    public CreditCardDtoSpringJdbcDaoIT(CreditCardDtoDao creditCardDtoDao,
+                                        CreditCardDao creditCardDao,
+                                        BankAccountDao bankAccountDao) {
         this.creditCardDtoDao = creditCardDtoDao;
         this.creditCardDao = creditCardDao;
         this.bankAccountDao = bankAccountDao;
