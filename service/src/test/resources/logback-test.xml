@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <logger name="com.epam.brest.service.impl" level="DEBUG"/>
+    <logger name="com.epam.brest.service.util" level="TRACE"/>
+</configuration>
