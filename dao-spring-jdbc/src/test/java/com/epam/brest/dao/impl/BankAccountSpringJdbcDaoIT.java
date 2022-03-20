@@ -5,7 +5,6 @@ import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.model.entity.BankAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestConstructor;
 
 import java.time.LocalDate;
