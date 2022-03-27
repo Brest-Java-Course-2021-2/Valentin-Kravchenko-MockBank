@@ -31,13 +31,13 @@ public abstract class SpringJdbcDaoBasic<T extends BasicEntity> {
 
     public Optional<T> getById(String sql, Integer id, RowMapper<T> rowMapper) {
         LOGGER.info("getById(sql={}, id={})", sql, id);
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.getName(), id);
         return getOne(sql, rowMapper, sqlParameterSource);
     }
 
     public Optional<T> getByNumber(String sql, String number, RowMapper<T> rowMapper) {
         LOGGER.info("getByNumber(sql={}, number={})", sql, number);
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(NUMBER.name(), number);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(NUMBER.getName(), number);
         return getOne(sql, rowMapper, sqlParameterSource);
     }
 
@@ -46,7 +46,7 @@ public abstract class SpringJdbcDaoBasic<T extends BasicEntity> {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(entity);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
-        Integer id = Objects.requireNonNull(keyHolder.getKey()).intValue();
+        Integer id = extractId(keyHolder);
         entity.setId(id);
         return entity;
     }
@@ -59,13 +59,13 @@ public abstract class SpringJdbcDaoBasic<T extends BasicEntity> {
 
     public Integer delete(String sql, Integer id) {
         LOGGER.info("delete(sql={}, id={})", sql, id);
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.name(), id);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.getName(), id);
         return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 
     public boolean isNumberExists(String sql, String number) {
         LOGGER.info("isNumberExists(sql={}, number={})", sql, number);
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(NUMBER.name(), number);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(NUMBER.getName(), number);
         Integer total = namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, Integer.class);
         return Objects.requireNonNull(total) == 1;
     }
@@ -74,6 +74,10 @@ public abstract class SpringJdbcDaoBasic<T extends BasicEntity> {
         LOGGER.info("getOne(sql={}, sqlParameterSource={})", sql, sqlParameterSource);
         List<T> entities = namedParameterJdbcTemplate.query(sql, sqlParameterSource, rowMapper);
         return Optional.ofNullable(DataAccessUtils.uniqueResult(entities));
+    }
+
+    private Integer extractId(KeyHolder keyHolder) {
+        return (Integer) Objects.requireNonNull(keyHolder.getKeys()).get(ID.getName());
     }
 
 }

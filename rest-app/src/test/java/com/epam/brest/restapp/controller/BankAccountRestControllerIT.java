@@ -6,6 +6,7 @@ import com.epam.brest.service.api.BankAccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class BankAccountRestControllerIT extends RestControllerTestBasic {
 
     public static final String CUSTOMER = "customer";
@@ -27,9 +29,9 @@ class BankAccountRestControllerIT extends RestControllerTestBasic {
 
     private final BankAccountService bankAccountService;
 
-    public BankAccountRestControllerIT(@Autowired MockMvc mockMvc,
-                                       @Autowired ObjectMapper objectMapper,
-                                       @Autowired BankAccountService bankAccountService) {
+    public BankAccountRestControllerIT(MockMvc mockMvc,
+                                       ObjectMapper objectMapper,
+                                       BankAccountService bankAccountService) {
         super(mockMvc, objectMapper);
         this.bankAccountService = bankAccountService;
     }

@@ -2,12 +2,11 @@ spring:
   mvc:
     throw-exception-if-no-handler-found: true
     static-path-pattern: /
-  output:
-    ansi:
-      enabled: always
+  profiles:
+    active: ${dbprofile:prod-db}
 
 server:
-  port: 8090
+  port: ${port:8090}
 
 springdoc:
   api-docs:

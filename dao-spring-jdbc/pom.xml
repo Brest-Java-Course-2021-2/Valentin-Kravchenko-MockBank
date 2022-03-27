@@ -26,7 +26,15 @@
         </dependency>
         <dependency>
             <groupId>com.epam.brest</groupId>
+            <artifactId>prod-db</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.brest</groupId>
             <artifactId>test-db</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

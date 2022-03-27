@@ -8,15 +8,15 @@ import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.joining;
 
-public final class GeneratorUtils {
+public final class BankDataGeneratorUtils {
 
-    private static final Logger LOGGER = LogManager.getLogger(GeneratorUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(BankDataGeneratorUtils.class);
 
     private static final String ISSUER_IDENTIFICATION_NUMBER = "400000";
     private static final int MAX_RANK = 9;
     private static final Random RANDOM = new Random();
 
-    private GeneratorUtils() {
+    private BankDataGeneratorUtils() {
     }
 
     public static String generateCardNumber() {

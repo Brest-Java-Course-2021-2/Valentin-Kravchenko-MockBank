@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  *  Converts all the expressions in the annotated field value
- *  to a regexp using a specified pattern
+ *  to a regexp using a specified pattern.
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

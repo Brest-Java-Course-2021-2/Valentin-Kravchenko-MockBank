@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <root level="DEBUG">
+    <root level="WARN">
         <appender-ref ref="CONSOLE"/>
     </root>
-    <logger name="com.epam.brest.dao.impl" level="DEBUG"/>
-    <logger name="com.epam.brest.dao.util" level="TRACE"/>
+    <logger name="com.epam.brest" level="DEBUG"/>
 </configuration>

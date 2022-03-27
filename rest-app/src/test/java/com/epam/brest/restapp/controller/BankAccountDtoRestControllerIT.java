@@ -5,7 +5,7 @@ import com.epam.brest.model.dto.BankAccountsFilterDto;
 import com.epam.brest.service.api.BankAccountDtoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class BankAccountDtoRestControllerIT extends RestControllerTestBasic {
 
     public static final String CUSTOMER_SEARCH_PATTERN_IS_INCORRECT = "Customer search pattern is incorrect!";
@@ -22,9 +23,9 @@ class BankAccountDtoRestControllerIT extends RestControllerTestBasic {
 
     private final BankAccountDtoService bankAccountDtoService;
 
-    public BankAccountDtoRestControllerIT(@Autowired ObjectMapper objectMapper,
-                                          @Autowired MockMvc mockMvc,
-                                          @Autowired BankAccountDtoService bankAccountDtoServiceImpl) {
+    public BankAccountDtoRestControllerIT(ObjectMapper objectMapper,
+                                          MockMvc mockMvc,
+                                          BankAccountDtoService bankAccountDtoServiceImpl) {
         super(mockMvc, objectMapper);
         this.bankAccountDtoService = bankAccountDtoServiceImpl;
     }

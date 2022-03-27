@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;MODE=PostgreSQL
+    username: sa
+    password:
+    schema: classpath:sql/test-db-schema.sql
+    data: classpath:sql/test-db-data.sql
+  liquibase:
+    enabled: false
