@@ -32,7 +32,7 @@ public final class DaoUtils {
                 if (field.isAnnotationPresent(ExcludeFromSql.class)) {
                     return;
                 }
-                String param = getParamName(field);
+                String param = getParamNameBy(field);
                 field.setAccessible(true);
                 Optional.ofNullable(ReflectionUtils.getField(field, entity))
                         .map(value -> convertToSqlRegexp(field, value))
@@ -57,18 +57,17 @@ public final class DaoUtils {
                      .collect(Collectors.joining(AND_DELIMITER));
     }
 
-    private static String getParamName(Field field) {
-        LOGGER.trace("getParamName(field={})", field);
+    private static String getParamNameBy(Field field) {
+        LOGGER.trace("getParamNameBy(field={})", field);
         if (field.isAnnotationPresent(SqlColumn.class)) {
-            String name = field.getAnnotation(SqlColumn.class).value();
-            return name.toUpperCase();
+            return field.getAnnotation(SqlColumn.class).value().toLowerCase();
         }
         return convertToSnakeCase(field.getName());
     }
 
     private static String convertToSnakeCase(String value) {
         LOGGER.trace("convertToSnakeCase(value={})", value);
-        return value.replaceAll(CAMEL_CASE_REGEXP, SNAKE_CASE_TEMPLATE).toUpperCase();
+        return value.replaceAll(CAMEL_CASE_REGEXP, SNAKE_CASE_TEMPLATE).toLowerCase();
     }
 
     private static Object convertToSqlRegexp(Field field, Object value) {

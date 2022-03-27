@@ -4,11 +4,13 @@ import com.epam.brest.generator.BankDataGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.iban4j.CountryCode.BY;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {SimpleBankDataGenerator.class})
+@TestPropertySource(properties = {"spring.output.ansi.enabled=always"})
 class SimpleBankDataGeneratorTest {
 
     private final BankDataGenerator bankDataGenerator;

@@ -5,7 +5,7 @@ import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.api.CreditCardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class CreditCardRestControllerIT extends RestControllerTestBasic {
 
     public static final String TARGET_CARD_NUMBER = "targetCardNumber";
@@ -34,10 +35,10 @@ class CreditCardRestControllerIT extends RestControllerTestBasic {
     private final CreditCardService creditCardService;
     private final BankAccountService bankAccountService;
 
-    public CreditCardRestControllerIT(@Autowired MockMvc mockMvc,
-                                      @Autowired ObjectMapper objectMapper,
-                                      @Autowired CreditCardService creditCardServiceImpl,
-                                      @Autowired BankAccountService bankAccountServiceImpl) {
+    public CreditCardRestControllerIT(MockMvc mockMvc,
+                                      ObjectMapper objectMapper,
+                                      CreditCardService creditCardServiceImpl,
+                                      BankAccountService bankAccountServiceImpl) {
         super(mockMvc, objectMapper);
         this.creditCardService = creditCardServiceImpl;
         this.bankAccountService = bankAccountServiceImpl;

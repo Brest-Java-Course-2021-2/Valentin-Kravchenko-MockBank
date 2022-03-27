@@ -1,11 +1,11 @@
 package com.epam.brest.restapp.controller;
 
-import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.model.dto.CreditCardDto;
+import com.epam.brest.model.dto.CreditCardsFilterDto;
 import com.epam.brest.service.api.CreditCardDtoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -17,6 +17,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class CreditCardDtoRestControllerIT extends RestControllerTestBasic {
 
     public static final String DATES_MUST_BE_DIFFERENT = "Dates must be different!";
@@ -27,9 +28,9 @@ class CreditCardDtoRestControllerIT extends RestControllerTestBasic {
 
     private final CreditCardDtoService creditCardDtoService;
 
-    public CreditCardDtoRestControllerIT(@Autowired ObjectMapper objectMapper,
-                                         @Autowired MockMvc mockMvc,
-                                         @Autowired CreditCardDtoService creditCardDtoServiceImpl) {
+    public CreditCardDtoRestControllerIT(ObjectMapper objectMapper,
+                                         MockMvc mockMvc,
+                                         CreditCardDtoService creditCardDtoServiceImpl) {
         super(mockMvc, objectMapper);
         this.creditCardDtoService = creditCardDtoServiceImpl;
     }

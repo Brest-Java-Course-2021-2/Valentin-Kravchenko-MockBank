@@ -1,6 +1,6 @@
 package com.epam.brest.dao.impl;
 
-import com.epam.brest.dao.annotation.DaoIT;
+import com.epam.brest.dao.annotation.DaoITWithTestDb;
 import com.epam.brest.dao.api.CreditCardDao;
 import com.epam.brest.model.entity.CreditCard;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DaoIT
+@DaoITWithTestDb
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class CreditCardSpringJdbcDaoIT {
 

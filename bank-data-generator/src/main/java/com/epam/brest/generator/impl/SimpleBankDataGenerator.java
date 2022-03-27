@@ -1,7 +1,7 @@
 package com.epam.brest.generator.impl;
 
 import com.epam.brest.generator.BankDataGenerator;
-import com.epam.brest.generator.util.GeneratorUtils;
+import com.epam.brest.generator.util.BankDataGeneratorUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.iban4j.Iban;
@@ -23,13 +23,13 @@ public class SimpleBankDataGenerator implements BankDataGenerator {
     @Override
     public String generateCardNumber() {
         LOGGER.debug("generateCardNumber()");
-        return GeneratorUtils.generateCardNumber();
+        return BankDataGeneratorUtils.generateCardNumber();
     }
 
     @Override
     public boolean isCardNumberValid(String cardNumber) {
         LOGGER.info("isCardNumberValid(cardNumber={})", cardNumber);
-        return GeneratorUtils.isCardNumberValid(cardNumber);
+        return BankDataGeneratorUtils.isCardNumberValid(cardNumber);
     }
 
 }
