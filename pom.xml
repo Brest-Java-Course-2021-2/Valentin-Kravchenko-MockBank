@@ -28,6 +28,7 @@
         <module>bank-data-generator</module>
         <module>service-api</module>
         <module>service</module>
+        <module>rest-openapi</module>
         <module>rest-app</module>
         <module>service-rest</module>
         <module>web-app</module>
@@ -37,13 +38,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <thymeleaf-layout-dialect.version>3.1.0</thymeleaf-layout-dialect.version>
+        <spring-boot.version>2.6.4</spring-boot.version>
         <springdoc-openapi-ui.version>1.6.6</springdoc-openapi-ui.version>
         <iban4j.version>3.2.3-RELEASE</iban4j.version>
-        <h2.version>1.4.200</h2.version>
+        <h2.version>2.1.210</h2.version>
         <testcontainers-postgresql.version>1.16.3</testcontainers-postgresql.version>
-        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-        <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
+        <swagger-annotations.version>1.6.5</swagger-annotations.version>
+        <springdoc-openapi-maven-plugin.version>1.1</springdoc-openapi-maven-plugin.version>
+        <jackson-databind-nullable.version>0.2.2</jackson-databind-nullable.version>
+        <openapi-generator-maven-plugin.version>5.4.0</openapi-generator-maven-plugin.version>
         <project.testresult.directory>${project.build.directory}/testResults</project.testresult.directory>
         <junit.utReportFolder>${project.testresult.directory}/unitTests</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTests</junit.itReportFolder>
@@ -51,6 +54,17 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring-boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>model</artifactId>
@@ -98,6 +112,11 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
+                <artifactId>rest-openapi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
                 <artifactId>service-rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -122,11 +141,6 @@
                 <version>${h2.version}</version>
             </dependency>
             <dependency>
-                <groupId>nz.net.ultraq.thymeleaf</groupId>
-                <artifactId>thymeleaf-layout-dialect</artifactId>
-                <version>${thymeleaf-layout-dialect.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${springdoc-openapi-ui.version}</version>
@@ -136,6 +150,16 @@
                 <artifactId>postgresql</artifactId>
                 <version>${testcontainers-postgresql.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openapitools</groupId>
+                <artifactId>jackson-databind-nullable</artifactId>
+                <version>${jackson-databind-nullable.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -148,9 +172,18 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                 </plugin>
                 <plugin>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                    <version>${springdoc-openapi-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.openapitools</groupId>
+                    <artifactId>openapi-generator-maven-plugin</artifactId>
+                    <version>${openapi-generator-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
                     <configuration>
                         <runOrder>alphabetical</runOrder>
                         <reportsDirectory>${junit.utReportFolder}</reportsDirectory>
@@ -162,7 +195,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${maven-failsafe-plugin.version}</version>
                     <executions>
                         <execution>
                             <goals>
@@ -193,6 +225,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

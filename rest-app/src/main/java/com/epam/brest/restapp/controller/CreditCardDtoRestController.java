@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Tag(name = "Credit Cards API")
+@Tag(name = "Credit Card", description = "Credit Card API")
 @RestController
 @RequestMapping("api/cards")
 public class CreditCardDtoRestController {

@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
-@Tag(name = "Bank Accounts API")
+@Tag(name = "Bank Account", description = "Bank Account API")
 @RestController
 @RequestMapping("api/account")
 public class BankAccountRestController {
@@ -56,7 +56,7 @@ public class BankAccountRestController {
         return ResponseEntity.ok(bankAccount);
     }
 
-    @Operation(summary = "List of all credit cards linked with a bank account",
+    @Operation(summary = "List of all credit cards linked with a specific bank account",
                responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(ref = "#/components/schemas/creditCard"))),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
@@ -89,7 +89,7 @@ public class BankAccountRestController {
         return ResponseEntity.ok(createdBankAccount);
     }
 
-    @Operation(summary = "Update a new bank account",
+    @Operation(summary = "Update an existing bank account",
                responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
@@ -107,7 +107,7 @@ public class BankAccountRestController {
         return ResponseEntity.ok(updatedBankAccount);
     }
 
-    @Operation(summary = "Delete bank account by its ID",
+    @Operation(summary = "Delete a bank account by its ID",
                responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
                                         responseCode = "200"),
                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),

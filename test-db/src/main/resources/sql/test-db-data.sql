@@ -2,7 +2,7 @@ INSERT INTO bank_account (number, customer, registration_date)
     VALUES ('BY80F29S8416E1PXLF9VHCGM99T6', 'Ivan Ivanov', '2020-06-28');
 INSERT INTO bank_account (number, customer, registration_date)
     VALUES ('BY152JZ04036M1X5F4FZO85DSQ06', 'Petr Petrov', '2020-11-30');
-INSERT INTO bank_account (NUMbER, customer, registration_date)
+INSERT INTO bank_account (number, customer, registration_date)
     VALUES ('BY31URCR4656T7OBMLNTC6TQ99IK', 'Sergey Sergeev', '2019-04-03');
 
 INSERT INTO credit_card (number, expiration_date, balance, account_id)
