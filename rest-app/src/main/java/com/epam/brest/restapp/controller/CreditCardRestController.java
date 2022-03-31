@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "Credit Cards API")
+@Tag(name = "Credit Card", description = "Credit Card API")
 @RestController
 @RequestMapping("api/card")
 public class CreditCardRestController {
@@ -75,7 +75,7 @@ public class CreditCardRestController {
                                          responseCode = "404", description = "If the bank account with the given ID not found")})
     @PostMapping
     public ResponseEntity<CreditCard> create(
-            @Parameter(description = "Bank account ID",
+            @Parameter(description = "Bank account ID to which the credit card will be linked",
                        schema = @Schema(ref = "#/components/schemas/createCreditCard"),
                        required = true)
             @RequestBody Integer accountId
@@ -86,7 +86,7 @@ public class CreditCardRestController {
         return ResponseEntity.ok(createdCreditCard);
     }
 
-    @Operation(summary = "Credit card deposit transaction",
+    @Operation(summary = "Execute a deposit transaction for a specific credit card",
                description = "Deposits a specified sum of money to the balance of the target credit card. " +
                              "Valid format of the sum of money is {up to 6 digits}{, or .}{up to 2 digits}. " +
                              "For example, 1025, 1730.1, 0,45. " +
@@ -110,9 +110,9 @@ public class CreditCardRestController {
         return ResponseEntity.ok(targetCreditCard);
     }
 
-    @Operation(summary = "Credit card transfer transaction",
+    @Operation(summary = "Execute a transfer transaction for specific credit cards",
                description = "Transfers a specified sum of money from the balance of the source credit card " +
-                             "to the balance of the target credit card." +
+                             "to the balance of the target credit card. " +
                              "Valid format of the sum of money is {up to 6 digits}{, or .}{up to 2 digits}. " +
                              "For example, 1025, 1730.1, 0,45. " +
                              "Decimal separator type depends on the specified locale",
@@ -135,13 +135,13 @@ public class CreditCardRestController {
         return ResponseEntity.ok(sourceCreditCard);
     }
 
-    @Operation(summary = "Delete credit card by its ID",
-            responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
-                                      responseCode = "200"),
-                         @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                                      responseCode = "404", description = "If the credit card with the given ID not found"),
-                         @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                                      responseCode = "400", description = "if the credit card has a positive balance")})
+    @Operation(summary = "Delete a credit card by its ID",
+               responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
+                                         responseCode = "200"),
+                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
+                                         responseCode = "404", description = "If the credit card with the given ID not found"),
+                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
+                                         responseCode = "400", description = "if the credit card has a positive balance")})
     @DeleteMapping("{id}")
     public ResponseEntity<CreditCard> delete(
             @Parameter(description = "Credit card ID", required = true)

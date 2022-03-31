@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Tag(name = "Bank Accounts API")
+@Tag(name = "Bank Account", description = "Bank Account API")
 @RestController
 @RequestMapping("api/accounts")
 public class BankAccountDtoRestController {
