@@ -1,7 +1,7 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.model.entity.BankAccount;
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.BankAccount;
+import com.epam.brest.model.CreditCard;
 import com.epam.brest.service.ServiceRestBasic;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.exception.BankAccountException;

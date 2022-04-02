@@ -1,7 +1,7 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.model.dto.CreditCardsFilterDto;
-import com.epam.brest.model.dto.CreditCardDto;
+import com.epam.brest.model.CreditCardFilterDto;
+import com.epam.brest.model.CreditCardDto;
 import com.epam.brest.service.ServiceRestBasic;
 import com.epam.brest.service.api.CreditCardDtoService;
 import org.apache.logging.log4j.LogManager;
@@ -31,9 +31,9 @@ public class CreditCardDtoServiceRest extends ServiceRestBasic implements Credit
     }
 
     @Override
-    public List<CreditCardDto> getAllWithAccountNumber(CreditCardsFilterDto creditCardsFilterDto) {
-        LOGGER.debug("getAllWithTotalCards(endpoint={}, creditCardDateRangeDto={})", endpoint, creditCardsFilterDto);
-        return postBlock(endpoint, creditCardsFilterDto, parameterizedTypeRef);
+    public List<CreditCardDto> getAllWithAccountNumber(CreditCardFilterDto creditCardFilterDto) {
+        LOGGER.debug("getAllWithTotalCards(endpoint={}, creditCardDateRangeDto={})", endpoint, creditCardFilterDto);
+        return postBlock(endpoint, creditCardFilterDto, parameterizedTypeRef);
     }
 
 }

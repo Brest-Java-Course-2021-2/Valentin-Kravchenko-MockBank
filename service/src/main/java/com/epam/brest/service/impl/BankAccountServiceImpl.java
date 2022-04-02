@@ -3,8 +3,8 @@ package com.epam.brest.service.impl;
 import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.dao.api.CreditCardDao;
 import com.epam.brest.generator.BankDataGenerator;
-import com.epam.brest.model.entity.BankAccount;
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.BankAccount;
+import com.epam.brest.model.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.exception.BankAccountException;
 import com.epam.brest.service.exception.ResourceNotFoundException;
@@ -58,6 +58,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BankAccount create(BankAccount bankAccount) {
+        LOGGER.debug("create(bankAccount={})", bankAccount);
         bankAccount.setNumber(getIban());
         bankAccount.setRegistrationDate(LocalDate.now());
         LOGGER.debug("create(bankAccount={})", bankAccount);

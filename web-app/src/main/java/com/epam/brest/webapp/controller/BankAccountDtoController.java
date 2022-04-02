@@ -1,7 +1,7 @@
 package com.epam.brest.webapp.controller;
 
-import com.epam.brest.model.dto.BankAccountDto;
-import com.epam.brest.model.dto.BankAccountsFilterDto;
+import com.epam.brest.model.BankAccountDto;
+import com.epam.brest.model.BankAccountFilterDto;
 import com.epam.brest.service.api.BankAccountDtoService;
 import com.epam.brest.webapp.util.ControllerUtils;
 import org.apache.logging.log4j.LogManager;
@@ -52,15 +52,15 @@ public class BankAccountDtoController {
     }
 
     @PostMapping
-    public String accounts(@Valid @ModelAttribute(FILTER) BankAccountsFilterDto bankAccountsFilterDto,
+    public String accounts(@Valid @ModelAttribute(FILTER) BankAccountFilterDto bankAccountFilterDto,
                            BindingResult bindingResult,
                            Model model) {
-        LOGGER.debug("accountsPOST(/accounts, bankAccountFilterDto={})", bankAccountsFilterDto);
+        LOGGER.debug("accountsPOST(/accounts, bankAccountFilterDto={})", bankAccountFilterDto);
         if (bindingResult.hasErrors()) {
             LOGGER.warn("accountsPOST(/accounts, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
             return ACCOUNTS;
         }
-        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountsFilterDto);
+        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         if (accounts.isEmpty()) {
             LOGGER.warn("accountsPOST(/accounts, accounts={})", accounts);
             model.addAttribute(ERROR, filterError);

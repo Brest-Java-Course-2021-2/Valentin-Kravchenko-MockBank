@@ -1,7 +1,7 @@
 package com.epam.brest.restapp.controller;
 
-import com.epam.brest.model.dto.CreditCardTransactionDto;
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.CreditCardTransactionDto;
+import com.epam.brest.model.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.api.CreditCardService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "Credit Card", description = "Credit Card API")
+@Tag(name = "Credit Card", description = "The Credit Card API")
 @RestController
 @RequestMapping("api/card")
 public class CreditCardRestController {
@@ -34,6 +34,7 @@ public class CreditCardRestController {
     }
 
     @Operation(summary = "Get a credit card by its ID",
+               operationId = "getCreditCardById",
                responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
@@ -69,6 +70,7 @@ public class CreditCardRestController {
     }
 
     @Operation(summary = "Create a new credit card",
+               operationId = "createCreditCard",
                responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
@@ -76,7 +78,7 @@ public class CreditCardRestController {
     @PostMapping
     public ResponseEntity<CreditCard> create(
             @Parameter(description = "Bank account ID to which the credit card will be linked",
-                       schema = @Schema(ref = "#/components/schemas/createCreditCard"),
+                       schema = @Schema(ref = "#/components/schemas/bankAccountId"),
                        required = true)
             @RequestBody Integer accountId
     ){
@@ -87,6 +89,7 @@ public class CreditCardRestController {
     }
 
     @Operation(summary = "Execute a deposit transaction for a specific credit card",
+               operationId = "depositMoney",
                description = "Deposits a specified sum of money to the balance of the target credit card. " +
                              "Valid format of the sum of money is {up to 6 digits}{, or .}{up to 2 digits}. " +
                              "For example, 1025, 1730.1, 0,45. " +
@@ -100,8 +103,8 @@ public class CreditCardRestController {
                                                                              "and/or format of the sum of money is incorrect")})
     @PostMapping("deposit")
     public ResponseEntity<CreditCard> deposit(
-            @Parameter(description = "Credit card transaction DTO",
-                       schema = @Schema(ref = "#/components/schemas/depositMoney"),
+            @Parameter(description = "Deposit transaction data",
+                       schema = @Schema(ref = "#/components/schemas/depositTransactionDto"),
                        required = true)
             @Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto
     ) {
@@ -111,6 +114,7 @@ public class CreditCardRestController {
     }
 
     @Operation(summary = "Execute a transfer transaction for specific credit cards",
+               operationId = "transferMoney",
                description = "Transfers a specified sum of money from the balance of the source credit card " +
                              "to the balance of the target credit card. " +
                              "Valid format of the sum of money is {up to 6 digits}{, or .}{up to 2 digits}. " +
@@ -125,8 +129,8 @@ public class CreditCardRestController {
                                                                              "and/or format of the sum of money is incorrect")})
     @PostMapping("transfer")
     public ResponseEntity<CreditCard> transfer(
-            @Parameter(description = "Credit card transaction DTO",
-                       schema = @Schema(ref = "#/components/schemas/transferMoney"),
+            @Parameter(description = "Transfer transaction data",
+                       schema = @Schema(ref = "#/components/schemas/transferTransactionDto"),
                        required = true)
             @Valid @RequestBody CreditCardTransactionDto creditCardTransactionDto
     ) {
@@ -136,6 +140,7 @@ public class CreditCardRestController {
     }
 
     @Operation(summary = "Delete a credit card by its ID",
+               operationId = "deleteCreditCard",
                responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),

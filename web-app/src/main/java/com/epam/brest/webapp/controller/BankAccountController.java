@@ -1,6 +1,6 @@
 package com.epam.brest.webapp.controller;
 
-import com.epam.brest.model.entity.BankAccount;
+import com.epam.brest.model.BankAccount;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.webapp.util.ControllerUtils;
 import org.apache.logging.log4j.LogManager;

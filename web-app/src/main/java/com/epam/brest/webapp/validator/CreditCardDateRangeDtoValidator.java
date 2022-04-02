@@ -1,6 +1,6 @@
 package com.epam.brest.webapp.validator;
 
-import com.epam.brest.model.dto.CreditCardsFilterDto;
+import com.epam.brest.model.CreditCardFilterDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,38 +27,38 @@ public class CreditCardDateRangeDtoValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return CreditCardsFilterDto.class.equals(clazz);
+        return CreditCardFilterDto.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
         LOGGER.debug("validate(target={})", target);
-        CreditCardsFilterDto creditCardsFilterDto = (CreditCardsFilterDto) target;
+        CreditCardFilterDto creditCardFilterDto = (CreditCardFilterDto) target;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(datePattern);
-        if (Objects.isNull(creditCardsFilterDto.getValueFromDate()) &&
-            Objects.isNull(creditCardsFilterDto.getValueToDate())) {
+        if (Objects.isNull(creditCardFilterDto.getValueFromDate()) &&
+            Objects.isNull(creditCardFilterDto.getValueToDate())) {
             errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_VALUE_FROM_DATE);
             errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_VALUE_TO_DATE);
         }
-        if (Objects.nonNull(creditCardsFilterDto.getValueFromDate())) {
-            if (!creditCardsFilterDto.getValueFromDate().matches(dateRegexp)) {
+        if (Objects.nonNull(creditCardFilterDto.getValueFromDate())) {
+            if (!creditCardFilterDto.getValueFromDate().matches(dateRegexp)) {
                 errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_VALUE_FROM_DATE);
             }else {
-                YearMonth yearMonth = YearMonth.parse(creditCardsFilterDto.getValueFromDate(), dateTimeFormatter);
-                creditCardsFilterDto.setFromDate(yearMonth.atEndOfMonth());
+                YearMonth yearMonth = YearMonth.parse(creditCardFilterDto.getValueFromDate(), dateTimeFormatter);
+                creditCardFilterDto.setFromDate(yearMonth.atEndOfMonth());
             }
         }
-        if (Objects.nonNull(creditCardsFilterDto.getValueToDate())) {
-            if (!creditCardsFilterDto.getValueToDate().matches(dateRegexp)) {
+        if (Objects.nonNull(creditCardFilterDto.getValueToDate())) {
+            if (!creditCardFilterDto.getValueToDate().matches(dateRegexp)) {
                 errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_VALUE_TO_DATE);
             }else {
-                YearMonth yearMonth = YearMonth.parse(creditCardsFilterDto.getValueToDate(), dateTimeFormatter);
-                creditCardsFilterDto.setToDate(yearMonth.atEndOfMonth());
+                YearMonth yearMonth = YearMonth.parse(creditCardFilterDto.getValueToDate(), dateTimeFormatter);
+                creditCardFilterDto.setToDate(yearMonth.atEndOfMonth());
             }
         }
-        if (Objects.nonNull(creditCardsFilterDto.getFromDate()) &&
-            Objects.nonNull(creditCardsFilterDto.getToDate()) &&
-            creditCardsFilterDto.getFromDate().equals(creditCardsFilterDto.getToDate())) {
+        if (Objects.nonNull(creditCardFilterDto.getFromDate()) &&
+            Objects.nonNull(creditCardFilterDto.getToDate()) &&
+            creditCardFilterDto.getFromDate().equals(creditCardFilterDto.getToDate())) {
             errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_DIFFERENT_DATES_VALUE_FROM_DATE);
             errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_DIFFERENT_DATES_VALUE_TO_DATE);
         }

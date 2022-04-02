@@ -2,8 +2,8 @@ package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.api.BankAccountDtoDao;
 import com.epam.brest.dao.util.DaoUtils;
-import com.epam.brest.model.dto.BankAccountDto;
-import com.epam.brest.model.dto.BankAccountsFilterDto;
+import com.epam.brest.model.BankAccountDto;
+import com.epam.brest.model.BankAccountFilterDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,9 +44,9 @@ public class BankAccountDtoSpringJdbcDao implements BankAccountDtoDao {
     }
 
     @Override
-    public List<BankAccountDto> getAllWithTotalCards(BankAccountsFilterDto bankAccountsFilterDto) {
-        LOGGER.debug("getAllWithTotalCards(bankAccountFilterDto={})", bankAccountsFilterDto);
-        SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountsFilterDto);
+    public List<BankAccountDto> getAllWithTotalCards(BankAccountFilterDto bankAccountFilterDto) {
+        LOGGER.debug("getAllWithTotalCards(bankAccountFilterDto={})", bankAccountFilterDto);
+        SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
         LOGGER.info("getAllWithTotalCards(sqlParameterSource={})", sqlParameterSource);
         String dynamicWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, sqlRegexpTemplate);
         return namedParameterJdbcTemplate.query(String.format(getAllSqlByFilter, dynamicWhereSql), sqlParameterSource, rowMapper);

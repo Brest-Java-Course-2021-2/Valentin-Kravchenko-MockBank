@@ -1,4 +1,4 @@
-package com.epam.brest.model.dto;
+package com.epam.brest.model;
 
 import com.epam.brest.model.annotation.ExcludeFromSql;
 import com.epam.brest.model.validator.constraint.DateRange;
@@ -11,13 +11,13 @@ import javax.validation.GroupSequence;
 import java.time.LocalDate;
 
 /**
- *  Credit card data transfer object
- *  to filter by date range.
+ *  Credit card data transfer object for filtering by expiration date range.
  */
 @DateRange(groups = {FirstOrder.class})
 @DifferentDates(groups = {SecondOrder.class})
-@GroupSequence({CreditCardsFilterDto.class, FirstOrder.class, SecondOrder.class})
-public class CreditCardsFilterDto {
+@GroupSequence({CreditCardFilterDto.class, FirstOrder.class, SecondOrder.class})
+@Schema(description = "Credit card data transfer object for filtering by expiration date range")
+public class CreditCardFilterDto {
 
     /**
      *  Start date of the credit card expiration range.

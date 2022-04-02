@@ -1,6 +1,6 @@
 package com.epam.brest.webapp.validator;
 
-import com.epam.brest.model.dto.CreditCardTransactionDto;
+import com.epam.brest.model.CreditCardTransactionDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

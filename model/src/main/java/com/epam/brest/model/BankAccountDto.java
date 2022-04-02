@@ -1,6 +1,5 @@
-package com.epam.brest.model.dto;
+package com.epam.brest.model;
 
-import com.epam.brest.model.BasicEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
@@ -8,6 +7,7 @@ import java.time.LocalDate;
 /**
  *  Bank account data transfer object.
  */
+@Schema(description = "Bank account data transfer object")
 public class BankAccountDto extends BasicEntity {
 
     /**

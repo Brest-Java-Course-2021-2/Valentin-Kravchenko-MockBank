@@ -1,4 +1,4 @@
-package com.epam.brest.model.dto;
+package com.epam.brest.model;
 
 import com.epam.brest.model.annotation.SqlColumn;
 import com.epam.brest.model.annotation.SqlRegexp;
@@ -8,10 +8,11 @@ import com.epam.brest.model.validator.constraint.CustomerPattern;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- *  Bank account data transfer object for filtering.
+ *  Bank account data transfer object for filtering by account number and customer full name.
  */
 @AnyPattern
-public class BankAccountsFilterDto {
+@Schema(description = "Bank account data transfer object for filtering by account number and customer full name")
+public class BankAccountFilterDto {
 
     /**
      *  Bank account number search pattern.

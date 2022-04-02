@@ -13,7 +13,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import javax.sql.DataSource;
 
 @TestConfiguration
-@Profile("prod-db-test")
+@Profile("prod-db")
 public class TestcontainersConfig {
 
     public static final String POSTGRES_LATEST = "postgres:latest";

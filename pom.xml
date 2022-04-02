@@ -28,8 +28,8 @@
         <module>bank-data-generator</module>
         <module>service-api</module>
         <module>service</module>
-        <module>rest-openapi</module>
         <module>rest-app</module>
+        <module>rest-openapi</module>
         <module>service-rest</module>
         <module>web-app</module>
     </modules>

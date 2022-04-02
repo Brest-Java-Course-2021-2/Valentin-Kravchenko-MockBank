@@ -2,7 +2,7 @@ package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.SpringJdbcDaoBasic;
 import com.epam.brest.dao.api.CreditCardDao;
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.CreditCard;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,6 +1,6 @@
 package com.epam.brest.dao.api;
 
-import com.epam.brest.model.entity.BankAccount;
+import com.epam.brest.model.BankAccount;
 
 public interface BankAccountDao extends GenericDao<BankAccount> {
 

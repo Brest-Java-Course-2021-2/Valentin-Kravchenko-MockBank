@@ -1,7 +1,7 @@
 package com.epam.brest.webapp.validator;
 
 import com.epam.brest.generator.BankDataGenerator;
-import com.epam.brest.model.dto.CreditCardTransactionDto;
+import com.epam.brest.model.CreditCardTransactionDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;

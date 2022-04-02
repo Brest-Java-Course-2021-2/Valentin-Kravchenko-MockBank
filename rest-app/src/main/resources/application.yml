@@ -3,7 +3,7 @@ spring:
     throw-exception-if-no-handler-found: true
     static-path-pattern: /
   profiles:
-    active: ${dbprofile:prod-db}
+    active: ${db:prod-db}
   output:
     ansi:
       enabled: always

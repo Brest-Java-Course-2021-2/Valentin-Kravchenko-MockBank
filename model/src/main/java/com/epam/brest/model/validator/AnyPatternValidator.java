@@ -1,6 +1,6 @@
 package com.epam.brest.model.validator;
 
-import com.epam.brest.model.dto.BankAccountsFilterDto;
+import com.epam.brest.model.BankAccountFilterDto;
 import com.epam.brest.model.validator.constraint.AnyPattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,14 +10,14 @@ import javax.validation.ConstraintValidatorContext;
 
 import java.util.Objects;
 
-import static com.epam.brest.model.constant.ModelConstant.*;
+import static com.epam.brest.model.validator.constant.ValidatorConstant.*;
 
-public class AnyPatternValidator extends BasicValidator implements ConstraintValidator<AnyPattern, BankAccountsFilterDto> {
+public class AnyPatternValidator extends BasicValidator implements ConstraintValidator<AnyPattern, BankAccountFilterDto> {
 
     private static final Logger LOGGER = LogManager.getLogger(AnyPatternValidator.class);
 
     @Override
-    public boolean isValid(BankAccountsFilterDto value, ConstraintValidatorContext context) {
+    public boolean isValid(BankAccountFilterDto value, ConstraintValidatorContext context) {
         LOGGER.debug("isValid(value={})", value);
         if (Objects.isNull(value.getCustomerPattern()) && Objects.isNull(value.getNumberPattern())) {
             buildConstraint(context, CUSTOMER_PATTERN_TEMPLATE, CUSTOMER_PATTERN);

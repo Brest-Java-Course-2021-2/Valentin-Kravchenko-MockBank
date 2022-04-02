@@ -1,7 +1,7 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.model.dto.CreditCardTransactionDto;
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.CreditCardTransactionDto;
+import com.epam.brest.model.CreditCard;
 import com.epam.brest.service.annotation.ServiceIT;
 import com.epam.brest.service.api.ExtendedCreditCardService;
 import com.epam.brest.service.exception.CreditCardException;
