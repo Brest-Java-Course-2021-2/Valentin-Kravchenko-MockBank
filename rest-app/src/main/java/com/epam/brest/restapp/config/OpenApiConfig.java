@@ -1,8 +1,8 @@
 package com.epam.brest.restapp.config;
 
-import com.epam.brest.model.dto.CreditCardDto;
-import com.epam.brest.model.dto.CreditCardTransactionDto;
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.CreditCardDto;
+import com.epam.brest.model.CreditCardTransactionDto;
+import com.epam.brest.model.CreditCard;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
@@ -31,30 +31,39 @@ public class OpenApiConfig {
                             .externalDocs(new ExternalDocumentation().description("GitHub Repository")
                                                                      .url("https://github.com/Brest-Java-Course-2021-2/Valentin-Kravchenko-MockBank"))
                             .components(new Components().addSchemas("errorMessage",
-                                                                    new ObjectSchema().addProperties("message", new StringSchema()))
+                                                                    new ObjectSchema()
+                                                                            .addProperties("message", new StringSchema())
+                                                                            .description("Response error message"))
                                                         .addSchemas("validationErrors",
-                                                                    new MapSchema().addProperties("validationErrors", new MapSchema()))
-                                                        .addSchemas("createBankAccount",
-                                                                    new ObjectSchema().addProperties("customer", new StringSchema().example("Sergey Sergeev")))
-                                                        .addSchemas("updateBankAccount",
+                                                                    new MapSchema()
+                                                                            .addProperties("validationErrors", new MapSchema())
+                                                                            .description("Validation errors in the request body"))
+                                                        .addSchemas("personalDataDto",
+                                                                    new ObjectSchema()
+                                                                            .addProperties("customer", new StringSchema().example("Sergey Sergeev"))
+                                                                            .description("Personal data model of the bank customer"))
+                                                        .addSchemas("updatedPersonalDataDto",
                                                                     getObjectSchema(Map.of("id", new IntegerSchema().example(1),
-                                                                                           "customer", new StringSchema().example("Ivan Ivanoff"))))
-                                                        .addSchemas("createCreditCard", new IntegerSchema().example(1))
-                                                        .addSchemas("depositMoney",
+                                                                                           "customer", new StringSchema().example("Ivan Ivanoff")))
+                                                                            .description("Personal data model of the bank customer for updating"))
+                                                        .addSchemas("bankAccountId", new IntegerSchema().example(1))
+                                                        .addSchemas("depositTransactionDto",
                                                                     getObjectSchema(Map.of("targetCardNumber",
                                                                                            new StringSchema().example("4000003394112581").description("Number of a target credit card"),
                                                                                            "valueSumOfMoney",
                                                                                            new StringSchema().example("1500,00").description("Value of a sum of money"),
-                                                                                           "locale", new StringSchema().example("ru").description("Current locale"))))
-                                                        .addSchemas("transferMoney",
+                                                                                           "locale", new StringSchema().example("ru").description("Current locale")))
+                                                                            .description("Deposit transaction data model"))
+                                                        .addSchemas("transferTransactionDto",
                                                                     getResolvedSchema(CreditCardTransactionDto.class,
-                                                                                  "locale", new StringSchema().example("ru").description("Current locale")))
+                                                                                  "locale", new StringSchema().example("ru").description("Current locale"))
+                                                                            .description("Transfer transaction data model"))
                                                         .addSchemas("creditCard",
                                                                     getResolvedSchema(CreditCard.class,
-                                                                "balance", new StringSchema().example("1000.00").description("Credit card balance")))
+                                                                                  "balance", new StringSchema().example("1000.00").description("Credit card balance")))
                                                         .addSchemas("creditCardDto",
                                                                     getResolvedSchema(CreditCardDto.class,
-                                                                "balance", new StringSchema().example("1000.00").description("Credit card balance"))));
+                                                                                  "balance", new StringSchema().example("1000.00").description("Credit card balance"))));
     }
 
     private Schema getObjectSchema(Map<String, Schema> properties){

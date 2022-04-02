@@ -1,4 +1,4 @@
-package com.epam.brest.model.dto;
+package com.epam.brest.model;
 
 import com.epam.brest.model.validator.constraint.CardNumbers;
 import com.epam.brest.model.validator.constraint.DifferentCardNumbers;

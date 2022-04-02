@@ -1,7 +1,7 @@
 package com.epam.brest.restapp.controller;
 
-import com.epam.brest.model.dto.CreditCardsFilterDto;
-import com.epam.brest.model.dto.CreditCardDto;
+import com.epam.brest.model.CreditCardFilterDto;
+import com.epam.brest.model.CreditCardDto;
 import com.epam.brest.service.api.CreditCardDtoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Tag(name = "Credit Card", description = "Credit Card API")
+@Tag(name = "Credit Card", description = "The Credit Card API")
 @RestController
 @RequestMapping("api/cards")
 public class CreditCardDtoRestController {
@@ -32,17 +32,19 @@ public class CreditCardDtoRestController {
     }
 
     @Operation(summary = "List of all credit cards",
-            responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(ref = "#/components/schemas/creditCardDto"))),
-                         responseCode = "200")}
+               operationId = "getCards",
+               responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(ref = "#/components/schemas/creditCardDto"))),
+                                         responseCode = "200")}
     )
     @GetMapping
-    public ResponseEntity<List<CreditCardDto>> cards() {
+    public ResponseEntity<List<CreditCardDto>> getCards() {
         LOGGER.debug("cardsGET(api/cards)");
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
         return ResponseEntity.ok(cards);
     }
 
     @Operation(summary = "List of filtered credit cards",
+               operationId = "getFilteredCards",
                description = "Filter performs by credit card expiration date. " +
                              "The start date and/or end date of the credit card expiration range should be specified. " +
                              "Valid date format is Month{required, 2 digits}\\/Year{required, 4 digits} (for example, 06/2022)",
@@ -52,12 +54,12 @@ public class CreditCardDtoRestController {
                                          responseCode = "400", description = "If the date format is incorrect")}
     )
     @PostMapping
-    public ResponseEntity<List<CreditCardDto>> cards(
-            @Parameter(description = "Credit Cards Filter DTO", required = true)
-            @Valid @RequestBody CreditCardsFilterDto creditCardsFilterDto
+    public ResponseEntity<List<CreditCardDto>> getCards(
+            @Parameter(required = true)
+            @Valid @RequestBody CreditCardFilterDto creditCardFilterDto
     ) {
-        LOGGER.debug("cardsPOST(api/cards, creditCardDateRangeDto={})", creditCardsFilterDto);
-        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
+        LOGGER.debug("cardsPOST(api/cards, creditCardDateRangeDto={})", creditCardFilterDto);
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
         return ResponseEntity.ok(cards);
     }
 

@@ -1,11 +1,10 @@
 package com.epam.brest.restapp.controller;
 
-import com.epam.brest.model.entity.BankAccount;
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.BankAccount;
+import com.epam.brest.model.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
 

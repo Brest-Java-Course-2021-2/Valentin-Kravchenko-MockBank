@@ -1,6 +1,5 @@
-package com.epam.brest.model.entity;
+package com.epam.brest.model;
 
-import com.epam.brest.model.BasicEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
@@ -8,8 +7,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- *  Credit card model.
+ *  Credit card data model.
  */
+@Schema(description = "Credit card data model")
 public class CreditCard extends BasicEntity {
 
     /**

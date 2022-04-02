@@ -1,7 +1,6 @@
 package com.epam.brest.service.util;
 
-import com.epam.brest.model.entity.BankAccount;
-import com.epam.brest.service.util.ServiceUtils;
+import com.epam.brest.model.BankAccount;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

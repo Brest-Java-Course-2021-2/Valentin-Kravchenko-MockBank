@@ -1,7 +1,7 @@
 package com.epam.brest.restapp.controller;
 
-import com.epam.brest.model.entity.BankAccount;
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.BankAccount;
+import com.epam.brest.model.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
-@Tag(name = "Bank Account", description = "Bank Account API")
+@Tag(name = "Bank Account", description = "The Bank Account API")
 @RestController
 @RequestMapping("api/account")
 public class BankAccountRestController {
@@ -42,16 +42,17 @@ public class BankAccountRestController {
     }
 
     @Operation(summary = "Get a bank account by its ID",
+               operationId = "getBankAccountById",
                responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
                                          responseCode = "404", description = "If the bank account with the given ID not found") })
     @GetMapping("{id}")
-    public ResponseEntity<BankAccount> get(
+    public ResponseEntity<BankAccount> getById(
             @Parameter(description = "Bank account ID", required = true)
             @PathVariable Integer id
     ) {
-        LOGGER.debug("get(api/account/{})", id);
+        LOGGER.debug("getById(api/account/{})", id);
         BankAccount bankAccount = bankAccountService.getById(id);
         return ResponseEntity.ok(bankAccount);
     }
@@ -72,14 +73,15 @@ public class BankAccountRestController {
     }
 
     @Operation(summary = "Create a new bank account",
+               operationId = "createBankAccount",
                responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
                                          responseCode = "400", description = "If the customer full name is incorrect")})
     @PostMapping
     public ResponseEntity<BankAccount> create(
-            @Parameter(description = "Customer of the bank account",
-                       schema = @Schema(ref = "#/components/schemas/createBankAccount"),
+            @Parameter(description = "Personal data of the bank account customer",
+                       schema = @Schema(ref = "#/components/schemas/personalDataDto"),
                        required = true)
             @Valid @RequestBody BankAccount bankAccount
     ){
@@ -90,14 +92,15 @@ public class BankAccountRestController {
     }
 
     @Operation(summary = "Update an existing bank account",
+               operationId = "updateBankAccount",
                responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
                                          responseCode = "400", description = "If the customer full name is incorrect")})
     @PutMapping
     public ResponseEntity<BankAccount> update(
-            @Parameter(description = "Updated customer of the bank account",
-                       schema = @Schema(ref = "#/components/schemas/updateBankAccount"),
+            @Parameter(description = "Personal data of the bank account customer for updating",
+                       schema = @Schema(ref = "#/components/schemas/updatedPersonalDataDto"),
                        required = true)
             @Valid @RequestBody BankAccount bankAccount
     ) {
@@ -108,6 +111,7 @@ public class BankAccountRestController {
     }
 
     @Operation(summary = "Delete a bank account by its ID",
+               operationId = "deleteBankAccount",
                responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
                                         responseCode = "200"),
                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),

@@ -1,6 +1,6 @@
 package com.epam.brest.service.api;
 
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.CreditCard;
 import com.epam.brest.service.exception.ResourceNotFoundException;
 
 public interface ExtendedCreditCardService extends CreditCardService {

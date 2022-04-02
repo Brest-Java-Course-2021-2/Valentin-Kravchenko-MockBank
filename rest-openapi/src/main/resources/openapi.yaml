@@ -14,24 +14,24 @@ servers:
 - url: http://localhost:8090
   description: Generated server url
 tags:
-- name: Version
-  description: Version API
-- name: Credit Card
-  description: Credit Card API
 - name: Bank Account
-  description: Bank Account API
+  description: The Bank Account API
+- name: Credit Card
+  description: The Credit Card API
+- name: Controller Version
+  description: The Controller Version API
 paths:
   /api/account:
     put:
       tags:
       - Bank Account
       summary: Update an existing bank account
-      operationId: update
+      operationId: updateBankAccount
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateBankAccount'
+              $ref: '#/components/schemas/updatedPersonalDataDto'
         required: true
       responses:
         "200":
@@ -50,12 +50,12 @@ paths:
       tags:
       - Bank Account
       summary: Create a new bank account
-      operationId: create_1
+      operationId: createBankAccount
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createBankAccount'
+              $ref: '#/components/schemas/personalDataDto'
         required: true
       responses:
         "200":
@@ -75,7 +75,7 @@ paths:
       tags:
       - Credit Card
       summary: List of all credit cards
-      operationId: cards_1
+      operationId: getCards
       responses:
         "200":
           description: OK
@@ -93,12 +93,12 @@ paths:
         \ and/or end date of the credit card expiration range should be specified.\
         \ Valid date format is Month{required, 2 digits}\\/Year{required, 4 digits}\
         \ (for example, 06/2022)"
-      operationId: cards
+      operationId: getFilteredCards
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreditCardsFilterDto'
+              $ref: '#/components/schemas/CreditCardFilterDto'
         required: true
       responses:
         "200":
@@ -120,12 +120,12 @@ paths:
       tags:
       - Credit Card
       summary: Create a new credit card
-      operationId: create
+      operationId: createCreditCard
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createCreditCard'
+              $ref: '#/components/schemas/bankAccountId'
         required: true
       responses:
         "200":
@@ -149,12 +149,12 @@ paths:
         \ credit card to the balance of the target credit card. Valid format of the\
         \ sum of money is {up to 6 digits}{, or .}{up to 2 digits}. For example, 1025,\
         \ 1730.1, 0,45. Decimal separator type depends on the specified locale"
-      operationId: transfer
+      operationId: transferMoney
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/transferMoney'
+              $ref: '#/components/schemas/transferTransactionDto'
         required: true
       responses:
         "200":
@@ -185,12 +185,12 @@ paths:
         \ credit card. Valid format of the sum of money is {up to 6 digits}{, or .}{up\
         \ to 2 digits}. For example, 1025, 1730.1, 0,45. Decimal separator type depends\
         \ on the specified locale"
-      operationId: deposit
+      operationId: depositMoney
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/depositMoney'
+              $ref: '#/components/schemas/depositTransactionDto'
         required: true
       responses:
         "200":
@@ -217,7 +217,7 @@ paths:
       tags:
       - Bank Account
       summary: List of all bank accounts
-      operationId: accounts_1
+      operationId: getAccounts
       responses:
         "200":
           description: OK
@@ -240,12 +240,12 @@ paths:
         \ to 63 characters){space}LastNamePattern(up to 64 characters). For example,\
         \ Iv Iva, an ov, ov, Iv. Allowed characters for the customer search pattern\
         \ are [A-Za-z]"
-      operationId: accounts
+      operationId: getFilteredAccounts
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BankAccountsFilterDto'
+              $ref: '#/components/schemas/BankAccountFilterDto'
         required: true
       responses:
         "200":
@@ -267,7 +267,7 @@ paths:
       tags:
       - Version
       summary: Get a controller version
-      operationId: version
+      operationId: getVersion
       responses:
         "200":
           description: OK
@@ -282,7 +282,7 @@ paths:
       tags:
       - Credit Card
       summary: Get a credit card by its ID
-      operationId: getById
+      operationId: getCreditCardById
       parameters:
       - name: id
         in: path
@@ -308,7 +308,7 @@ paths:
       tags:
       - Credit Card
       summary: Delete a credit card by its ID
-      operationId: delete
+      operationId: deleteCreditCard
       parameters:
       - name: id
         in: path
@@ -341,7 +341,7 @@ paths:
       tags:
       - Bank Account
       summary: Get a bank account by its ID
-      operationId: get
+      operationId: getBankAccountById
       parameters:
       - name: id
         in: path
@@ -367,7 +367,7 @@ paths:
       tags:
       - Bank Account
       summary: Delete a bank account by its ID
-      operationId: delete_1
+      operationId: deleteBankAccount
       parameters:
       - name: id
         in: path
@@ -431,19 +431,21 @@ components:
       properties:
         message:
           type: string
+      description: Response error message
     validationErrors:
       type: object
       properties:
         validationErrors:
           type: object
-    createBankAccount:
+      description: Validation errors in the request body
+    personalDataDto:
       type: object
       properties:
         customer:
           type: string
           example: Sergey Sergeev
-      description: Customer of the bank account
-    updateBankAccount:
+      description: Personal data of the bank account customer
+    updatedPersonalDataDto:
       type: object
       properties:
         id:
@@ -453,29 +455,29 @@ components:
         customer:
           type: string
           example: Ivan Ivanoff
-      description: Updated customer of the bank account
-    createCreditCard:
+      description: Personal data of the bank account customer for updating
+    bankAccountId:
       type: integer
       description: Bank account ID to which the credit card will be linked
       format: int32
       example: 1
-    depositMoney:
+    depositTransactionDto:
       type: object
       properties:
-        valueSumOfMoney:
-          type: string
-          description: Value of a sum of money
-          example: "1500,00"
         locale:
           type: string
           description: Current locale
           example: ru
+        valueSumOfMoney:
+          type: string
+          description: Value of a sum of money
+          example: "1500,00"
         targetCardNumber:
           type: string
           description: Number of a target credit card
           example: "4000003394112581"
-      description: Credit card transaction DTO
-    transferMoney:
+      description: Deposit transaction data
+    transferTransactionDto:
       type: object
       properties:
         targetCardNumber:
@@ -494,7 +496,7 @@ components:
           type: string
           description: Current locale
           example: ru
-      description: Credit card transaction DTO
+      description: Transfer transaction data
     creditCard:
       type: object
       properties:
@@ -520,6 +522,7 @@ components:
           description: Bank account id linked with the credit card
           format: int32
           example: 1
+      description: Credit card data model
     creditCardDto:
       type: object
       properties:
@@ -548,6 +551,7 @@ components:
           type: string
           description: Bank account number linked with the credit card
           example: BY80F29S8416E1PXLF9VHCGM99T6
+      description: Credit card data transfer object
     BankAccount:
       type: object
       properties:
@@ -565,10 +569,11 @@ components:
           example: Ivan Ivanov
         registrationDate:
           type: string
-          description: Date of the customer registration in the bank syste
+          description: Date of the customer registration in the bank system
           format: date
           example: 2020-06-28
-    CreditCardsFilterDto:
+      description: Bank account data model
+    CreditCardFilterDto:
       type: object
       properties:
         valueFromDate:
@@ -579,7 +584,7 @@ components:
           type: string
           description: End date of the credit card expiration range
           example: 08/2023
-      description: Credit Cards Filter DTO
+      description: Credit card data transfer object for filtering by expiration date range
     BankAccountDto:
       type: object
       properties:
@@ -605,7 +610,8 @@ components:
           description: Total cards linked to the bank account
           format: int32
           example: 2
-    BankAccountsFilterDto:
+      description: Bank account data transfer object
+    BankAccountFilterDto:
       type: object
       properties:
         numberPattern:
@@ -616,5 +622,4 @@ components:
           type: string
           description: Bank customer full name search pattern
           example: an ov
-      description: Bank Accounts Filter DTO. At least one of the patterns must be
-        specified
+      description: Bank account data transfer object for filtering by account number and customer full name

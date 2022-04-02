@@ -1,7 +1,7 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.model.dto.BankAccountDto;
-import com.epam.brest.model.dto.BankAccountsFilterDto;
+import com.epam.brest.model.BankAccountDto;
+import com.epam.brest.model.BankAccountFilterDto;
 import com.epam.brest.service.annotation.ServiceIT;
 import com.epam.brest.service.api.BankAccountDtoService;
 import org.junit.jupiter.api.Test;
@@ -31,24 +31,24 @@ class BankAccountDtoServiceImplIT {
     @Test
     void getAllWithTotalCardsByFilter() {
         //Case 1
-        BankAccountsFilterDto bankAccountsFilterDto = new BankAccountsFilterDto();
+        BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
         String number = "TQ99IK";
         String customer = "Sergeev";
-        bankAccountsFilterDto.setNumberPattern(number);
-        bankAccountsFilterDto.setCustomerPattern(customer);
-        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountsFilterDto);
+        bankAccountFilterDto.setNumberPattern(number);
+        bankAccountFilterDto.setCustomerPattern(customer);
+        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 1);
         assertTrue(accounts.get(0).getNumber().contains(number));
         assertTrue(accounts.get(0).getCustomer().contains(customer));
         //case 2
-        bankAccountsFilterDto.setNumberPattern(null);
-        accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountsFilterDto);
+        bankAccountFilterDto.setNumberPattern(null);
+        accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 1);
         assertTrue(accounts.get(0).getCustomer().contains(customer));
         //case 3
-        bankAccountsFilterDto.setNumberPattern("BY");
-        bankAccountsFilterDto.setCustomerPattern(null);
-        accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountsFilterDto);
+        bankAccountFilterDto.setNumberPattern("BY");
+        bankAccountFilterDto.setCustomerPattern(null);
+        accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         assertEquals(accounts.size(), 3);
         assertTrue(accounts.stream().map(BankAccountDto::getNumber).allMatch(n -> n.contains("BY")));
     }

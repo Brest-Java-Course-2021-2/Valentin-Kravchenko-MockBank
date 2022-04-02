@@ -1,8 +1,8 @@
 package com.epam.brest.dao.impl;
 
-import com.epam.brest.dao.annotation.DaoITWithProdDb;
+import com.epam.brest.dao.annotation.TestDbDaoIT;
 import com.epam.brest.dao.api.BankAccountDao;
-import com.epam.brest.model.entity.BankAccount;
+import com.epam.brest.model.BankAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DaoITWithProdDb
+@TestDbDaoIT
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class BankAccountSpringJdbcDaoIT {
 

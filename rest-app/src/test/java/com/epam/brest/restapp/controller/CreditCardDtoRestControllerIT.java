@@ -1,7 +1,7 @@
 package com.epam.brest.restapp.controller;
 
-import com.epam.brest.model.dto.CreditCardDto;
-import com.epam.brest.model.dto.CreditCardsFilterDto;
+import com.epam.brest.model.CreditCardDto;
+import com.epam.brest.model.CreditCardFilterDto;
 import com.epam.brest.service.api.CreditCardDtoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -48,10 +48,10 @@ class CreditCardDtoRestControllerIT extends RestControllerTestBasic {
     @Test
     void cardsPOST() throws Exception {
         //Case 1
-        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
-        creditCardsFilterDto.setFromDate(LocalDate.parse("2022-05-31"));
-        creditCardsFilterDto.setToDate(LocalDate.parse("2022-07-31"));
-        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
+        CreditCardFilterDto creditCardFilterDto = new CreditCardFilterDto();
+        creditCardFilterDto.setFromDate(LocalDate.parse("2022-05-31"));
+        creditCardFilterDto.setToDate(LocalDate.parse("2022-07-31"));
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
         int lastIdx = cards.size() - 1;
         Map<String, Object> body = new HashMap<>();
         body.put(VALUE_FROM_DATE, "05/2022");
@@ -61,8 +61,8 @@ class CreditCardDtoRestControllerIT extends RestControllerTestBasic {
                 .andExpect(jsonPath("$[0].id", is(cards.get(0).getId())))
                 .andExpect(jsonPath("$[" + lastIdx + "].id", is(cards.get(lastIdx).getId())));
         //Case 2
-        creditCardsFilterDto.setToDate(null);
-        cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
+        creditCardFilterDto.setToDate(null);
+        cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
         lastIdx = cards.size() - 1;
         body.remove(VALUE_TO_DATE);
         performPostAndExpectStatusOk("/cards", body)

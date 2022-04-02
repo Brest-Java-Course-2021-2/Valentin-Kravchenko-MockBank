@@ -1,7 +1,7 @@
 package com.epam.brest.restapp.controller;
 
-import com.epam.brest.model.dto.BankAccountDto;
-import com.epam.brest.model.dto.BankAccountsFilterDto;
+import com.epam.brest.model.BankAccountDto;
+import com.epam.brest.model.BankAccountFilterDto;
 import com.epam.brest.service.api.BankAccountDtoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Tag(name = "Bank Account", description = "Bank Account API")
+@Tag(name = "Bank Account", description = "The Bank Account API")
 @RestController
 @RequestMapping("api/accounts")
 public class BankAccountDtoRestController {
@@ -32,17 +32,19 @@ public class BankAccountDtoRestController {
     }
 
     @Operation(summary = "List of all bank accounts",
+               operationId = "getAccounts",
                responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(implementation = BankAccountDto.class))),
                                          responseCode = "200")}
     )
     @GetMapping
-    public ResponseEntity<List<BankAccountDto>> accounts() {
+    public ResponseEntity<List<BankAccountDto>> getAccounts() {
         LOGGER.debug("accountsGET(api/accounts)");
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
         return ResponseEntity.ok(accounts);
     }
 
     @Operation(summary = "List of filtered bank accounts",
+               operationId = "getFilteredAccounts",
                description = "Filter performs by account number and customer full name. " +
                              "The bank account number and/or bank customer full name search pattern should be specified. " +
                              "Valid format of the account number search pattern is FirstNumberPattern(required, up to 17 characters){space}SecondNumberPattern(optional, up to 17 characters). " +
@@ -57,12 +59,12 @@ public class BankAccountDtoRestController {
                                          responseCode = "400", description = "If any search pattern is invalid")}
     )
     @PostMapping
-    public ResponseEntity<List<BankAccountDto>> accounts(
-            @Parameter(description = "Bank Accounts Filter DTO. At least one of the patterns must be specified", required = true)
-            @Valid @RequestBody BankAccountsFilterDto bankAccountsFilterDto
+    public ResponseEntity<List<BankAccountDto>> getAccounts(
+            @Parameter(required = true)
+            @Valid @RequestBody BankAccountFilterDto bankAccountFilterDto
     ) {
-        LOGGER.debug("accountsPOST(api/accounts, bankAccountFilterDto={})", bankAccountsFilterDto);
-        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountsFilterDto);
+        LOGGER.debug("accountsPOST(api/accounts, bankAccountFilterDto={})", bankAccountFilterDto);
+        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         return ResponseEntity.ok(accounts);
     }
 

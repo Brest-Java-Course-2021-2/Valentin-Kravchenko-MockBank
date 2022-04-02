@@ -1,6 +1,5 @@
-package com.epam.brest.model.dto;
+package com.epam.brest.model;
 
-import com.epam.brest.model.BasicEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
@@ -9,6 +8,7 @@ import java.time.LocalDate;
 /**
  *  Credit card data transfer object.
  */
+@Schema(description = "Credit card data transfer object")
 public class CreditCardDto extends BasicEntity {
 
     /**

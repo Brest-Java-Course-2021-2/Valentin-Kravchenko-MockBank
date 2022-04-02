@@ -1,6 +1,6 @@
 package com.epam.brest.dao.api;
 
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.CreditCard;
 
 import java.util.List;
 

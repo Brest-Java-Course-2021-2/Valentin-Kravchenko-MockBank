@@ -1,7 +1,7 @@
 package com.epam.brest.webapp.controller;
 
-import com.epam.brest.model.dto.CreditCardsFilterDto;
-import com.epam.brest.model.dto.CreditCardDto;
+import com.epam.brest.model.CreditCardFilterDto;
+import com.epam.brest.model.CreditCardDto;
 import com.epam.brest.service.api.CreditCardDtoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,17 +46,17 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
     @Test
     void cardsPOST() throws Exception {
         //Case 1
-        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
-        creditCardsFilterDto.setFromDate(LocalDate.parse(FROM_DATE_TEST_ISO_PATTERN));
-        creditCardsFilterDto.setToDate(LocalDate.parse(TO_DATE_TEST_ISO_PATTERN));
-        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
+        CreditCardFilterDto creditCardFilterDto = new CreditCardFilterDto();
+        creditCardFilterDto.setFromDate(LocalDate.parse(FROM_DATE_TEST_ISO_PATTERN));
+        creditCardFilterDto.setToDate(LocalDate.parse(TO_DATE_TEST_ISO_PATTERN));
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(VALUE_FROM_DATE, FROM_DATE_TEST_VALUE);
         params.add(VALUE_TO_DATE, TO_DATE_TEST_VALUE);
         performPostAndExpectStatusOk(CARDS_ENDPOINT, params, CARDS).andExpect(model().attribute(CARDS, cards));
         //Case 2
-        creditCardsFilterDto.setToDate(null);
-        cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
+        creditCardFilterDto.setToDate(null);
+        cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
         params.clear();
         params.add(VALUE_FROM_DATE, FROM_DATE_TEST_VALUE);
         params.add(VALUE_TO_DATE, EMPTY);
@@ -65,9 +65,9 @@ class CreditCardDtoControllerIT extends ControllerTestBasic {
 
     @Test
     void cardsPOSTThereAreNoSearchResults() throws Exception {
-        CreditCardsFilterDto creditCardsFilterDto = new CreditCardsFilterDto();
-        creditCardsFilterDto.setToDate(LocalDate.parse("2000-07-31"));
-        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardsFilterDto);
+        CreditCardFilterDto creditCardFilterDto = new CreditCardFilterDto();
+        creditCardFilterDto.setToDate(LocalDate.parse("2000-07-31"));
+        List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(VALUE_FROM_DATE, EMPTY);
         params.add(VALUE_TO_DATE, "07/2000");

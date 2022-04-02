@@ -1,6 +1,5 @@
-package com.epam.brest.model.entity;
+package com.epam.brest.model;
 
-import com.epam.brest.model.BasicEntity;
 import com.epam.brest.model.validator.constraint.Customer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -8,8 +7,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- *  Bank account model.
+ *  Bank account data model.
  */
+@Schema(description = "Bank account data model")
 public class BankAccount extends BasicEntity {
 
      /**
@@ -28,7 +28,7 @@ public class BankAccount extends BasicEntity {
      /**
       *  Date of the customer registration in the bank system.
       */
-     @Schema(example = "2020-06-28", description = "Date of the customer registration in the bank syste")
+     @Schema(example = "2020-06-28", description = "Date of the customer registration in the bank system")
      private LocalDate registrationDate;
 
      public String getNumber() {

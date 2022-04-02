@@ -1,6 +1,6 @@
 package com.epam.brest.webapp.controller;
 
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.CreditCard;
 import com.epam.brest.service.api.BankAccountService;
 import com.epam.brest.service.api.CreditCardService;
 import com.epam.brest.service.exception.CreditCardException;

@@ -1,6 +1,6 @@
 package com.epam.brest.model.validator;
 
-import com.epam.brest.model.dto.CreditCardTransactionDto;
+import com.epam.brest.model.CreditCardTransactionDto;
 import com.epam.brest.model.validator.constraint.DifferentCardNumbers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,8 +9,8 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
-import static com.epam.brest.model.constant.ModelConstant.DIFFERENT_CARD_NUMBERS_TEMPLATE;
-import static com.epam.brest.model.constant.ModelConstant.TARGET_CARD_NUMBER;
+import static com.epam.brest.model.validator.constant.ValidatorConstant.DIFFERENT_CARD_NUMBERS_TEMPLATE;
+import static com.epam.brest.model.validator.constant.ValidatorConstant.TARGET_CARD_NUMBER;
 
 public class DifferentCardNumbersValidator extends BasicValidator implements ConstraintValidator<DifferentCardNumbers, CreditCardTransactionDto> {
 

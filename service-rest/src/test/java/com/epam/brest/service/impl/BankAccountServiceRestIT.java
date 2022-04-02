@@ -1,7 +1,7 @@
 package com.epam.brest.service.impl;
 
-import com.epam.brest.model.entity.BankAccount;
-import com.epam.brest.model.entity.CreditCard;
+import com.epam.brest.model.BankAccount;
+import com.epam.brest.model.CreditCard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.reactive.server.WebTestClient;

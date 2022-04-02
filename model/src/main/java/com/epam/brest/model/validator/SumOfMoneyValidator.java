@@ -1,6 +1,6 @@
 package com.epam.brest.model.validator;
 
-import com.epam.brest.model.dto.CreditCardTransactionDto;
+import com.epam.brest.model.CreditCardTransactionDto;
 import com.epam.brest.model.validator.constraint.SumOfMoney;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,8 +12,8 @@ import javax.validation.ConstraintValidatorContext;
 import java.math.BigDecimal;
 import java.text.ParseException;
 
-import static com.epam.brest.model.constant.ModelConstant.SUM_OF_MONEY_TEMPLATE;
-import static com.epam.brest.model.constant.ModelConstant.VALUE_SUM_OF_MONEY;
+import static com.epam.brest.model.validator.constant.ValidatorConstant.SUM_OF_MONEY_TEMPLATE;
+import static com.epam.brest.model.validator.constant.ValidatorConstant.VALUE_SUM_OF_MONEY;
 
 public class SumOfMoneyValidator extends BasicValidator implements ConstraintValidator<SumOfMoney, CreditCardTransactionDto> {
 

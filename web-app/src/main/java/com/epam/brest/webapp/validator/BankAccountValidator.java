@@ -1,6 +1,6 @@
 package com.epam.brest.webapp.validator;
 
-import com.epam.brest.model.entity.BankAccount;
+import com.epam.brest.model.BankAccount;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;

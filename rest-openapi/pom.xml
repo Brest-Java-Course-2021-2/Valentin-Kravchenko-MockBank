@@ -48,8 +48,8 @@
                             <generatorName>spring</generatorName>
                             <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
                             <output>${project.build.directory}/generated-sources</output>
-                            <apiPackage>${project.groupId}.restopenapi.api</apiPackage>
-                            <modelPackage>${project.groupId}.restopenapi.model</modelPackage>
+                            <apiPackage>${project.groupId}.openapi.api</apiPackage>
+                            <modelPackage>${project.groupId}.model</modelPackage>
                             <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateApiTests>false</generateApiTests>

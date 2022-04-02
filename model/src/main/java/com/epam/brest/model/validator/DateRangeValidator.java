@@ -1,6 +1,6 @@
 package com.epam.brest.model.validator;
 
-import com.epam.brest.model.dto.CreditCardsFilterDto;
+import com.epam.brest.model.CreditCardFilterDto;
 import com.epam.brest.model.validator.constraint.DateRange;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,9 +13,9 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-import static com.epam.brest.model.constant.ModelConstant.*;
+import static com.epam.brest.model.validator.constant.ValidatorConstant.*;
 
-public class DateRangeValidator extends BasicValidator implements ConstraintValidator<DateRange, CreditCardsFilterDto> {
+public class DateRangeValidator extends BasicValidator implements ConstraintValidator<DateRange, CreditCardFilterDto> {
 
     private static final Logger LOGGER = LogManager.getLogger(DateRangeValidator.class);
 
@@ -26,7 +26,7 @@ public class DateRangeValidator extends BasicValidator implements ConstraintVali
     private String datePattern;
 
     @Override
-    public boolean isValid(CreditCardsFilterDto value, ConstraintValidatorContext context) {
+    public boolean isValid(CreditCardFilterDto value, ConstraintValidatorContext context) {
         LOGGER.debug("isValid(value={})", value);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(datePattern);
         boolean isValueFromDateValid = true;

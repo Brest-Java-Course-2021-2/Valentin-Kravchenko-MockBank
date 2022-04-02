@@ -1,6 +1,6 @@
-package com.epam.brest.model.constant;
+package com.epam.brest.model.validator.constant;
 
-public class ModelConstant {
+public class ValidatorConstant {
 
     public static final String DIFFERENT_CARD_NUMBERS_TEMPLATE = "{DifferentCardNumbers.card.dto.targetCardNumber}";
     public static final String CUSTOMER_PATTERN_TEMPLATE = "{CustomerPattern.account.dto.customerPattern}";
