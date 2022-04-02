@@ -1,0 +1,625 @@
+openapi: 3.0.1
+info:
+  title: MockBank API
+  description: MockBank is a web-application to work with bank accounts and linked
+    them credit cards
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0)
+  version: 1.0.0
+externalDocs:
+  description: GitHub Repository
+  url: https://github.com/Brest-Java-Course-2021-2/Valentin-Kravchenko-MockBank
+servers:
+- url: http://localhost:8090
+  description: Generated server url
+tags:
+- name: Bank Account
+  description: The Bank Account API
+- name: Credit Card
+  description: The Credit Card API
+- name: Controller Version
+  description: The Controller Version API
+paths:
+  /api/account:
+    put:
+      tags:
+      - Bank Account
+      summary: Update an existing bank account
+      operationId: updateBankAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updatedPersonalDataDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+        "400":
+          description: If the customer full name is incorrect
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/validationErrors'
+    post:
+      tags:
+      - Bank Account
+      summary: Create a new bank account
+      operationId: createBankAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/personalDataDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+        "400":
+          description: If the customer full name is incorrect
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/validationErrors'
+  /api/cards:
+    get:
+      tags:
+      - Credit Card
+      summary: List of all credit cards
+      operationId: getCards
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/creditCardDto'
+    post:
+      tags:
+      - Credit Card
+      summary: List of filtered credit cards
+      description: "Filter performs by credit card expiration date. The start date\
+        \ and/or end date of the credit card expiration range should be specified.\
+        \ Valid date format is Month{required, 2 digits}\\/Year{required, 4 digits}\
+        \ (for example, 06/2022)"
+      operationId: getFilteredCards
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditCardFilterDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/creditCardDto'
+        "400":
+          description: If the date format is incorrect
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/validationErrors'
+  /api/card:
+    post:
+      tags:
+      - Credit Card
+      summary: Create a new credit card
+      operationId: createCreditCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bankAccountId'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/creditCard'
+        "404":
+          description: If the bank account with the given ID not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+  /api/card/transfer:
+    post:
+      tags:
+      - Credit Card
+      summary: Execute a transfer transaction for specific credit cards
+      description: "Transfers a specified sum of money from the balance of the source\
+        \ credit card to the balance of the target credit card. Valid format of the\
+        \ sum of money is {up to 6 digits}{, or .}{up to 2 digits}. For example, 1025,\
+        \ 1730.1, 0,45. Decimal separator type depends on the specified locale"
+      operationId: transferMoney
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transferTransactionDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/creditCard'
+        "404":
+          description: If the source or target credit card was not found by number
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+        "400":
+          description: if the source credit card doesn't contain enough money for
+            a transfer and/or format of the sum of money is incorrect
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/validationErrors'
+  /api/card/deposit:
+    post:
+      tags:
+      - Credit Card
+      summary: Execute a deposit transaction for a specific credit card
+      description: "Deposits a specified sum of money to the balance of the target\
+        \ credit card. Valid format of the sum of money is {up to 6 digits}{, or .}{up\
+        \ to 2 digits}. For example, 1025, 1730.1, 0,45. Decimal separator type depends\
+        \ on the specified locale"
+      operationId: depositMoney
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/depositTransactionDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/creditCard'
+        "404":
+          description: If the target credit card with the given number not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+        "400":
+          description: If the target credit card number is invalidand/or format of
+            the sum of money is incorrect
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/validationErrors'
+  /api/accounts:
+    get:
+      tags:
+      - Bank Account
+      summary: List of all bank accounts
+      operationId: getAccounts
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankAccountDto'
+    post:
+      tags:
+      - Bank Account
+      summary: List of filtered bank accounts
+      description: "Filter performs by account number and customer full name. The\
+        \ bank account number and/or bank customer full name search pattern should\
+        \ be specified. Valid format of the account number search pattern is FirstNumberPattern(required,\
+        \ up to 17 characters){space}SecondNumberPattern(optional, up to 17 characters).\
+        \ For example, BY, BY 99T6. Allowed characters for the account number search\
+        \ pattern are [A-Z0-9]. Valid format of the customer search pattern is FirstNamePattern(up\
+        \ to 63 characters){space}LastNamePattern(up to 64 characters). For example,\
+        \ Iv Iva, an ov, ov, Iv. Allowed characters for the customer search pattern\
+        \ are [A-Za-z]"
+      operationId: getFilteredAccounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankAccountFilterDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankAccountDto'
+        "400":
+          description: If any search pattern is invalid
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/validationErrors'
+  /api/version:
+    get:
+      tags:
+      - Version
+      summary: Get a controller version
+      operationId: getVersion
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                description: version
+                example: 1.0.0
+  /api/card/{id}:
+    get:
+      tags:
+      - Credit Card
+      summary: Get a credit card by its ID
+      operationId: getCreditCardById
+      parameters:
+      - name: id
+        in: path
+        description: Credit card ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/creditCard'
+        "404":
+          description: If the credit card with the given ID not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+    delete:
+      tags:
+      - Credit Card
+      summary: Delete a credit card by its ID
+      operationId: deleteCreditCard
+      parameters:
+      - name: id
+        in: path
+        description: Credit card ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/creditCard'
+        "404":
+          description: If the credit card with the given ID not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+        "400":
+          description: if the credit card has a positive balance
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+  /api/account/{id}:
+    get:
+      tags:
+      - Bank Account
+      summary: Get a bank account by its ID
+      operationId: getBankAccountById
+      parameters:
+      - name: id
+        in: path
+        description: Bank account ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+        "404":
+          description: If the bank account with the given ID not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+    delete:
+      tags:
+      - Bank Account
+      summary: Delete a bank account by its ID
+      operationId: deleteBankAccount
+      parameters:
+      - name: id
+        in: path
+        description: Bank account ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+        "404":
+          description: If the bank account with the given ID not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+        "400":
+          description: if the bank account has linked credit cards
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+  /api/account/{id}/cards:
+    get:
+      tags:
+      - Bank Account
+      summary: List of all credit cards linked with a specific bank account
+      operationId: getAllCards
+      parameters:
+      - name: id
+        in: path
+        description: Bank account ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/creditCard'
+        "404":
+          description: If the bank account with the given ID not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+components:
+  schemas:
+    errorMessage:
+      type: object
+      properties:
+        message:
+          type: string
+      description: Response error message
+    validationErrors:
+      type: object
+      properties:
+        validationErrors:
+          type: object
+      description: Validation errors in the request body
+    personalDataDto:
+      type: object
+      properties:
+        customer:
+          type: string
+          example: Sergey Sergeev
+      description: Personal data of the bank account customer
+    updatedPersonalDataDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        customer:
+          type: string
+          example: Ivan Ivanoff
+      description: Personal data of the bank account customer for updating
+    bankAccountId:
+      type: integer
+      description: Bank account ID to which the credit card will be linked
+      format: int32
+      example: 1
+    depositTransactionDto:
+      type: object
+      properties:
+        locale:
+          type: string
+          description: Current locale
+          example: ru
+        valueSumOfMoney:
+          type: string
+          description: Value of a sum of money
+          example: "1500,00"
+        targetCardNumber:
+          type: string
+          description: Number of a target credit card
+          example: "4000003394112581"
+      description: Deposit transaction data
+    transferTransactionDto:
+      type: object
+      properties:
+        targetCardNumber:
+          type: string
+          description: Number of a target credit card
+          example: "4000003394112581"
+        sourceCardNumber:
+          type: string
+          description: Number of a source credit card
+          example: "4000002538269224"
+        valueSumOfMoney:
+          type: string
+          description: Value of a sum of money
+          example: "1000,00"
+        locale:
+          type: string
+          description: Current locale
+          example: ru
+      description: Transfer transaction data
+    creditCard:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        number:
+          type: string
+          description: Credit card number
+          example: "4000003394112581"
+        expirationDate:
+          type: string
+          description: Credit card expiration date
+          format: date
+          example: 2023-07-31
+        balance:
+          type: string
+          description: Credit card balance
+          example: "1000.00"
+        accountId:
+          type: integer
+          description: Bank account id linked with the credit card
+          format: int32
+          example: 1
+      description: Credit card data model
+    creditCardDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        number:
+          type: string
+          description: Credit card number
+          example: "4000003394112581"
+        expirationDate:
+          type: string
+          description: Credit card expiration date
+          format: date
+          example: 2023-07-31
+        balance:
+          type: string
+          description: Credit card balance
+          example: "1000.00"
+        accountId:
+          type: integer
+          format: int32
+          example: 1
+        accountNumber:
+          type: string
+          description: Bank account number linked with the credit card
+          example: BY80F29S8416E1PXLF9VHCGM99T6
+      description: Credit card data transfer object
+    BankAccount:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        number:
+          type: string
+          description: International bank account number
+          example: BY80F29S8416E1PXLF9VHCGM99T6
+        customer:
+          type: string
+          description: Full name of the bank customer holding the bank account
+          example: Ivan Ivanov
+        registrationDate:
+          type: string
+          description: Date of the customer registration in the bank system
+          format: date
+          example: 2020-06-28
+      description: Bank account data model
+    CreditCardFilterDto:
+      type: object
+      properties:
+        valueFromDate:
+          type: string
+          description: Start date of the credit card expiration range
+          example: 06/2022
+        valueToDate:
+          type: string
+          description: End date of the credit card expiration range
+          example: 08/2023
+      description: Credit card data transfer object for filtering by expiration date range
+    BankAccountDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        number:
+          type: string
+          description: International bank account number
+          example: BY80F29S8416E1PXLF9VHCGM99T6
+        customer:
+          type: string
+          description: Full name of the bank customer holding the bank account
+          example: Ivan Ivanov
+        registrationDate:
+          type: string
+          description: Date of the customer registration in the bank syste
+          format: date
+          example: 2020-06-28
+        totalCards:
+          type: integer
+          description: Total cards linked to the bank account
+          format: int32
+          example: 2
+      description: Bank account data transfer object
+    BankAccountFilterDto:
+      type: object
+      properties:
+        numberPattern:
+          type: string
+          description: Bank account number search pattern
+          example: BY 99T6
+        customerPattern:
+          type: string
+          description: Bank customer full name search pattern
+          example: an ov
+      description: Bank account data transfer object for filtering by account number and customer full name
