@@ -55,7 +55,7 @@ public class BankAccountDtoRestController {
                              "Allowed characters for the customer search pattern are [A-Za-z]",
                responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(implementation = BankAccountDto.class))),
                                          responseCode = "200"),
-                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
+                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrorsMessage")),
                                          responseCode = "400", description = "If any search pattern is invalid")}
     )
     @PostMapping

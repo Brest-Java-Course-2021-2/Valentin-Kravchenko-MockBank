@@ -5,6 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 public abstract class BasicValidator {
 
     public void buildConstraint(ConstraintValidatorContext context, String template, String property) {
+        context.disableDefaultConstraintViolation();
         context.buildConstraintViolationWithTemplate(template).addPropertyNode(property).addConstraintViolation();
     }
 

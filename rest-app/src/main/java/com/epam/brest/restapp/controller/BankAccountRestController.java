@@ -76,7 +76,7 @@ public class BankAccountRestController {
                operationId = "createBankAccount",
                responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
                                          responseCode = "200"),
-                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
+                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrorsMessage")),
                                          responseCode = "400", description = "If the customer full name is incorrect")})
     @PostMapping
     public ResponseEntity<BankAccount> create(
@@ -95,7 +95,7 @@ public class BankAccountRestController {
                operationId = "updateBankAccount",
                responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
                                          responseCode = "200"),
-                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
+                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrorsMessage")),
                                          responseCode = "400", description = "If the customer full name is incorrect")})
     @PutMapping
     public ResponseEntity<BankAccount> update(

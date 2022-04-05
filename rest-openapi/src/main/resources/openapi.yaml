@@ -6,7 +6,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0)
-  version: 1.0.0
+  version: "1.0"
 externalDocs:
   description: GitHub Repository
   url: https://github.com/Brest-Java-Course-2021-2/Valentin-Kravchenko-MockBank
@@ -16,10 +16,10 @@ servers:
 tags:
 - name: Bank Account
   description: The Bank Account API
-- name: Credit Card
-  description: The Credit Card API
 - name: Controller Version
   description: The Controller Version API
+- name: Credit Card
+  description: The Credit Card API
 paths:
   /api/account:
     put:
@@ -45,7 +45,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/validationErrors'
+                $ref: '#/components/schemas/validationErrorsMessage'
     post:
       tags:
       - Bank Account
@@ -69,7 +69,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/validationErrors'
+                $ref: '#/components/schemas/validationErrorsMessage'
   /api/cards:
     get:
       tags:
@@ -114,7 +114,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/validationErrors'
+                $ref: '#/components/schemas/validationErrorsMessage'
   /api/card:
     post:
       tags:
@@ -175,7 +175,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/validationErrors'
+                $ref: '#/components/schemas/validationErrorsMessage'
   /api/card/deposit:
     post:
       tags:
@@ -211,7 +211,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/validationErrors'
+                $ref: '#/components/schemas/validationErrorsMessage'
   /api/accounts:
     get:
       tags:
@@ -261,11 +261,11 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/validationErrors'
+                $ref: '#/components/schemas/validationErrorsMessage'
   /api/version:
     get:
       tags:
-      - Version
+      - Controller Version
       summary: Get a controller version
       operationId: getVersion
       responses:
@@ -431,8 +431,8 @@ components:
       properties:
         message:
           type: string
-      description: Response error message
-    validationErrors:
+      description: Server error message
+    validationErrorsMessage:
       type: object
       properties:
         validationErrors:
@@ -448,13 +448,13 @@ components:
     updatedPersonalDataDto:
       type: object
       properties:
+        customer:
+          type: string
+          example: Ivan Ivanoff
         id:
           type: integer
           format: int32
           example: 1
-        customer:
-          type: string
-          example: Ivan Ivanoff
       description: Personal data of the bank account customer for updating
     bankAccountId:
       type: integer
@@ -464,14 +464,14 @@ components:
     depositTransactionDto:
       type: object
       properties:
-        locale:
-          type: string
-          description: Current locale
-          example: ru
         valueSumOfMoney:
           type: string
           description: Value of a sum of money
           example: "1500,00"
+        locale:
+          type: string
+          description: Current locale
+          example: ru
         targetCardNumber:
           type: string
           description: Number of a target credit card
@@ -584,7 +584,7 @@ components:
           type: string
           description: End date of the credit card expiration range
           example: 08/2023
-      description: Credit card data transfer object for filtering by expiration date range
+      description: Credit card data transfer object for filtering by date range
     BankAccountDto:
       type: object
       properties:
@@ -622,4 +622,5 @@ components:
           type: string
           description: Bank customer full name search pattern
           example: an ov
-      description: Bank account data transfer object for filtering by account number and customer full name
+      description: Bank account data transfer object for filtering by account number
+        and customer full name

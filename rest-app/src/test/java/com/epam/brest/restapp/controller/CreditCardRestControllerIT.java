@@ -70,7 +70,7 @@ class CreditCardRestControllerIT extends RestControllerTestBasic {
         List<CreditCard> cards = bankAccountService.getAllCardsById(1);
         CreditCard creditCard = cards.get(0);
         performDeleteAndExpectStatus("/card/" + creditCard.getId(), status().isBadRequest())
-               .andExpect(jsonPath("$.message").hasJsonPath());
+               .andExpect(jsonPath("$.errorMessage").hasJsonPath());
         CreditCard creditCardFromDb = creditCardService.getById(creditCard.getId());
         assertEquals(creditCard, creditCardFromDb);
     }

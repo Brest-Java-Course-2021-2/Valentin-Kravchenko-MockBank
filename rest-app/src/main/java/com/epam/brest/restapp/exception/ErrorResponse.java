@@ -1,21 +1,23 @@
 package com.epam.brest.restapp.exception;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Map;
 
+/**
+ *  Response body containing the server error message or
+ *  validation errors in the request body.
+ */
 public class ErrorResponse {
 
-    private String message;
+    private String errorMessage;
 
     private Map<String, String> validationErrors;
 
-    public String getMessage() {
-        return message;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     public Map<String, String> getValidationErrors() {
