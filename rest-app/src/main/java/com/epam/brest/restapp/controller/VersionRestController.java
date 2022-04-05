@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class VersionRestController {
 
     @Operation(summary = "Get a controller version",
-               responses = {@ApiResponse(content = @Content(schema = @Schema(type = "string", description = "version", example = "1.0.0")),
+               operationId = "getVersion",
+               responses = {@ApiResponse(content = @Content(schema = @Schema(type = "string", description = "version", example = "1.0")),
                                          responseCode = "200")})
     @GetMapping
     public String getVersion(

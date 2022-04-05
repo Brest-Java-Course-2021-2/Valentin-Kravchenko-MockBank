@@ -98,7 +98,7 @@ public class CreditCardRestController {
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
                                          responseCode = "404", description = "If the target credit card with the given number not found"),
-                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
+                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrorsMessage")),
                                          responseCode = "400", description = "If the target credit card number is invalid" +
                                                                              "and/or format of the sum of money is incorrect")})
     @PostMapping("deposit")
@@ -124,7 +124,7 @@ public class CreditCardRestController {
                                          responseCode = "200"),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
                                          responseCode = "404", description = "If the source or target credit card was not found by number"),
-                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
+                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrorsMessage")),
                                          responseCode = "400", description = "if the source credit card doesn't contain enough money for a transfer " +
                                                                              "and/or format of the sum of money is incorrect")})
     @PostMapping("transfer")
@@ -152,7 +152,7 @@ public class CreditCardRestController {
             @Parameter(description = "Credit card ID", required = true)
             @PathVariable Integer id
     ){
-        LOGGER.debug("remove(api/card/{})", id);
+        LOGGER.debug("delete(api/card/{})", id);
         CreditCard deletedCreditCard = creditCardService.delete(id);
         return ResponseEntity.ok(deletedCreditCard);
     }

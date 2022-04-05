@@ -22,7 +22,7 @@ import java.util.Map;
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI customOpenAPI(@Value("${controller.version}") String version) {
+    public OpenAPI openAPI(@Value("${controller.version}") String version) {
 
         return new OpenAPI().info(new Info().title("MockBank API")
                                             .description("MockBank is a web-application to work with bank accounts and linked them credit cards")
@@ -33,10 +33,10 @@ public class OpenApiConfig {
                             .components(new Components().addSchemas("errorMessage",
                                                                     new ObjectSchema()
                                                                             .addProperties("message", new StringSchema())
-                                                                            .description("Response error message"))
-                                                        .addSchemas("validationErrors",
+                                                                            .description("Server error message"))
+                                                        .addSchemas("validationErrorsMessage",
                                                                     new MapSchema()
-                                                                            .addProperties("validationErrors", new MapSchema())
+                                                                            .addProperties("validationErrors", new Schema<Map<String, String>>())
                                                                             .description("Validation errors in the request body"))
                                                         .addSchemas("personalDataDto",
                                                                     new ObjectSchema()

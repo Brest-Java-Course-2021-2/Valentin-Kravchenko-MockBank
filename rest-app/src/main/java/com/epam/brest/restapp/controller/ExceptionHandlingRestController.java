@@ -41,7 +41,7 @@ public class ExceptionHandlingRestController {
     public ResponseEntity<ErrorResponse> handleError(RuntimeException e) {
         LOGGER.warn("handleServiceException, message={}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(e.getMessage());
+        errorResponse.setErrorMessage(e.getMessage());
         if (e instanceof ResourceNotFoundException) {
             return new ResponseEntity<>(errorResponse, NOT_FOUND);
         }
@@ -53,7 +53,7 @@ public class ExceptionHandlingRestController {
     public ResponseEntity<ErrorResponse> handleError(NoHandlerFoundException e) {
         LOGGER.error("handleNoHandlerFoundException", e);
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(noHandlerFoundErrorMessage);
+        errorResponse.setErrorMessage(noHandlerFoundErrorMessage);
         return new ResponseEntity<>(errorResponse, NOT_FOUND);
     }
 
@@ -63,7 +63,7 @@ public class ExceptionHandlingRestController {
         LOGGER.error("handleMethodArgumentTypeMismatchException", e);
         ErrorResponse errorResponse = new ErrorResponse();
         String message = String.format(argumentTypeErrorTemplate, e.getName(), e.getValue());
-        errorResponse.setMessage(message);
+        errorResponse.setErrorMessage(message);
         return new ResponseEntity<>(errorResponse, BAD_REQUEST);
     }
 
@@ -72,7 +72,7 @@ public class ExceptionHandlingRestController {
     public ResponseEntity<ErrorResponse> handleError(HttpMessageNotReadableException e) {
         LOGGER.error("HttpMessageNotReadableException", e);
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(httpMessageNotReadableErrorMessage);
+        errorResponse.setErrorMessage(httpMessageNotReadableErrorMessage);
         return new ResponseEntity<>(errorResponse, BAD_REQUEST);
     }
 
@@ -94,7 +94,7 @@ public class ExceptionHandlingRestController {
     public ResponseEntity<ErrorResponse> handleError(Exception e) {
         LOGGER.error("handleException", e);
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(INTERNAL_SERVER_ERROR.getReasonPhrase());
+        errorResponse.setErrorMessage(INTERNAL_SERVER_ERROR.getReasonPhrase());
         return new ResponseEntity<>(errorResponse, INTERNAL_SERVER_ERROR);
     }
 

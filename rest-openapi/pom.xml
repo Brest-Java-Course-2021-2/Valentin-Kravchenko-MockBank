@@ -34,8 +34,28 @@
         </dependency>
     </dependencies>
 
+    <properties>
+        <db>test-db</db>
+    </properties>
+
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.epam.brest.openapi.OpenApiApp</mainClass>
+                    <profiles>${db}</profiles>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -51,6 +71,7 @@
                             <apiPackage>${project.groupId}.openapi.api</apiPackage>
                             <modelPackage>${project.groupId}.model</modelPackage>
                             <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                            <modelsToGenerate>ErrorMessage,ValidationErrorsMessage,PersonalDataDto,UpdatedPersonalDataDto,BankAccountId,DepositTransactionDto,TransferTransactionDto</modelsToGenerate>
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateApiTests>false</generateApiTests>
                             <generateModelDocumentation>false</generateModelDocumentation>
@@ -58,6 +79,7 @@
                             <configOptions>
                                 <delegatePattern>true</delegatePattern>
                                 <useTags>true</useTags>
+                                <useBeanValidation>false</useBeanValidation>
                             </configOptions>
                         </configuration>
                     </execution>

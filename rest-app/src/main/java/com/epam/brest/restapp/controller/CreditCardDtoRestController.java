@@ -50,7 +50,7 @@ public class CreditCardDtoRestController {
                              "Valid date format is Month{required, 2 digits}\\/Year{required, 4 digits} (for example, 06/2022)",
                responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(ref = "#/components/schemas/creditCardDto"))),
                                          responseCode = "200"),
-                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrors")),
+                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrorsMessage")),
                                          responseCode = "400", description = "If the date format is incorrect")}
     )
     @PostMapping

@@ -62,19 +62,19 @@ class BankAccountRestControllerIT extends RestControllerTestBasic {
     @Test
     void getByNonExistingId() throws Exception {
         performGetAndExpectStatus("/account/100", status().isNotFound())
-               .andExpect(jsonPath("$.message").value(containsString("100")));
+               .andExpect(jsonPath("$.errorMessage").value(containsString("100")));
     }
 
     @Test
     void getByIncorrectId() throws Exception {
         performGetAndExpectStatus("/account/one", status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(containsString("one")));
+                .andExpect(jsonPath("$.errorMessage").value(containsString("one")));
     }
 
     @Test
     void getByIdInvalidEndpoint() throws Exception {
         performGetAndExpectStatus("/account/1/1", status().isNotFound())
-                .andExpect(jsonPath("$.message").value(RESOURCE_NOT_FOUND));
+                .andExpect(jsonPath("$.errorMessage").value(RESOURCE_NOT_FOUND));
     }
 
     @Test
