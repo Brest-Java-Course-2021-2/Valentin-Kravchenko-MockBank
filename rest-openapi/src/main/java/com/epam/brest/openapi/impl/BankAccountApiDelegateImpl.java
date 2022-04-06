@@ -22,10 +22,12 @@ public class BankAccountApiDelegateImpl extends ApiDelegateBasic implements Bank
 
     private final BankAccountDtoService bankAccountDtoService;
 
-    public BankAccountApiDelegateImpl(BankAccountService bankAccountServiceImpl, BankAccountDtoService bankAccountDtoService, Validator validator) {
+    public BankAccountApiDelegateImpl(BankAccountService bankAccountServiceImpl,
+                                      BankAccountDtoService bankAccountDtoServiceIml,
+                                      Validator validator) {
         super(validator);
         this.bankAccountService = bankAccountServiceImpl;
-        this.bankAccountDtoService = bankAccountDtoService;
+        this.bankAccountDtoService = bankAccountDtoServiceIml;
     }
 
     @Override

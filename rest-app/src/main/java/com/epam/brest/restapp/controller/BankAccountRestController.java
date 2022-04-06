@@ -32,15 +32,6 @@ public class BankAccountRestController {
         this.bankAccountService = bankAccountServiceImpl;
     }
 
-    @Operation(hidden = true)
-    @GetMapping
-    public ResponseEntity<BankAccount> get() {
-        LOGGER.debug("get(api/account)");
-        BankAccount bankAccount = new BankAccount();
-        bankAccount.setRegistrationDate(LocalDate.now());
-        return ResponseEntity.ok(bankAccount);
-    }
-
     @Operation(summary = "Get a bank account by its ID",
                operationId = "getBankAccountById",
                responses = {@ApiResponse(content = @Content(schema = @Schema(implementation = BankAccount.class)),
@@ -55,21 +46,6 @@ public class BankAccountRestController {
         LOGGER.debug("getById(api/account/{})", id);
         BankAccount bankAccount = bankAccountService.getById(id);
         return ResponseEntity.ok(bankAccount);
-    }
-
-    @Operation(summary = "List of all credit cards linked with a specific bank account",
-               responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(ref = "#/components/schemas/creditCard"))),
-                                         responseCode = "200"),
-                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                                         responseCode = "404", description = "If the bank account with the given ID not found") })
-    @GetMapping("{id}/cards")
-    public ResponseEntity<List<CreditCard>> getAllCards(
-            @Parameter(description = "Bank account ID", required = true)
-            @PathVariable Integer id
-    ) {
-        LOGGER.debug("get(api/account/{}/cards)", id);
-        List<CreditCard> cards = bankAccountService.getAllCardsById(id);
-        return ResponseEntity.ok(cards);
     }
 
     @Operation(summary = "Create a new bank account",
@@ -127,6 +103,30 @@ public class BankAccountRestController {
         BankAccount deletedBankAccount = bankAccountService.delete(id);
         LOGGER.debug("delete(/account, updatedBankAccount={})", deletedBankAccount);
         return ResponseEntity.ok(deletedBankAccount);
+    }
+
+    @Operation(summary = "List of all credit cards linked with a specific bank account",
+            responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(ref = "#/components/schemas/creditCard"))),
+                    responseCode = "200"),
+                    @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
+                            responseCode = "404", description = "If the bank account with the given ID not found") })
+    @GetMapping("{id}/cards")
+    public ResponseEntity<List<CreditCard>> getAllCards(
+            @Parameter(description = "Bank account ID", required = true)
+            @PathVariable Integer id
+    ) {
+        LOGGER.debug("get(api/account/{}/cards)", id);
+        List<CreditCard> cards = bankAccountService.getAllCardsById(id);
+        return ResponseEntity.ok(cards);
+    }
+
+    @Operation(hidden = true)
+    @GetMapping
+    public ResponseEntity<BankAccount> get() {
+        LOGGER.debug("get(api/account)");
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setRegistrationDate(LocalDate.now());
+        return ResponseEntity.ok(bankAccount);
     }
 
 }

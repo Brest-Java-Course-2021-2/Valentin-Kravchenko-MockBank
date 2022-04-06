@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import static com.epam.brest.service.constant.ServiceConstant.JOIN_DELIMITER;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class BankAccountServiceImpl implements BankAccountService {
 
     private static final Logger LOGGER = LogManager.getLogger(BankAccountServiceImpl.class);
@@ -56,6 +56,7 @@ public class BankAccountServiceImpl implements BankAccountService {
                              });
     }
 
+    @Transactional
     @Override
     public BankAccount create(BankAccount bankAccount) {
         LOGGER.debug("create(bankAccount={})", bankAccount);
@@ -65,6 +66,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccountDao.create(bankAccount);
     }
 
+    @Transactional
     @Override
     public BankAccount update(BankAccount bankAccount) {
         LOGGER.debug("update(bankAccount={})", bankAccount);
@@ -76,6 +78,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccountFromDb;
     }
 
+    @Transactional
     @Override
     public BankAccount delete(Integer id) {
         LOGGER.debug("delete(id={})", id);
