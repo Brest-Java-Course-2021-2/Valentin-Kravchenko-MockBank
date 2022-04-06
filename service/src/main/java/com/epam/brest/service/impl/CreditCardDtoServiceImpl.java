@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class CreditCardDtoServiceImpl implements CreditCardDtoService {
 
     private static final Logger LOGGER = LogManager.getLogger(CreditCardDtoServiceImpl.class);

@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import static com.epam.brest.service.constant.ServiceConstant.INIT_BALANCE;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class CreditCardServiceImpl implements ExtendedCreditCardService {
 
     private static final Logger LOGGER = LogManager.getLogger(CreditCardServiceImpl.class);
@@ -67,33 +67,35 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
                             });
     }
 
+    @Transactional
     @Override
     public CreditCard create(Integer accountId) {
         LOGGER.debug("create(accountId={})", accountId);
-
-        CreditCard newCreditCard = new CreditCard();
-        newCreditCard.setNumber(getCardNumber());
-        newCreditCard.setExpirationDate(ServiceUtils.convertToExpirationDate(LocalDate.now()));
-        newCreditCard.setBalance(new BigDecimal(INIT_BALANCE));
-        newCreditCard.setAccountId(accountId);
-        LOGGER.debug("create(newCreditCard={})", newCreditCard);
-        return creditCardDao.create(newCreditCard);
+        CreditCard createdCreditCard = new CreditCard();
+        createdCreditCard.setNumber(getCardNumber());
+        createdCreditCard.setExpirationDate(ServiceUtils.convertToExpirationDate(LocalDate.now()));
+        createdCreditCard.setBalance(new BigDecimal(INIT_BALANCE));
+        createdCreditCard.setAccountId(accountId);
+        LOGGER.debug("create(createdCreditCard={})", createdCreditCard);
+        return creditCardDao.create(createdCreditCard);
     }
 
+    @Transactional
     @Override
     public CreditCard delete(Integer id) {
         LOGGER.debug("delete(id={})", id);
-        CreditCard creditCardFromDb = getById(id);
-        LOGGER.debug("delete(creditCardFromDb={})", creditCardFromDb);
-        if (creditCardFromDb.getBalance().signum() == 1) {
-            String error = String.format(deleteError, creditCardFromDb.getNumber(), creditCardFromDb.getBalance().toPlainString());
+        CreditCard deletedCardFromDb = getById(id);
+        LOGGER.debug("delete(deletedCardFromDb={})", deletedCardFromDb);
+        if (deletedCardFromDb.getBalance().signum() == 1) {
+            String error = String.format(deleteError, deletedCardFromDb.getNumber(), deletedCardFromDb.getBalance().toPlainString());
             LOGGER.warn("delete(error={})", error);
             throw new CreditCardException(error);
         }
-        creditCardDao.delete(creditCardFromDb.getId());
-        return creditCardFromDb;
+        creditCardDao.delete(deletedCardFromDb.getId());
+        return deletedCardFromDb;
     }
 
+    @Transactional
     @Override
     public CreditCard deposit(CreditCardTransactionDto creditCardTransactionDto) {
         LOGGER.debug("deposit(creditCardTransactionDto={})", creditCardTransactionDto);
@@ -106,6 +108,7 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
         return targetCreditCard;
     }
 
+    @Transactional
     @Override
     public CreditCard transfer(CreditCardTransactionDto creditCardTransactionDto) {
         LOGGER.debug("deposit(creditCardTransactionDto={})", creditCardTransactionDto);

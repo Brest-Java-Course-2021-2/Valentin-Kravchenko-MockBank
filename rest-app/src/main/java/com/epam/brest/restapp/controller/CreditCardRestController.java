@@ -49,43 +49,41 @@ public class CreditCardRestController {
         return ResponseEntity.ok(creditCardFromDb);
     }
 
-    @Operation(hidden = true)
-    @GetMapping("{id}/deposit")
-    public ResponseEntity<CreditCardTransactionDto> deposit(@PathVariable Integer id) {
-        LOGGER.debug("depositGET(api/card/{}/deposit)", id);
-        CreditCard creditCardFromDb = creditCardService.getById(id);
-        CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
-        creditCardTransactionDto.setTargetCardNumber(creditCardFromDb.getNumber());
-        return ResponseEntity.ok(creditCardTransactionDto);
-    }
-
-    @Operation(hidden = true)
-    @GetMapping("{id}/transfer")
-    public ResponseEntity<CreditCardTransactionDto> transfer(@PathVariable Integer id) {
-        LOGGER.debug("transferGET(api/card/{}/transfer)", id);
-        CreditCard creditCardFromDb = creditCardService.getById(id);
-        CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
-        creditCardTransactionDto.setSourceCardNumber(creditCardFromDb.getNumber());
-        return ResponseEntity.ok(creditCardTransactionDto);
-    }
-
     @Operation(summary = "Create a new credit card",
-               operationId = "createCreditCard",
-               responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
-                                         responseCode = "200"),
-                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                                         responseCode = "404", description = "If the bank account with the given ID not found")})
+            operationId = "createCreditCard",
+            responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
+                    responseCode = "200"),
+                    @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
+                            responseCode = "404", description = "If the bank account with the given ID not found")})
     @PostMapping
     public ResponseEntity<CreditCard> create(
             @Parameter(description = "Bank account ID to which the credit card will be linked",
-                       schema = @Schema(ref = "#/components/schemas/bankAccountId"),
-                       required = true)
+                    schema = @Schema(ref = "#/components/schemas/bankAccountId"),
+                    required = true)
             @RequestBody Integer accountId
     ){
         LOGGER.debug("create(api/card, accountId={})", accountId);
         bankAccountService.getById(accountId);
         CreditCard createdCreditCard = creditCardService.create(accountId);
         return ResponseEntity.ok(createdCreditCard);
+    }
+
+    @Operation(summary = "Delete a credit card by its ID",
+            operationId = "deleteCreditCard",
+            responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
+                    responseCode = "200"),
+                    @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
+                            responseCode = "404", description = "If the credit card with the given ID not found"),
+                    @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
+                            responseCode = "400", description = "if the credit card has a positive balance")})
+    @DeleteMapping("{id}")
+    public ResponseEntity<CreditCard> delete(
+            @Parameter(description = "Credit card ID", required = true)
+            @PathVariable Integer id
+    ){
+        LOGGER.debug("delete(api/card/{})", id);
+        CreditCard deletedCreditCard = creditCardService.delete(id);
+        return ResponseEntity.ok(deletedCreditCard);
     }
 
     @Operation(summary = "Execute a deposit transaction for a specific credit card",
@@ -139,22 +137,24 @@ public class CreditCardRestController {
         return ResponseEntity.ok(sourceCreditCard);
     }
 
-    @Operation(summary = "Delete a credit card by its ID",
-               operationId = "deleteCreditCard",
-               responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
-                                         responseCode = "200"),
-                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                                         responseCode = "404", description = "If the credit card with the given ID not found"),
-                            @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                                         responseCode = "400", description = "if the credit card has a positive balance")})
-    @DeleteMapping("{id}")
-    public ResponseEntity<CreditCard> delete(
-            @Parameter(description = "Credit card ID", required = true)
-            @PathVariable Integer id
-    ){
-        LOGGER.debug("delete(api/card/{})", id);
-        CreditCard deletedCreditCard = creditCardService.delete(id);
-        return ResponseEntity.ok(deletedCreditCard);
+    @Operation(hidden = true)
+    @GetMapping("{id}/deposit")
+    public ResponseEntity<CreditCardTransactionDto> deposit(@PathVariable Integer id) {
+        LOGGER.debug("depositGET(api/card/{}/deposit)", id);
+        CreditCard creditCardFromDb = creditCardService.getById(id);
+        CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
+        creditCardTransactionDto.setTargetCardNumber(creditCardFromDb.getNumber());
+        return ResponseEntity.ok(creditCardTransactionDto);
+    }
+
+    @Operation(hidden = true)
+    @GetMapping("{id}/transfer")
+    public ResponseEntity<CreditCardTransactionDto> transfer(@PathVariable Integer id) {
+        LOGGER.debug("transferGET(api/card/{}/transfer)", id);
+        CreditCard creditCardFromDb = creditCardService.getById(id);
+        CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
+        creditCardTransactionDto.setSourceCardNumber(creditCardFromDb.getNumber());
+        return ResponseEntity.ok(creditCardTransactionDto);
     }
 
 }
