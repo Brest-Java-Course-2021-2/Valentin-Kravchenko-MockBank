@@ -4,14 +4,13 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.Content;
-import io.swagger.v3.oas.models.media.MediaType;
-import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.*;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Map;
 
 import static com.epam.brest.openapi.constant.OpenApiConstant.*;
 
@@ -34,6 +33,9 @@ public class OpenApiConfig {
                                       if (key.equals("/api/cards")) {
                                           setNewContent(value, buildNewContentWithArraySchema("CreditCardDto"));
                                       }
+                                      if (key.equals("/api/version")) {
+                                          setNewContent(value, buildNewContentWithMapSchema(VERSION, new StringSchema().description("Current controller version")));
+                                      }
                                   });
     }
 
@@ -50,8 +52,13 @@ public class OpenApiConfig {
     private Content buildNewContentWithArraySchema(String schema) {
         return new Content().addMediaType(APPLICATION_JSON,
                 new MediaType().schema(
-                        new ArraySchema().items(new ObjectSchema().$ref(COMPONENTS_SCHEMAS + schema))
-                ));
+                        new ArraySchema().items(new ObjectSchema().$ref(COMPONENTS_SCHEMAS + schema))));
+    }
+
+    private Content buildNewContentWithMapSchema(String key, Schema propertiesItem) {
+        return new Content().addMediaType(APPLICATION_JSON,
+                new MediaType().schema(
+                        new Schema<Map<String, Object>>().addProperties(key, propertiesItem)));
     }
 
 }

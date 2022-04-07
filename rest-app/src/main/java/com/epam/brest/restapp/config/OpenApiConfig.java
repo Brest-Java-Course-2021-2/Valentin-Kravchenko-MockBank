@@ -31,46 +31,47 @@ public class OpenApiConfig {
                             .externalDocs(new ExternalDocumentation().description("GitHub Repository")
                                                                      .url("https://github.com/Brest-Java-Course-2021-2/Valentin-Kravchenko-MockBank"))
                             .components(new Components().addSchemas("errorMessage",
-                                                                    new ObjectSchema()
-                                                                            .addProperties("message", new StringSchema())
+                                                                    buildObjectSchema(Map.of("message", new StringSchema()))
                                                                             .description("Server error message"))
                                                         .addSchemas("validationErrorsMessage",
-                                                                    new MapSchema()
-                                                                            .addProperties("validationErrors", new Schema<Map<String, String>>())
+                                                                    buildObjectSchema(Map.of("validationErrors", new Schema<Map<String, String>>()))
                                                                             .description("Validation errors in the request body"))
                                                         .addSchemas("personalDataDto",
-                                                                    new ObjectSchema()
-                                                                            .addProperties("customer", new StringSchema().example("Sergey Sergeev"))
+                                                                    buildObjectSchema(Map.of("customer", new StringSchema().example("Sergey Sergeev")))
                                                                             .description("Personal data model of the bank customer"))
                                                         .addSchemas("updatedPersonalDataDto",
-                                                                    getObjectSchema(Map.of("id", new IntegerSchema().example(1),
+                                                                    buildObjectSchema(Map.of("id", new IntegerSchema().example(1),
                                                                                            "customer", new StringSchema().example("Ivan Ivanoff")))
                                                                             .description("Personal data model of the bank customer for updating"))
-                                                        .addSchemas("bankAccountId", new IntegerSchema().example(1))
+                                                        .addSchemas("bankAccountId", new IntegerSchema().example(1).description("Bank account ID"))
                                                         .addSchemas("depositTransactionDto",
-                                                                    getObjectSchema(Map.of("targetCardNumber",
+                                                                    buildObjectSchema(Map.of("targetCardNumber",
                                                                                            new StringSchema().example("4000003394112581").description("Number of a target credit card"),
                                                                                            "valueSumOfMoney",
                                                                                            new StringSchema().example("1500,00").description("Value of a sum of money"),
                                                                                            "locale", new StringSchema().example("ru").description("Current locale")))
                                                                             .description("Deposit transaction data model"))
+                                                       .addSchemas("controllerVersion",
+                                                                   new Schema<Map<String, String>>()
+                                                                           .addProperties("version", new StringSchema().example("1.0"))
+                                                                           .description("Current controller version"))
                                                         .addSchemas("transferTransactionDto",
-                                                                    getResolvedSchema(CreditCardTransactionDto.class,
+                                                                    buildResolvedSchema(CreditCardTransactionDto.class,
                                                                                   "locale", new StringSchema().example("ru").description("Current locale"))
                                                                             .description("Transfer transaction data model"))
                                                         .addSchemas("creditCard",
-                                                                    getResolvedSchema(CreditCard.class,
+                                                                    buildResolvedSchema(CreditCard.class,
                                                                                   "balance", new StringSchema().example("1000.00").description("Credit card balance")))
                                                         .addSchemas("creditCardDto",
-                                                                    getResolvedSchema(CreditCardDto.class,
+                                                                    buildResolvedSchema(CreditCardDto.class,
                                                                                   "balance", new StringSchema().example("1000.00").description("Credit card balance"))));
     }
 
-    private Schema getObjectSchema(Map<String, Schema> properties){
+    private Schema buildObjectSchema(Map<String, Schema> properties){
         return new ObjectSchema().properties(properties);
     }
 
-    private Schema getResolvedSchema(Class className, String key, Schema propertiesItem){
+    private Schema buildResolvedSchema(Class className, String key, Schema propertiesItem){
         ResolvedSchema resolvedSchema = ModelConverters.getInstance()
                                                        .resolveAsResolvedSchema(new AnnotatedType(className).resolveAsRef(false));
         return resolvedSchema.schema.addProperties(key, propertiesItem);

@@ -71,7 +71,7 @@
                             <apiPackage>${project.groupId}.openapi.api</apiPackage>
                             <modelPackage>${project.groupId}.model</modelPackage>
                             <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
-                            <modelsToGenerate>ErrorMessage,ValidationErrorsMessage,PersonalDataDto,UpdatedPersonalDataDto,BankAccountId,DepositTransactionDto,TransferTransactionDto</modelsToGenerate>
+                            <modelsToGenerate>errorMessage,validationErrorsMessage,personalDataDto,updatedPersonalDataDto,bankAccountId,depositTransactionDto,transferTransactionDto</modelsToGenerate>
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateApiTests>false</generateApiTests>
                             <generateModelDocumentation>false</generateModelDocumentation>

@@ -23,7 +23,7 @@ public class VersionRestController {
 
     @Operation(summary = "Get a controller version",
                operationId = "getVersion",
-               responses = {@ApiResponse(content = @Content(schema = @Schema(type = "string", description = "Controller version", example = "1.0")),
+               responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/controllerVersion")),
                                          responseCode = "200")})
     @GetMapping
     public ResponseEntity<Map<String, String>> getVersion(
