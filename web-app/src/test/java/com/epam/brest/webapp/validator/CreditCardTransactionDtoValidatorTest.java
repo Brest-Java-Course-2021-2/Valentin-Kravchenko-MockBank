@@ -33,7 +33,7 @@ class CreditCardTransactionDtoValidatorTest {
         String invalidCardNumber = "4929554996657100";
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(invalidCardNumber);
-        creditCardTransactionDto.setValueSumOfMoney("100,223");
+        creditCardTransactionDto.setTransactionAmountValue("100,223");
         creditCardTransactionDto.setLocale(new Locale(RU));
         DataBinder dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
@@ -43,7 +43,7 @@ class CreditCardTransactionDtoValidatorTest {
         assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
         // Case 2
         creditCardTransactionDto.setTargetCardNumber("492955499665710w");
-        creditCardTransactionDto.setValueSumOfMoney("1000333444,2");
+        creditCardTransactionDto.setTransactionAmountValue("1000333444,2");
         creditCardTransactionDto.setLocale(new Locale(RU));
         dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
@@ -55,7 +55,7 @@ class CreditCardTransactionDtoValidatorTest {
         String validCardNumber = "4024007151271862";
         creditCardTransactionDto.setSourceCardNumber(validCardNumber);
         creditCardTransactionDto.setTargetCardNumber(validCardNumber);
-        creditCardTransactionDto.setValueSumOfMoney("-1000");
+        creditCardTransactionDto.setTransactionAmountValue("-1000");
         creditCardTransactionDto.setLocale(new Locale(RU));
         dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
@@ -65,7 +65,7 @@ class CreditCardTransactionDtoValidatorTest {
         assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
         // Case 4
         creditCardTransactionDto.setTargetCardNumber("4929554$96657100");
-        creditCardTransactionDto.setValueSumOfMoney("1000.55");
+        creditCardTransactionDto.setTransactionAmountValue("1000.55");
         creditCardTransactionDto.setLocale(new Locale(RU));
         dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
@@ -81,7 +81,7 @@ class CreditCardTransactionDtoValidatorTest {
         String validCardNumber = "4929554996657108";
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(validCardNumber);
-        creditCardTransactionDto.setValueSumOfMoney("2005,55");
+        creditCardTransactionDto.setTransactionAmountValue("2005,55");
         creditCardTransactionDto.setLocale(new Locale(RU));
         DataBinder dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);
@@ -92,7 +92,7 @@ class CreditCardTransactionDtoValidatorTest {
         String validCardNumber2 = "4024007151271862";
         creditCardTransactionDto.setSourceCardNumber(validCardNumber1);
         creditCardTransactionDto.setTargetCardNumber(validCardNumber2);
-        creditCardTransactionDto.setValueSumOfMoney("50005");
+        creditCardTransactionDto.setTransactionAmountValue("50005");
         creditCardTransactionDto.setLocale(new Locale(RU));
         dataBinder = new DataBinder(creditCardTransactionDto);
         dataBinder.addValidators(validator);

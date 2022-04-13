@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.iban4j.CountryCode.BY;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,6 +59,12 @@ class SimpleBankDataGeneratorTest {
         assertFalse(bankDataGenerator.isCardNumberValid(invalidCardNumber1));
         assertFalse(bankDataGenerator.isCardNumberValid(invalidCardNumber2));
         assertFalse(bankDataGenerator.isCardNumberValid(invalidCardNumber3));
+    }
+
+    @Test
+    void test() {
+        Set<Integer> collection = new HashSet<>();
+
     }
 
 }

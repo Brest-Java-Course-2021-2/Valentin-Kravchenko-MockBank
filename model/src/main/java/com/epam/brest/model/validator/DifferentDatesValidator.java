@@ -19,8 +19,8 @@ public class DifferentDatesValidator extends BasicValidator implements Constrain
     public boolean isValid(CreditCardFilterDto value, ConstraintValidatorContext context) {
         LOGGER.debug("isValid(value={})", value);
         if (Objects.nonNull(value.getFromDate()) && Objects.nonNull(value.getToDate()) && value.getFromDate().equals(value.getToDate())) {
-            buildConstraint(context, DIFFERENT_DATES_VALUE_FROM_DATE_TEMPLATE, VALUE_FROM_DATE);
-            buildConstraint(context, DIFFERENT_DATES_VALUE_TO_DATE_TEMPLATE, VALUE_TO_DATE);
+            buildConstraintViolation(context, DIFFERENT_DATES_VALUE_FROM_DATE_TEMPLATE, FROM_DATE_VALUE);
+            buildConstraintViolation(context, DIFFERENT_DATES_VALUE_TO_DATE_TEMPLATE, TO_DATE_VALUE);
             return false;
         }
         return true;

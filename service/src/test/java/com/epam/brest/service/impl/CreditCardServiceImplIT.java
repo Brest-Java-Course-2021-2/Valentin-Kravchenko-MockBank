@@ -9,12 +9,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ServiceIT
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class CreditCardServiceImplIT {
+
+    public static final String RU = "ru";
+    public static final String EN = "en";
+    public static final String TEST_VALUE_RU = "540,65";
+    public static final String TEST_VALUE_EN = "540.65";
 
     private final ExtendedCreditCardService creditCardService;
 
@@ -33,14 +39,14 @@ class CreditCardServiceImplIT {
     }
 
     @Test
-    void remove() {
+    void delete() {
         CreditCard creditCard = creditCardService.create(1);
         CreditCard deletedCreditCard = creditCardService.delete(creditCard.getId());
         assertEquals(creditCard, deletedCreditCard);
     }
 
     @Test
-    void failedRemove() {
+    void deleteFail() {
         CreditCard creditCard = new CreditCard();
         int id = 1;
         creditCard.setId(id);
@@ -51,13 +57,13 @@ class CreditCardServiceImplIT {
 
     @Test
     void deposit() {
-        CreditCard creditCard = creditCardService.create(1);
+        CreditCard targetCreditCard = creditCardService.create(1);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
-        creditCardTransactionDto.setTargetCardNumber(creditCard.getNumber());
-        BigDecimal sumOfMoney = new BigDecimal("1560.35");
-        creditCardTransactionDto.setSumOfMoney(sumOfMoney);
-        CreditCard creditCardAfterTransaction = creditCardService.deposit(creditCardTransactionDto);
-        assertEquals(creditCardAfterTransaction.getBalance(), sumOfMoney);
+        creditCardTransactionDto.setTargetCardNumber(targetCreditCard.getNumber());
+        creditCardTransactionDto.setTransactionAmountValue(TEST_VALUE_RU);
+        creditCardTransactionDto.setLocale(new Locale(RU));
+        CreditCard targetCreditCardAfterTransaction = creditCardService.deposit(creditCardTransactionDto);
+        assertEquals(targetCreditCardAfterTransaction.getBalance(), new BigDecimal(TEST_VALUE_EN));
     }                   
 
     @Test
@@ -67,30 +73,30 @@ class CreditCardServiceImplIT {
         // Deposit transaction
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(sourceCreditCard.getNumber());
-        BigDecimal depositSumOfMoney = new BigDecimal("1000.00");
-        creditCardTransactionDto.setSumOfMoney(depositSumOfMoney);
+        creditCardTransactionDto.setTransactionAmountValue(TEST_VALUE_EN);
+        creditCardTransactionDto.setLocale(new Locale(EN));
         CreditCard sourceCreditCardAfterDeposit = creditCardService.deposit(creditCardTransactionDto);
-        assertEquals(sourceCreditCardAfterDeposit.getBalance(), depositSumOfMoney);
+        assertEquals(sourceCreditCardAfterDeposit.getBalance(), new BigDecimal(TEST_VALUE_EN));
         // Transfer transaction
-        creditCardTransactionDto.setSourceCardNumber(sourceCreditCard.getNumber());
         creditCardTransactionDto.setTargetCardNumber(targetCreditCard.getNumber());
-        BigDecimal transferSumOfMoney = new BigDecimal("500.35");
-        creditCardTransactionDto.setSumOfMoney(transferSumOfMoney);
+        creditCardTransactionDto.setSourceCardNumber(sourceCreditCard.getNumber());
+        creditCardTransactionDto.setTransactionAmountValue(TEST_VALUE_RU);
+        creditCardTransactionDto.setLocale(new Locale(RU));
         CreditCard sourceCreditCardAfterTransfer = creditCardService.transfer(creditCardTransactionDto);
-        assertEquals(sourceCreditCardAfterDeposit.getBalance().subtract(sourceCreditCardAfterTransfer.getBalance()),
-                     transferSumOfMoney);
-        CreditCard targetCreditCardFromDb = creditCardService.getById(targetCreditCard.getId());
-        assertEquals(targetCreditCardFromDb.getBalance(), transferSumOfMoney);
+        assertEquals(sourceCreditCardAfterTransfer.getBalance().intValue(), 0);
+        CreditCard targetCreditCardAfterTransfer = creditCardService.getById(targetCreditCard.getId());
+        assertEquals(targetCreditCardAfterTransfer.getBalance(), new BigDecimal(TEST_VALUE_EN));
     }
 
     @Test
-    void failedTransfer() {
+    void transferFail() {
         CreditCard sourceCreditCard = creditCardService.create(1);
         CreditCard targetCreditCard = creditCardService.create(1);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setSourceCardNumber(sourceCreditCard.getNumber());
         creditCardTransactionDto.setTargetCardNumber(targetCreditCard.getNumber());
-        creditCardTransactionDto.setSumOfMoney(new BigDecimal("500.00"));
+        creditCardTransactionDto.setTransactionAmountValue(TEST_VALUE_RU);
+        creditCardTransactionDto.setLocale(new Locale(RU));
         assertThrows(CreditCardException.class, () -> creditCardService.transfer(creditCardTransactionDto));
         CreditCard sourceCreditCardFromDb = creditCardService.getById(sourceCreditCard.getId());
         CreditCard targetCreditCardFromDb = creditCardService.getById(targetCreditCard.getId());

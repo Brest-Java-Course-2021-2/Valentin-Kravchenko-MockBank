@@ -9,9 +9,9 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
-public class CustomerSearchPattenValidator implements ConstraintValidator<CustomerPattern, String> {
+public class CustomerPattenValidator implements ConstraintValidator<CustomerPattern, String> {
 
-    private static final Logger LOGGER = LogManager.getLogger(CustomerSearchPattenValidator.class);
+    private static final Logger LOGGER = LogManager.getLogger(CustomerPattenValidator.class);
 
     @Value("${account.filter.customer.regexp}")
     private String customerRegexp;

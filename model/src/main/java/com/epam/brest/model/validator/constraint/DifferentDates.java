@@ -7,8 +7,7 @@ import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- *  Validates that the start and end dates of the range
- *  are different.
+ *  Validates that the start and end dates of the range are different.
  */
 @Documented
 @Constraint(validatedBy = {DifferentDatesValidator.class})

@@ -1,22 +1,23 @@
 package com.epam.brest.model;
 
-import com.epam.brest.model.validator.constraint.CardNumbers;
-import com.epam.brest.model.validator.constraint.DifferentCardNumbers;
-import com.epam.brest.model.validator.constraint.SumOfMoney;
+import com.epam.brest.model.validator.constraint.CreditCard;
+import com.epam.brest.model.validator.constraint.DifferentCards;
+import com.epam.brest.model.validator.constraint.TransactionAmount;
 import com.epam.brest.model.validator.order.FirstOrder;
 import com.epam.brest.model.validator.order.SecondOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.GroupSequence;
-import java.math.BigDecimal;
 import java.util.Locale;
+
+import static com.epam.brest.model.validator.constant.CreditCardTransactionType.SOURCE;
+import static com.epam.brest.model.validator.constant.CreditCardTransactionType.TARGET;
 
 /**
  *  Credit card transaction data transfer object.
  */
-@CardNumbers(groups = {FirstOrder.class})
-@DifferentCardNumbers(groups = {SecondOrder.class})
-@SumOfMoney
+@DifferentCards(groups = {SecondOrder.class})
+@TransactionAmount
 @GroupSequence({CreditCardTransactionDto.class, FirstOrder.class, SecondOrder.class})
 public class CreditCardTransactionDto {
 
@@ -24,28 +25,24 @@ public class CreditCardTransactionDto {
      *  Number of a target credit card.
      */
     @Schema(example = "4000003394112581", description = "Number of a target credit card")
+    @CreditCard(value = TARGET, groups = {FirstOrder.class})
     private String targetCardNumber;
-
-    /**
-     *  Deposit sum of money.
-     */
-    @Schema(hidden = true)
-    private BigDecimal sumOfMoney;
 
     /**
      *  Number of a source credit card.
      */
     @Schema(example = "4000002538269224", description = "Number of a source credit card")
+    @CreditCard(value = SOURCE, groups = {FirstOrder.class})
     private String sourceCardNumber;
 
     /**
-     *  Value of a sum of money from a http request.
+     *  String representation of a transaction amount.
      */
-    @Schema(example = "1000,00", description = "Value of a sum of money")
-    private String valueSumOfMoney;
+    @Schema(example = "1000,00", description = "String representation of a transaction amount")
+    private String transactionAmountValue;
 
     /**
-     *  Current locale from a http request.
+     *  Current locale.
      */
     private Locale locale;
 
@@ -57,14 +54,6 @@ public class CreditCardTransactionDto {
         this.targetCardNumber = targetCardNumber;
     }
 
-    public BigDecimal getSumOfMoney() {
-        return sumOfMoney;
-    }
-
-    public void setSumOfMoney(BigDecimal sumOfMoney) {
-        this.sumOfMoney = sumOfMoney;
-    }
-
     public String getSourceCardNumber() {
         return sourceCardNumber;
     }
@@ -73,12 +62,12 @@ public class CreditCardTransactionDto {
         this.sourceCardNumber = sourceCardNumber;
     }
 
-    public String getValueSumOfMoney() {
-        return valueSumOfMoney;
+    public String getTransactionAmountValue() {
+        return transactionAmountValue;
     }
 
-    public void setValueSumOfMoney(String valueSumOfMoney) {
-        this.valueSumOfMoney = valueSumOfMoney;
+    public void setTransactionAmountValue(String transactionAmountValue) {
+        this.transactionAmountValue = transactionAmountValue;
     }
 
     public Locale getLocale() {
@@ -93,9 +82,8 @@ public class CreditCardTransactionDto {
     public String toString() {
         return getClass().getSimpleName() + "{" +
                "targetCardNumber='" + targetCardNumber + '\'' +
-               ", sumOfMoney=" + sumOfMoney +
                ", sourceCardNumber='" + sourceCardNumber + '\'' +
-               ", valueSumOfMoney='" + valueSumOfMoney + '\'' +
+               ", transactionAmountValue='" + transactionAmountValue + '\'' +
                ", locale=" + locale +
                '}';
     }

@@ -1,19 +1,19 @@
 package com.epam.brest.model.validator.constraint;
 
-import com.epam.brest.model.validator.DateRangeValidator;
+import com.epam.brest.model.validator.AnyOfPatternsValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- *  Validates that the start and end dates of the range are verified date.
+ *  Validates that any of the patterns are specified.
  */
 @Documented
-@Constraint(validatedBy = {DateRangeValidator.class})
+@Constraint(validatedBy = {AnyOfPatternsValidator.class})
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DateRange {
+public @interface AnyOfPatterns {
 
     String message() default "";
     Class<?>[] groups() default {};

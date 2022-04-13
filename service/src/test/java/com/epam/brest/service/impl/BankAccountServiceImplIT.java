@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class BankAccountServiceImplIT {
 
+    public static final String NEW_CUSTOMER = "New Customer";
+
     private final BankAccountService bankAccountService;
 
     public BankAccountServiceImplIT(BankAccountService bankAccountService) {
@@ -27,7 +29,7 @@ class BankAccountServiceImplIT {
     @Test
     void create() {
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setCustomer("New Customer");
+        bankAccount.setCustomer(NEW_CUSTOMER);
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
         assertNotNull(createdBankAccount.getId());
         assertNotNull(createdBankAccount.getNumber());
@@ -38,32 +40,31 @@ class BankAccountServiceImplIT {
     @Test
     void update() {
         BankAccount bankAccount = new BankAccount();
-        String customer = "New Customer";
         bankAccount.setId(1);
-        bankAccount.setCustomer(customer);
+        bankAccount.setCustomer(NEW_CUSTOMER);
         BankAccount updatedBankAccount = bankAccountService.update(bankAccount);
-        assertEquals(updatedBankAccount.getCustomer(), customer);
+        assertEquals(updatedBankAccount.getCustomer(), NEW_CUSTOMER);
     }
 
     @Test
-    void failedUpdate() {
+    void updateFail() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setId(1000);
-        bankAccount.setCustomer("New Customer");
+        bankAccount.setCustomer(NEW_CUSTOMER);
         assertThrows(ResourceNotFoundException.class, () -> bankAccountService.update(bankAccount));
     }
 
     @Test
     void remove() {
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setCustomer("New Customer");
+        bankAccount.setCustomer(NEW_CUSTOMER);
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
         BankAccount deletedBankAccount = bankAccountService.delete(createdBankAccount.getId());
         assertEquals(createdBankAccount, deletedBankAccount);
     }
 
     @Test
-    void failedRemove() {
+    void deleteFail() {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setId(1);
         assertThrows(BankAccountException.class, () -> bankAccountService.delete(bankAccount.getId()));
@@ -74,7 +75,7 @@ class BankAccountServiceImplIT {
     @Test
     void getById() {
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setCustomer("New Customer");
+        bankAccount.setCustomer(NEW_CUSTOMER);
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
         BankAccount bankAccountFromDb = bankAccountService.getById(createdBankAccount.getId());
         assertEquals(createdBankAccount, bankAccountFromDb);

@@ -30,9 +30,9 @@ public class CreditCard extends BasicEntity {
     private BigDecimal balance;
 
     /**
-     *  Bank account id linked with the credit card.
+     *  Bank account ID linked with the credit card.
      */
-    @Schema(example = "1", description = "Bank account id linked with the credit card")
+    @Schema(example = "1", description = "Bank account ID linked with the credit card")
     private Integer accountId;
 
     public String getNumber() {

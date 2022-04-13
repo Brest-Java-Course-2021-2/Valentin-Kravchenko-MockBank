@@ -1,4 +1,4 @@
-package com.epam.brest.model.config;
+package com.epam.brest.model.validator.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Configuration
 @PropertySource({"classpath:regexp.properties"})
-public class ModelConfig {
+public class ValidatorConfig {
 
     @Bean
     public NumberStyleFormatter numberStyleFormatter() {

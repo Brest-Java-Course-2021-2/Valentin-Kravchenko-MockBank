@@ -9,9 +9,9 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
-public class AccountNumberSearchPatternValidator implements ConstraintValidator<AccountNumberPattern, String> {
+public class AccountNumberPatternValidator implements ConstraintValidator<AccountNumberPattern, String> {
 
-    private static final Logger LOGGER = LogManager.getLogger(AccountNumberSearchPatternValidator.class);
+    private static final Logger LOGGER = LogManager.getLogger(AccountNumberPatternValidator.class);
 
     @Value("${account.filter.number.regexp}")
     private String numberRegexp;

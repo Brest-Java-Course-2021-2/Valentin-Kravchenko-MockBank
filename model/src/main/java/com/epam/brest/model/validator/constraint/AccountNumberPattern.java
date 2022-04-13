@@ -1,16 +1,16 @@
 package com.epam.brest.model.validator.constraint;
 
-import com.epam.brest.model.validator.AccountNumberSearchPatternValidator;
+import com.epam.brest.model.validator.AccountNumberPatternValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- *  Validates the search pattern for the account number.
+ *  Validates that the search pattern for the account number has a required format.
  */
 @Documented
-@Constraint(validatedBy = {AccountNumberSearchPatternValidator.class})
+@Constraint(validatedBy = {AccountNumberPatternValidator.class})
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AccountNumberPattern {

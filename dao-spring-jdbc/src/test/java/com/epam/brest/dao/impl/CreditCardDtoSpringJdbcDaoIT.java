@@ -26,7 +26,6 @@ class CreditCardDtoSpringJdbcDaoIT {
     private final CreditCardDao creditCardDao;
     private final BankAccountDao bankAccountDao;
 
-    private List<CreditCardDto> cards;
     private CreditCardDto firstCreditCard;
     private CreditCardDto lastCreditCard;
 
@@ -40,7 +39,7 @@ class CreditCardDtoSpringJdbcDaoIT {
 
     @BeforeEach
     void setup(){
-        cards = creditCardDtoDao.getAllWithAccountNumber();
+        List<CreditCardDto> cards = creditCardDtoDao.getAllWithAccountNumber();
         firstCreditCard = cards.get(0);
         lastCreditCard = cards.get(cards.size() - 1);
     }

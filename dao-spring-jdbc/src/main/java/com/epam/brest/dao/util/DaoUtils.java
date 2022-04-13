@@ -1,8 +1,8 @@
 package com.epam.brest.dao.util;
 
 import com.epam.brest.model.annotation.ExcludeFromSql;
-import com.epam.brest.model.annotation.SqlColumn;
-import com.epam.brest.model.annotation.SqlRegexp;
+import com.epam.brest.model.annotation.MapToColumn;
+import com.epam.brest.model.annotation.ConvertToRegexp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -59,8 +59,8 @@ public final class DaoUtils {
 
     private static String getParamNameBy(Field field) {
         LOGGER.trace("getParamNameBy(field={})", field);
-        if (field.isAnnotationPresent(SqlColumn.class)) {
-            return field.getAnnotation(SqlColumn.class).value().toLowerCase();
+        if (field.isAnnotationPresent(MapToColumn.class)) {
+            return field.getAnnotation(MapToColumn.class).value().toLowerCase();
         }
         return convertToSnakeCase(field.getName());
     }
@@ -72,12 +72,12 @@ public final class DaoUtils {
 
     private static Object convertToSqlRegexp(Field field, Object value) {
         LOGGER.trace("convertToSqlRegexp(field={}, value={})", field, value);
-        if (field.isAnnotationPresent(SqlRegexp.class)) {
+        if (field.isAnnotationPresent(ConvertToRegexp.class)) {
             if (!(value instanceof String)) {
                 return value;
             }
             String strValue = (String) value;
-            String pattern = field.getAnnotation(SqlRegexp.class).pattern();
+            String pattern = field.getAnnotation(ConvertToRegexp.class).pattern();
             String regexp = Arrays.stream(strValue.split(SPLIT_REGEXP))
                                   .map(exp -> String.format(pattern, exp))
                                   .collect(Collectors.joining());

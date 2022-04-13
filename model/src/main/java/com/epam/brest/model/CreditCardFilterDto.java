@@ -1,8 +1,8 @@
 package com.epam.brest.model;
 
 import com.epam.brest.model.annotation.ExcludeFromSql;
-import com.epam.brest.model.validator.constraint.DateRange;
 import com.epam.brest.model.validator.constraint.DifferentDates;
+import com.epam.brest.model.validator.constraint.RangeDate;
 import com.epam.brest.model.validator.order.FirstOrder;
 import com.epam.brest.model.validator.order.SecondOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,10 +10,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.GroupSequence;
 import java.time.LocalDate;
 
+import static com.epam.brest.model.validator.constant.RangeDateType.END;
+import static com.epam.brest.model.validator.constant.RangeDateType.START;
+
 /**
  *  Credit card data transfer object for filtering by expiration date range.
  */
-@DateRange(groups = {FirstOrder.class})
 @DifferentDates(groups = {SecondOrder.class})
 @GroupSequence({CreditCardFilterDto.class, FirstOrder.class, SecondOrder.class})
 @Schema(description = "Credit card data transfer object for filtering by expiration date range")
@@ -32,18 +34,22 @@ public class CreditCardFilterDto {
     private LocalDate toDate;
 
     /**
-     *  Start date format of the credit card expiration range.
+     *  String representation of the start date of the credit card expiration range.
      */
     @ExcludeFromSql
-    @Schema(example = "06/2022", description = "Start date of the credit card expiration range")
-    private String valueFromDate;
+    @RangeDate(value = START, groups = {FirstOrder.class})
+    @Schema(example = "06/2022",
+            description = "String representation of the start date of the credit card expiration range.")
+    private String fromDateValue;
 
     /**
-     *  End date format of the credit card expiration range.
+     *  String representation of the end date of the credit card expiration range.
      */
     @ExcludeFromSql
-    @Schema(example = "08/2023", description = "End date of the credit card expiration range")
-    private String valueToDate;
+    @RangeDate(value = END, groups = {FirstOrder.class})
+    @Schema(example = "08/2023",
+            description = "String representation of the end date of the credit card expiration range")
+    private String toDateValue;
 
     public LocalDate getFromDate() {
         return fromDate;
@@ -61,20 +67,20 @@ public class CreditCardFilterDto {
         this.toDate = toDate;
     }
 
-    public String getValueFromDate() {
-        return valueFromDate;
+    public String getFromDateValue() {
+        return fromDateValue;
     }
 
-    public void setValueFromDate(String valueFromDate) {
-        this.valueFromDate = valueFromDate;
+    public void setFromDateValue(String fromDateValue) {
+        this.fromDateValue = fromDateValue;
     }
 
-    public String getValueToDate() {
-        return valueToDate;
+    public String getToDateValue() {
+        return toDateValue;
     }
 
-    public void setValueToDate(String valueToDate) {
-        this.valueToDate = valueToDate;
+    public void setToDateValue(String toDateValue) {
+        this.toDateValue = toDateValue;
     }
 
     @Override
@@ -82,8 +88,8 @@ public class CreditCardFilterDto {
         return getClass().getSimpleName() + "{" +
                "fromDate=" + fromDate +
                ", toDate=" + toDate +
-               ", valueFromDate='" + valueFromDate + '\'' +
-               ", valueToDate='" + valueToDate + '\'' +
+               ", fromDateValue='" + fromDateValue + '\'' +
+               ", toDateValue='" + toDateValue + '\'' +
                '}';
     }
 

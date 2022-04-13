@@ -1,16 +1,16 @@
 package com.epam.brest.model.validator.constraint;
 
-import com.epam.brest.model.validator.CustomerSearchPattenValidator;
+import com.epam.brest.model.validator.CustomerPattenValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- *  Validates the search pattern for the customer.
+ *  Validates that the search pattern for the customer has a required format.
  */
 @Documented
-@Constraint(validatedBy = {CustomerSearchPattenValidator.class})
+@Constraint(validatedBy = {CustomerPattenValidator.class})
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CustomerPattern {

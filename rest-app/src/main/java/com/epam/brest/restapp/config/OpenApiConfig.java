@@ -38,19 +38,19 @@ public class OpenApiConfig {
                                                                             .description("Validation errors in the request body"))
                                                         .addSchemas("personalDataDto",
                                                                     buildObjectSchema(Map.of("customer", new StringSchema().example("Sergey Sergeev")))
-                                                                            .description("Personal data model of the bank customer"))
+                                                                            .description("Bank customer personal data transfer object"))
                                                         .addSchemas("updatedPersonalDataDto",
                                                                     buildObjectSchema(Map.of("id", new IntegerSchema().example(1),
                                                                                            "customer", new StringSchema().example("Ivan Ivanoff")))
-                                                                            .description("Personal data model of the bank customer for updating"))
+                                                                            .description("Bank customer personal data transfer object for updating"))
                                                         .addSchemas("bankAccountId", new IntegerSchema().example(1).description("Bank account ID"))
                                                         .addSchemas("depositTransactionDto",
                                                                     buildObjectSchema(Map.of("targetCardNumber",
                                                                                            new StringSchema().example("4000003394112581").description("Number of a target credit card"),
-                                                                                           "valueSumOfMoney",
-                                                                                           new StringSchema().example("1500,00").description("Value of a sum of money"),
+                                                                                           "transactionAmountValue",
+                                                                                           new StringSchema().example("1500,00").description("String representation of a transaction amount"),
                                                                                            "locale", new StringSchema().example("ru").description("Current locale")))
-                                                                            .description("Deposit transaction data model"))
+                                                                            .description("Deposit transaction data transfer object"))
                                                        .addSchemas("controllerVersion",
                                                                    new Schema<Map<String, String>>()
                                                                            .addProperties("version", new StringSchema().example("1.0"))
@@ -58,7 +58,7 @@ public class OpenApiConfig {
                                                         .addSchemas("transferTransactionDto",
                                                                     buildResolvedSchema(CreditCardTransactionDto.class,
                                                                                   "locale", new StringSchema().example("ru").description("Current locale"))
-                                                                            .description("Transfer transaction data model"))
+                                                                            .description("Transfer transaction data transfer object"))
                                                         .addSchemas("creditCard",
                                                                     buildResolvedSchema(CreditCard.class,
                                                                                   "balance", new StringSchema().example("1000.00").description("Credit card balance")))

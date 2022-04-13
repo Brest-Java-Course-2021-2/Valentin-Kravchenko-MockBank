@@ -29,7 +29,7 @@ public class CreditCardDto extends BasicEntity {
     private BigDecimal balance;
 
     /**
-     *   Bank account id linked with the credit card.
+     *   Bank account ID linked with the credit card.
      */
     @Schema(example = "1")
     private Integer accountId;
