@@ -10,9 +10,9 @@ import java.util.Objects;
 public abstract class BasicEntity {
 
     /**
-     *  Entity id.
+     *  Entity ID.
      */
-    @Schema(example = "1")
+    @Schema(description = "ID", example = "1")
     private Integer id;
 
     public Integer getId() {

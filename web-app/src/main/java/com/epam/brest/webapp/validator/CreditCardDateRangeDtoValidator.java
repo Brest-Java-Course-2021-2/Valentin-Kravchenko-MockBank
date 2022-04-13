@@ -35,24 +35,24 @@ public class CreditCardDateRangeDtoValidator implements Validator {
         LOGGER.debug("validate(target={})", target);
         CreditCardFilterDto creditCardFilterDto = (CreditCardFilterDto) target;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(datePattern);
-        if (Objects.isNull(creditCardFilterDto.getValueFromDate()) &&
-            Objects.isNull(creditCardFilterDto.getValueToDate())) {
+        if (Objects.isNull(creditCardFilterDto.getFromDateValue()) &&
+            Objects.isNull(creditCardFilterDto.getToDateValue())) {
             errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_VALUE_FROM_DATE);
             errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_VALUE_TO_DATE);
         }
-        if (Objects.nonNull(creditCardFilterDto.getValueFromDate())) {
-            if (!creditCardFilterDto.getValueFromDate().matches(dateRegexp)) {
+        if (Objects.nonNull(creditCardFilterDto.getFromDateValue())) {
+            if (!creditCardFilterDto.getFromDateValue().matches(dateRegexp)) {
                 errors.rejectValue(VALUE_FROM_DATE, ERROR_CODE_VALUE_FROM_DATE);
             }else {
-                YearMonth yearMonth = YearMonth.parse(creditCardFilterDto.getValueFromDate(), dateTimeFormatter);
+                YearMonth yearMonth = YearMonth.parse(creditCardFilterDto.getFromDateValue(), dateTimeFormatter);
                 creditCardFilterDto.setFromDate(yearMonth.atEndOfMonth());
             }
         }
-        if (Objects.nonNull(creditCardFilterDto.getValueToDate())) {
-            if (!creditCardFilterDto.getValueToDate().matches(dateRegexp)) {
+        if (Objects.nonNull(creditCardFilterDto.getToDateValue())) {
+            if (!creditCardFilterDto.getToDateValue().matches(dateRegexp)) {
                 errors.rejectValue(VALUE_TO_DATE, ERROR_CODE_VALUE_TO_DATE);
             }else {
-                YearMonth yearMonth = YearMonth.parse(creditCardFilterDto.getValueToDate(), dateTimeFormatter);
+                YearMonth yearMonth = YearMonth.parse(creditCardFilterDto.getToDateValue(), dateTimeFormatter);
                 creditCardFilterDto.setToDate(yearMonth.atEndOfMonth());
             }
         }

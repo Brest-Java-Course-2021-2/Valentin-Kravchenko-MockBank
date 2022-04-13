@@ -14,13 +14,13 @@
             <span class="input-group-text ">Expiry from</span>
             <input type="text"
                    name="valueFromDate"
-                   th:value="${filter?.valueFromDate}"
+                   th:value="${filter?.fromDateValue}"
                    th:placeholder="#{card.date.placeholder}"
                    class="form-control"
                    th:classappend="${filter} and ${#fields.hasErrors('valueFromDate')} ? 'is-invalid'"/>
             <div class="invalid-tooltip"
                  th:if="${filter} and ${#fields.hasErrors('valueFromDate')}"
-                 th:errors="*{valueFromDate}">
+                 th:errors="*{fromDateValue}">
                 From Date Error
             </div>
         </div>
@@ -30,13 +30,13 @@
             <span class="input-group-text">Expiry to</span>
             <input type="text"
                    name="valueToDate"
-                   th:value="${filter?.valueToDate}"
+                   th:value="${filter?.toDateValue}"
                    th:placeholder="#{card.date.placeholder}"
                    class="form-control"
                    th:classappend="${filter} and ${#fields.hasErrors('valueToDate')} ? 'is-invalid'"/>
             <div class="invalid-tooltip"
                  th:if="${filter} and ${#fields.hasErrors('valueToDate')}"
-                 th:errors="*{valueToDate}">
+                 th:errors="*{toDateValue}">
                 Value Date Error
             </div>
         </div>

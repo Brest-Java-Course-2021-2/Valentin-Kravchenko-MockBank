@@ -27,7 +27,7 @@ public class CreditCardTransactionDtoValidator implements Validator {
     @Value("${card.number.regexp}")
     private String cardNumberRegexp;
 
-    @Value("${card.sum.money.regexp}")
+    @Value("${card.transaction.amount.regexp}")
     private String sumOfMoneyRegexp;
 
     public CreditCardTransactionDtoValidator(BankDataGenerator bankDataGenerator,
@@ -58,12 +58,12 @@ public class CreditCardTransactionDtoValidator implements Validator {
     }
 
     private void validateSumOfMoney(CreditCardTransactionDto creditCardTransactionDto, Errors errors) {
-        LOGGER.info("validateSumOfMoney(valueSumOfMoney={})", creditCardTransactionDto.getValueSumOfMoney());
-        if(!creditCardTransactionDto.getValueSumOfMoney().matches(sumOfMoneyRegexp)) {
+        LOGGER.info("validateSumOfMoney(valueSumOfMoney={})", creditCardTransactionDto.getTransactionAmountValue());
+        if(!creditCardTransactionDto.getTransactionAmountValue().matches(sumOfMoneyRegexp)) {
             errors.rejectValue(VALUE_SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
         } else {
             try {
-                BigDecimal sumOfMoney = (BigDecimal) numberStyleFormatter.parse(creditCardTransactionDto.getValueSumOfMoney(),
+                BigDecimal sumOfMoney = (BigDecimal) numberStyleFormatter.parse(creditCardTransactionDto.getTransactionAmountValue(),
                                                                                 creditCardTransactionDto.getLocale());
                 creditCardTransactionDto.setSumOfMoney(sumOfMoney);
             } catch (ParseException e) {

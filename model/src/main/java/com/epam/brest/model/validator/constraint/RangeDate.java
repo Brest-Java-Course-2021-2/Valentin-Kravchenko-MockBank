@@ -1,21 +1,22 @@
 package com.epam.brest.model.validator.constraint;
 
-import com.epam.brest.model.validator.DifferentCardNumbersValidator;
+import com.epam.brest.model.validator.DateRangeValidator;
+import com.epam.brest.model.validator.constant.RangeDateType;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- *  Validates that the target and source credit card numbers
- *  are different.
+ *  Validates that the start and end dates of the range are verified date.
  */
 @Documented
-@Constraint(validatedBy = {DifferentCardNumbersValidator.class})
-@Target({ElementType.TYPE})
+@Constraint(validatedBy = {DateRangeValidator.class})
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DifferentCardNumbers {
+public @interface RangeDate {
 
+    RangeDateType value();
     String message() default "";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

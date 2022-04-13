@@ -88,7 +88,7 @@ class BankAccountRestControllerIT extends RestControllerTestBasic {
     @Test
     void failedCreate() throws Exception {
         Map<String, Object> body = new HashMap<>();
-        body.put("customer", "New Customer1");
+        body.put(CUSTOMER, "New Customer1");
         performPostAndExpectStatus("/account", body, status().isBadRequest())
                .andExpect(jsonPath("$.validationErrors.customer").value(CUSTOMER_FULL_NAME_IS_INCORRECT));
 

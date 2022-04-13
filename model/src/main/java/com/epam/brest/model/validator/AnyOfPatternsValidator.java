@@ -1,7 +1,7 @@
 package com.epam.brest.model.validator;
 
 import com.epam.brest.model.BankAccountFilterDto;
-import com.epam.brest.model.validator.constraint.AnyPattern;
+import com.epam.brest.model.validator.constraint.AnyOfPatterns;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,16 +12,16 @@ import java.util.Objects;
 
 import static com.epam.brest.model.validator.constant.ValidatorConstant.*;
 
-public class AnyPatternValidator extends BasicValidator implements ConstraintValidator<AnyPattern, BankAccountFilterDto> {
+public class AnyOfPatternsValidator extends BasicValidator implements ConstraintValidator<AnyOfPatterns, BankAccountFilterDto> {
 
-    private static final Logger LOGGER = LogManager.getLogger(AnyPatternValidator.class);
+    private static final Logger LOGGER = LogManager.getLogger(AnyOfPatternsValidator.class);
 
     @Override
     public boolean isValid(BankAccountFilterDto value, ConstraintValidatorContext context) {
         LOGGER.debug("isValid(value={})", value);
         if (Objects.isNull(value.getCustomerPattern()) && Objects.isNull(value.getNumberPattern())) {
-            buildConstraint(context, CUSTOMER_PATTERN_TEMPLATE, CUSTOMER_PATTERN);
-            buildConstraint(context, ACCOUNT_NUMBER_PATTERN_TEMPLATE, NUMBER_PATTERN);
+            buildConstraintViolation(context, CUSTOMER_PATTERN_TEMPLATE, CUSTOMER_PATTERN);
+            buildConstraintViolation(context, ACCOUNT_NUMBER_PATTERN_TEMPLATE, NUMBER_PATTERN);
             return false;
         }
         return true;

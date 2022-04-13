@@ -61,7 +61,7 @@ class CreditCardServiceRestIT extends ServiceRestTestBasic {
                                             .getResponseBody();
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(createdCreditCard.getNumber());
-        creditCardTransactionDto.setValueSumOfMoney("1560,35");
+        creditCardTransactionDto.setTransactionAmountValue("1560,35");
         creditCardTransactionDto.setLocale(new Locale("ru"));
         postAndExpectStatusOk(CARD_DEPOSIT_ENDPOINT, creditCardTransactionDto)
                 .expectBody(CreditCard.class)
@@ -81,7 +81,7 @@ class CreditCardServiceRestIT extends ServiceRestTestBasic {
                                             .getResponseBody();
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(sourceCreditCard.getNumber());
-        creditCardTransactionDto.setValueSumOfMoney("1000");
+        creditCardTransactionDto.setTransactionAmountValue("1000");
         creditCardTransactionDto.setLocale(new Locale("ru"));
         postAndExpectStatusOk(CARD_DEPOSIT_ENDPOINT, creditCardTransactionDto);
         creditCardTransactionDto.setSourceCardNumber(sourceCreditCard.getNumber());
@@ -105,7 +105,7 @@ class CreditCardServiceRestIT extends ServiceRestTestBasic {
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setSourceCardNumber(createdCreditCard.getNumber());
         creditCardTransactionDto.setTargetCardNumber(creditCardFromDb.getNumber());
-        creditCardTransactionDto.setValueSumOfMoney("1000");
+        creditCardTransactionDto.setTransactionAmountValue("1000");
         creditCardTransactionDto.setLocale(new Locale("ru"));
         postAndExchange(CARD_TRANSFER_ENDPOINT, creditCardTransactionDto)
                 .expectStatus().isBadRequest()

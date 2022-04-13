@@ -1,35 +1,35 @@
 package com.epam.brest.model;
 
-import com.epam.brest.model.annotation.SqlColumn;
-import com.epam.brest.model.annotation.SqlRegexp;
+import com.epam.brest.model.annotation.MapToColumn;
+import com.epam.brest.model.annotation.ConvertToRegexp;
 import com.epam.brest.model.validator.constraint.AccountNumberPattern;
-import com.epam.brest.model.validator.constraint.AnyPattern;
+import com.epam.brest.model.validator.constraint.AnyOfPatterns;
 import com.epam.brest.model.validator.constraint.CustomerPattern;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  *  Bank account data transfer object for filtering by account number and customer full name.
  */
-@AnyPattern
+@AnyOfPatterns
 @Schema(description = "Bank account data transfer object for filtering by account number and customer full name")
 public class BankAccountFilterDto {
 
     /**
      *  Bank account number search pattern.
      */
-    @SqlRegexp
+    @ConvertToRegexp
+    @MapToColumn("number")
     @AccountNumberPattern
-    @SqlColumn("number")
     @Schema(example = "BY 99T6", description = "Bank account number search pattern")
     private String numberPattern;
 
     /**
-     *  Bank customer full name search pattern.
+     *  Bank customer search pattern.
      */
-    @SqlRegexp
+    @ConvertToRegexp
+    @MapToColumn("customer")
     @CustomerPattern
-    @SqlColumn("customer")
-    @Schema(example = "an ov", description = "Bank customer full name search pattern")
+    @Schema(example = "an ov", description = "Bank customer search pattern")
     private String customerPattern;
 
     public String getNumberPattern() {

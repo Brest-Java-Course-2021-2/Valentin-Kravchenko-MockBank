@@ -11,10 +11,12 @@ import com.epam.brest.service.util.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.time.LocalDate;
 
 import static com.epam.brest.service.constant.ServiceConstant.INIT_BALANCE;
@@ -27,6 +29,7 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
 
     private final CreditCardDao creditCardDao;
     private final BankDataGenerator bankDataGenerator;
+    private final NumberStyleFormatter numberStyleFormatter;
 
     @Value("${card.error.find.by.id}")
     private String findByIdError;
@@ -40,9 +43,12 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
     @Value("${card.error.transfer}")
     private String transferError;
 
-    public CreditCardServiceImpl(CreditCardDao creditCardDao, BankDataGenerator bankDataGenerator) {
+    public CreditCardServiceImpl(CreditCardDao creditCardDao,
+                                 BankDataGenerator bankDataGenerator,
+                                 NumberStyleFormatter numberStyleFormatter) {
         this.creditCardDao = creditCardDao;
         this.bankDataGenerator = bankDataGenerator;
+        this.numberStyleFormatter = numberStyleFormatter;
     }
 
     @Override
@@ -101,9 +107,9 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
         LOGGER.debug("deposit(creditCardTransactionDto={})", creditCardTransactionDto);
         CreditCard targetCreditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
         LOGGER.debug("deposit(targetCreditCard={})", targetCreditCard);
-        BigDecimal sumOfMoney = creditCardTransactionDto.getSumOfMoney();
-        BigDecimal newBalance = targetCreditCard.getBalance().add(sumOfMoney);
-        targetCreditCard.setBalance(newBalance);
+        BigDecimal transactionAmount = getTransactionAmount(creditCardTransactionDto);
+        BigDecimal newTargetCreditCardBalance = targetCreditCard.getBalance().add(transactionAmount);
+        targetCreditCard.setBalance(newTargetCreditCardBalance);
         creditCardDao.update(targetCreditCard);
         return targetCreditCard;
     }
@@ -114,16 +120,16 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
         LOGGER.debug("deposit(creditCardTransactionDto={})", creditCardTransactionDto);
         CreditCard sourceCreditCard = getByNumber(creditCardTransactionDto.getSourceCardNumber());
         LOGGER.debug("deposit(sourceCreditCard={})", sourceCreditCard);
-        BigDecimal sumOfMoney = creditCardTransactionDto.getSumOfMoney();
-        if (sourceCreditCard.getBalance().compareTo(sumOfMoney) < 0) {
+        BigDecimal transactionAmount = getTransactionAmount(creditCardTransactionDto);
+        if (sourceCreditCard.getBalance().compareTo(transactionAmount) < 0) {
             String error = String.format(transferError, creditCardTransactionDto.getSourceCardNumber());
             LOGGER.warn("deposit(error={})", error);
             throw new CreditCardException(error);
         }
         CreditCard targetCreditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
         LOGGER.debug("deposit(targetCreditCard={})", targetCreditCard);
-        BigDecimal newSourceCreditCardBalance = sourceCreditCard.getBalance().subtract(sumOfMoney);
-        BigDecimal newTargetCreditCardBalance = targetCreditCard.getBalance().add(sumOfMoney);
+        BigDecimal newSourceCreditCardBalance = sourceCreditCard.getBalance().subtract(transactionAmount);
+        BigDecimal newTargetCreditCardBalance = targetCreditCard.getBalance().add(transactionAmount);
         sourceCreditCard.setBalance(newSourceCreditCardBalance);
         targetCreditCard.setBalance(newTargetCreditCardBalance);
         creditCardDao.update(sourceCreditCard);
@@ -131,7 +137,16 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
         return sourceCreditCard;
     }
 
+    private BigDecimal getTransactionAmount(CreditCardTransactionDto creditCardTransactionDto) {
+        try {
+            return (BigDecimal) numberStyleFormatter.parse(creditCardTransactionDto.getTransactionAmountValue(), creditCardTransactionDto.getLocale());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private String getCardNumber() {
+        LOGGER.info("getCardNumber()");
         String cardNumber;
         do {
             cardNumber = bankDataGenerator.generateCardNumber();

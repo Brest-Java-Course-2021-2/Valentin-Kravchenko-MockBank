@@ -63,7 +63,7 @@ public class CreditCardApiDelegateImpl extends ApiDelegateBasic implements Credi
         LOGGER.debug("depositMoney(depositTransactionDto={})", depositTransactionDto);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(depositTransactionDto.getTargetCardNumber());
-        creditCardTransactionDto.setValueSumOfMoney(depositTransactionDto.getValueSumOfMoney());
+        creditCardTransactionDto.setTransactionAmountValue(depositTransactionDto.getValueSumOfMoney());
         creditCardTransactionDto.setLocale(new Locale(depositTransactionDto.getLocale()));
         validate(creditCardTransactionDto);
         CreditCard targetCreditCard = creditCardService.deposit(creditCardTransactionDto);
@@ -76,7 +76,7 @@ public class CreditCardApiDelegateImpl extends ApiDelegateBasic implements Credi
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setSourceCardNumber(transferTransactionDto.getSourceCardNumber());
         creditCardTransactionDto.setTargetCardNumber(transferTransactionDto.getTargetCardNumber());
-        creditCardTransactionDto.setValueSumOfMoney(transferTransactionDto.getValueSumOfMoney());
+        creditCardTransactionDto.setTransactionAmountValue(transferTransactionDto.getValueSumOfMoney());
         creditCardTransactionDto.setLocale(new Locale(transferTransactionDto.getLocale()));
         validate(creditCardTransactionDto);
         CreditCard sourceCreditCard = creditCardService.transfer(creditCardTransactionDto);

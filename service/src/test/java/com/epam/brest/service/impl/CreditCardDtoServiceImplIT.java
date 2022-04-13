@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,22 +45,31 @@ class CreditCardDtoServiceImplIT {
     void getAllWithAccountNumberByFilter() {
         //Case 1
         CreditCardFilterDto creditCardFilterDto = new CreditCardFilterDto();
-        creditCardFilterDto.setFromDate(firstCreditCard.getExpirationDate());
-        creditCardFilterDto.setToDate(lastCreditCard.getExpirationDate());
+        creditCardFilterDto.setFromDateValue(convertToRangeDateFormat(firstCreditCard.getExpirationDate()));
+        creditCardFilterDto.setToDateValue(convertToRangeDateFormat(lastCreditCard.getExpirationDate()));
         List<CreditCardDto> cardsByFilter = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
         assertEquals(cards, cardsByFilter);
         //Case 2
-        creditCardFilterDto.setFromDate(lastCreditCard.getExpirationDate().plusYears(10));
-        creditCardFilterDto.setToDate(null);
+        creditCardFilterDto.setFromDateValue(convertToRangeDateFormat(lastCreditCard.getExpirationDate().plusYears(10)));
+        creditCardFilterDto.setToDateValue(null);
         cardsByFilter = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
         assertNotNull(cardsByFilter);
         assertEquals(cardsByFilter.size(), 0);
         //Case 3
-        creditCardFilterDto.setFromDate(null);
-        creditCardFilterDto.setToDate(firstCreditCard.getExpirationDate().minusYears(10));
+        creditCardFilterDto.setFromDateValue(null);
+        creditCardFilterDto.setToDateValue(convertToRangeDateFormat(firstCreditCard.getExpirationDate().minusYears(10)));
         cardsByFilter = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
         assertNotNull(cardsByFilter);
         assertEquals(cardsByFilter.size(), 0);
+    }
+
+    private String convertToRangeDateFormat(LocalDate date) {
+        int monthIntValue = date.getMonth().getValue();
+        String monthIntStrValue = String.valueOf(monthIntValue);
+        if (monthIntStrValue.length() == 1) {
+            monthIntStrValue = "0" + monthIntStrValue;
+        }
+        return monthIntStrValue + "/" + date.getYear();
     }
 
 }
