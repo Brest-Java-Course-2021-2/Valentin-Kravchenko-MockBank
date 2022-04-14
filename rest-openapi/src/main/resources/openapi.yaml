@@ -274,7 +274,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/controllerVersion'
+                $ref: '#/components/schemas/version'
   /api/card/{id}:
     get:
       tags:
@@ -446,13 +446,13 @@ components:
     updatedPersonalDataDto:
       type: object
       properties:
+        customer:
+          type: string
+          example: Ivan Ivanoff
         id:
           type: integer
           format: int32
           example: 1
-        customer:
-          type: string
-          example: Ivan Ivanoff
       description: Personal data of the bank account customer for updating
     bankAccountId:
       type: integer
@@ -462,10 +462,6 @@ components:
     depositTransactionDto:
       type: object
       properties:
-        transactionAmountValue:
-          type: string
-          description: String representation of a transaction amount
-          example: "1500,00"
         targetCardNumber:
           type: string
           description: Number of a target credit card
@@ -474,8 +470,12 @@ components:
           type: string
           description: Current locale
           example: ru
+        transactionAmountValue:
+          type: string
+          description: String representation of a transaction amount
+          example: "1500,00"
       description: Deposit transaction data
-    controllerVersion:
+    version:
       type: object
       properties:
         version:

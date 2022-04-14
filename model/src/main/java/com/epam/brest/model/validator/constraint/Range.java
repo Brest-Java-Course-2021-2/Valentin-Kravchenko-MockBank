@@ -1,19 +1,20 @@
 package com.epam.brest.model.validator.constraint;
 
-import com.epam.brest.model.validator.DifferentDatesValidator;
+import com.epam.brest.model.validator.RangeValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- *  Validates that the start and end dates of the range are different.
+ *  Validates that the start and end dates of the range are different and
+ *  at least one of the dates is specified.
  */
 @Documented
-@Constraint(validatedBy = {DifferentDatesValidator.class})
+@Constraint(validatedBy = {RangeValidator.class})
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DifferentDates {
+public @interface Range{
 
     String message() default "";
     Class<?>[] groups() default {};

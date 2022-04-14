@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +19,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class CreditCardDtoRestControllerIT extends RestControllerTestBasic {
 
-    public static final String DATES_MUST_BE_DIFFERENT = "Dates must be different!";
-    public static final String RANGE_START_DATE_FORMAT_IS_INCORRECT = "Range start date format is incorrect!";
-    public static final String RANGE_END_DATE_FORMAT_IS_INCORRECT = "Range end date format is incorrect!";
+    public static final String CARDS_ENDPOINT = "/cards";
     public static final String FROM_DATE_VALUE = "fromDateValue";
     public static final String TO_DATE_VALUE = "toDateValue";
+    public static final String FROM_DATE_TEST_VALUE = "05/2022";
+    public static final String TO_DATE_TEST_VALUE = "07/2022";
+    public static final String START_DATE_FORMAT_IS_INCORRECT = "Start date format is incorrect!";
+    public static final String END_DATE_FORMAT_IS_INCORRECT = "End date format is incorrect!";
+    public static final String START_DATE_IS_WRONG = "Start date is wrong!";
+    public static final String END_DATE_IS_WRONG = "End date is wrong!";
 
     private final CreditCardDtoService creditCardDtoService;
 
@@ -38,66 +41,69 @@ class CreditCardDtoRestControllerIT extends RestControllerTestBasic {
     @Test
     void cardsGET() throws Exception {
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
-        int lastIdx = cards.size() - 1;
-        performGetAndExpectStatusOk("/cards")
+        int lastPosition = cards.size() - 1;
+        performGetAndExpectStatusOk(CARDS_ENDPOINT)
                .andExpect(jsonPath("$.size()", is(cards.size())))
                .andExpect(jsonPath("$[0].id", is(cards.get(0).getId())))
-               .andExpect(jsonPath("$[" + lastIdx + "].id", is(cards.get(lastIdx).getId())));
+               .andExpect(jsonPath("$[" + lastPosition + "].id", is(cards.get(lastPosition).getId())));
     }
 
     @Test
     void cardsPOST() throws Exception {
         //Case 1
         CreditCardFilterDto creditCardFilterDto = new CreditCardFilterDto();
-        creditCardFilterDto.setFromDate(LocalDate.parse("2022-05-31"));
-        creditCardFilterDto.setToDate(LocalDate.parse("2022-07-31"));
+        creditCardFilterDto.setFromDateValue(FROM_DATE_TEST_VALUE);
+        creditCardFilterDto.setToDateValue(TO_DATE_TEST_VALUE);
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
-        int lastIdx = cards.size() - 1;
+        int lastPosition = cards.size() - 1;
         Map<String, Object> body = new HashMap<>();
-        body.put(FROM_DATE_VALUE, "05/2022");
-        body.put(TO_DATE_VALUE, "07/2022");
-        performPostAndExpectStatusOk("/cards", body)
+        body.put(FROM_DATE_VALUE, FROM_DATE_TEST_VALUE);
+        body.put(TO_DATE_VALUE, TO_DATE_TEST_VALUE);
+        performPostAndExpectStatusOk(CARDS_ENDPOINT, body)
                 .andExpect(jsonPath("$.size()", is(cards.size())))
                 .andExpect(jsonPath("$[0].id", is(cards.get(0).getId())))
-                .andExpect(jsonPath("$[" + lastIdx + "].id", is(cards.get(lastIdx).getId())));
+                .andExpect(jsonPath("$[" + lastPosition + "].id", is(cards.get(lastPosition).getId())));
         //Case 2
-        creditCardFilterDto.setToDate(null);
+        creditCardFilterDto = new CreditCardFilterDto();
+        creditCardFilterDto.setFromDateValue(FROM_DATE_TEST_VALUE);
         cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
-        lastIdx = cards.size() - 1;
-        body.remove(TO_DATE_VALUE);
-        performPostAndExpectStatusOk("/cards", body)
+        lastPosition = cards.size() - 1;
+        body.clear();
+        body.put(FROM_DATE_VALUE, FROM_DATE_TEST_VALUE);
+        performPostAndExpectStatusOk(CARDS_ENDPOINT, body)
                 .andExpect(jsonPath("$.size()", is(cards.size())))
                 .andExpect(jsonPath("$[0].id", is(cards.get(0).getId())))
-                .andExpect(jsonPath("$[" + lastIdx + "].id", is(cards.get(lastIdx).getId())));
+                .andExpect(jsonPath("$[" + lastPosition + "].id", is(cards.get(lastPosition).getId())));
     }
 
     @Test
-    void cardsPOSTThereAreNoSearchResults() throws Exception {
+    void cardsPOSTWithNoSearchResults() throws Exception {
         Map<String, Object> body = new HashMap<>();
         body.put(TO_DATE_VALUE, "07/2000");
-        performPostAndExpectStatusOk("/cards", body).andExpect(jsonPath("$.size()", is(0)));
+        performPostAndExpectStatusOk(CARDS_ENDPOINT, body)
+                .andExpect(jsonPath("$.size()", is(0)));
     }
 
     @Test
-    void cardsPOSTWithInvalidValueFromDateAndValueToDate() throws Exception {
+    void cardsPOSTWithInvalidFromAndToDateValues() throws Exception {
         // Case 1
         Map<String, Object> body = new HashMap<>();
-        body.put(FROM_DATE_VALUE, "07/2022");
-        body.put(TO_DATE_VALUE, "07/2022");
-        performPostAndExpectStatus("/cards", body, status().isBadRequest())
-                .andExpect(jsonPath("$.validationErrors.valueFromDate").value(DATES_MUST_BE_DIFFERENT))
-                .andExpect(jsonPath("$.validationErrors.valueToDate").value(DATES_MUST_BE_DIFFERENT));
+        body.put(FROM_DATE_VALUE, FROM_DATE_TEST_VALUE);
+        body.put(TO_DATE_VALUE, FROM_DATE_TEST_VALUE);
+        performPostAndExpectStatus(CARDS_ENDPOINT, body, status().isBadRequest())
+                .andExpect(jsonPath("$.validationErrors.fromDateValue").value(START_DATE_IS_WRONG))
+                .andExpect(jsonPath("$.validationErrors.toDateValue").value(END_DATE_IS_WRONG));
         // Case 2
         body.put(FROM_DATE_VALUE, "00/2022");
         body.put(TO_DATE_VALUE, "07.2022");
-        performPostAndExpectStatus("/cards", body, status().isBadRequest())
-                .andExpect(jsonPath("$.validationErrors.valueFromDate").value(RANGE_START_DATE_FORMAT_IS_INCORRECT))
-                .andExpect(jsonPath("$.validationErrors.valueToDate").value(RANGE_END_DATE_FORMAT_IS_INCORRECT));
+        performPostAndExpectStatus(CARDS_ENDPOINT, body, status().isBadRequest())
+                .andExpect(jsonPath("$.validationErrors.fromDateValue").value(START_DATE_FORMAT_IS_INCORRECT))
+                .andExpect(jsonPath("$.validationErrors.toDateValue").value(END_DATE_FORMAT_IS_INCORRECT));
         // Case 3
         body.clear();
-        performPostAndExpectStatus("/cards", body, status().isBadRequest())
-                .andExpect(jsonPath("$.validationErrors.valueFromDate").value(RANGE_START_DATE_FORMAT_IS_INCORRECT))
-                .andExpect(jsonPath("$.validationErrors.valueToDate").value(RANGE_END_DATE_FORMAT_IS_INCORRECT));
+        performPostAndExpectStatus(CARDS_ENDPOINT, body, status().isBadRequest())
+                .andExpect(jsonPath("$.validationErrors.fromDateValue").value(START_DATE_IS_WRONG))
+                .andExpect(jsonPath("$.validationErrors.toDateValue").value(END_DATE_IS_WRONG));
     }
 
 }

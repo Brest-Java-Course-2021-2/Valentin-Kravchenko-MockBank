@@ -40,6 +40,7 @@ public class CreditCardDtoRestController {
     public ResponseEntity<List<CreditCardDto>> getCards() {
         LOGGER.debug("cardsGET(api/cards)");
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
+        LOGGER.debug("cards={}", cards);
         return ResponseEntity.ok(cards);
     }
 
@@ -60,6 +61,7 @@ public class CreditCardDtoRestController {
     ) {
         LOGGER.debug("cardsPOST(api/cards, creditCardDateRangeDto={})", creditCardFilterDto);
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
+        LOGGER.debug("cards={}", cards);
         return ResponseEntity.ok(cards);
     }
 

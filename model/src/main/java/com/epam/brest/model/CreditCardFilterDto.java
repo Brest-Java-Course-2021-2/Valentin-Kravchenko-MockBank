@@ -1,7 +1,7 @@
 package com.epam.brest.model;
 
 import com.epam.brest.model.annotation.ExcludeFromSql;
-import com.epam.brest.model.validator.constraint.DifferentDates;
+import com.epam.brest.model.validator.constraint.Range;
 import com.epam.brest.model.validator.constraint.RangeDate;
 import com.epam.brest.model.validator.order.FirstOrder;
 import com.epam.brest.model.validator.order.SecondOrder;
@@ -16,7 +16,7 @@ import static com.epam.brest.model.validator.constant.RangeDateType.START;
 /**
  *  Credit card data transfer object for filtering by expiration date range.
  */
-@DifferentDates(groups = {SecondOrder.class})
+@Range(groups = {SecondOrder.class})
 @GroupSequence({CreditCardFilterDto.class, FirstOrder.class, SecondOrder.class})
 @Schema(description = "Credit card data transfer object for filtering by expiration date range")
 public class CreditCardFilterDto {

@@ -30,8 +30,8 @@ public class ControllerConstant {
     public static final String ERROR_CODE_TARGET_CARD_NUMBER = "CardNumber.card.dto.targetCardNumber";
     public static final String ERROR_CODE_VALUE_FROM_DATE = "RangeDate.card.dto.fromDateValue";
     public static final String ERROR_CODE_VALUE_TO_DATE = "RangeDate.card.dto.toDateValue";
-    public static final String ERROR_CODE_DIFFERENT_DATES_VALUE_FROM_DATE = "DifferentDates.card.dto.fromDateValue";
-    public static final String ERROR_CODE_DIFFERENT_DATES_VALUE_TO_DATE = "DifferentDates.card.dto.toDateValue";
+    public static final String ERROR_CODE_DIFFERENT_DATES_VALUE_FROM_DATE = "Range.card.dto.fromDateValue";
+    public static final String ERROR_CODE_DIFFERENT_DATES_VALUE_TO_DATE = "Range.card.dto.toDateValue";
     public static final String JOIN_DELIMITER = ", ";
     public static final String JOIN_PREFIX = "[";
     public static final String JOIN_SUFFIX = "]";
