@@ -40,6 +40,7 @@ public class BankAccountDtoRestController {
     public ResponseEntity<List<BankAccountDto>> getAccounts() {
         LOGGER.debug("accountsGET(api/accounts)");
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
+        LOGGER.debug("accounts={}", accounts);
         return ResponseEntity.ok(accounts);
     }
 
@@ -65,6 +66,7 @@ public class BankAccountDtoRestController {
     ) {
         LOGGER.debug("accountsPOST(api/accounts, bankAccountFilterDto={})", bankAccountFilterDto);
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
+        LOGGER.debug("accounts={}", accounts);
         return ResponseEntity.ok(accounts);
     }
 

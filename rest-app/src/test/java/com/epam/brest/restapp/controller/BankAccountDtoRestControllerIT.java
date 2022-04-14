@@ -4,6 +4,7 @@ import com.epam.brest.model.BankAccountDto;
 import com.epam.brest.model.BankAccountFilterDto;
 import com.epam.brest.service.api.BankAccountDtoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,11 +18,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class BankAccountDtoRestControllerIT extends RestControllerTestBasic {
 
+    public static final String ACCOUNTS_ENDPOINT = "/accounts";
     public static final String CUSTOMER_SEARCH_PATTERN_IS_INCORRECT = "Customer search pattern is incorrect!";
     public static final String ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT = "Account number search pattern is incorrect!";
-    public static final String ACCOUNTS_ENDPOINT = "/accounts";
 
     private final BankAccountDtoService bankAccountDtoService;
+
+    private List<BankAccountDto> accounts;
+    private BankAccountDto firstAccount;
+    private BankAccountDto lastAccount;
+    private int lastAccountPosition;
 
     public BankAccountDtoRestControllerIT(ObjectMapper objectMapper,
                                           MockMvc mockMvc,
@@ -30,14 +36,20 @@ class BankAccountDtoRestControllerIT extends RestControllerTestBasic {
         this.bankAccountDtoService = bankAccountDtoServiceImpl;
     }
 
+    @BeforeEach
+    void setup(){
+        accounts = bankAccountDtoService.getAllWithTotalCards();
+        firstAccount = accounts.get(0);
+        lastAccountPosition = accounts.size() - 1;
+        lastAccount = accounts.get(lastAccountPosition);
+    }
+
     @Test
     void accountsGET() throws Exception {
-        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
-        int lastIdx = accounts.size() - 1;
-        performGetAndExpectStatusOk("/accounts")
+        performGetAndExpectStatusOk(ACCOUNTS_ENDPOINT)
                .andExpect(jsonPath("$.size()", is(accounts.size())))
-               .andExpect(jsonPath("$[0].id", is(accounts.get(0).getId())))
-               .andExpect(jsonPath("$[" + lastIdx + "].id", is(accounts.get(lastIdx).getId())));
+               .andExpect(jsonPath("$[0].id", is(firstAccount.getId())))
+               .andExpect(jsonPath("$[" + lastAccountPosition + "].id", is(lastAccount.getId())));
     }
 
     @Test
@@ -45,43 +57,44 @@ class BankAccountDtoRestControllerIT extends RestControllerTestBasic {
         // Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
         bankAccountFilterDto.setNumberPattern("BY");
-        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
-        int lastIdx = accounts.size() - 1;
         performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountFilterDto)
                 .andExpect(jsonPath("$.size()", is(accounts.size())))
-                .andExpect(jsonPath("$[0].id", is(accounts.get(0).getId())))
-                    .andExpect(jsonPath("$[" + lastIdx + "].id", is(accounts.get(lastIdx).getId())));
+                .andExpect(jsonPath("$[0].id", is(firstAccount.getId())))
+                .andExpect(jsonPath("$[" + lastAccountPosition + "].id", is(lastAccount.getId())));
         // Case 2
-        bankAccountFilterDto.setNumberPattern("TQ99IK");
-        bankAccountFilterDto.setCustomerPattern("Sergeev");
+        bankAccountFilterDto.setNumberPattern(firstAccount.getNumber()
+                                                          .substring(0, 10));
+        bankAccountFilterDto.setCustomerPattern(firstAccount.getCustomer());
         accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountFilterDto)
                 .andExpect(jsonPath("$.size()", is(accounts.size())))
-                .andExpect(jsonPath("$[0].id", is(accounts.get(0).getId())));
+                .andExpect(jsonPath("$[0].id", is(firstAccount.getId())));
     }
 
     @Test
-    void accountsPOSTThereAreNoSearchResults() throws Exception {
+    void accountsPOSTWithNoSearchResults() throws Exception {
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        String numberPattern = "EEEEE";
-        String customerPattern = "Sergeenko";
-        bankAccountFilterDto.setNumberPattern(numberPattern);
-        bankAccountFilterDto.setCustomerPattern(customerPattern);
+        bankAccountFilterDto.setNumberPattern(firstAccount.getNumber()
+                                                          .substring(0, 10)
+                                                          .replaceFirst("\\d", "A"));
+        bankAccountFilterDto.setCustomerPattern(accounts.get(0).getCustomer() + "off");
         performPostAndExpectStatusOk(ACCOUNTS_ENDPOINT, bankAccountFilterDto)
                 .andExpect(jsonPath("$.size()", is(0)));
     }
 
     @Test
-    void accountsPOSTWithInvalidNumberPatternAndSearchPattern() throws Exception {
+    void accountsPOSTWithInvalidNumberAndSearchPatterns() throws Exception {
         // Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        performPostAndExpectStatus("/accounts", bankAccountFilterDto, status().isBadRequest())
+        performPostAndExpectStatus(ACCOUNTS_ENDPOINT, bankAccountFilterDto, status().isBadRequest())
                 .andExpect(jsonPath("$.validationErrors.customerPattern").value(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT))
                 .andExpect(jsonPath("$.validationErrors.numberPattern").value(ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT));
         // Case 2
-        bankAccountFilterDto.setNumberPattern("BYby");
-        bankAccountFilterDto.setCustomerPattern("Sergeev2");
-        performPostAndExpectStatus("/accounts", bankAccountFilterDto, status().isBadRequest())
+        bankAccountFilterDto.setNumberPattern(firstAccount.getNumber()
+                                                          .substring(0, 10)
+                                                          .replaceAll("\\d", "#"));
+        bankAccountFilterDto.setCustomerPattern(firstAccount.getCustomer() + "123");
+        performPostAndExpectStatus(ACCOUNTS_ENDPOINT, bankAccountFilterDto, status().isBadRequest())
                 .andExpect(jsonPath("$.validationErrors.customerPattern").value(CUSTOMER_SEARCH_PATTERN_IS_INCORRECT))
                 .andExpect(jsonPath("$.validationErrors.numberPattern").value(ACCOUNT_NUMBER_SEARCH_PATTERN_IS_INCORRECT));
     }

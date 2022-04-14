@@ -51,10 +51,10 @@ public class OpenApiConfig {
                                                                                            new StringSchema().example("1500,00").description("String representation of a transaction amount"),
                                                                                            "locale", new StringSchema().example("ru").description("Current locale")))
                                                                             .description("Deposit transaction data transfer object"))
-                                                       .addSchemas("controllerVersion",
-                                                                   new Schema<Map<String, String>>()
-                                                                           .addProperties("version", new StringSchema().example("1.0"))
-                                                                           .description("Current controller version"))
+                                                        .addSchemas("version",
+                                                                    new Schema<Map<String, String>>()
+                                                                            .addProperties("version", new StringSchema().example("1.0"))
+                                                                            .description("Current controller version"))
                                                         .addSchemas("transferTransactionDto",
                                                                     buildResolvedSchema(CreditCardTransactionDto.class,
                                                                                   "locale", new StringSchema().example("ru").description("Current locale"))

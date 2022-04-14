@@ -63,9 +63,7 @@ public class CreditCardTransactionDtoValidator implements Validator {
             errors.rejectValue(VALUE_SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
         } else {
             try {
-                BigDecimal sumOfMoney = (BigDecimal) numberStyleFormatter.parse(creditCardTransactionDto.getTransactionAmountValue(),
-                                                                                creditCardTransactionDto.getLocale());
-                creditCardTransactionDto.setSumOfMoney(sumOfMoney);
+               numberStyleFormatter.parse(creditCardTransactionDto.getTransactionAmountValue(), creditCardTransactionDto.getLocale());
             } catch (ParseException e) {
                 errors.rejectValue(VALUE_SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
             }

@@ -11,8 +11,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import static com.epam.brest.model.validator.constant.RangeDateType.END;
 import static com.epam.brest.model.validator.constant.RangeDateType.START;
-import static com.epam.brest.model.validator.constant.ValidatorConstant.RANGE_DATE_CARD_FROM_DATE_VALUE;
-import static com.epam.brest.model.validator.constant.ValidatorConstant.RANGE_DATE_CARD_TO_DATE_VALUE;
+import static com.epam.brest.model.validator.constant.ValidatorConstant.RANGE_DATE_FROM_DATE_TEMPLATE;
+import static com.epam.brest.model.validator.constant.ValidatorConstant.RANGE_DATE_TO_DATE_TEMPLATE;
 import static java.util.Objects.isNull;
 
 public class DateRangeValidator extends BasicValidator implements ConstraintValidator<RangeDate, String> {
@@ -32,11 +32,14 @@ public class DateRangeValidator extends BasicValidator implements ConstraintVali
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         LOGGER.debug("isValid(value={})", value);
-        if (isNull(value) || !value.matches(dateRegexp)) {
+        if (isNull(value)) {
+            return true;
+        }
+        if (!value.matches(dateRegexp)) {
             if (rangeDateType.equals(START)) {
-                buildConstraintViolation(context, RANGE_DATE_CARD_FROM_DATE_VALUE);
+                buildConstraintViolation(context, RANGE_DATE_FROM_DATE_TEMPLATE);
             } else if (rangeDateType.equals(END)) {
-                buildConstraintViolation(context, RANGE_DATE_CARD_TO_DATE_VALUE);
+                buildConstraintViolation(context, RANGE_DATE_TO_DATE_TEMPLATE);
             }
             return false;
         }
