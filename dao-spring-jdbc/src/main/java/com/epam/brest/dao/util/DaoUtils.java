@@ -1,7 +1,7 @@
 package com.epam.brest.dao.util;
 
-import com.epam.brest.model.annotation.ExcludeFromSql;
-import com.epam.brest.model.annotation.MapToColumn;
+import com.epam.brest.model.annotation.IgnoreAsSqlParameter;
+import com.epam.brest.model.annotation.SqlParameter;
 import com.epam.brest.model.annotation.ConvertToRegexp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,9 +14,9 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.epam.brest.dao.constant.DaoConstant.*;
+import static java.util.stream.Collectors.joining;
 
 public final class DaoUtils {
 
@@ -25,65 +25,71 @@ public final class DaoUtils {
     private DaoUtils() {
     }
 
-    public static SqlParameterSource getSqlParameterSource(Object entity) {
-        LOGGER.info("getSqlParameterSource(entity={})", entity);
+    public static SqlParameterSource buildSqlParameterSource(Object entity) {
+        LOGGER.debug("getSqlParameterSource(entity={})", entity);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
-                if (field.isAnnotationPresent(ExcludeFromSql.class)) {
+                if (field.isAnnotationPresent(IgnoreAsSqlParameter.class)) {
                     return;
                 }
-                String param = getParamNameBy(field);
-                field.setAccessible(true);
+                String paramName = getSqlParamName(field);
+                ReflectionUtils.makeAccessible(field);
                 Optional.ofNullable(ReflectionUtils.getField(field, entity))
-                        .map(value -> convertToSqlRegexp(field, value))
-                        .ifPresent(value -> sqlParameterSource.addValue(param, value));
+                        .ifPresent(value -> {
+                            if (field.isAnnotationPresent(ConvertToRegexp.class) && field.getType() == String.class) {
+                                String pattern = field.getAnnotation(ConvertToRegexp.class).pattern();
+                                value = convertToRegexp((String) value, pattern);
+                            }
+                            sqlParameterSource.addValue(paramName, value);
+                        });
         });
+        LOGGER.debug("sqlParameterSource={}", sqlParameterSource);
         return sqlParameterSource;
     }
 
-    public static String buildDynamicWhereSql(SqlParameterSource sqlParameterSource, String sqlTemplate) {
-        LOGGER.info("buildFilterWhereSql(sqlParameterSource={}, sqlTemplate={})", sqlParameterSource, sqlTemplate);
+    public static String buildSqlWithDynamicWhere(SqlParameterSource sqlParameterSource,
+                                                  String whereTemplate) {
+        LOGGER.debug("buildFilterWhereSql(sqlParameterSource={}, whereTemplate={})",
+                     sqlParameterSource, whereTemplate);
         Objects.requireNonNull(sqlParameterSource.getParameterNames());
         return Arrays.stream(sqlParameterSource.getParameterNames())
-                     .map(param -> sqlTemplate.replaceAll(REPLACEMENT_REGEXP, param))
-                     .collect(Collectors.joining(AND_DELIMITER));
+                     .map(param -> whereTemplate.replaceAll(REPLACEMENT_REGEXP, param))
+                     .collect(joining(AND_DELIMITER));
     }
 
-    public static String buildDynamicWhereSql(SqlParameterSource sqlParameterSource, Map<String, String> sqlTemplateMap) {
-        LOGGER.info("buildFilterWhereSql(sqlParameterSource={}, sqlTemplateMap={})", sqlParameterSource, sqlTemplateMap);
+    public static String buildSqlWithDynamicWhere(SqlParameterSource sqlParameterSource,
+                                                  Map<String, String> whereTemplates) {
+        LOGGER.debug("buildFilterWhereSql(sqlParameterSource={}, whereTemplates={})", sqlParameterSource, whereTemplates);
         Objects.requireNonNull(sqlParameterSource.getParameterNames());
         return Arrays.stream(sqlParameterSource.getParameterNames())
-                     .map(sqlTemplateMap::get)
-                     .collect(Collectors.joining(AND_DELIMITER));
+                     .map(whereTemplates::get)
+                     .collect(joining(AND_DELIMITER));
     }
 
-    private static String getParamNameBy(Field field) {
-        LOGGER.trace("getParamNameBy(field={})", field);
-        if (field.isAnnotationPresent(MapToColumn.class)) {
-            return field.getAnnotation(MapToColumn.class).value().toLowerCase();
+    public static String getSqlParamName(Field field) {
+        LOGGER.trace("getSqlParamName(field={})", field);
+        if (field.isAnnotationPresent(SqlParameter.class)) {
+            return field.getAnnotation(SqlParameter.class).value();
         }
-        return convertToSnakeCase(field.getName());
+        return field.getName();
     }
 
-    private static String convertToSnakeCase(String value) {
+    public static String convertToSnakeCase(String value) {
         LOGGER.trace("convertToSnakeCase(value={})", value);
         return value.replaceAll(CAMEL_CASE_REGEXP, SNAKE_CASE_TEMPLATE).toLowerCase();
     }
 
-    private static Object convertToSqlRegexp(Field field, Object value) {
-        LOGGER.trace("convertToSqlRegexp(field={}, value={})", field, value);
-        if (field.isAnnotationPresent(ConvertToRegexp.class)) {
-            if (!(value instanceof String)) {
-                return value;
-            }
-            String strValue = (String) value;
-            String pattern = field.getAnnotation(ConvertToRegexp.class).pattern();
-            String regexp = Arrays.stream(strValue.split(SPLIT_REGEXP))
-                                  .map(exp -> String.format(pattern, exp))
-                                  .collect(Collectors.joining());
-            return regexp + SQL_REGEXP_POSTFIX;
-        }
-        return value;
+    public static String convertToDotCase(String value) {
+        LOGGER.trace("convertToDotCase(value={})", value);
+        return value.replaceAll(CAMEL_CASE_REGEXP, DOT_CASE_TEMPLATE).toLowerCase();
+    }
+
+    public static Object convertToRegexp(String value, String pattern) {
+        LOGGER.trace("convertToRegexp(value={}, pattern={})", value, value);
+        String regexp = Arrays.stream(value.split(SPLIT_REGEXP))
+                              .map(exp -> String.format(pattern, exp))
+                              .collect(joining());
+        return regexp + REGEXP_SQL_POSTFIX;
     }
 
 }

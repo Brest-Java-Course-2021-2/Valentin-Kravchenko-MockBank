@@ -1,6 +1,6 @@
 package com.epam.brest.model;
 
-import com.epam.brest.model.annotation.ExcludeFromSql;
+import com.epam.brest.model.annotation.IgnoreAsSqlParameter;
 import com.epam.brest.model.validator.constraint.Range;
 import com.epam.brest.model.validator.constraint.RangeDate;
 import com.epam.brest.model.validator.order.FirstOrder;
@@ -36,7 +36,7 @@ public class CreditCardFilterDto {
     /**
      *  String representation of the start date of the credit card expiration range.
      */
-    @ExcludeFromSql
+    @IgnoreAsSqlParameter
     @RangeDate(value = START, groups = {FirstOrder.class})
     @Schema(example = "06/2022",
             description = "String representation of the start date of the credit card expiration range.")
@@ -45,7 +45,7 @@ public class CreditCardFilterDto {
     /**
      *  String representation of the end date of the credit card expiration range.
      */
-    @ExcludeFromSql
+    @IgnoreAsSqlParameter
     @RangeDate(value = END, groups = {FirstOrder.class})
     @Schema(example = "08/2023",
             description = "String representation of the end date of the credit card expiration range")

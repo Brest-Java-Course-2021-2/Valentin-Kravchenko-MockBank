@@ -1,6 +1,6 @@
 package com.epam.brest.model;
 
-import com.epam.brest.model.annotation.MapToColumn;
+import com.epam.brest.model.annotation.SqlParameter;
 import com.epam.brest.model.annotation.ConvertToRegexp;
 import com.epam.brest.model.validator.constraint.AccountNumberPattern;
 import com.epam.brest.model.validator.constraint.AnyOfPatterns;
@@ -18,7 +18,7 @@ public class BankAccountFilterDto {
      *  Bank account number search pattern.
      */
     @ConvertToRegexp
-    @MapToColumn("number")
+    @SqlParameter("number")
     @AccountNumberPattern
     @Schema(example = "BY 99T6", description = "Bank account number search pattern")
     private String numberPattern;
@@ -27,7 +27,7 @@ public class BankAccountFilterDto {
      *  Bank customer search pattern.
      */
     @ConvertToRegexp
-    @MapToColumn("customer")
+    @SqlParameter("customer")
     @CustomerPattern
     @Schema(example = "an ov", description = "Bank customer search pattern")
     private String customerPattern;

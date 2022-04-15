@@ -1,6 +1,6 @@
 package com.epam.brest.dao.constant;
 
-public enum ColumnName {
+public enum ParamName {
     ID, NUMBER;
 
     public String getName() {
