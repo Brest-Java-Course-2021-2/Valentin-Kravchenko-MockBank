@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.brest.dao.constant.ColumnName.ID;
+import static com.epam.brest.dao.constant.ParamName.ID;
 
 @Repository
 public class CreditCardSpringJdbcDao extends SpringJdbcDaoBasic<CreditCard> implements CreditCardDao {
@@ -27,8 +27,8 @@ public class CreditCardSpringJdbcDao extends SpringJdbcDaoBasic<CreditCard> impl
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final RowMapper<CreditCard> rowMapper;
 
-    @Value("${card.get.all.order}")
-    private String getAllSql;
+    @Value("${card.get.all.order.by}")
+    private String getAllOrderBySql;
 
     @Value("${card.get.by.id}")
     private String getByIdSql;
@@ -48,8 +48,8 @@ public class CreditCardSpringJdbcDao extends SpringJdbcDaoBasic<CreditCard> impl
     @Value("${card.count}")
     private String countSql;
 
-    @Value("${card.count.number}")
-    private String countNumberSql;
+    @Value("${card.count.by.number}")
+    private String countByNumberSql;
 
     @Value("${card.get.all.by.account.id}")
     private String getAllByAccountIdSql;
@@ -63,7 +63,7 @@ public class CreditCardSpringJdbcDao extends SpringJdbcDaoBasic<CreditCard> impl
     @Override
     public List<CreditCard> getAll() {
         LOGGER.debug("getAll()");
-        return namedParameterJdbcTemplate.query(getAllSql, rowMapper);
+        return namedParameterJdbcTemplate.query(getAllOrderBySql, rowMapper);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class CreditCardSpringJdbcDao extends SpringJdbcDaoBasic<CreditCard> impl
     @Override
     public boolean isCardNumberExists(String number) {
         LOGGER.debug("isCardNumberExists(number={})", number);
-        return isNumberExists(countNumberSql, number);
+        return isNumberExists(countByNumberSql, number);
     }
 
     @Override

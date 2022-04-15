@@ -1,6 +1,7 @@
 package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.SpringJdbcDaoBasic;
+import com.epam.brest.dao.annotation.InjectSql;
 import com.epam.brest.dao.api.BankAccountDao;
 import com.epam.brest.model.BankAccount;
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+@InjectSql(prefix = "account")
 @Repository
 public class BankAccountSpringJdbcDao extends SpringJdbcDaoBasic<BankAccount> implements BankAccountDao {
 
@@ -23,32 +25,29 @@ public class BankAccountSpringJdbcDao extends SpringJdbcDaoBasic<BankAccount> im
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final RowMapper<BankAccount> rowMapper;
 
-    @Value("${account.get.all.order}")
-    private String getAllSql;
+//    @Value("${account.get.all.order.by}")
+    private String getAllOrderBySql;
 
-    @Value("${account.get.by.id}")
+//    @Value("${account.get.by.id}")
     private String getByIdSql;
 
-    @Value("${account.get.by.number}")
+//    @Value("${account.get.by.number}")
     private String getByNumberSql;
 
-    @Value("${account.insert}")
+//    @Value("${account.insert}")
     private String insertSql;
 
-    @Value("${account.update}")
+//    @Value("${account.update}")
     private String updateSql;
 
-    @Value("${account.delete}")
+//    @Value("${account.delete}")
     private String deleteSql;
 
-    @Value("${account.count}")
+//    @Value("${account.count}")
     private String countSql;
 
-    @Value("${account.count.number}")
-    private String countNumberSql;
-
-    @Value("${account.get.cards.number}")
-    private String getCardNumbersSql;
+//    @Value("${account.count.by.number}")
+    private String countByNumberSql;
 
     public BankAccountSpringJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(namedParameterJdbcTemplate);
@@ -59,7 +58,7 @@ public class BankAccountSpringJdbcDao extends SpringJdbcDaoBasic<BankAccount> im
     @Override
     public List<BankAccount> getAll() {
         LOGGER.debug("getAll()");
-        return namedParameterJdbcTemplate.query(getAllSql, rowMapper);
+        return namedParameterJdbcTemplate.query(getAllOrderBySql, rowMapper);
     }
 
     @Override
@@ -101,7 +100,7 @@ public class BankAccountSpringJdbcDao extends SpringJdbcDaoBasic<BankAccount> im
     @Override
     public boolean isAccountNumberExists(String number) {
         LOGGER.debug("isAccountNumberExists(number={})", number);
-        return isNumberExists(countNumberSql, number);
+        return isNumberExists(countByNumberSql, number);
     }
 
 }

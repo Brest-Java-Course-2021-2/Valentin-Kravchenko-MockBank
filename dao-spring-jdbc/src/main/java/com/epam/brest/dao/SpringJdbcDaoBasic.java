@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.epam.brest.dao.constant.ColumnName.ID;
-import static com.epam.brest.dao.constant.ColumnName.NUMBER;
+import static com.epam.brest.dao.constant.ParamName.ID;
+import static com.epam.brest.dao.constant.ParamName.NUMBER;
 
 public abstract class SpringJdbcDaoBasic<T extends BasicEntity> {
 
@@ -44,7 +44,7 @@ public abstract class SpringJdbcDaoBasic<T extends BasicEntity> {
     public T create(String sql, T entity) {
         LOGGER.info("create(sql={}, entity={})", sql, entity);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(entity);
+        SqlParameterSource sqlParameterSource = DaoUtils.buildSqlParameterSource(entity);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
         Integer id = extractId(keyHolder);
         entity.setId(id);
@@ -53,7 +53,7 @@ public abstract class SpringJdbcDaoBasic<T extends BasicEntity> {
 
     public Integer update(String sql, T entity) {
         LOGGER.info("update(sql={}, entity={})", sql, entity);
-        SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(entity);
+        SqlParameterSource sqlParameterSource = DaoUtils.buildSqlParameterSource(entity);
         return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 

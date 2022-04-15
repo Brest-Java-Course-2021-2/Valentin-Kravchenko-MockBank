@@ -1,5 +1,6 @@
 package com.epam.brest.dao.impl;
 
+import com.epam.brest.dao.annotation.InjectSql;
 import com.epam.brest.dao.api.BankAccountDtoDao;
 import com.epam.brest.dao.util.DaoUtils;
 import com.epam.brest.model.BankAccountDto;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static java.lang.String.format;
+
+@InjectSql(prefix = "account.dto")
 @Repository
 public class BankAccountDtoSpringJdbcDao implements BankAccountDtoDao {
 
@@ -23,14 +27,14 @@ public class BankAccountDtoSpringJdbcDao implements BankAccountDtoDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final RowMapper<BankAccountDto> rowMapper;
 
-    @Value("${account.dto.get.all}")
+//    @Value("${account.dto.get.all}")
     private String getAllSql;
 
-    @Value("${account.dto.get.all.by.filter}")
-    private String getAllSqlByFilter;
+//    @Value("${account.dto.get.all.by.filter}")
+    private String getAllByFilterSql;
 
-    @Value("${account.dto.sql.regexp.template}")
-    private String sqlRegexpTemplate;
+//    @Value("${account.dto.where.template}")
+    private String whereTemplateSql;
 
     public BankAccountDtoSpringJdbcDao(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -46,10 +50,10 @@ public class BankAccountDtoSpringJdbcDao implements BankAccountDtoDao {
     @Override
     public List<BankAccountDto> getAllWithTotalCards(BankAccountFilterDto bankAccountFilterDto) {
         LOGGER.debug("getAllWithTotalCards(bankAccountFilterDto={})", bankAccountFilterDto);
-        SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(bankAccountFilterDto);
+        SqlParameterSource sqlParameterSource = DaoUtils.buildSqlParameterSource(bankAccountFilterDto);
         LOGGER.info("getAllWithTotalCards(sqlParameterSource={})", sqlParameterSource);
-        String dynamicWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, sqlRegexpTemplate);
-        return namedParameterJdbcTemplate.query(String.format(getAllSqlByFilter, dynamicWhereSql), sqlParameterSource, rowMapper);
+        String dynamicWhereSql = DaoUtils.buildSqlWithDynamicWhere(sqlParameterSource, whereTemplateSql);
+        return namedParameterJdbcTemplate.query(format(getAllByFilterSql, dynamicWhereSql), sqlParameterSource, rowMapper);
     }
 
 }

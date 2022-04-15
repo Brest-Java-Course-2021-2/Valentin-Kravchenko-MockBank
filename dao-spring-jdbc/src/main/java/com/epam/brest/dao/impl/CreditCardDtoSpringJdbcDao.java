@@ -33,10 +33,10 @@ public class CreditCardDtoSpringJdbcDao implements CreditCardDtoDao {
     private String getAllSql;
 
     @Value("${card.dto.get.all.by.date.range}")
-    private String getAllSqlByDateRange;
+    private String getAllByDateRangeSql;
 
-    @Value("#{${card.dto.date.range.where}}")
-    private Map<String, String> sqlWhereDateRangeMap;
+    @Value("#{${card.dto.where.templates}}")
+    private Map<String, String> whereTemplatesSql;
 
     @Override
     public List<CreditCardDto> getAllWithAccountNumber() {
@@ -47,10 +47,10 @@ public class CreditCardDtoSpringJdbcDao implements CreditCardDtoDao {
     @Override
     public List<CreditCardDto> getAllWithAccountNumber(CreditCardFilterDto creditCardFilterDto) {
         LOGGER.debug("getAllWithTotalCards(getAllWithAccountNumber={})", creditCardFilterDto);
-        SqlParameterSource sqlParameterSource = DaoUtils.getSqlParameterSource(creditCardFilterDto);
+        SqlParameterSource sqlParameterSource = DaoUtils.buildSqlParameterSource(creditCardFilterDto);
         LOGGER.info("getAllWithTotalCards(sqlParameterSource={})", sqlParameterSource);
-        String dynamicWhereSql = DaoUtils.buildDynamicWhereSql(sqlParameterSource, sqlWhereDateRangeMap);
-        return namedParameterJdbcTemplate.query(String.format(getAllSqlByDateRange, dynamicWhereSql), sqlParameterSource, rowMapper);
+        String dynamicWhereSql = DaoUtils.buildSqlWithDynamicWhere(sqlParameterSource, whereTemplatesSql);
+        return namedParameterJdbcTemplate.query(String.format(getAllByDateRangeSql, dynamicWhereSql), sqlParameterSource, rowMapper);
     }
 
 }
