@@ -14,6 +14,8 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import static java.lang.String.format;
+
 public class CreditCardServiceRest extends ServiceRestBasic implements CreditCardService {
 
     private static final Logger LOGGER = LogManager.getLogger(CreditCardServiceRest.class);
@@ -38,8 +40,8 @@ public class CreditCardServiceRest extends ServiceRestBasic implements CreditCar
 
     @Override
     public CreditCard delete(Integer id) {
-        LOGGER.debug("delete(endpoint={})", endpoint + SLASH + id);
-        return deleteRetrieve(endpoint + SLASH + id)
+        LOGGER.debug("delete(endpoint={})", format(PATH_ID_TEMPLATE, endpoint, id));
+        return deleteRetrieve(format(PATH_ID_TEMPLATE, endpoint, id))
                 .onStatus(HttpStatus::is4xxClientError, this::getMonoException)
                 .bodyToMono(parameterizedTypeRef)
                 .block();
@@ -65,8 +67,8 @@ public class CreditCardServiceRest extends ServiceRestBasic implements CreditCar
 
     @Override
     public CreditCard getById(Integer id) {
-        LOGGER.debug("getById(endpoint={})", endpoint + SLASH + id);
-        return getRetrieve(endpoint + SLASH + id)
+        LOGGER.debug("getById(endpoint={})", format(PATH_ID_TEMPLATE, endpoint, id));
+        return getRetrieve(format(PATH_ID_TEMPLATE, endpoint, id))
                 .onStatus(HttpStatus::is4xxClientError, this::getMonoException)
                 .bodyToMono(parameterizedTypeRef)
                 .block();

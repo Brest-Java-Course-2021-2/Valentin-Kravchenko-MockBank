@@ -28,6 +28,7 @@
         <module>bank-data-generator</module>
         <module>service-api</module>
         <module>service</module>
+        <module>service-faker</module>
         <module>rest-app</module>
         <module>rest-openapi</module>
         <module>service-rest</module>
@@ -46,6 +47,7 @@
         <swagger-annotations.version>1.6.5</swagger-annotations.version>
         <springdoc-openapi-maven-plugin.version>1.1</springdoc-openapi-maven-plugin.version>
         <jackson-databind-nullable.version>0.2.2</jackson-databind-nullable.version>
+        <javafaker.version>1.0.2</javafaker.version>
         <openapi-generator-maven-plugin.version>5.4.0</openapi-generator-maven-plugin.version>
         <project.testresult.directory>${project.build.directory}/testResults</project.testresult.directory>
         <junit.utReportFolder>${project.testresult.directory}/unitTests</junit.utReportFolder>
@@ -160,6 +162,11 @@
                 <groupId>org.openapitools</groupId>
                 <artifactId>jackson-databind-nullable</artifactId>
                 <version>${jackson-databind-nullable.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.javafaker</groupId>
+                <artifactId>javafaker</artifactId>
+                <version>${javafaker.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
