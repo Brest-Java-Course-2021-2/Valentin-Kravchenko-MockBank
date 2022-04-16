@@ -24,7 +24,7 @@ public class LocalDateFormatter implements Formatter<LocalDate> {
 
     @Override
     public String print(LocalDate object, Locale locale) {
-        LOGGER.trace("print(localDate={}, locale={})", object, locale);
+        LOGGER.trace("print(object={}, locale={})", object, locale);
         return object.format(DateTimeFormatter.ofPattern(dateFormat, locale));
     }
 

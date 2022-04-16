@@ -19,10 +19,9 @@ public class BigDecimalPrinter implements Printer<BigDecimal> {
 
     @Override
     public String print(BigDecimal object, Locale locale) {
-        LOGGER.trace("print(bigDecimal={}, locale={})", object, locale);
+        LOGGER.trace("print(object={}, locale={})", object, locale);
         DecimalFormat decimalFormat = new DecimalFormat(bigDecimalPattern, DecimalFormatSymbols.getInstance(locale));
         return decimalFormat.format(object);
-
     }
 
 }

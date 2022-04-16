@@ -16,6 +16,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static java.lang.String.format;
+
 public class BankAccountServiceRest extends ServiceRestBasic implements BankAccountService {
 
     private static final Logger LOGGER = LogManager.getLogger(BankAccountServiceRest.class);
@@ -50,8 +52,8 @@ public class BankAccountServiceRest extends ServiceRestBasic implements BankAcco
 
     @Override
     public BankAccount delete(Integer id) {
-        LOGGER.debug("getById(endpoint={})", endpoint + SLASH + id);
-        return deleteRetrieve(endpoint + SLASH + id)
+        LOGGER.debug("getById(endpoint={})", format(PATH_ID_TEMPLATE, endpoint, id));
+        return deleteRetrieve(format(PATH_ID_TEMPLATE, endpoint, id))
                 .onStatus(HttpStatus::is4xxClientError, this::getMonoException)
                 .bodyToMono(parameterizedTypeRef)
                 .block();
@@ -59,8 +61,8 @@ public class BankAccountServiceRest extends ServiceRestBasic implements BankAcco
 
     @Override
     public BankAccount getById(Integer id) {
-        LOGGER.debug("getById(endpoint={})", endpoint + SLASH + id);
-        return getRetrieve(endpoint + SLASH + id)
+        LOGGER.debug("getById(endpoint={})", format(PATH_ID_TEMPLATE, endpoint, id));
+        return getRetrieve(format(PATH_ID_TEMPLATE, endpoint, id))
                 .onStatus(HttpStatus::is4xxClientError, this::getMonoException)
                 .bodyToMono(parameterizedTypeRef)
                 .block();
@@ -68,7 +70,8 @@ public class BankAccountServiceRest extends ServiceRestBasic implements BankAcco
 
     @Override
     public List<CreditCard> getAllCardsById(Integer id) {
-        return getBlock(endpoint + SLASH + id + CARDS_ENDPOINT, parameterizedTypeRefCreditCard);
+        LOGGER.debug("getAllCardsById(endpoint={})", format(PATH_ID_TEMPLATE, endpoint, id) + CARDS_ENDPOINT);
+        return getBlock(format(PATH_ID_TEMPLATE, endpoint, id) + CARDS_ENDPOINT, parameterizedTypeRefCreditCard);
     }
 
     private Mono<Throwable> getMonoException(ClientResponse response) {

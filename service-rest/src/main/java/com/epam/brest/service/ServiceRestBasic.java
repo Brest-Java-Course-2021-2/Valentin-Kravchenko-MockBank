@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 
 public abstract class ServiceRestBasic {
 
-    public static final String SLASH = "/";
+    public static final String PATH_ID_TEMPLATE = "%s/%d";
 
     private final WebClient webClient;
 
@@ -21,7 +21,8 @@ public abstract class ServiceRestBasic {
     }
 
     public <T> T getBlock(String endpoint, ParameterizedTypeReference<T> parameterizedTypeRef){
-        return getRetrieve(endpoint).bodyToMono(parameterizedTypeRef).block();
+        return getRetrieve(endpoint).bodyToMono(parameterizedTypeRef)
+                                    .block();
     }
 
     public WebClient.ResponseSpec postRetrieve(String endpoint, Object data){
@@ -32,7 +33,8 @@ public abstract class ServiceRestBasic {
     }
 
     public <T> T postBlock(String endpoint, Object data, ParameterizedTypeReference<T> parameterizedTypeRef){
-        return postRetrieve(endpoint, data).bodyToMono(parameterizedTypeRef).block();
+        return postRetrieve(endpoint, data).bodyToMono(parameterizedTypeRef)
+                                           .block();
     }
 
     public WebClient.ResponseSpec putRetrieve(String endpoint, Object data){
