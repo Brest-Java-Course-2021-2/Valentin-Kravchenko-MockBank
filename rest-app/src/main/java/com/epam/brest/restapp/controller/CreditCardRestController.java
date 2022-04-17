@@ -52,14 +52,14 @@ public class CreditCardRestController {
     @Operation(summary = "Create a new credit card",
             operationId = "createCreditCard",
             responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
-                    responseCode = "200"),
-                    @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                            responseCode = "404", description = "If the bank account with the given ID not found")})
+                                      responseCode = "200"),
+                         @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
+                                      responseCode = "404", description = "If the bank account with the given ID not found")})
     @PostMapping
     public ResponseEntity<CreditCard> create(
             @Parameter(description = "Bank account ID to which the credit card will be linked",
-                    schema = @Schema(ref = "#/components/schemas/bankAccountId"),
-                    required = true)
+                       schema = @Schema(ref = "#/components/schemas/bankAccountId"),
+                       required = true)
             @RequestBody Integer accountId
     ){
         LOGGER.debug("create(api/card, accountId={})", accountId);
@@ -71,11 +71,11 @@ public class CreditCardRestController {
     @Operation(summary = "Delete a credit card by its ID",
             operationId = "deleteCreditCard",
             responses = {@ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/creditCard")),
-                    responseCode = "200"),
-                    @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                            responseCode = "404", description = "If the credit card with the given ID not found"),
-                    @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
-                            responseCode = "400", description = "if the credit card has a positive balance")})
+                                      responseCode = "200"),
+                         @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
+                                      responseCode = "404", description = "If the credit card with the given ID not found"),
+                         @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/errorMessage")),
+                                      responseCode = "400", description = "if the credit card has a positive balance")})
     @DeleteMapping("{id}")
     public ResponseEntity<CreditCard> delete(
             @Parameter(description = "Credit card ID", required = true)

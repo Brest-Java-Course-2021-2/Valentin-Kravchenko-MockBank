@@ -114,6 +114,11 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
+                <artifactId>service-faker</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
                 <artifactId>rest-openapi</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -167,6 +172,12 @@
                 <groupId>com.github.javafaker</groupId>
                 <artifactId>javafaker</artifactId>
                 <version>${javafaker.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.yaml</groupId>
+                        <artifactId>snakeyaml</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
         </dependencies>
     </dependencyManagement>
