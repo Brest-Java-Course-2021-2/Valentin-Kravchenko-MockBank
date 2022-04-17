@@ -1,5 +1,6 @@
 package com.epam.brest.restapp.controller;
 
+import com.epam.brest.faker.api.FakerService;
 import com.epam.brest.model.BankAccountDto;
 import com.epam.brest.model.BankAccountFilterDto;
 import com.epam.brest.service.api.BankAccountDtoService;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 @Tag(name = "Bank Account", description = "The Bank Account API")
 @RestController
@@ -26,9 +29,12 @@ public class BankAccountDtoRestController {
     private static final Logger LOGGER = LogManager.getLogger(BankAccountDtoRestController.class);
 
     private final BankAccountDtoService bankAccountDtoService;
+    private final FakerService<BankAccountDto> fakerService;
 
-    public BankAccountDtoRestController(BankAccountDtoService bankAccountDtoServiceImpl) {
+    public BankAccountDtoRestController(BankAccountDtoService bankAccountDtoServiceImpl,
+                                        FakerService<BankAccountDto> BankAccountDtoFakerServiceImpl) {
         this.bankAccountDtoService = bankAccountDtoServiceImpl;
+        this.fakerService = BankAccountDtoFakerServiceImpl;
     }
 
     @Operation(summary = "List of all bank accounts",
@@ -40,6 +46,26 @@ public class BankAccountDtoRestController {
     public ResponseEntity<List<BankAccountDto>> getAccounts() {
         LOGGER.debug("accountsGET(api/accounts)");
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
+        LOGGER.debug("accounts={}", accounts);
+        return ResponseEntity.ok(accounts);
+    }
+
+    @Operation(summary = "List of the fake bank accounts",
+               operationId = "getFakeAccounts",
+               responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(implementation = BankAccountDto.class))),
+                                         responseCode = "200")}
+    )
+    @GetMapping("/fake")
+    public ResponseEntity<List<BankAccountDto>> getFakeAccounts(
+            @Parameter(description = "Volume of fake data", example = "10")
+            @RequestParam Optional<Integer> dataVolume,
+            @Parameter(description = "Locale for generating fake data",
+                       schema = @Schema(implementation = String.class),
+                       example = "en")
+            @RequestParam Optional<Locale> locale
+    ) {
+        LOGGER.debug("getFakeAccounts(api/accounts/fake)");
+        List<BankAccountDto> accounts = fakerService.getFakeData(dataVolume, locale);
         LOGGER.debug("accounts={}", accounts);
         return ResponseEntity.ok(accounts);
     }
