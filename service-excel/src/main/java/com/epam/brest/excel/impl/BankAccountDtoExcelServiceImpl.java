@@ -4,13 +4,18 @@ import com.epam.brest.excel.api.ExcelService;
 import com.epam.brest.excel.config.ExcelSettings;
 import com.epam.brest.excel.util.ExcelServiceUtils;
 import com.epam.brest.model.BankAccountDto;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +23,8 @@ import java.util.stream.IntStream;
 
 @Service
 public class BankAccountDtoExcelServiceImpl implements ExcelService<BankAccountDto> {
+
+    private static final Logger LOGGER = LogManager.getLogger(BankAccountDtoExcelServiceImpl.class);
 
     public static final int HEADER_ROW_IDX = 0;
 
@@ -28,7 +35,8 @@ public class BankAccountDtoExcelServiceImpl implements ExcelService<BankAccountD
     }
 
     @Override
-    public Workbook buildWorkbook(List<BankAccountDto> data) {
+    public Workbook createWorkbook(List<BankAccountDto> data) {
+        LOGGER.debug("buildWorkbook(data={})", data);
         Workbook workbook = new XSSFWorkbook();
         Map<Class<?>, CellStyle> headerStyles = createHeaderStyles(workbook);
         Map<Class<?>, CellStyle> contentStyles = createContentStyles(workbook);
@@ -42,6 +50,18 @@ public class BankAccountDtoExcelServiceImpl implements ExcelService<BankAccountD
                         ExcelServiceUtils.fillInRow(contentRow, values, contentStyles);
         });
         return workbook;
+    }
+
+    @Override
+    public ByteArrayResource export(Workbook workbook) {
+        LOGGER.debug("export(workbook={})", workbook);
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            workbook.write(out);
+            return new ByteArrayResource(out.toByteArray());
+        } catch (IOException e) {
+            LOGGER.error("export[IOException]", e);
+            throw new RuntimeException(e);
+        }
     }
 
     private Object[] extractValues(BankAccountDto bankAccountDto) {

@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 
 import static com.epam.brest.service.constant.ServiceConstant.INIT_BALANCE;
+import static java.lang.String.format;
 
 @Service
 @Transactional(readOnly = true)
@@ -56,9 +57,9 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
         LOGGER.debug("getCreditCardById(id={})", id);
         return creditCardDao.getById(id)
                             .orElseThrow(() -> {
-                                String error = String.format(findByIdError, id);
-                                LOGGER.warn("getCreditCardById(error={})", error);
-                                return new ResourceNotFoundException(error);
+                                String errorMessage = format(findByIdError, id);
+                                LOGGER.warn("getCreditCardById(errorMessage={})", errorMessage);
+                                return new ResourceNotFoundException(errorMessage);
                             });
     }
 
@@ -67,9 +68,9 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
         LOGGER.debug("getByNumber(cardNumber={})", cardNumber);
         return creditCardDao.getByNumber(cardNumber)
                             .orElseThrow(() -> {
-                                String error = String.format(findByNumberError, cardNumber);
-                                LOGGER.warn("getByNumber(error={})", error);
-                                return new ResourceNotFoundException(error);
+                                String errorMessage = format(findByNumberError, cardNumber);
+                                LOGGER.warn("getByNumber(errorMessage={})", errorMessage);
+                                return new ResourceNotFoundException(errorMessage);
                             });
     }
 
@@ -93,9 +94,9 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
         CreditCard deletedCardFromDb = getById(id);
         LOGGER.debug("delete(deletedCardFromDb={})", deletedCardFromDb);
         if (deletedCardFromDb.getBalance().signum() == 1) {
-            String error = String.format(deleteError, deletedCardFromDb.getNumber(), deletedCardFromDb.getBalance().toPlainString());
-            LOGGER.warn("delete(error={})", error);
-            throw new CreditCardException(error);
+            String errorMessage = format(deleteError, deletedCardFromDb.getNumber(), deletedCardFromDb.getBalance().toPlainString());
+            LOGGER.warn("delete(errorMessage={})", errorMessage);
+            throw new CreditCardException(errorMessage);
         }
         creditCardDao.delete(deletedCardFromDb.getId());
         return deletedCardFromDb;
@@ -122,9 +123,9 @@ public class CreditCardServiceImpl implements ExtendedCreditCardService {
         LOGGER.debug("deposit(sourceCreditCard={})", sourceCreditCard);
         BigDecimal transactionAmount = getTransactionAmount(creditCardTransactionDto);
         if (sourceCreditCard.getBalance().compareTo(transactionAmount) < 0) {
-            String error = String.format(transferError, creditCardTransactionDto.getSourceCardNumber());
-            LOGGER.warn("deposit(error={})", error);
-            throw new CreditCardException(error);
+            String errorMessage = format(transferError, creditCardTransactionDto.getSourceCardNumber());
+            LOGGER.warn("deposit(errorMessage={})", errorMessage);
+            throw new CreditCardException(errorMessage);
         }
         CreditCard targetCreditCard = getByNumber(creditCardTransactionDto.getTargetCardNumber());
         LOGGER.debug("deposit(targetCreditCard={})", targetCreditCard);

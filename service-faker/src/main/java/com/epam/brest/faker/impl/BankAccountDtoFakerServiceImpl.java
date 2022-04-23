@@ -43,6 +43,7 @@ public class BankAccountDtoFakerServiceImpl implements FakerService<BankAccountD
     }
 
     private IntFunction<BankAccountDto> buildFakerMapper(Faker faker, FakerSettings fakerSettings) {
+        LOGGER.trace("buildFakerMapper(faker={}, fakerSettings={})", faker, fakerSettings);
         return i -> {
             BankAccountDto bankAccountDto = new BankAccountDto();
             bankAccountDto.setId(i);
