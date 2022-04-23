@@ -38,7 +38,7 @@ public class CreditCardDtoRestController {
     )
     @GetMapping
     public ResponseEntity<List<CreditCardDto>> getCards() {
-        LOGGER.debug("cardsGET(api/cards)");
+        LOGGER.debug("getCards(api/cards, method=GET)");
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
         LOGGER.debug("cards={}", cards);
         return ResponseEntity.ok(cards);
@@ -59,7 +59,7 @@ public class CreditCardDtoRestController {
             @Parameter(required = true)
             @Valid @RequestBody CreditCardFilterDto creditCardFilterDto
     ) {
-        LOGGER.debug("cardsPOST(api/cards, creditCardDateRangeDto={})", creditCardFilterDto);
+        LOGGER.debug("getCards(api/cards, method=POST, creditCardDateRangeDto={})", creditCardFilterDto);
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
         LOGGER.debug("cards={}", cards);
         return ResponseEntity.ok(cards);

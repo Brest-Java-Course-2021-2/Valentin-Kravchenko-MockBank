@@ -44,13 +44,12 @@ class BankAccountDtoExcelServiceImplIT {
 
     @BeforeEach
     public void generateExcelFile() throws IOException {
-        Workbook workbook = excelService.buildWorkbook(fakeData);
+        Workbook workbook = excelService.createWorkbook(fakeData);
         fileName = workbook.getSheetName(0);
         Path path = Path.of(format(PATH_TEMPLATE, fileName));
-        try(FileOutputStream fileOutputStream = new FileOutputStream(path.toFile())) {
-            workbook.write(fileOutputStream);
-            workbook.close();
-        }
+        FileOutputStream fileOutputStream = new FileOutputStream(path.toFile());
+        workbook.write(fileOutputStream);
+        workbook.close();
     }
 
     @Test

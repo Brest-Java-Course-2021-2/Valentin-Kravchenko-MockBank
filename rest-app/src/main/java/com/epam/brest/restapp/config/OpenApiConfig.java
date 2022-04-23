@@ -71,9 +71,9 @@ public class OpenApiConfig {
         return new ObjectSchema().properties(properties);
     }
 
-    private Schema buildResolvedSchema(Class className, String key, Schema propertiesItem){
+    private Schema buildResolvedSchema(Class<?> clazz, String key, Schema propertiesItem){
         ResolvedSchema resolvedSchema = ModelConverters.getInstance()
-                                                       .resolveAsResolvedSchema(new AnnotatedType(className).resolveAsRef(false));
+                                                       .resolveAsResolvedSchema(new AnnotatedType(clazz).resolveAsRef(false));
         return resolvedSchema.schema.addProperties(key, propertiesItem);
     }
 

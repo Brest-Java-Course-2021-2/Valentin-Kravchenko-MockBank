@@ -1,6 +1,5 @@
-package com.epam.brest.restapp.controller;
+package com.epam.brest.restapp.exception;
 
-import com.epam.brest.restapp.exception.ErrorResponse;
 import com.epam.brest.service.exception.BankAccountException;
 import com.epam.brest.service.exception.CreditCardException;
 import com.epam.brest.service.exception.ResourceNotFoundException;
@@ -11,9 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -22,7 +20,7 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ExceptionHandlingRestController {
 
     private static final Logger LOGGER = LogManager.getLogger(ExceptionHandlingRestController.class);
@@ -37,9 +35,8 @@ public class ExceptionHandlingRestController {
     private String httpMessageNotReadableErrorMessage;
 
     @ExceptionHandler({BankAccountException.class, CreditCardException.class, ResourceNotFoundException.class})
-    @ResponseBody
     public ResponseEntity<ErrorResponse> handleError(RuntimeException e) {
-        LOGGER.warn("handleServiceException, message={}", e.getMessage());
+        LOGGER.warn("handleError[BankAccountException, or CreditCardException, or ResourceNotFoundException], message={}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage(e.getMessage());
         if (e instanceof ResourceNotFoundException) {
@@ -49,18 +46,16 @@ public class ExceptionHandlingRestController {
     }
 
     @ExceptionHandler({NoHandlerFoundException.class})
-    @ResponseBody
     public ResponseEntity<ErrorResponse> handleError(NoHandlerFoundException e) {
-        LOGGER.error("handleNoHandlerFoundException", e);
+        LOGGER.warn("handleError[NoHandlerFoundException], message={}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage(noHandlerFoundErrorMessage);
         return new ResponseEntity<>(errorResponse, NOT_FOUND);
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    @ResponseBody
     public ResponseEntity<ErrorResponse> handleError(MethodArgumentTypeMismatchException e) {
-        LOGGER.error("handleMethodArgumentTypeMismatchException", e);
+        LOGGER.warn("handleError[MethodArgumentTypeMismatchException], message={}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse();
         String message = String.format(argumentTypeErrorTemplate, e.getName(), e.getValue());
         errorResponse.setErrorMessage(message);
@@ -68,18 +63,16 @@ public class ExceptionHandlingRestController {
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
-    @ResponseBody
     public ResponseEntity<ErrorResponse> handleError(HttpMessageNotReadableException e) {
-        LOGGER.error("HttpMessageNotReadableException", e);
+        LOGGER.warn("handleError[HttpMessageNotReadableException], message={}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage(httpMessageNotReadableErrorMessage);
         return new ResponseEntity<>(errorResponse, BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
     public ResponseEntity<ErrorResponse> handleError(MethodArgumentNotValidException e) {
-        LOGGER.warn("handleMethodArgumentNotValidException", e);
+        LOGGER.warn("handleError[MethodArgumentNotValidException], message={}", e.getMessage());
         Map<String, String> validationErrors = e.getBindingResult()
                                                 .getFieldErrors()
                                                 .stream()
@@ -90,9 +83,8 @@ public class ExceptionHandlingRestController {
     }
 
     @ExceptionHandler({Exception.class})
-    @ResponseBody
     public ResponseEntity<ErrorResponse> handleError(Exception e) {
-        LOGGER.error("handleException", e);
+        LOGGER.error("handleError[Exception]", e);
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage(INTERNAL_SERVER_ERROR.getReasonPhrase());
         return new ResponseEntity<>(errorResponse, INTERNAL_SERVER_ERROR);

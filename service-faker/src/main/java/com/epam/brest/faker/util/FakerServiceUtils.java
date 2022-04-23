@@ -18,7 +18,7 @@ public class FakerServiceUtils {
     }
 
     public static <T extends BasicEntity> List<T> generateFakeData(Integer amount, IntFunction<T> fakerMapper) {
-        LOGGER.debug("generateFakeData(amount={}, fakerMapper={})", amount, fakerMapper);
+        LOGGER.trace("generateFakeData(amount={}, fakerMapper={})", amount, fakerMapper);
         return IntStream.rangeClosed(1, amount)
                         .mapToObj(fakerMapper)
                         .collect(toList());

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.epam.brest.service.constant.ServiceConstant.JOIN_DELIMITER;
+import static java.lang.String.format;
 
 @Service
 @Transactional(readOnly = true)
@@ -50,9 +51,9 @@ public class BankAccountServiceImpl implements BankAccountService {
         LOGGER.debug("getBankAccountById(id={})", id);
         return bankAccountDao.getById(id)
                              .orElseThrow(() -> {
-                                String error = String.format(findByIdError, id);
-                                LOGGER.warn("getBankAccountById(error={})", error);
-                                return new ResourceNotFoundException(error);
+                                String errorMessage = format(findByIdError, id);
+                                LOGGER.warn("getBankAccountById(errorMessage={})", errorMessage);
+                                return new ResourceNotFoundException(errorMessage);
                              });
     }
 
@@ -89,9 +90,9 @@ public class BankAccountServiceImpl implements BankAccountService {
             List<String> linkedCardNumbers = linkedCards.stream()
                                                         .map(CreditCard::getNumber)
                                                         .collect(Collectors.toList());
-            String error = String.format(deleteError, bankAccountFromDb.getNumber(), String.join(JOIN_DELIMITER, linkedCardNumbers));
-            LOGGER.warn("delete(error={})", error);
-            throw new BankAccountException(error);
+            String errorMessage = format(deleteError, bankAccountFromDb.getNumber(), String.join(JOIN_DELIMITER, linkedCardNumbers));
+            LOGGER.warn("delete(errorMessage={})", errorMessage);
+            throw new BankAccountException(errorMessage);
         }
         bankAccountDao.delete(bankAccountFromDb.getId());
         return bankAccountFromDb;
