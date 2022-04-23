@@ -29,6 +29,7 @@
         <module>service-api</module>
         <module>service</module>
         <module>service-faker</module>
+        <module>service-excel</module>
         <module>rest-app</module>
         <module>rest-openapi</module>
         <module>service-rest</module>
@@ -48,6 +49,7 @@
         <springdoc-openapi-maven-plugin.version>1.1</springdoc-openapi-maven-plugin.version>
         <jackson-databind-nullable.version>0.2.2</jackson-databind-nullable.version>
         <javafaker.version>1.0.2</javafaker.version>
+        <poi-ooxml.version>5.2.2</poi-ooxml.version>
         <openapi-generator-maven-plugin.version>5.4.0</openapi-generator-maven-plugin.version>
         <project.testresult.directory>${project.build.directory}/testResults</project.testresult.directory>
         <junit.utReportFolder>${project.testresult.directory}/unitTests</junit.utReportFolder>
@@ -119,6 +121,11 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
+                <artifactId>service-excel</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
                 <artifactId>rest-openapi</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -178,6 +185,11 @@
                         <artifactId>snakeyaml</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi-ooxml.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
