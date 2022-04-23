@@ -10,16 +10,16 @@ import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
 
-public class FakerUtils {
+public class FakerServiceUtils {
 
-    private static final Logger LOGGER = LogManager.getLogger(FakerUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(FakerServiceUtils.class);
 
-    private FakerUtils() {
+    private FakerServiceUtils() {
     }
 
-    public static <T extends BasicEntity> List<T> generateFakeData(Integer dataVolume, IntFunction<T> fakerMapper) {
-        LOGGER.debug("generateFakeData(dataVolume={}, fakerMapper={})", dataVolume, fakerMapper);
-        return IntStream.rangeClosed(1, dataVolume)
+    public static <T extends BasicEntity> List<T> generateFakeData(Integer amount, IntFunction<T> fakerMapper) {
+        LOGGER.debug("generateFakeData(amount={}, fakerMapper={})", amount, fakerMapper);
+        return IntStream.rangeClosed(1, amount)
                         .mapToObj(fakerMapper)
                         .collect(toList());
     }

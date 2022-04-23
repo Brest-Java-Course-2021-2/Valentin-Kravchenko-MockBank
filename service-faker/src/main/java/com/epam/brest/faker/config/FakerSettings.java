@@ -4,7 +4,7 @@ import java.util.Locale;
 
 public class FakerSettings {
 
-    private Integer dataVolume;
+    private Integer amount;
 
     private Locale locale;
 
@@ -14,12 +14,12 @@ public class FakerSettings {
 
     private Long amountUnitTimeToSubtract;
 
-    public Integer getDataVolume() {
-        return dataVolume;
+    public Integer getAmount() {
+        return amount;
     }
 
-    public void setDataVolume(Integer dataVolume) {
-        this.dataVolume = dataVolume;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Locale getLocale() {

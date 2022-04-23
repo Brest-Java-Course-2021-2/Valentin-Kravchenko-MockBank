@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(classes = {FakerTestConfig.class},
                 properties = {"spring.output.ansi.enabled=always"})
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-class BankAccountDtoFakerServiceImplTest {
+class BankAccountDtoFakerServiceImplIT {
 
     public static final int TEST_DATA_VOLUME = 10;
 
     private final FakerService<BankAccountDto> fakerService;
 
-    BankAccountDtoFakerServiceImplTest(FakerService<BankAccountDto> fakerService) {
+    BankAccountDtoFakerServiceImplIT(FakerService<BankAccountDto> fakerService) {
         this.fakerService = fakerService;
     }
 

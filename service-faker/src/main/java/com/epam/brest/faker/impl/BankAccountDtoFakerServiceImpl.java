@@ -2,7 +2,7 @@ package com.epam.brest.faker.impl;
 
 import com.epam.brest.faker.api.FakerService;
 import com.epam.brest.faker.config.FakerSettings;
-import com.epam.brest.faker.util.FakerUtils;
+import com.epam.brest.faker.util.FakerServiceUtils;
 import com.epam.brest.model.BankAccountDto;
 import com.github.javafaker.Faker;
 import org.apache.logging.log4j.LogManager;
@@ -35,12 +35,11 @@ public class BankAccountDtoFakerServiceImpl implements FakerService<BankAccountD
     }
 
     @Override
-    public List<BankAccountDto> getFakeData(Optional<Integer> dataVolume, Optional<Locale> locale) {
-        LOGGER.debug("getFakeData(dataVolume={}, locale={})", dataVolume, locale);
-        Integer actualDataVolume = dataVolume.orElse(fakerSettings.getDataVolume());
+    public List<BankAccountDto> getFakeData(Optional<Integer> amount, Optional<Locale> locale) {
+        LOGGER.debug("getFakeData(amount={}, locale={})", amount, locale);
         Faker faker = new Faker(locale.orElse(fakerSettings.getLocale()));
         IntFunction<BankAccountDto> fakerMapper = buildFakerMapper(faker, fakerSettings);
-        return FakerUtils.generateFakeData(actualDataVolume, fakerMapper);
+        return FakerServiceUtils.generateFakeData(amount.orElse(fakerSettings.getAmount()), fakerMapper);
     }
 
     private IntFunction<BankAccountDto> buildFakerMapper(Faker faker, FakerSettings fakerSettings) {
