@@ -12,7 +12,11 @@ public class FakerSettings {
 
     private Integer accountMaxTotalCards;
 
-    private Long amountUnitTimeToSubtract;
+    private Long unitTimeLimit;
+
+    private Long balanceLimit;
+
+    private Integer balanceScale;
 
     public Integer getAmount() {
         return amount;
@@ -46,12 +50,28 @@ public class FakerSettings {
         this.accountMaxTotalCards = accountMaxTotalCards;
     }
 
-    public Long getAmountUnitTimeToSubtract() {
-        return amountUnitTimeToSubtract;
+    public Long getUnitTimeLimit() {
+        return unitTimeLimit;
     }
 
-    public void setAmountUnitTimeToSubtract(Long amountUnitTimeToSubtract) {
-        this.amountUnitTimeToSubtract = amountUnitTimeToSubtract;
+    public void setUnitTimeLimit(Long unitTimeLimit) {
+        this.unitTimeLimit = unitTimeLimit;
+    }
+
+    public Long getBalanceLimit() {
+        return balanceLimit;
+    }
+
+    public void setBalanceLimit(Long balanceLimit) {
+        this.balanceLimit = balanceLimit;
+    }
+
+    public Integer getBalanceScale() {
+        return balanceScale;
+    }
+
+    public void setBalanceScale(Integer balanceScale) {
+        this.balanceScale = balanceScale;
     }
 
 }

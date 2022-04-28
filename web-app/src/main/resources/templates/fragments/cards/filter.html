@@ -13,13 +13,13 @@
         <div class="input-group position-relative">
             <span class="input-group-text ">Expiry from</span>
             <input type="text"
-                   name="valueFromDate"
+                   name="fromDateValue"
                    th:value="${filter?.fromDateValue}"
                    th:placeholder="#{card.date.placeholder}"
                    class="form-control"
-                   th:classappend="${filter} and ${#fields.hasErrors('valueFromDate')} ? 'is-invalid'"/>
+                   th:classappend="${filter} and ${#fields.hasErrors('fromDateValue')} ? 'is-invalid'"/>
             <div class="invalid-tooltip"
-                 th:if="${filter} and ${#fields.hasErrors('valueFromDate')}"
+                 th:if="${filter} and ${#fields.hasErrors('fromDateValue')}"
                  th:errors="*{fromDateValue}">
                 From Date Error
             </div>
@@ -29,13 +29,13 @@
         <div class="input-group position-relative">
             <span class="input-group-text">Expiry to</span>
             <input type="text"
-                   name="valueToDate"
+                   name="toDateValue"
                    th:value="${filter?.toDateValue}"
                    th:placeholder="#{card.date.placeholder}"
                    class="form-control"
-                   th:classappend="${filter} and ${#fields.hasErrors('valueToDate')} ? 'is-invalid'"/>
+                   th:classappend="${filter} and ${#fields.hasErrors('toDateValue')} ? 'is-invalid'"/>
             <div class="invalid-tooltip"
-                 th:if="${filter} and ${#fields.hasErrors('valueToDate')}"
+                 th:if="${filter} and ${#fields.hasErrors('toDateValue')}"
                  th:errors="*{toDateValue}">
                 Value Date Error
             </div>

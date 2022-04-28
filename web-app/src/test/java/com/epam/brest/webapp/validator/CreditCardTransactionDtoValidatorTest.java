@@ -12,7 +12,7 @@ import org.springframework.validation.Validator;
 import java.util.Locale;
 
 import static com.epam.brest.webapp.constant.ControllerConstant.TARGET_CARD_NUMBER;
-import static com.epam.brest.webapp.constant.ControllerConstant.VALUE_SUM_OF_MONEY;
+import static com.epam.brest.webapp.constant.ControllerConstant.TRANSACTION_AMOUNT;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -40,7 +40,7 @@ class CreditCardTransactionDtoValidatorTest {
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(TARGET_CARD_NUMBER));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(TRANSACTION_AMOUNT));
         // Case 2
         creditCardTransactionDto.setTargetCardNumber("492955499665710w");
         creditCardTransactionDto.setTransactionAmountValue("1000333444,2");
@@ -50,7 +50,7 @@ class CreditCardTransactionDtoValidatorTest {
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(TARGET_CARD_NUMBER));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(TRANSACTION_AMOUNT));
         // Case 3
         String validCardNumber = "4024007151271862";
         creditCardTransactionDto.setSourceCardNumber(validCardNumber);
@@ -62,7 +62,7 @@ class CreditCardTransactionDtoValidatorTest {
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(TARGET_CARD_NUMBER));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(TRANSACTION_AMOUNT));
         // Case 4
         creditCardTransactionDto.setTargetCardNumber("4929554$96657100");
         creditCardTransactionDto.setTransactionAmountValue("1000.55");
@@ -72,7 +72,7 @@ class CreditCardTransactionDtoValidatorTest {
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(TARGET_CARD_NUMBER));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_SUM_OF_MONEY));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(TRANSACTION_AMOUNT));
     }
 
     @Test

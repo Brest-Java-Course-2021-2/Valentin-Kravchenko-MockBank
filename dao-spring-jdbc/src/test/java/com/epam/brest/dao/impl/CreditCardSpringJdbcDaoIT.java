@@ -2,13 +2,12 @@ package com.epam.brest.dao.impl;
 
 import com.epam.brest.dao.annotation.TestDbDaoIT;
 import com.epam.brest.dao.api.CreditCardDao;
+import com.epam.brest.faker.api.FakerService;
 import com.epam.brest.model.CreditCard;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,26 +18,28 @@ import static org.junit.jupiter.api.Assertions.*;
 class CreditCardSpringJdbcDaoIT {
 
     private final CreditCardDao creditCardDao;
-    private List<CreditCard> cards;
-    private CreditCard firstCreditCard;
-    private CreditCard lastCreditCard;
 
-    public CreditCardSpringJdbcDaoIT(CreditCardDao creditCardDao) {
+    private final List<CreditCard> cards;
+
+    private final CreditCard firstCreditCard;
+
+    private final CreditCard lastCreditCard;
+
+    private final CreditCard fakeCreditCard;
+
+    public CreditCardSpringJdbcDaoIT(CreditCardDao creditCardDao, FakerService<CreditCard> fakerService) {
         this.creditCardDao = creditCardDao;
-    }
-
-    @BeforeEach
-    void setup() {
-        cards = creditCardDao.getAll();
-        firstCreditCard = cards.get(0);
-        lastCreditCard = cards.get(cards.size() - 1);
+        this.cards = creditCardDao.getAll();
+        this.firstCreditCard = cards.get(0);
+        this.lastCreditCard = cards.get(cards.size() - 1);
+        this.fakeCreditCard = fakerService.getFakeData().get(0);
     }
 
     @Test
     void getAll() {
         assertNotNull(cards);
-        Integer numberOfAccounts = creditCardDao.count();
-        assertEquals(numberOfAccounts, cards.size());
+        Integer cardsCount = creditCardDao.count();
+        assertEquals(cardsCount, cards.size());
         assertTrue(lastCreditCard.getExpirationDate().isAfter(firstCreditCard.getExpirationDate()));
     }
 
@@ -66,14 +67,9 @@ class CreditCardSpringJdbcDaoIT {
 
     @Test
     void create() {
-        CreditCard creditCard = new CreditCard();
-        creditCard.setNumber("New number");
-        creditCard.setExpirationDate(LocalDate.now());
-        creditCard.setAccountId(1);
-        CreditCard newCreditCard = creditCardDao.create(creditCard);
-        assertNotNull(newCreditCard.getId());
-        Optional<CreditCard> creditCardFromDb = creditCardDao.getById(newCreditCard.getId());
-        assertEquals(newCreditCard, creditCardFromDb.get());
+        CreditCard creditCard = creditCardDao.create(fakeCreditCard);
+        Optional<CreditCard> creditCardFromDb = creditCardDao.getById(creditCard.getId());
+        assertEquals(creditCard, creditCardFromDb.get());
         assertEquals(creditCardFromDb.get().getBalance().intValue(), 0);
     }
 
@@ -88,15 +84,10 @@ class CreditCardSpringJdbcDaoIT {
 
     @Test
     void delete() {
-        CreditCard creditCard = new CreditCard();
-        creditCard.setNumber("New number");
-        creditCard.setExpirationDate(LocalDate.now());
-        creditCard.setBalance(new BigDecimal("0.00"));
-        creditCard.setAccountId(1);
-        CreditCard newCreditCard = creditCardDao.create(creditCard);
-        Integer result = creditCardDao.delete(newCreditCard.getId());
-        assertEquals(result, 1);
-        Optional<CreditCard> creditCardFromDb = creditCardDao.getById(newCreditCard.getId());
+        CreditCard creditCard = creditCardDao.create(fakeCreditCard);
+        Integer id = creditCardDao.delete(creditCard.getId());
+        assertEquals(creditCard.getId(), id);
+        Optional<CreditCard> creditCardFromDb = creditCardDao.getById(creditCard.getId());
         assertTrue(creditCardFromDb.isEmpty());
 
     }
@@ -104,13 +95,12 @@ class CreditCardSpringJdbcDaoIT {
     @Test
     void isAccountNumberExists() {
         assertTrue(creditCardDao.isCardNumberExists(lastCreditCard.getNumber()));
-        assertFalse(creditCardDao.isCardNumberExists("New number"));
+        assertFalse(creditCardDao.isCardNumberExists(fakeCreditCard.getNumber()));
     }
 
     @Test
     void getAllByAccountId() {
         List<CreditCard> cardsByAccountId = creditCardDao.getAllByAccountId(firstCreditCard.getAccountId());
-        assertNotNull(cardsByAccountId);
         assertTrue(cardsByAccountId.size() > 0);
         assertEquals(cardsByAccountId.get(0).getAccountId(), firstCreditCard.getAccountId());
         assertEquals(cardsByAccountId.get(cardsByAccountId.size() - 1).getAccountId(), firstCreditCard.getAccountId());

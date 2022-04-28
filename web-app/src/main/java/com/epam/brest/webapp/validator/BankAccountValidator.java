@@ -9,7 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import static com.epam.brest.webapp.constant.ControllerConstant.CUSTOMER;
-import static com.epam.brest.webapp.constant.ControllerConstant.ERROR_CODE_CUSTOMER;
+import static com.epam.brest.webapp.constant.ControllerConstant.CUSTOMER_ERROR_CODE;
 
 @Component
 public class BankAccountValidator implements Validator {
@@ -29,7 +29,7 @@ public class BankAccountValidator implements Validator {
         LOGGER.debug("validate(target={})", target);
         BankAccount bankAccount = (BankAccount) target;
         if (!bankAccount.getCustomer().matches(customerRegexp)) {
-            errors.rejectValue(CUSTOMER, ERROR_CODE_CUSTOMER);
+            errors.rejectValue(CUSTOMER, CUSTOMER_ERROR_CODE);
         }
     }
 

@@ -29,7 +29,7 @@ public class BankAccountDtoController {
     private final Validator validator;
 
     @Value("${account.filter.error}")
-    private String filterError;
+    private String filterErrorMessage;
 
     public BankAccountDtoController(BankAccountDtoService bankAccountDtoServiceRest,
                                     Validator bankAccountFilterDtoValidator) {
@@ -55,18 +55,18 @@ public class BankAccountDtoController {
     public String accounts(@Valid @ModelAttribute(FILTER) BankAccountFilterDto bankAccountFilterDto,
                            BindingResult bindingResult,
                            Model model) {
-        LOGGER.debug("accountsPOST(/accounts, bankAccountFilterDto={})", bankAccountFilterDto);
+        LOGGER.debug("accounts(/accounts, method=POST, bankAccountFilterDto={})", bankAccountFilterDto);
         if (bindingResult.hasErrors()) {
-            LOGGER.warn("accountsPOST(/accounts, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
+            LOGGER.warn("accounts(/accounts, method=POST, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
             return ACCOUNTS;
         }
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
+        LOGGER.debug("accounts(/accounts, method=POST, accounts={})", accounts);
         if (accounts.isEmpty()) {
-            LOGGER.warn("accountsPOST(/accounts, accounts={})", accounts);
-            model.addAttribute(ERROR, filterError);
+            model.addAttribute(ERROR, filterErrorMessage);
         }
         model.addAttribute(ACCOUNTS, accounts);
-        LOGGER.debug("accountsPOST(model={})", model);
+        LOGGER.debug("accounts(/accounts, method=POST, model={})", model);
         return ACCOUNTS;
     }
 

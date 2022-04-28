@@ -19,6 +19,8 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @Tag(name = "Bank Account", description = "The Bank Account API")
 @RestController
 @RequestMapping("api/account")
@@ -45,7 +47,7 @@ public class BankAccountRestController {
     ) {
         LOGGER.debug("getById(api/account/{})", id);
         BankAccount bankAccount = bankAccountService.getById(id);
-        return ResponseEntity.ok(bankAccount);
+        return ok(bankAccount);
     }
 
     @Operation(summary = "Create a new bank account",
@@ -64,7 +66,7 @@ public class BankAccountRestController {
         LOGGER.debug("create(api/account, bankAccount={})", bankAccount);
         BankAccount createdBankAccount = bankAccountService.create(bankAccount);
         LOGGER.debug("create(api/account, createdBankAccount={})", createdBankAccount);
-        return ResponseEntity.ok(createdBankAccount);
+        return ok(createdBankAccount);
     }
 
     @Operation(summary = "Update an existing bank account",
@@ -83,7 +85,7 @@ public class BankAccountRestController {
         LOGGER.debug("update(/account, bankAccount={})", bankAccount);
         BankAccount updatedBankAccount = bankAccountService.update(bankAccount);
         LOGGER.debug("update(/account, updatedBankAccount={})", updatedBankAccount);
-        return ResponseEntity.ok(updatedBankAccount);
+        return ok(updatedBankAccount);
     }
 
     @Operation(summary = "Delete a bank account by its ID",
@@ -102,7 +104,7 @@ public class BankAccountRestController {
         LOGGER.debug("delete(/account, id={})", id);
         BankAccount deletedBankAccount = bankAccountService.delete(id);
         LOGGER.debug("delete(/account, updatedBankAccount={})", deletedBankAccount);
-        return ResponseEntity.ok(deletedBankAccount);
+        return ok(deletedBankAccount);
     }
 
     @Operation(summary = "List of all credit cards linked with a specific bank account",
@@ -117,7 +119,7 @@ public class BankAccountRestController {
     ) {
         LOGGER.debug("get(api/account/{}/cards)", id);
         List<CreditCard> cards = bankAccountService.getAllCardsById(id);
-        return ResponseEntity.ok(cards);
+        return ok(cards);
     }
 
     @Operation(hidden = true)
@@ -126,7 +128,7 @@ public class BankAccountRestController {
         LOGGER.debug("get(api/account)");
         BankAccount bankAccount = new BankAccount();
         bankAccount.setRegistrationDate(LocalDate.now());
-        return ResponseEntity.ok(bankAccount);
+        return ok(bankAccount);
     }
 
 }

@@ -60,7 +60,8 @@ public abstract class SpringJdbcDaoBasic<T extends BasicEntity> {
     public Integer delete(String sql, Integer id) {
         LOGGER.info("delete(sql={}, id={})", sql, id);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID.getName(), id);
-        return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+        return id;
     }
 
     public boolean isNumberExists(String sql, String number) {

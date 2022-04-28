@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @Tag(name = "Credit Card", description = "The Credit Card API")
 @RestController
 @RequestMapping("api/card")
@@ -46,7 +48,7 @@ public class CreditCardRestController {
     ) {
         LOGGER.debug("getById(api/card/{})", id);
         CreditCard creditCardFromDb = creditCardService.getById(id);
-        return ResponseEntity.ok(creditCardFromDb);
+        return ok(creditCardFromDb);
     }
 
     @Operation(summary = "Create a new credit card",
@@ -65,7 +67,7 @@ public class CreditCardRestController {
         LOGGER.debug("create(api/card, accountId={})", accountId);
         bankAccountService.getById(accountId);
         CreditCard createdCreditCard = creditCardService.create(accountId);
-        return ResponseEntity.ok(createdCreditCard);
+        return ok(createdCreditCard);
     }
 
     @Operation(summary = "Delete a credit card by its ID",
@@ -83,7 +85,7 @@ public class CreditCardRestController {
     ){
         LOGGER.debug("delete(api/card/{})", id);
         CreditCard deletedCreditCard = creditCardService.delete(id);
-        return ResponseEntity.ok(deletedCreditCard);
+        return ok(deletedCreditCard);
     }
 
     @Operation(summary = "Execute a deposit transaction for a specific credit card",
@@ -108,7 +110,7 @@ public class CreditCardRestController {
     ) {
         LOGGER.debug("depositPOST(api/card/deposit, card={})", creditCardTransactionDto);
         CreditCard targetCreditCard = creditCardService.deposit(creditCardTransactionDto);
-        return ResponseEntity.ok(targetCreditCard);
+        return ok(targetCreditCard);
     }
 
     @Operation(summary = "Execute a transfer transaction for specific credit cards",
@@ -134,7 +136,7 @@ public class CreditCardRestController {
     ) {
         LOGGER.debug("transferPOST(api/card/transfer, card={})", creditCardTransactionDto);
         CreditCard sourceCreditCard = creditCardService.transfer(creditCardTransactionDto);
-        return ResponseEntity.ok(sourceCreditCard);
+        return ok(sourceCreditCard);
     }
 
     @Operation(hidden = true)
@@ -144,7 +146,7 @@ public class CreditCardRestController {
         CreditCard creditCardFromDb = creditCardService.getById(id);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setTargetCardNumber(creditCardFromDb.getNumber());
-        return ResponseEntity.ok(creditCardTransactionDto);
+        return ok(creditCardTransactionDto);
     }
 
     @Operation(hidden = true)
@@ -154,7 +156,7 @@ public class CreditCardRestController {
         CreditCard creditCardFromDb = creditCardService.getById(id);
         CreditCardTransactionDto creditCardTransactionDto = new CreditCardTransactionDto();
         creditCardTransactionDto.setSourceCardNumber(creditCardFromDb.getNumber());
-        return ResponseEntity.ok(creditCardTransactionDto);
+        return ok(creditCardTransactionDto);
     }
 
 }

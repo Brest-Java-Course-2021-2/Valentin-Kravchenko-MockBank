@@ -9,8 +9,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
-import static com.epam.brest.webapp.constant.ControllerConstant.VALUE_FROM_DATE;
-import static com.epam.brest.webapp.constant.ControllerConstant.VALUE_TO_DATE;
+import static com.epam.brest.webapp.constant.ControllerConstant.FROM_DATE_VALUE;
+import static com.epam.brest.webapp.constant.ControllerConstant.TO_DATE_VALUE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -58,8 +58,8 @@ class CreditCardFilterDtoValidatorTest {
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
-        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_FROM_DATE));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_TO_DATE));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(FROM_DATE_VALUE));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(TO_DATE_VALUE));
         // Case 1
         creditCardFilterDto = new CreditCardFilterDto();
         creditCardFilterDto.setFromDateValue("06/2023");
@@ -68,8 +68,8 @@ class CreditCardFilterDtoValidatorTest {
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
-        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_FROM_DATE));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_TO_DATE));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(FROM_DATE_VALUE));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(TO_DATE_VALUE));
         // Case 1
         creditCardFilterDto = new CreditCardFilterDto();
         creditCardFilterDto.setFromDateValue("23/2023");
@@ -78,8 +78,8 @@ class CreditCardFilterDtoValidatorTest {
         dataBinder.addValidators(validator);
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
-        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_FROM_DATE));
-        assertNotNull(dataBinder.getBindingResult().getFieldError(VALUE_TO_DATE));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(FROM_DATE_VALUE));
+        assertNotNull(dataBinder.getBindingResult().getFieldError(TO_DATE_VALUE));
     }
 
 }

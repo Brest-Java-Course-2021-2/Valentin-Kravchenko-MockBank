@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.util.Objects;
-
 import static com.epam.brest.webapp.constant.ControllerConstant.*;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Component
 public class BankAccountFilterDtoValidator implements Validator {
@@ -32,18 +32,15 @@ public class BankAccountFilterDtoValidator implements Validator {
     public void validate(Object target, Errors errors) {
         LOGGER.debug("validate(target={})", target);
         BankAccountFilterDto bankAccountFilterDto = (BankAccountFilterDto) target;
-        if (Objects.isNull(bankAccountFilterDto.getNumberPattern()) &&
-            Objects.isNull(bankAccountFilterDto.getCustomerPattern())) {
-            errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_ACCOUNT_NUMBER_PATTERN);
-            errors.rejectValue(CUSTOMER_PATTERN, ERROR_CODE_CUSTOMER_PATTERN);
+        if (isNull(bankAccountFilterDto.getNumberPattern()) && isNull(bankAccountFilterDto.getCustomerPattern())) {
+            errors.rejectValue(NUMBER_PATTERN, NUMBER_PATTERN_ERROR_CODE);
+            errors.rejectValue(CUSTOMER_PATTERN, CUSTOMER_PATTERN_ERROR_CODE);
         }
-        if (Objects.nonNull(bankAccountFilterDto.getNumberPattern()) &&
-            !bankAccountFilterDto.getNumberPattern().matches(numberRegexp)) {
-            errors.rejectValue(NUMBER_PATTERN, ERROR_CODE_ACCOUNT_NUMBER_PATTERN);
+        if (nonNull(bankAccountFilterDto.getNumberPattern()) && !bankAccountFilterDto.getNumberPattern().matches(numberRegexp)) {
+            errors.rejectValue(NUMBER_PATTERN, NUMBER_PATTERN_ERROR_CODE);
         }
-        if (Objects.nonNull(bankAccountFilterDto.getCustomerPattern()) &&
-            !bankAccountFilterDto.getCustomerPattern().matches(customerRegexp)) {
-            errors.rejectValue(CUSTOMER_PATTERN, ERROR_CODE_CUSTOMER_PATTERN);
+        if (nonNull(bankAccountFilterDto.getCustomerPattern()) && !bankAccountFilterDto.getCustomerPattern().matches(customerRegexp)) {
+            errors.rejectValue(CUSTOMER_PATTERN, CUSTOMER_PATTERN_ERROR_CODE);
         }
     }
 

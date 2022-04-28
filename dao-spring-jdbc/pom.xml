@@ -36,6 +36,11 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.epam.brest</groupId>
+            <artifactId>service-faker</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

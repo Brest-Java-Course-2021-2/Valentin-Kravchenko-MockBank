@@ -36,10 +36,10 @@ class BankAccountDtoExcelServiceImplIT {
 
     private String fileName;
 
-    BankAccountDtoExcelServiceImplIT(FakerService<BankAccountDto> bankAccountDtoFakerServiceImpl,
-                                     ExcelService<BankAccountDto> bankAccountDtoExcelServiceImpl) {
-        this.fakeData = bankAccountDtoFakerServiceImpl.getFakeData(Optional.of(TEST_DATA_AMOUNT), Optional.empty());;
-        this.excelService = bankAccountDtoExcelServiceImpl;
+    BankAccountDtoExcelServiceImplIT(FakerService<BankAccountDto> fakerService,
+                                     ExcelService<BankAccountDto> excelService) {
+        this.fakeData = fakerService.getFakeData(Optional.of(TEST_DATA_AMOUNT));
+        this.excelService = excelService;
     }
 
     @BeforeEach
