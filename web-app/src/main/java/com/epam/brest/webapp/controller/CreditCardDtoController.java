@@ -44,10 +44,10 @@ public class CreditCardDtoController {
 
     @GetMapping
     public String cards(Model model) {
-        LOGGER.debug("cardsGET(/cards)");
+        LOGGER.debug("cards(/cards, method=GET)");
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber();
         model.addAttribute(CARDS, cards);
-        LOGGER.debug("cards(model={})", model);
+        LOGGER.debug("cards(/cards, method=GET, model={})", model);
         return CARDS;
     }
 
@@ -55,18 +55,18 @@ public class CreditCardDtoController {
     public String cards(@Valid @ModelAttribute(FILTER) CreditCardFilterDto creditCardFilterDto,
                         BindingResult bindingResult,
                         Model model) {
-        LOGGER.debug("cardsPOST(/cards, creditCardDateRangeDto={})", creditCardFilterDto);
+        LOGGER.debug("cards(/cards, method=POST, creditCardDateRangeDto={})", creditCardFilterDto);
         if (bindingResult.hasErrors()) {
-            LOGGER.warn("cardsPOST(/cards, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
+            LOGGER.warn("cards(/cards, errorFields={})", ControllerUtils.extractErrorFields(bindingResult));
             return CARDS;
         }
         List<CreditCardDto> cards = creditCardDtoService.getAllWithAccountNumber(creditCardFilterDto);
+        LOGGER.debug("cards(/cards, method=POST, cards={})", cards);
         if (cards.isEmpty()) {
-            LOGGER.warn("cardsPOST(/accounts, accounts={})", cards);
             model.addAttribute(ERROR, filterError);
         }
         model.addAttribute(CARDS, cards);
-        LOGGER.debug("cardsPOST(model={})", model);
+        LOGGER.debug("cardsPOST(/cards, method=POST, model={})", model);
         return CARDS;
     }
 

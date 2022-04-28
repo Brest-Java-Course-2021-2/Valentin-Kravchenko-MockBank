@@ -14,8 +14,8 @@ public interface GenericDao<T extends BasicEntity> {
     List<T> getAll();
 
     /**
-     * Retrieves an entity by its id.
-     * @param id - entity id
+     * Retrieves an entity by its ID.
+     * @param id - entity ID
      * @return the entity with the given id or empty optional if none found
      */
     Optional<T> getById(Integer id);
@@ -43,8 +43,8 @@ public interface GenericDao<T extends BasicEntity> {
 
     /**
      * Removes an entity by its id.
-     * @param id - id of the entity to delete
-     * @return the number of rows affected
+     * @param id - ID of the entity to delete
+     * @return the ID of the deleted entity
      */
     Integer delete(Integer id);
 

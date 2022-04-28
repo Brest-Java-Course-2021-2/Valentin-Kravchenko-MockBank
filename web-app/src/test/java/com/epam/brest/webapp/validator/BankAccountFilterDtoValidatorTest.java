@@ -2,34 +2,36 @@ package com.epam.brest.webapp.validator;
 
 import com.epam.brest.model.BankAccountFilterDto;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
-import java.math.BigDecimal;
-
-import static com.epam.brest.webapp.constant.ControllerConstant.*;
+import static com.epam.brest.webapp.constant.ControllerConstant.CUSTOMER_PATTERN;
+import static com.epam.brest.webapp.constant.ControllerConstant.NUMBER_PATTERN;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ContextConfiguration(locations = {"classpath*:test-validator.xml"})
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class BankAccountFilterDtoValidatorTest {
+
+    public static final String TEST_NUMBER_PATTERN = "BY100TRE";
+    public static final String TEST_CUSTOMER_PATTERN = "Petr";
 
     private final Validator validator;
 
-    BankAccountFilterDtoValidatorTest(@Autowired @Qualifier("bankAccountFilterDtoValidator") Validator validator) {
-        this.validator = validator;
+    BankAccountFilterDtoValidatorTest(Validator bankAccountFilterDtoValidator) {
+        this.validator = bankAccountFilterDtoValidator;
     }
 
     @Test
-    void validateIsValid() {
+    void validateSuccessful() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
-        bankAccountFilterDto.setNumberPattern("BY100TRE");
-        bankAccountFilterDto.setCustomerPattern("Petr");
+        bankAccountFilterDto.setNumberPattern(TEST_NUMBER_PATTERN);
+        bankAccountFilterDto.setCustomerPattern(TEST_CUSTOMER_PATTERN);
         DataBinder dataBinder = new DataBinder(bankAccountFilterDto);
         dataBinder.addValidators(validator);
         dataBinder.validate();
@@ -50,7 +52,7 @@ class BankAccountFilterDtoValidatorTest {
     }
 
     @Test
-    void validateIsInvalid() {
+    void validateFail() {
         //Case 1
         BankAccountFilterDto bankAccountFilterDto = new BankAccountFilterDto();
         bankAccountFilterDto.setNumberPattern("BY100TRE@");
@@ -77,15 +79,6 @@ class BankAccountFilterDtoValidatorTest {
         dataBinder.validate();
         assertTrue(dataBinder.getBindingResult().hasErrors());
         assertNotNull(dataBinder.getBindingResult().getFieldError(CUSTOMER_PATTERN));
-    }
-
-    @Test
-    void temp() {
-       BigDecimal a = new BigDecimal("0.00");
-        int i = a.compareTo(BigDecimal.valueOf(0));
-        System.out.println(i);
-
-
     }
 
 }

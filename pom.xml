@@ -24,6 +24,7 @@
         <module>test-db</module>
         <module>dao-api</module>
         <module>dao-spring-jdbc</module>
+        <module>dao-spring-data-jpa</module>
         <module>bank-data-generator-api</module>
         <module>bank-data-generator</module>
         <module>service-api</module>
@@ -92,6 +93,11 @@
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>dao-spring-jdbc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>dao-spring-data-jpa</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

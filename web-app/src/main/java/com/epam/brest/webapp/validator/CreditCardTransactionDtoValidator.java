@@ -10,11 +10,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.epam.brest.webapp.constant.ControllerConstant.*;
+import static java.util.Objects.nonNull;
 
 @Component
 public class CreditCardTransactionDtoValidator implements Validator {
@@ -28,7 +29,7 @@ public class CreditCardTransactionDtoValidator implements Validator {
     private String cardNumberRegexp;
 
     @Value("${card.transaction.amount.regexp}")
-    private String sumOfMoneyRegexp;
+    private String transactionAmountRegexp;
 
     public CreditCardTransactionDtoValidator(BankDataGenerator bankDataGenerator,
                                              NumberStyleFormatter numberStyleFormatter) {
@@ -47,34 +48,39 @@ public class CreditCardTransactionDtoValidator implements Validator {
         CreditCardTransactionDto creditCardTransactionDto = (CreditCardTransactionDto) target;
         String targetCardNumber = creditCardTransactionDto.getTargetCardNumber();
         String sourceCardNumber = creditCardTransactionDto.getSourceCardNumber();
-        validateCardNumber(targetCardNumber, errors, TARGET_CARD_NUMBER, ERROR_CODE_TARGET_CARD_NUMBER);
-        if (Objects.nonNull(sourceCardNumber)) {
-            validateCardNumber(sourceCardNumber, errors, SOURCE_CARD_NUMBER, ERROR_CODE_SOURCE_CARD_NUMBER);
-            if (Objects.equals(targetCardNumber, sourceCardNumber)) {
-                errors.rejectValue(TARGET_CARD_NUMBER, ERROR_CODE_DIFFERENT_CARD_NUMBERS);
+        if (!isCardNumberValid(targetCardNumber)) {
+            errors.rejectValue(TARGET_CARD_NUMBER, TARGET_CARD_NUMBER_ERROR_CODE);
+        }
+        if (nonNull(sourceCardNumber)) {
+            if (!isCardNumberValid(sourceCardNumber)) {
+                errors.rejectValue(SOURCE_CARD_NUMBER, SOURCE_CARD_NUMBER_ERROR_CODE);
+            }
+            if (Objects.equals(sourceCardNumber, targetCardNumber)) {
+                errors.rejectValue(TARGET_CARD_NUMBER, DIFFERENT_CARD_NUMBERS_ERROR_CODE);
             }
         }
-        validateSumOfMoney(creditCardTransactionDto, errors);
+        if (!isTransactionAmountValid(creditCardTransactionDto.getTransactionAmountValue(), creditCardTransactionDto.getLocale())) {
+            errors.rejectValue(TRANSACTION_AMOUNT, TRANSACTION_AMOUNT_ERROR_CODE);
+        }
     }
 
-    private void validateSumOfMoney(CreditCardTransactionDto creditCardTransactionDto, Errors errors) {
-        LOGGER.info("validateSumOfMoney(valueSumOfMoney={})", creditCardTransactionDto.getTransactionAmountValue());
-        if(!creditCardTransactionDto.getTransactionAmountValue().matches(sumOfMoneyRegexp)) {
-            errors.rejectValue(VALUE_SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
+    private boolean isTransactionAmountValid(String transactionAmountValue, Locale locale) {
+        LOGGER.trace("isTransactionAmountValid(transactionAmountValue={}, locale={})", transactionAmountValue, locale);
+        if (!transactionAmountValue.matches(transactionAmountRegexp)) {
+            return false;
         } else {
             try {
-               numberStyleFormatter.parse(creditCardTransactionDto.getTransactionAmountValue(), creditCardTransactionDto.getLocale());
+                numberStyleFormatter.parse(transactionAmountValue, locale);
             } catch (ParseException e) {
-                errors.rejectValue(VALUE_SUM_OF_MONEY, ERROR_CODE_SUM_OF_MONEY);
+                return false;
             }
         }
+        return true;
     }
 
-    private void validateCardNumber(String cardNumber, Errors errors, String field, String errorCode) {
-        LOGGER.info("validateCardNumber(cardNumber={})", cardNumber);
-        if(!cardNumber.matches(cardNumberRegexp) || !bankDataGenerator.isCardNumberValid(cardNumber)) {
-            errors.rejectValue(field, errorCode);
-        }
+    private boolean isCardNumberValid(String cardNumberValue) {
+        LOGGER.trace("isCardNumberValid(cardNumberValue={})", cardNumberValue);
+        return cardNumberValue.matches(cardNumberRegexp) && bankDataGenerator.isCardNumberValid(cardNumberValue);
     }
 
 }

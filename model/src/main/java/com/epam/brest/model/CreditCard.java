@@ -2,6 +2,8 @@ package com.epam.brest.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -9,6 +11,7 @@ import java.util.Objects;
 /**
  *  Credit card data model.
  */
+@Entity
 @Schema(description = "Credit card data model")
 public class CreditCard extends BasicEntity {
 
@@ -16,23 +19,27 @@ public class CreditCard extends BasicEntity {
      *  Credit card number.
      */
     @Schema(example = "4000003394112581", description = "Credit card number")
+    @Column(length = 16, unique = true, nullable = false)
     private String number;
 
     /**
      *  Credit card expiration date.
      */
     @Schema(example = "2023-07-31", description = "Credit card expiration date")
+    @Column(nullable = false)
     private LocalDate expirationDate;
 
     /**
      *  Credit card balance.
      */
+    @Column(precision = 8, scale = 2)
     private BigDecimal balance;
 
     /**
      *  Bank account ID linked with the credit card.
      */
     @Schema(example = "1", description = "Bank account ID linked with the credit card")
+    @Column(nullable = false)
     private Integer accountId;
 
     public String getNumber() {

@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +28,8 @@ import java.util.Optional;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
+import static org.springframework.http.ResponseEntity.noContent;
+import static org.springframework.http.ResponseEntity.ok;
 
 @Tag(name = "Bank Account", description = "The Bank Account API")
 @RestController
@@ -37,7 +38,7 @@ public class BankAccountDtoRestController {
 
     private static final Logger LOGGER = LogManager.getLogger(BankAccountDtoRestController.class);
 
-    public static final String ATTACHMENT_FILENAME = "attachment; filename=%s.xlsx";
+    public static final String ATTACHMENT_FILENAME = "attachment;filename=%s.xlsx";
     public static final String APPLICATION_VND_MS_EXCEL = "application/vnd.ms-excel";
     public static final int ACCOUNTS_SHEET_IDX = 0;
 
@@ -63,14 +64,14 @@ public class BankAccountDtoRestController {
         LOGGER.debug("getAccounts(api/accounts, method=GET)");
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards();
         LOGGER.debug("accounts={}", accounts);
-        return ResponseEntity.ok(accounts);
+        return ok(accounts);
     }
 
     @Operation(summary = "Export all bank accounts into Excel sheet",
                operationId = "exportAccountsIntoExcelSheet",
                description = "Creates a file in an Excel Open XML Spreadsheet (XLSX) format containing data on all bank accounts. " +
                              "The file name is Accounts.xlsx",
-               responses = {@ApiResponse(content = @Content(schema = @Schema(type = "string", format = "byte")),
+               responses = {@ApiResponse(content = @Content(schema = @Schema(type = "string", format = "binary")),
                                          responseCode = "200")}
     )
     @GetMapping("/export/excel")
@@ -80,11 +81,10 @@ public class BankAccountDtoRestController {
         Workbook workbook = excelService.createWorkbook(accounts);
         String fileName = workbook.getSheetName(ACCOUNTS_SHEET_IDX);
         ByteArrayResource resource = excelService.export(workbook);
-        return ResponseEntity.ok()
-                             .header(CONTENT_DISPOSITION, format(ATTACHMENT_FILENAME, fileName))
-                             .contentType(MediaType.parseMediaType(APPLICATION_VND_MS_EXCEL))
-                             .contentLength(resource.contentLength())
-                             .body(resource);
+        return ok().header(CONTENT_DISPOSITION, format(ATTACHMENT_FILENAME, fileName))
+                   .contentType(MediaType.parseMediaType(APPLICATION_VND_MS_EXCEL))
+                   .contentLength(resource.contentLength())
+                   .body(resource);
     }
 
     @Operation(summary = "List of fake bank accounts",
@@ -105,7 +105,7 @@ public class BankAccountDtoRestController {
         LOGGER.debug("getFakeAccounts(api/accounts/fake, method=GET, amount={}, locale={})", amount, locale);
         List<BankAccountDto> accounts = fakerService.getFakeData(amount, locale);
         LOGGER.debug("accounts={}", accounts);
-        return ResponseEntity.ok(accounts);
+        return ok(accounts);
     }
 
     @Operation(summary = "List of filtered bank accounts",
@@ -120,6 +120,7 @@ public class BankAccountDtoRestController {
                              "Allowed characters for the customer search pattern are [A-Za-z]",
                responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(implementation = BankAccountDto.class))),
                                          responseCode = "200"),
+                            @ApiResponse(responseCode = "204", description = "No search results found", content = @Content),
                             @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrorsMessage")),
                                          responseCode = "400", description = "If any search pattern is invalid")}
     )
@@ -131,7 +132,37 @@ public class BankAccountDtoRestController {
         LOGGER.debug("getAccounts(api/accounts, method=POST, bankAccountFilterDto={})", bankAccountFilterDto);
         List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
         LOGGER.debug("accounts={}", accounts);
-        return ResponseEntity.ok(accounts);
+        return accounts.isEmpty() ? noContent().build() : ok(accounts);
+    }
+
+    @Operation(summary = "Export filtered bank accounts into Excel sheet",
+               operationId = "exportFilteredAccountsIntoExcelSheet",
+               description = "Creates a file in an Excel Open XML Spreadsheet (XLSX) format containing data on filtered bank accounts. " +
+                             "The file name is Accounts.xlsx. " +
+                             "Search patterns requirements are specified in the [List of filtered bank accounts] operation",
+               responses = {@ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(implementation = BankAccountDto.class))),
+                                         responseCode = "200"),
+                           @ApiResponse(responseCode = "204", description = "No search results found", content = @Content),
+                           @ApiResponse(content = @Content(schema = @Schema(ref = "#/components/schemas/validationErrorsMessage")),
+                                        responseCode = "400", description = "If any search pattern is invalid")}
+    )
+    @PostMapping("/export/excel")
+    public ResponseEntity<Resource> exportAccountsIntoExcelSheet(
+            @Parameter(required = true)
+            @Valid @RequestBody BankAccountFilterDto bankAccountFilterDto
+    ) {
+        LOGGER.debug("exportAccountsIntoExcelSheet(api/accounts/export/excel, method=POST, bankAccountFilterDto={})", bankAccountFilterDto);
+        List<BankAccountDto> accounts = bankAccountDtoService.getAllWithTotalCards(bankAccountFilterDto);
+        if (accounts.isEmpty()) {
+            return noContent().build();
+        }
+        Workbook workbook = excelService.createWorkbook(accounts);
+        String fileName = workbook.getSheetName(ACCOUNTS_SHEET_IDX);
+        ByteArrayResource resource = excelService.export(workbook);
+        return ok().header(CONTENT_DISPOSITION, format(ATTACHMENT_FILENAME, fileName))
+                   .contentType(MediaType.parseMediaType(APPLICATION_VND_MS_EXCEL))
+                   .contentLength(resource.contentLength())
+                   .body(resource);
     }
 
 }

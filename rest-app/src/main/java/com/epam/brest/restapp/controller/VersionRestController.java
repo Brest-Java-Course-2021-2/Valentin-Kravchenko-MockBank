@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @Tag(name = "Controller Version", description = "The Controller Version API")
 @RestController
 @RequestMapping("api/version")
@@ -30,7 +32,7 @@ public class VersionRestController {
             @Parameter(hidden = true)
             @Value("${controller.version}") String version
     ) {
-        return ResponseEntity.ok(Map.of(VERSION, version));
+        return ok(Map.of(VERSION, version));
     }
 
 }

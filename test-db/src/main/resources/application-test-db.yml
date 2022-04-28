@@ -4,7 +4,9 @@ spring:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
     username: sa
     password:
-    schema: classpath:sql/test-db-schema.sql
-    data: classpath:sql/test-db-data.sql
   liquibase:
     enabled: false
+  sql:
+    init:
+      schema-locations: classpath:sql/test-db-schema.sql
+      data-locations: classpath:sql/test-db-data.sql
